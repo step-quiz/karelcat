@@ -1142,30 +1142,7 @@ function updateEditor() {
   ln.scrollTop   = ta.scrollTop;
 }
 
-// ── Inicialitzem l'editor ──
-const codeTA = document.getElementById('code-editor');
-
-codeTA.addEventListener('input', () => {
-  updateEditor();
-  localStorage.setItem(LS_KEY, codeTA.value);
-});
-
-codeTA.addEventListener('scroll', () => {
-  document.getElementById('code-highlight').scrollTop = codeTA.scrollTop;
-  document.getElementById('line-numbers').scrollTop   = codeTA.scrollTop;
-});
-
-// Tab → 2 espais (en lloc de canviar el focus)
-codeTA.addEventListener('keydown', e => {
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    const s    = codeTA.selectionStart;
-    const end  = codeTA.selectionEnd;
-    codeTA.value = codeTA.value.slice(0, s) + '  ' + codeTA.value.slice(end);
-    codeTA.selectionStart = codeTA.selectionEnd = s + 2;
-    updateEditor();
-  }
-});
+// (Els listeners del code-editor s'inicialitzen condicionalment a la secció 16)
 
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1430,34 +1407,64 @@ function parseCode(code) {
 // 16. LOCALSTORAGE + DRECERES DE TECLAT
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-// Restaurem el codi desat quan l'alumne torna a obrir la pàgina
-(function restoreCode() {
+// Nota: tot aquest bloc és específic de l'editor de codi (index.html).
+// Les funcions s'inicialitzen condicionalment perquè
+// edit-mapa.html també carrega aquest fitxer sense tenir
+// els elements #code-editor ni #speed.
+
+const codeTA = document.getElementById('code-editor');
+
+if (codeTA) {
+  // Restaurem el codi desat quan l'alumne torna a obrir la pàgina
   const saved = localStorage.getItem(LS_KEY);
-  if (saved) {
-    document.getElementById('code-editor').value = saved;
-  }
-})();
+  if (saved) codeTA.value = saved;
 
-// Dreceres de teclat per a usuaris més avançats
-document.addEventListener('keydown', e => {
-  // Evitem activar dreceres quan l'usuari escriu en un textarea o input
-  const tag = document.activeElement.tagName;
-  if (tag === 'TEXTAREA' || tag === 'INPUT') return;
+  codeTA.addEventListener('input', () => {
+    updateEditor();
+    localStorage.setItem(LS_KEY, codeTA.value);
+  });
 
-  if (e.key === 'F5')  { e.preventDefault(); runProgram(); }
-  if (e.key === 'F10') { e.preventDefault(); stepProgram(); }
-  if (e.key === 'F8')  { e.preventDefault(); stopProgram(); }
-});
+  codeTA.addEventListener('scroll', () => {
+    document.getElementById('code-highlight').scrollTop = codeTA.scrollTop;
+    document.getElementById('line-numbers').scrollTop   = codeTA.scrollTop;
+  });
 
-// Control de velocitat
-document.getElementById('speed').addEventListener('input', function () {
-  const v       = parseInt(this.value);
-  stepDelay     = Math.round(1050 - v);
-  const closest = Object.keys(SPEED_LBL).reduce((a, b) =>
-    Math.abs(b - v) < Math.abs(a - v) ? b : a
-  );
-  document.getElementById('speed-lbl').textContent = SPEED_LBL[closest];
-});
+  // Tab → 2 espais (en lloc de canviar el focus)
+  codeTA.addEventListener('keydown', e => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const s = codeTA.selectionStart;
+      const end = codeTA.selectionEnd;
+      codeTA.value = codeTA.value.slice(0, s) + '  ' + codeTA.value.slice(end);
+      codeTA.selectionStart = codeTA.selectionEnd = s + 2;
+      updateEditor();
+    }
+  });
+}
+
+// Dreceres de teclat (F5 / F10 / F8) — només a l'editor de codi
+if (codeTA) {
+  document.addEventListener('keydown', e => {
+    const tag = document.activeElement.tagName;
+    if (tag === 'TEXTAREA' || tag === 'INPUT') return;
+    if (e.key === 'F5')  { e.preventDefault(); runProgram(); }
+    if (e.key === 'F10') { e.preventDefault(); stepProgram(); }
+    if (e.key === 'F8')  { e.preventDefault(); stopProgram(); }
+  });
+}
+
+// Control de velocitat (slider) — només a index.html
+const speedSlider = document.getElementById('speed');
+if (speedSlider) {
+  speedSlider.addEventListener('input', function () {
+    const v       = parseInt(this.value);
+    stepDelay     = Math.round(1050 - v);
+    const closest = Object.keys(SPEED_LBL).reduce((a, b) =>
+      Math.abs(b - v) < Math.abs(a - v) ? b : a
+    );
+    document.getElementById('speed-lbl').textContent = SPEED_LBL[closest];
+  });
+}
 
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1468,5 +1475,5 @@ document.getElementById('speed').addEventListener('input', function () {
 const _urlMapa = new URLSearchParams(window.location.search).get('mapa');
 loadMapFromCSV(_urlMapa ?? DEFAULT_CSV);
 
-// Inicialitzem l'editor (ressaltat + números de línia)
-updateEditor();
+// Inicialitzem l'editor de codi (només si existeix a la pàgina)
+if (codeTA) updateEditor();

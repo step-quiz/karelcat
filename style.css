@@ -1,51 +1,49 @@
 /* ════════════════════════════════════════════════════════
    style.css — Karel en Català
-   Organitzat per seccions:
-   1. Variables i tema
-   2. Reset
-   3. Capçalera (topbar)
-   4. Layout principal
-   5. Panells
-   6. Botons
-   7. Panell del mapa (accions, edició, llegenda)
-   8. Món i graella de cel·les
-   9. Barra d'estat
-   10. Indicador d'estat d'execució
+   Seccions:
+   1.  Variables i tema
+   2.  Reset
+   3.  Capçalera (topbar)
+   4.  Layout principal (index.html)
+   5.  Columna del mapa
+   6.  Columna de codi
+   7.  Barra d'estat
+   8.  Controls d'execució
+   9.  Indicador d'estat
+   10. Botons
    11. Editor de codi (numeració + ressaltat)
    12. Colors del ressaltat sintàctic
    13. Log i handle de redimensió
    14. Modals
-   15. Reptes (challenges)
-   16. Mode clar (light mode)
-   17. Responsive
+   15. Reptes
+   16. Layout edit-mapa.html
+   17. Llegenda (edit-mapa)
+   18. Mode clar
+   19. Responsive
 ════════════════════════════════════════════════════════ */
 
 
 /* ── 1. VARIABLES I TEMA ──────────────────────────── */
 
 :root {
-  --bg:        #0d0d0d;
-  --surface:   #151515;
-  --border:    #2b2b2b;
-  --text:      #ddddd8;
-  --muted:     #52524e;
-  --accent:    #f0c030;
+  --bg:         #0d0d0d;
+  --surface:    #151515;
+  --border:     #2b2b2b;
+  --text:       #ddddd8;
+  --muted:      #52524e;
+  --accent:     #f0c030;
   --accent-dim: rgba(240, 192, 48, 0.12);
-  --error:     #e05555;
-  --error-dim: rgba(224, 85, 85, 0.12);
-  --mono:      'Space Mono', 'Courier New', monospace;
-  --cell-size: 44px;
-  --topbar-h:  40px;
+  --error:      #e05555;
+  --error-dim:  rgba(224, 85, 85, 0.12);
+  --mono:       'Space Mono', 'Courier New', monospace;
+  --cell-size:  44px;
+  --topbar-h:   44px;
 }
 
 
 /* ── 2. RESET ─────────────────────────────────────── */
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: var(--mono);
@@ -59,7 +57,7 @@ body {
 }
 
 
-/* ── 3. CAPÇALERA (TOPBAR) ────────────────────────── */
+/* ── 3. CAPÇALERA ─────────────────────────────────── */
 
 .topbar {
   height: var(--topbar-h);
@@ -67,7 +65,7 @@ body {
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 20px;
   gap: 14px;
   flex-shrink: 0;
   z-index: 10;
@@ -75,96 +73,169 @@ body {
 
 .logo {
   font-family: 'Syne', sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 800;
   color: var(--accent);
   display: flex;
   align-items: center;
-  gap: 6px;
-  letter-spacing: 0.5px;
+  gap: 7px;
 }
 
 .topbar-actions {
   margin-left: auto;
   display: flex;
   gap: 6px;
+  align-items: center;
 }
 
+a.btn { text-decoration: none; display: inline-flex; align-items: center; }
 
-/* ── 4. LAYOUT PRINCIPAL ──────────────────────────── */
+
+/* ── 4. LAYOUT PRINCIPAL (index.html) ─────────────── */
+/*
+   Marges laterals: 5% a cada costat
+   Columna mapa:   ~30% de la pantalla total
+   Columna codi:   ~60% de la pantalla total
+   (1fr + 2fr dins del 90% restant = 30% + 60%)
+*/
 
 .main {
   flex: 1;
   display: grid;
-  grid-template-columns: 200px 1fr 320px;
+  grid-template-columns: 1fr 2fr;
+  padding: 0 5%;
+  gap: 0;
   overflow: hidden;
+  min-height: 0;
 }
 
 
-/* ── 5. PANELLS ───────────────────────────────────── */
+/* ── 5. COLUMNA DEL MAPA ──────────────────────────── */
 
-.panel {
+.map-col {
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border);
   overflow: hidden;
+  min-height: 0;
 }
 
-.panel.right {
-  border-right: none;
-  border-left: 1px solid var(--border);
-}
-
-.panel-hd {
-  padding: 6px 10px;
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--muted);
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
+/* Àrea del món: ocupa l'espai restant i centra la graella */
+.world-area {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  padding: 12px;
+  overflow: hidden;
+  background: var(--bg);
+  position: relative;
+  min-height: 0;
 }
 
-.panel-hd .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  opacity: 0.6;
+#world-grid {
+  display: inline-grid;
+  gap: 2px;
+  background: var(--border);
+  padding: 2px;
+  border-radius: 5px;
   flex-shrink: 0;
 }
 
-.panel-hd-right {
-  margin-left: auto;
+
+/* ── 6. COLUMNA DE CODI ───────────────────────────── */
+
+.code-col {
   display: flex;
-  gap: 5px;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
-.panel-ft {
-  padding: 8px 10px;
+
+/* ── 7. BARRA D'ESTAT ─────────────────────────────── */
+
+.status-bar {
+  display: flex;
+  gap: 12px;
+  font-size: 0.65rem;
+  color: var(--muted);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 5px 14px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.status-bar strong { color: var(--text); }
+
+
+/* ── 8. CONTROLS D'EXECUCIÓ ───────────────────────── */
+
+.exec-controls {
+  padding: 10px 14px;
   background: var(--surface);
   border-top: 1px solid var(--border);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
 }
 
+.btns { display: flex; gap: 5px; flex-wrap: wrap; }
 
-/* ── 6. BOTONS ────────────────────────────────────── */
-
-.btns {
+.speed-row {
   display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.62rem;
 }
+
+input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
+
+#speed-lbl { color: var(--text); min-width: 62px; }
+
+
+/* ── 9. INDICADOR D'ESTAT ─────────────────────────── */
+
+#state-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+
+#state-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: background 0.25s, box-shadow 0.25s;
+  flex-shrink: 0;
+}
+
+#state-dot.running {
+  background: var(--accent);
+  box-shadow: 0 0 7px var(--accent);
+  animation: pulse-dot 1s ease-in-out infinite;
+}
+
+#state-dot.step  { background: var(--accent); box-shadow: 0 0 7px var(--accent); }
+#state-dot.error { background: var(--error);  box-shadow: 0 0 7px var(--error); }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+
+/* ── 10. BOTONS ───────────────────────────────────── */
 
 .btn {
-  padding: 4px 11px;
+  padding: 5px 12px;
   border: 1px solid var(--border);
   border-radius: 3px;
   font-family: var(--mono);
@@ -180,403 +251,39 @@ body {
 .btn:hover  { border-color: var(--accent); color: var(--accent); }
 .btn:active { transform: scale(0.96); }
 
-/* Primary (fons groc) */
 .btn.p { background: var(--accent); color: #000; border-color: var(--accent); }
 .btn.p:hover { background: #e8b800; color: #000; border-color: #e8b800; }
 
-/* Ghost (contorn groc) */
 .btn.g { background: transparent; color: var(--accent); border-color: var(--accent); }
 .btn.g:hover { background: var(--accent-dim); }
 
-/* Muted (botó de parar, esborrar) */
 .btn.r { background: transparent; color: var(--muted); border-color: var(--border); }
 .btn.r:hover { border-color: var(--muted); color: var(--text); }
 
 .btn:disabled       { opacity: 0.4; cursor: default; }
 .btn:disabled:hover { border-color: var(--border); color: var(--text); }
 
-/* Botó ample (ocupa tota la columna) */
 .btn.full { width: 100%; text-align: left; padding: 8px 12px; font-size: 0.7rem; }
-
-/* Botó petit (capçalera del panell) */
-.btn.small { padding: 1px 7px; font-size: 0.7rem; line-height: 1.4; }
-
-
-/* ── 7. PANELL DEL MAPA ───────────────────────────── */
-
-/* Accions en mode normal */
-.normal-actions {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 10px;
-  background: #0a0a0a;
-  overflow-y: auto;
-}
-
-/* Accions en mode edició WYSIWYG */
-.edit-actions {
-  display: none;
-  flex-direction: column;
-  gap: 8px;
-  padding: 10px;
-  background: #0a0a0a;
-  flex: 1;
-  overflow-y: auto;
-}
-
-body.editing .edit-actions   { display: flex; }
-body.editing .normal-actions { display: none; }
-
-/* El botó d'editar s'activa visualment en mode edició */
-body.editing #btn-edit-toggle {
-  background: var(--accent);
-  color: #000;
-  border-color: var(--accent);
-}
-
-/* Etiquetes de secció dins l'editor */
-.edit-section-lbl {
-  font-size: 0.58rem;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: var(--muted);
-  margin-bottom: 4px;
-}
-
-/* Botons de pinzell (2 columnes) */
-.brush-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-}
-
-.brush-btn {
-  padding: 6px 4px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  font-weight: 700;
-  cursor: pointer;
-  background: var(--surface);
-  color: var(--muted);
-  transition: all 0.1s;
-  text-align: center;
-}
-
-.brush-btn:hover  { border-color: var(--accent); color: var(--accent); }
-.brush-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
-
-/* Botons de direcció de Karel (graella 2×2) */
-.dir-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 3px;
-}
-
-.dir-btn {
-  padding: 4px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--surface);
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.1s;
-}
-
-.dir-btn:hover  { border-color: var(--accent); color: var(--accent); }
-.dir-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
-
-/* Controls per canviar mida del mapa */
-.resize-table {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 5px 8px;
-  align-items: center;
-  font-size: 0.62rem;
-  color: var(--muted);
-}
-
-.resize-ctrl {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.rbtn {
-  width: 22px;
-  height: 22px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--surface);
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  transition: all 0.1s;
-  padding: 0;
-}
-
-.rbtn:hover { border-color: var(--accent); color: var(--accent); }
-
-.rval {
-  min-width: 22px;
-  text-align: center;
-  color: var(--text);
-  font-weight: 700;
-  font-size: 0.75rem;
-}
-
-/* Llegenda */
-.legend {
-  padding: 7px 10px;
-  background: var(--surface);
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  border-top: 1px solid var(--border);
-}
-
-.li {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 0.62rem;
-  color: var(--muted);
-}
-
-.lbox {
-  width: 13px;
-  height: 13px;
-  border-radius: 2px;
-  flex-shrink: 0;
-  border: 1px solid var(--border);
-}
-
-.lbox-karel { background: #1e1500; border-color: var(--accent); }
-.lbox-wall  { background: #1e1e1e; }
-.lbox-water { background: #181510; }
-.lbox-empty { background: #111111; }
-
-
-/* ── 8. MÓN I GRAELLA ─────────────────────────────── */
-
-.world-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 16px;
-  overflow: hidden;
-  background: var(--bg);
-  position: relative;
-}
-
-#world-grid {
-  display: inline-grid;
-  gap: 2px;
-  background: var(--border);
-  padding: 2px;
-  border-radius: 5px;
-  flex-shrink: 0;
-}
-
-/* Cel·la genèrica */
-.cell {
-  width: var(--cell-size);
-  height: var(--cell-size);
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  user-select: none;
-}
-
-/* Tipus de cel·la */
-.c-e { background: #111111; }
-
-.c-p {
-  background: #1e1e1e;
-  background-image:
-    linear-gradient(45deg,  rgba(0,0,0,.25) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(0,0,0,.25) 25%, transparent 25%);
-  background-size: 10px 10px;
-}
-
-.c-a { background: #181510; }
-.c-k { background: #1e1500; }
-
-/* Icones dins les cel·les */
-.wall-i  { color: #3a3a38; line-height: 1; }
-
-.water-i {
-  animation: bob 2.5s ease-in-out infinite;
-  display: inline-block;
-  line-height: 1;
-}
-
-@keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-2px); }
-}
-
-.karel-i {
-  color: var(--accent);
-  filter: drop-shadow(0 0 5px rgba(245, 200, 66, .7));
-  animation: kpulse 1.2s ease-in-out infinite;
-  line-height: 1;
-}
-
-@keyframes kpulse {
-  0%, 100% { filter: drop-shadow(0 0 4px rgba(245, 200, 66, .6)); }
-  50%       { filter: drop-shadow(0 0 9px rgba(245, 200, 66, 1)); }
-}
-
-/* Ressaltat de cel·la en mode edició */
-body.editing #world-grid .cell {
-  cursor: crosshair;
-}
-
-body.editing #world-grid .cell::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 3px;
-  border: 2px solid transparent;
-  pointer-events: none;
-  transition: border-color 0.05s;
-}
-
-body.editing #world-grid .cell:hover::after {
-  border-color: var(--accent);
-}
-
-
-/* ── 9. BARRA D'ESTAT ─────────────────────────────── */
-
-.status-bar {
-  display: flex;
-  gap: 16px;
-  font-size: 0.68rem;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 5px 14px;
-  flex-shrink: 0;
-}
-
-.status-bar strong { color: var(--text); }
-
-
-/* ── 10. INDICADOR D'ESTAT D'EXECUCIÓ ─────────────── */
-
-#state-badge {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--muted);
-}
-
-#state-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--muted);
-  transition: background 0.25s, box-shadow 0.25s;
-  flex-shrink: 0;
-}
-
-#state-dot.running {
-  background: var(--accent);
-  box-shadow: 0 0 7px var(--accent);
-  animation: pulse-dot 1s ease-in-out infinite;
-}
-
-#state-dot.step {
-  background: var(--accent);
-  box-shadow: 0 0 7px var(--accent);
-}
-
-#state-dot.error {
-  background: var(--error);
-  box-shadow: 0 0 7px var(--error);
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.35; }
-}
+.btn.small { padding: 2px 7px; font-size: 0.65rem; }
 
 
 /* ── 11. EDITOR DE CODI ───────────────────────────── */
 
-/* Velocitat */
-.speed-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 0.62rem;
-}
-
-input[type=range] {
-  flex: 1;
-  accent-color: var(--accent);
-  cursor: pointer;
-}
-
-#speed-lbl {
-  color: var(--text);
-  min-width: 60px;
-}
-
-/* Referència ràpida */
-.ref {
-  padding: 6px 10px;
-  background: #0a0a0a;
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
-  font-size: 0.6rem;
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-.ref strong { color: var(--accent); }
-.ref em     { color: var(--text); font-style: normal; }
-.ref-keys   { color: var(--muted); font-size: 0.58rem; }
-
-/* Contenidor de l'editor (numeració + textarea + overlay) */
 .editor-wrap {
   flex: 1;
   display: flex;
   overflow: hidden;
   background: #0a0a0a;
+  min-height: 0;
 }
 
-/* Columna de números de línia */
 #line-numbers {
-  width: 34px;
-  padding: 10px 6px 10px 0;
+  width: 36px;
+  padding: 12px 6px 12px 0;
   background: #0a0a0a;
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   line-height: 1.75;
   text-align: right;
   user-select: none;
@@ -586,33 +293,29 @@ input[type=range] {
   pointer-events: none;
 }
 
-#line-numbers div { height: calc(0.78rem * 1.75); }
+#line-numbers div { height: calc(0.8rem * 1.75); }
 
-/* Àrea interna (overlay + textarea) */
 .editor-inner {
   flex: 1;
   position: relative;
   overflow: hidden;
 }
 
-/* Overlay de ressaltat (renderitzat per sobre) */
 #code-highlight {
   position: absolute;
   inset: 0;
-  padding: 10px 12px;
+  padding: 12px 14px;
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   line-height: 1.75;
   tab-size: 2;
   white-space: pre;
-  word-wrap: break-word;
   overflow: hidden;
   pointer-events: none;
   color: var(--text);
   margin: 0;
 }
 
-/* Textarea real (transparent, z-index alt) */
 #code-editor {
   position: absolute;
   inset: 0;
@@ -620,11 +323,11 @@ input[type=range] {
   color: transparent;
   caret-color: var(--text);
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   border: none;
   outline: none;
   resize: none;
-  padding: 10px 12px;
+  padding: 12px 14px;
   line-height: 1.75;
   tab-size: 2;
   overflow-y: auto;
@@ -634,66 +337,35 @@ input[type=range] {
 
 #code-editor::selection { background: rgba(240, 192, 48, 0.2); }
 
-/* ── Línies de codi (per al ressaltat en execució) ── */
-.code-line {
-  display: block;
-  min-height: calc(0.78rem * 1.75);
-  border-left: 2px solid transparent;
-  padding-left: 2px;
-  transition: background 0.1s;
-}
-
-/* Línia activa (execució actual) */
-.code-line.active {
-  background: var(--accent-dim);
-  border-left-color: var(--accent);
-}
-
-/* Línia amb error de sintaxi */
-.code-line.error {
-  background: var(--error-dim);
-  border-left-color: var(--error);
-}
+/* Línia activa / error durant l'execució */
+.code-line       { display: block; min-height: calc(0.8rem * 1.75); border-left: 2px solid transparent; padding-left: 2px; transition: background 0.1s; }
+.code-line.active { background: var(--accent-dim); border-left-color: var(--accent); }
+.code-line.error  { background: var(--error-dim);  border-left-color: var(--error); }
 
 
 /* ── 12. COLORS DEL RESSALTAT SINTÀCTIC ────────────── */
 
-/* Paraules clau: si, mentre, repeteix, sinó, no, procediment */
-.hl-kw   { color: var(--accent); font-weight: 700; }
-
-/* Ordres predefinides: avança, gira.dreta, agafa… */
-.hl-cmd  { color: #9cdcfe; }
-
-/* Condicions: veu-paret, veu-aigua, motxilla-buida… */
-.hl-cond { color: #c586c0; }
-
-/* Noms de procediments definits per l'usuari */
-.hl-user { color: #4ec9b0; }
-
-/* Números */
+.hl-kw   { color: var(--accent); font-weight: 700; }  /* si, mentre, repeteix… */
+.hl-cmd  { color: #9cdcfe; }                           /* avança, gira.dreta… */
+.hl-cond { color: #c586c0; }                           /* veu-paret, veu-aigua… */
+.hl-user { color: #4ec9b0; }                           /* procediments de l'usuari */
 .hl-num  { color: var(--accent); }
-
-/* Comentaris */
 .hl-cm   { color: var(--muted); font-style: italic; }
-
-/* Claudàtors i parèntesis */
 .hl-br   { color: var(--muted); }
 
 
 /* ── 13. LOG I HANDLE DE REDIMENSIÓ ────────────────── */
 
-/* Panell del log (redimensionable) */
 #log-wrap {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  border-top: 1px solid var(--border);
-  height: 120px;
+  height: 130px;
   min-height: 50px;
-  max-height: 60%;
+  max-height: 55%;
+  border-top: 1px solid var(--border);
 }
 
-/* Barra per arrossegar i redimensionar el log */
 #log-resize {
   height: 5px;
   background: var(--border);
@@ -720,23 +392,22 @@ input[type=range] {
 #log-resize:hover::after,
 #log-resize.dragging::after { background: #000; opacity: 0.5; }
 
-/* Contingut del log */
 #log {
   flex: 1;
   overflow-y: auto;
   background: #080808;
-  padding: 6px 10px;
+  padding: 6px 12px;
   font-size: 0.68rem;
   line-height: 1.65;
 }
 
-#log p         { margin: 0; white-space: pre-wrap; }
-#log .ok       { color: var(--accent); }
-#log .err      { color: var(--error); font-weight: 700; }
-#log .inf      { color: var(--text); opacity: 0.75; }
-#log .dim      { color: var(--muted); }
-#log .cmd      { color: var(--muted); }
-#log .proc     { color: #4ec9b0; }
+#log p      { margin: 0; white-space: pre-wrap; }
+#log .ok    { color: var(--accent); }
+#log .err   { color: var(--error); font-weight: 700; }
+#log .inf   { color: var(--text); opacity: 0.75; }
+#log .dim   { color: var(--muted); }
+#log .cmd   { color: var(--muted); }
+#log .proc  { color: #4ec9b0; }
 
 
 /* ── 14. MODALS ────────────────────────────────────── */
@@ -766,8 +437,7 @@ input[type=range] {
   box-shadow: 0 24px 60px rgba(0, 0, 0, .7);
 }
 
-/* Modal ample per als reptes */
-.modal-wide { width: 660px; }
+.modal-wide { width: 680px; }
 
 .modal-hd {
   padding: 10px 14px;
@@ -782,31 +452,8 @@ input[type=range] {
   flex-shrink: 0;
 }
 
-.modal-hd button {
-  background: none;
-  border: none;
-  color: var(--muted);
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
-  padding: 0 2px;
-}
-
+.modal-hd button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; line-height: 1; padding: 0 2px; }
 .modal-hd button:hover { color: var(--text); }
-
-.modal textarea {
-  background: #0a0a0a;
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  border: none;
-  outline: none;
-  resize: none;
-  padding: 12px 14px;
-  line-height: 1.75;
-  tab-size: 2;
-  height: 220px;
-}
 
 .modal-ft {
   padding: 8px 12px;
@@ -818,7 +465,6 @@ input[type=range] {
   flex-shrink: 0;
 }
 
-/* Formulari de mapa en blanc */
 .blank-form {
   padding: 18px;
   display: flex;
@@ -874,66 +520,229 @@ input[type=range] {
   gap: 4px;
 }
 
-.ch-card:hover {
-  border-color: var(--accent);
-  background: var(--accent-dim);
+.ch-card:hover { border-color: var(--accent); background: var(--accent-dim); }
+
+.ch-num   { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+.ch-title { font-size: 0.78rem; font-weight: 700; color: var(--text); }
+.ch-desc  { font-size: 0.63rem; color: var(--muted); line-height: 1.65; }
+.ch-desc em   { color: var(--accent); font-style: normal; }
+.ch-desc code { color: #9cdcfe; font-family: var(--mono); }
+
+.ch-tag { display: inline-block; margin-top: 4px; padding: 1px 6px; border-radius: 3px; background: var(--border); color: var(--muted); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.8px; }
+.ch-tag.easy   { background: rgba(80,180,80,.15);  color: #80c880; }
+.ch-tag.medium { background: rgba(240,192,48,.15); color: var(--accent); }
+.ch-tag.hard   { background: rgba(224,85,85,.15);  color: var(--error); }
+
+
+/* ── 16. LAYOUT EDIT-MAPA.HTML ──────────────────────── */
+
+body.edit-page {
+  overflow: hidden;
 }
 
-.ch-num {
-  font-size: 0.55rem;
+.edit-layout {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Panel d'eines d'edició (columna esquerra) */
+.edit-tools {
+  width: 200px;
+  flex-shrink: 0;
+  background: #0a0a0a;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+}
+
+.tool-section {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tool-lbl {
+  font-size: 0.58rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   color: var(--muted);
+  margin-bottom: 2px;
 }
 
-.ch-title {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text);
+.tool-btns { display: flex; flex-direction: column; gap: 5px; }
+
+/* Àrea del mapa (sempre en mode edició) */
+.edit-world-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
-.ch-desc {
-  font-size: 0.63rem;
-  color: var(--muted);
-  line-height: 1.65;
-}
+.world-area.editing-always { cursor: crosshair; }
+.world-area.editing-always .cell { cursor: crosshair; }
 
-.ch-desc em    { color: var(--accent); font-style: normal; }
-.ch-desc code  { color: #9cdcfe; font-family: var(--mono); }
-
-.ch-tag {
-  display: inline-block;
-  margin-top: 4px;
-  padding: 1px 6px;
+.world-area.editing-always .cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
   border-radius: 3px;
-  background: var(--border);
-  color: var(--muted);
-  font-size: 0.55rem;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
+  border: 2px solid transparent;
+  pointer-events: none;
+  transition: border-color 0.05s;
 }
 
-.ch-tag.easy   { background: rgba(80, 180, 80, 0.15); color: #80c880; }
-.ch-tag.medium { background: rgba(240, 192, 48, 0.15); color: var(--accent); }
-.ch-tag.hard   { background: rgba(224, 85, 85, 0.15);  color: var(--error); }
+.world-area.editing-always .cell:hover::after { border-color: var(--accent); }
+
+.edit-status { border-top: 1px solid var(--border); border-bottom: none; }
+
+/* Botons de pinzell */
+.brush-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+
+.brush-btn {
+  padding: 6px 4px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--muted);
+  transition: all 0.1s;
+  text-align: center;
+}
+
+.brush-btn:hover  { border-color: var(--accent); color: var(--accent); }
+.brush-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+/* Botons de direcció */
+.dir-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+
+.dir-btn {
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.1s;
+}
+
+.dir-btn:hover  { border-color: var(--accent); color: var(--accent); }
+.dir-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+/* Controls de mida */
+.resize-table { display: grid; grid-template-columns: auto 1fr; gap: 5px 8px; align-items: center; font-size: 0.62rem; color: var(--muted); }
+.resize-ctrl  { display: flex; align-items: center; gap: 5px; }
+
+.rbtn {
+  width: 22px; height: 22px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.1s;
+  padding: 0;
+}
+
+.rbtn:hover { border-color: var(--accent); color: var(--accent); }
+.rval { min-width: 22px; text-align: center; color: var(--text); font-weight: 700; font-size: 0.75rem; }
 
 
-/* ── 16. MODE CLAR ─────────────────────────────────── */
+/* ── 17. LLEGENDA (edit-mapa) ───────────────────────── */
+
+.legend { gap: 5px; }
+.li { display: flex; align-items: center; gap: 7px; font-size: 0.62rem; color: var(--muted); }
+.lbox { width: 13px; height: 13px; border-radius: 2px; flex-shrink: 0; border: 1px solid var(--border); }
+.lbox-karel { background: #1e1500; border-color: var(--accent); }
+.lbox-wall  { background: #1e1e1e; }
+.lbox-water { background: #181510; }
+.lbox-empty { background: #111111; }
+
+
+/* ── 18. CEL·LES DEL MÓN ───────────────────────────── */
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+}
+
+.c-e { background: #111111; }
+.c-p {
+  background: #1e1e1e;
+  background-image:
+    linear-gradient(45deg,  rgba(0,0,0,.25) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0,0,0,.25) 25%, transparent 25%);
+  background-size: 10px 10px;
+}
+.c-a { background: #181510; }
+.c-k { background: #1e1500; }
+
+.wall-i  { color: #3a3a38; line-height: 1; }
+
+.water-i {
+  animation: bob 2.5s ease-in-out infinite;
+  display: inline-block;
+  line-height: 1;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-2px); }
+}
+
+.karel-i {
+  color: var(--accent);
+  filter: drop-shadow(0 0 5px rgba(245,200,66,.7));
+  animation: kpulse 1.2s ease-in-out infinite;
+  line-height: 1;
+}
+
+@keyframes kpulse {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(245,200,66,.6)); }
+  50%       { filter: drop-shadow(0 0 9px rgba(245,200,66,1)); }
+}
+
+
+/* ── 19. MODE CLAR ─────────────────────────────────── */
 
 body.light {
-  --bg:        #f0f0eb;
-  --surface:   #e5e5e0;
-  --border:    #ccccc8;
-  --text:      #1a1a16;
-  --muted:     #888880;
-  --accent:    #906800;
+  --bg:         #f0f0eb;
+  --surface:    #e5e5e0;
+  --border:     #ccccc8;
+  --text:       #1a1a16;
+  --muted:      #888880;
+  --accent:     #906800;
   --accent-dim: rgba(144, 104, 0, 0.1);
-  --error:     #cc2222;
-  --error-dim: rgba(204, 34, 34, 0.1);
+  --error:      #cc2222;
+  --error-dim:  rgba(204, 34, 34, 0.1);
 }
 
 body.light .c-e { background: #deded8 !important; }
-
 body.light .c-p {
   background: #c8c8c2 !important;
   background-image:
@@ -941,58 +750,31 @@ body.light .c-p {
     linear-gradient(-45deg, rgba(0,0,0,.08) 25%, transparent 25%) !important;
   background-size: 10px 10px !important;
 }
-
 body.light .c-a { background: #d4d0b8 !important; }
 body.light .c-k { background: #e8d890 !important; }
-
-body.light .wall-i  { color: #b0b0a8 !important; }
-
+body.light .wall-i { color: #b0b0a8 !important; }
 body.light .editor-wrap,
-body.light .normal-actions,
-body.light .edit-actions,
-body.light .ref,
 body.light #log,
-body.light .modal textarea,
+body.light .edit-tools,
 body.light .blank-form,
 body.light #challenges-list { background: #e8e8e3 !important; }
-
 body.light #code-highlight { color: var(--text) !important; }
 body.light #log            { background: #e0e0da !important; }
 body.light .hl-cm          { color: #aaa89e !important; }
 body.light .ch-card        { background: #e0e0da; }
 body.light .ch-card:hover  { background: var(--accent-dim); }
+body.light .lbox-empty     { background: #deded8; }
 
 
-/* ── 17. RESPONSIVE ────────────────────────────────── */
+/* ── 20. RESPONSIVE ────────────────────────────────── */
 
-/* Pantalles mitjanes: reduïm la columna de codi */
-@media (max-width: 1100px) {
-  .main { grid-template-columns: 180px 1fr 280px; }
-}
-
-/* Pantalles estretes: apilem en vertical */
-@media (max-width: 720px) {
+@media (max-width: 900px) {
+  .main { grid-template-columns: 1fr; grid-template-rows: 1fr auto; padding: 0; }
   body { overflow: auto; height: auto; }
-
-  .main {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    overflow: visible;
-  }
-
-  .panel, .panel.right {
-    border-right: none;
-    border-left: none;
-    border-bottom: 1px solid var(--border);
-    max-height: none;
-    height: auto;
-  }
-
-  .world-area { min-height: 40vw; }
-
-  .normal-actions, .edit-actions { flex: none; }
-
-  #log-wrap { max-height: 200px; }
-
+  .map-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .world-area { min-height: 50vw; }
+  .edit-layout { flex-direction: column; }
+  .edit-tools { width: 100%; flex-direction: row; flex-wrap: wrap; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  .tool-section { border-right: 1px solid var(--border); border-bottom: none; flex-shrink: 0; }
   #challenges-list { grid-template-columns: 1fr; }
 }

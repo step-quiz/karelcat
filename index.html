@@ -9,129 +9,68 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     CAPÇALERA SUPERIOR
-══════════════════════════════════════════ -->
+<!-- ══ CAPÇALERA ══ -->
 <header class="topbar">
   <div class="logo">🤖 <span>Karel en Català</span></div>
 
-  <!-- Indicador d'estat de l'execució -->
   <div id="state-badge">
     <div id="state-dot"></div>
     <span id="state-lbl">aturat</span>
   </div>
 
   <div class="topbar-actions">
-    <button class="btn" onclick="openChallenges()" title="Reptes predefinits [Alumnes, comenceu aquí!]">🎯 Reptes</button>
+    <button class="btn" onclick="openChallenges()">🎯 Reptes</button>
+    <a class="btn" href="edit-mapa.html">✏️ Editar mapa</a>
     <button class="btn" onclick="toggleLight()" title="Mode fosc / clar">◑</button>
   </div>
 </header>
 
 
-<!-- ══════════════════════════════════════════
-     LAYOUT PRINCIPAL: 3 columnes
-══════════════════════════════════════════ -->
+<!-- ══ LAYOUT PRINCIPAL ══ -->
 <div class="main">
 
-  <!-- ── COLUMNA ESQUERRA: Panell del mapa ── -->
-  <div class="panel">
-    <div class="panel-hd">
-      <div class="dot"></div> Mapa
-      <span class="panel-hd-right">
-        <button class="btn small" id="btn-edit-toggle" onclick="toggleEditMode()">✏️ Edita</button>
-      </span>
+  <!-- ── Columna esquerra: MÓN DE KAREL ── -->
+  <div class="map-col">
+
+    <!-- Graella del món -->
+    <div class="world-area" id="world-area">
+      <div id="world-grid"></div>
     </div>
 
-    <!-- Accions en mode normal -->
-    <div class="normal-actions">
-      <button class="btn full p" onclick="openChallenges()">🎯 Reptes predefinits</button>
-      <button class="btn full"   onclick="openBlankModal()">□ Mapa en blanc</button>
-      <button class="btn full"   onclick="triggerOpenCSV()">📂 Obre mapa CSV</button>
-      <button class="btn full"   onclick="saveCSV()">💾 Desa mapa CSV</button>
-      <button class="btn full"   onclick="copyMapURL()">🔗 Copia URL del mapa</button>
-    </div>
-
-    <!-- Accions en mode edició (pinzell WYSIWYG) -->
-    <div class="edit-actions">
-
-      <div>
-        <div class="edit-section-lbl">Pinzell</div>
-        <div class="brush-row">
-          <button class="brush-btn active" id="brush-dot" onclick="setBrush('.')">· buit</button>
-          <button class="brush-btn"        id="brush-P"   onclick="setBrush('P')">▪ paret</button>
-          <button class="brush-btn"        id="brush-A"   onclick="setBrush('A')">💧 aigua</button>
-          <button class="brush-btn"        id="brush-K"   onclick="setBrush('K')">🤖 Karel</button>
-        </div>
-      </div>
-
-      <div id="dir-section" style="display:none">
-        <div class="edit-section-lbl">Direcció inicial de Karel</div>
-        <div class="dir-grid">
-          <button class="dir-btn" id="dir-0" onclick="setKarelDir(0)">→</button>
-          <button class="dir-btn" id="dir-3" onclick="setKarelDir(3)">↑</button>
-          <button class="dir-btn" id="dir-2" onclick="setKarelDir(2)">←</button>
-          <button class="dir-btn" id="dir-1" onclick="setKarelDir(1)">↓</button>
-        </div>
-      </div>
-
-      <div>
-        <div class="edit-section-lbl">Mida del mapa</div>
-        <div class="resize-table">
-          <span>Files</span>
-          <div class="resize-ctrl">
-            <button class="rbtn" onclick="removeRow()">−</button>
-            <span class="rval" id="rval-rows">5</span>
-            <button class="rbtn" onclick="addRow()">+</button>
-          </div>
-          <span>Columnes</span>
-          <div class="resize-ctrl">
-            <button class="rbtn" onclick="removeCol()">−</button>
-            <span class="rval" id="rval-cols">6</span>
-            <button class="rbtn" onclick="addCol()">+</button>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn full"   onclick="saveCSV()">💾 Desa mapa CSV</button>
-      <button class="btn full g" onclick="copyMapURL()">🔗 Copia URL del mapa</button>
-    </div>
-
-    <!-- Llegenda sempre visible -->
-    <div class="legend">
-      <div class="li"><div class="lbox lbox-karel"></div>K &gt; ^ &lt; v — Karel</div>
-      <div class="li"><div class="lbox lbox-wall"></div>P — paret</div>
-      <div class="li"><div class="lbox lbox-water"></div>A — aigua 💧</div>
-      <div class="li"><div class="lbox lbox-empty"></div>. — cel·la buida</div>
-    </div>
-
-    <div class="panel-ft">
-      <button class="btn full" onclick="resetKarel()">↺ Reinicia Karel</button>
-    </div>
-  </div>
-
-
-  <!-- ── COLUMNA CENTRAL: Món de Karel ── -->
-  <div class="world-area" id="world-area">
-    <div id="world-grid"></div>
+    <!-- Barra d'estat (posició, direcció, motxilla) -->
     <div class="status-bar">
       <span>Posició: <strong id="st-pos">—</strong></span>
       <span>Direcció: <strong id="st-dir">—</strong></span>
       <span>Motxilla: <strong id="st-bag">0</strong> 💧</span>
     </div>
-  </div>
+
+    <!-- Controls d'execució (just a sota del mapa) -->
+    <div class="exec-controls">
+      <div class="btns">
+        <button class="btn p" id="btn-run"  onclick="runProgram()">▶ Executa</button>
+        <button class="btn g" id="btn-step" onclick="stepProgram()">⏭ Pas</button>
+        <button class="btn r"               onclick="stopProgram()">■ Para</button>
+        <button class="btn"                 onclick="resetKarel()">↺ Reinicia</button>
+        <button class="btn"                 onclick="clearLog()">⌫ Log</button>
+      </div>
+      <div class="speed-row">
+        Velocitat:
+        <input type="range" id="speed" min="50" max="1000" value="600" step="50">
+        <span id="speed-lbl">normal</span>
+      </div>
+    </div>
+
+  </div><!-- fi .map-col -->
 
 
-  <!-- ── COLUMNA DRETA: Editor de codi ── -->
-  <div class="panel right">
-    <div class="panel-hd"><div class="dot"></div> Programa</div>
+  <!-- ── Columna dreta: EDITOR DE CODI ── -->
+  <div class="code-col">
 
     <!-- Editor amb ressaltat sintàctic i números de línia -->
     <div class="editor-wrap">
       <div id="line-numbers"></div>
       <div class="editor-inner">
-        <!-- Capa de ressaltat (invisible per a l'usuari, llegida per pantalla no) -->
         <pre id="code-highlight" aria-hidden="true"></pre>
-        <!-- Textarea real on l'usuari escriu -->
         <textarea id="code-editor" spellcheck="false">// Karel recull totes les aigües
 // que troba en línia recta fins la paret
 
@@ -153,101 +92,32 @@ repeteix(3) {
       </div>
     </div>
 
-    <!-- Referència ràpida de sintaxi -->
-    <div class="ref">
-      <strong>Ordres:</strong> avança · gira.dreta · gira.esquerra · gira.enrere · agafa · deixa<br>
-      <strong>Condicions:</strong> <em>veu-paret · veu-lliure · veu-aigua · motxilla-buida · motxilla-plena</em><br>
-      <strong>Lògica:</strong> <em>no(c) · c i c · c o c</em> &nbsp;|&nbsp;
-      <strong>Estructures:</strong> <em>si(c){} sinó{} · mentre(c){} · repeteix(N){}</em><br>
-      <strong>Procediments:</strong> <em>procediment nom {}</em> &nbsp;|&nbsp;
-      <span class="ref-keys">[F5] executa · [F10] pas a pas · [F8] para</span>
-    </div>
-
-    <!-- Botons de control -->
-    <div class="panel-ft">
-      <div class="btns">
-        <button class="btn p" id="btn-run"  onclick="runProgram()">▶ Executa</button>
-        <button class="btn g" id="btn-step" onclick="stepProgram()">⏭ Pas</button>
-        <button class="btn r"               onclick="stopProgram()">■ Para</button>
-        <button class="btn"                 onclick="clearLog()">⌫ Log</button>
-      </div>
-      <div class="speed-row">
-        Velocitat:
-        <input type="range" id="speed" min="50" max="1000" value="600" step="50">
-        <span id="speed-lbl">normal</span>
-      </div>
-    </div>
-
     <!-- Log d'execució (redimensionable) -->
     <div id="log-wrap">
       <div id="log-resize" title="Arrossega per canviar la mida del log"></div>
       <div id="log"></div>
     </div>
-  </div>
+
+  </div><!-- fi .code-col -->
 
 </div><!-- fi .main -->
 
 
-<!-- ══════════════════════════════════════════
-     MODALS
-══════════════════════════════════════════ -->
+<!-- ══ MODALS ══ -->
 
-<!-- Modal: Reptes predefinits -->
+<!-- Modal: Reptes -->
 <div class="modal-bg" id="modal-challenges">
   <div class="modal modal-wide">
     <div class="modal-hd">
       <span>🎯 Reptes — tria un exercici per començar</span>
       <button onclick="closeModal('modal-challenges')">✕</button>
     </div>
-    <div id="challenges-list">
-      <!-- Omplert per JavaScript (openChallenges) -->
-    </div>
+    <div id="challenges-list"></div>
     <div class="modal-ft">
       <button class="btn" onclick="closeModal('modal-challenges')">Tanca</button>
     </div>
   </div>
 </div>
-
-<!-- Modal: Edita mapa en format CSV -->
-<div class="modal-bg" id="modal-edit">
-  <div class="modal">
-    <div class="modal-hd">
-      <span>✎ Edita mapa CSV</span>
-      <button onclick="closeModal('modal-edit')">✕</button>
-    </div>
-    <textarea id="csv-input" spellcheck="false" placeholder="K>,.,P&#10;.,A,.&#10;.,.,."></textarea>
-    <div class="modal-ft">
-      <button class="btn"   onclick="closeModal('modal-edit')">Cancel·la</button>
-      <button class="btn p" onclick="applyCSV()">▦ Aplica mapa</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Crea mapa en blanc -->
-<div class="modal-bg" id="modal-blank">
-  <div class="modal">
-    <div class="modal-hd">
-      <span>□ Mapa en blanc</span>
-      <button onclick="closeModal('modal-blank')">✕</button>
-    </div>
-    <div class="blank-form">
-      <p class="hint">Karel es col·locarà a la cantonada superior esquerra mirant a la dreta.</p>
-      <div class="blank-row">
-        <label>Files:</label>
-        <input type="number" id="blank-rows" value="5" min="1" max="20">
-        <label>Columnes:</label>
-        <input type="number" id="blank-cols" value="7" min="1" max="20">
-      </div>
-    </div>
-    <div class="modal-ft">
-      <button class="btn"   onclick="closeModal('modal-blank')">Cancel·la</button>
-      <button class="btn p" onclick="applyBlank()">□ Crea mapa</button>
-    </div>
-  </div>
-</div>
-
-<!-- Input ocult per obrir fitxers CSV -->
-<input type="file" id="file-input" accept=".csv,.txt" style="display:none" onchange="handleFileOpen(event)">
 
 <script src="karel.js"></script>
 </body>
