@@ -10,9 +10,9 @@
 <body>
 
 <header class="topbar">
-  <div class="logo">🤖 <span>Karel</span></div>
+  <div class="logo">🪼 <span>Karel</span></div>
 
-  <div id="state-badge">
+  <div id="state-badge" aria-live="polite">
     <div id="state-dot"></div>
     <span id="state-lbl">aturat</span>
   </div>
@@ -40,8 +40,12 @@
     </div>
 
     <button class="btn" id="btn-challenges" onclick="openChallenges()">🎯 Reptes</button>
+    <button class="btn" id="btn-ref"        onclick="toggleRef()">📋 Ref</button>
     <button class="btn" id="btn-theme"      onclick="toggleLight()">Fosc / Clar</button>
   </div>
+
+  <!-- FIX MOBILE: Hamburger button, only visible <600px -->
+  <button class="topbar-hamburger" id="topbar-hamburger" aria-label="Menú" aria-expanded="false">☰</button>
 </header>
 
 
@@ -54,7 +58,7 @@
     </div>
 
     <div class="status-bar">
-      <span><span id="lbl-bag">Motxilla:</span> <strong id="st-bag">0</strong> 💧</span>
+      <span><span id="lbl-bag">Motxilla:</span> <strong id="st-bag">0</strong> 🫧</span>
     </div>
 
     <div class="exec-controls">
@@ -64,10 +68,13 @@
         <button class="btn r" id="btn-stop"  onclick="stopProgram()">■ Para</button>
         <button class="btn"   id="btn-reset" onclick="resetKarel()">↺ Reinicia</button>
         <button class="btn"   id="btn-clear" onclick="clearLog()">⌫ Log</button>
+        <button class="btn"   id="btn-hint"  onclick="showNextHint()" style="display:none" disabled>🔒 Pista</button>
       </div>
+      <!-- Millora 2: panell de pistes -->
+      <div id="hint-panel" class="hint-panel"></div>
       <div class="speed-row">
         <span id="lbl-speed">Velocitat:</span>
-        <input type="range" id="speed" min="1" max="6" step="1" value="3">
+        <input type="range" id="speed" min="1" max="6" step="1" value="2">
         <span id="speed-lbl">3</span>
       </div>
     </div>
@@ -76,6 +83,9 @@
 
   <!-- Columna dreta: editor de codi -->
   <div class="code-col">
+    <div id="help-postit" class="help-postit"></div>
+    <!-- Millora 5: Panell de referència ràpida -->
+    <div id="ref-panel" class="ref-panel" role="complementary" aria-label="Referència ràpida"></div>
     <div class="editor-wrap">
       <div id="line-numbers"></div>
       <div class="editor-inner">
@@ -84,6 +94,8 @@
         <textarea id="code-editor" spellcheck="false"></textarea>
       </div>
     </div>
+    <!-- Autocomplete (fixed-position, fora de l'overflow del editor-inner) -->
+    <div id="autocomplete" class="autocomplete-dropdown" role="listbox" aria-label="Autocompletat"></div>
 
     <div id="log-wrap">
       <div id="log-resize"></div>
@@ -105,6 +117,39 @@
     <div class="modal-ft">
       <button class="btn" id="btn-modal-close" onclick="closeModal('modal-challenges')">Tanca</button>
     </div>
+  </div>
+</div>
+
+<!-- Modal: Repte superat (Millora 1) -->
+<div class="modal-bg" id="modal-success">
+  <div class="modal" style="max-width:380px;padding:0;overflow:hidden;">
+    <div class="modal-success-inner">
+      <span class="success-icon" id="success-icon">🎉</span>
+      <div class="success-challenge" id="success-challenge"></div>
+      <div class="success-title"    id="success-title"></div>
+      <div class="success-msg"      id="success-msg"></div>
+      <div class="modal-ft" style="justify-content:center;gap:10px;padding:0 0 4px;">
+        <button class="btn p" id="btn-success-more"  onclick="closeModal('modal-success');openChallenges()">🎯 Reptes</button>
+        <button class="btn"   id="btn-success-close" onclick="closeModal('modal-success')">Continua</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Benvinguda (Millora 2) -->
+<div class="modal-bg" id="modal-onboard">
+  <div class="modal modal-onboard">
+    <div class="onboard-body">
+      <span class="onboard-icon"       id="onboard-icon"></span>
+      <div  class="onboard-step-title" id="onboard-title"></div>
+      <div  class="onboard-step-body"  id="onboard-body"></div>
+    </div>
+    <div class="onboard-dots" id="onboard-dots"></div>
+    <div class="onboard-nav">
+      <button class="btn"   id="onboard-prev" onclick="onboardPrev()" style="visibility:hidden">← Enrere</button>
+      <button class="btn p" id="onboard-next" onclick="onboardNext()">Següent →</button>
+    </div>
+    <button class="btn-onboard-skip" id="onboard-skip" onclick="onboardSkip()">Salta</button>
   </div>
 </div>
 
