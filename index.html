@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Karel en Català 🤖</title>
+  <title>Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ══ CAPÇALERA ══ -->
 <header class="topbar">
-  <div class="logo">🤖 <span>Karel en Català</span></div>
+  <div class="logo">🤖 <span>Karel</span></div>
 
   <div id="state-badge">
     <div id="state-dot"></div>
@@ -19,54 +18,51 @@
   </div>
 
   <div class="topbar-actions">
-    <button class="btn" onclick="openChallenges()">🎯 Reptes</button>
-    <a class="btn" href="edit-mapa.html">✏️ Editar mapa</a>
-    <button class="btn" onclick="toggleLight()" title="Mode fosc / clar">◑</button>
+    <!-- Selector d'idioma -->
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('ca')">CAT</button>
+      <button class="lang-btn" onclick="setLang('es')">CAST</button>
+      <button class="lang-btn" onclick="setLang('en')">ENG</button>
+    </div>
+    <button class="btn" id="btn-challenges" onclick="openChallenges()">🎯 Reptes</button>
+    <button class="btn" id="btn-theme" onclick="toggleLight()">Fosc / Clar</button>
   </div>
 </header>
 
 
-<!-- ══ LAYOUT PRINCIPAL ══ -->
 <div class="main">
 
   <!-- ── Columna esquerra: MÓN DE KAREL ── -->
   <div class="map-col">
-
-    <!-- Graella del món -->
     <div class="world-area" id="world-area">
       <div id="world-grid"></div>
     </div>
 
-    <!-- Barra d'estat (posició, direcció, motxilla) -->
+    <!-- Barra d'estat: només motxilla -->
     <div class="status-bar">
-      <span>Posició: <strong id="st-pos">—</strong></span>
-      <span>Direcció: <strong id="st-dir">—</strong></span>
-      <span>Motxilla: <strong id="st-bag">0</strong> 💧</span>
+      <span><span id="lbl-bag">Motxilla:</span> <strong id="st-bag">0</strong> 💧</span>
     </div>
 
-    <!-- Controls d'execució (just a sota del mapa) -->
+    <!-- Controls d'execució -->
     <div class="exec-controls">
       <div class="btns">
         <button class="btn p" id="btn-run"  onclick="runProgram()">▶ Executa</button>
         <button class="btn g" id="btn-step" onclick="stepProgram()">⏭ Pas</button>
-        <button class="btn r"               onclick="stopProgram()">■ Para</button>
-        <button class="btn"                 onclick="resetKarel()">↺ Reinicia</button>
-        <button class="btn"                 onclick="clearLog()">⌫ Log</button>
+        <button class="btn r" id="btn-stop" onclick="stopProgram()">■ Para</button>
+        <button class="btn"   id="btn-reset" onclick="resetKarel()">↺ Reinicia</button>
+        <button class="btn"   id="btn-clear" onclick="clearLog()">⌫ Log</button>
       </div>
       <div class="speed-row">
-        Velocitat:
-        <input type="range" id="speed" min="50" max="1000" value="600" step="50">
-        <span id="speed-lbl">normal</span>
+        <span id="lbl-speed">Velocitat:</span>
+        <input type="range" id="speed" min="1" max="6" step="1" value="3">
+        <span id="speed-lbl">Normal</span>
       </div>
     </div>
-
-  </div><!-- fi .map-col -->
+  </div>
 
 
   <!-- ── Columna dreta: EDITOR DE CODI ── -->
   <div class="code-col">
-
-    <!-- Editor amb ressaltat sintàctic i números de línia -->
     <div class="editor-wrap">
       <div id="line-numbers"></div>
       <div class="editor-inner">
@@ -92,29 +88,25 @@ repeteix(3) {
       </div>
     </div>
 
-    <!-- Log d'execució (redimensionable) -->
     <div id="log-wrap">
       <div id="log-resize" title="Arrossega per canviar la mida del log"></div>
       <div id="log"></div>
     </div>
-
-  </div><!-- fi .code-col -->
+  </div>
 
 </div><!-- fi .main -->
 
 
 <!-- ══ MODALS ══ -->
-
-<!-- Modal: Reptes -->
 <div class="modal-bg" id="modal-challenges">
   <div class="modal modal-wide">
     <div class="modal-hd">
-      <span>🎯 Reptes — tria un exercici per començar</span>
+      <span id="modal-challenges-title">🎯 Reptes</span>
       <button onclick="closeModal('modal-challenges')">✕</button>
     </div>
     <div id="challenges-list"></div>
     <div class="modal-ft">
-      <button class="btn" onclick="closeModal('modal-challenges')">Tanca</button>
+      <button class="btn" id="btn-modal-close" onclick="closeModal('modal-challenges')">Tanca</button>
     </div>
   </div>
 </div>
