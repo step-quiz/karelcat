@@ -9,18 +9,21 @@
   --text:       #ddddd8;
   --muted:      #52524e;
   --accent:     #f0c030;
-  --accent-dim: rgba(240,192,48,0.12);
+  --accent-dim: rgba(240,192,48,0.13);
   --error:      #e05555;
-  --error-dim:  rgba(224,85,85,0.12);
+  --error-dim:  rgba(224,85,85,0.13);
   --mono:       'Space Mono','Courier New',monospace;
   --cell-size:  44px;
   --topbar-h:   46px;
+  /* Editor typography — shared between all three editor layers */
+  --ed-font-size:   0.8rem;
+  --ed-line-height: 1.75;
+  --ed-pad-top:     12px;
+  --ed-pad-x:       14px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html, body { height: 100%; overflow: hidden; }
-
 body {
   font-family: var(--mono);
   background: var(--bg);
@@ -43,7 +46,6 @@ body {
   padding: 0 16px;
   gap: 12px;
   flex-shrink: 0;
-  z-index: 10;
 }
 
 .logo {
@@ -65,15 +67,25 @@ body {
 }
 
 /* Selector d'idioma */
+.lang-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.lang-group-lbl {
+  font-size: 0.58rem;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
 .lang-switcher {
   display: flex;
   border: 1px solid var(--border);
   border-radius: 3px;
   overflow: hidden;
 }
-
 .lang-btn {
-  padding: 4px 8px;
+  padding: 4px 9px;
   border: none;
   border-right: 1px solid var(--border);
   font-family: var(--mono);
@@ -100,7 +112,6 @@ body {
   color: var(--muted);
   white-space: nowrap;
 }
-
 #state-dot {
   width: 8px; height: 8px;
   border-radius: 50%;
@@ -111,11 +122,7 @@ body {
 #state-dot.running { background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: pulse-dot 1s ease-in-out infinite; }
 #state-dot.step    { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
 #state-dot.error   { background: var(--error);  box-shadow: 0 0 8px var(--error); }
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
-}
+@keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
 
 /* ── LAYOUT PRINCIPAL ─────────────────────────────── */
@@ -138,7 +145,6 @@ body {
   overflow: hidden;
   border-right: 1px solid var(--border);
 }
-
 .world-area {
   flex: 1;
   min-height: 0;
@@ -150,7 +156,6 @@ body {
   overflow: hidden;
   position: relative;
 }
-
 #world-grid {
   display: inline-grid;
   gap: 2px;
@@ -158,7 +163,6 @@ body {
   padding: 2px;
   border-radius: 5px;
 }
-
 .status-bar {
   display: flex;
   gap: 10px;
@@ -180,9 +184,7 @@ body {
   flex-direction: column;
   gap: 8px;
 }
-
 .btns { display: flex; gap: 5px; flex-wrap: wrap; }
-
 .speed-row {
   display: flex;
   align-items: center;
@@ -190,9 +192,8 @@ body {
   color: var(--muted);
   font-size: 0.62rem;
 }
-
 input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
-#speed-lbl { color: var(--text); min-width: 70px; }
+#speed-lbl { color: var(--text); min-width: 16px; text-align: center; }
 
 
 /* ── COLUMNA DRETA: CODI ──────────────────────────── */
@@ -212,14 +213,15 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
   background: #0a0a0a;
 }
 
+/* Numeració de línies */
 #line-numbers {
   width: 38px;
-  padding: 12px 6px 12px 0;
+  padding: var(--ed-pad-top) 6px var(--ed-pad-top) 0;
   background: #0a0a0a;
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 0.8rem;
-  line-height: 1.75;
+  font-size: var(--ed-font-size);
+  line-height: var(--ed-line-height);
   text-align: right;
   user-select: none;
   flex-shrink: 0;
@@ -227,39 +229,85 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
   overflow: hidden;
   pointer-events: none;
 }
-#line-numbers div { height: calc(0.8rem * 1.75); }
+#line-numbers div { height: calc(var(--ed-font-size) * var(--ed-line-height)); }
 
+/* Contenidor de les tres capes (line-bg + highlight + textarea) */
 .editor-inner {
   flex: 1;
   position: relative;
   overflow: hidden;
 }
 
-/*
-  BUG FIX — CURSOR DESPLAÇAT:
-  El problema era que highlightCode feia .join('\n') i cada .code-line
-  tenia display:block. Amb white-space:pre, el \n entre spans
-  creava una línia en blanc extra, desplaçant el text cap avall.
-  Solució:
-  1) highlightCode ara fa .join('') (els display:block ja fan el salt)
-  2) white-space:pre-wrap per consistència amb el textarea
-*/
+/* ══════════════════════════════════════════════
+   CAPA 1: #line-bg
+   Conté una fila per línia de codi.
+   Les files active/error reben un color de fons.
+   Es desplaça en sincronia amb el textarea.
+   IMPORTANT: overflow-y:scroll (scrollbar ocult)
+   permet establir scrollTop des de JS.
+══════════════════════════════════════════════ */
+#line-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow-x: hidden;
+  overflow-y: scroll;        /* cal per poder establir scrollTop */
+  scrollbar-width: none;     /* Firefox: amaga el scrollbar */
+  padding-top: var(--ed-pad-top);  /* alineat amb el padding del textarea */
+}
+#line-bg::-webkit-scrollbar { display: none; }  /* Chrome/Safari */
+
+.lbg-row {
+  display: block;
+  width: 100%;
+  height: calc(var(--ed-font-size) * var(--ed-line-height));
+}
+.lbg-row.active { background: var(--accent-dim); }
+.lbg-row.error  { background: var(--error-dim); }
+
+
+/* ══════════════════════════════════════════════
+   CAPA 2: #code-highlight
+   Overlay de sintaxi. Ha de renderitzar
+   el text EXACTAMENT igual que el textarea.
+   Regles crítiques:
+   - white-space: pre (IDÈNTIC al textarea)
+   - font, size, line-height, padding: IDÈNTICS
+   - pointer-events: none (no intercepta clics)
+   - No té display:block als spans interns →
+     els spans .code-line són inline per defecte.
+══════════════════════════════════════════════ */
 #code-highlight {
   position: absolute;
   inset: 0;
-  padding: 12px 14px;
+  padding: var(--ed-pad-top) var(--ed-pad-x);
   font-family: var(--mono);
-  font-size: 0.8rem;
-  line-height: 1.75;
-  tab-size: 2;
-  white-space: pre-wrap;   /* FIX: era 'pre' */
-  word-wrap: break-word;
+  font-size: var(--ed-font-size);
+  line-height: var(--ed-line-height);
+  white-space: pre;            /* ← FIX CURSOR: pre, no pre-wrap */
   overflow: hidden;
   pointer-events: none;
   color: var(--text);
   margin: 0;
+  tab-size: 2;
 }
 
+/* .code-line: NO display:block, NO padding-left, NO border-left.
+   Qualsevol propietat de layout aquí desplaçaria el text
+   respecte al textarea i trencaria la posició del cursor. */
+.code-line { /* intencionalment buit — inline per defecte */ }
+
+/* Nota: el color de fons de línia activa/error l'aplica #line-bg,
+   NO .code-line, per evitar desplaçaments de layout. */
+
+
+/* ══════════════════════════════════════════════
+   CAPA 3: #code-editor (textarea)
+   Ha de tenir exactament el mateix font,
+   mida, padding i white-space que el highlight.
+   color:transparent → text invisible, però
+   caret-color:var(--text) mostra el cursor.
+══════════════════════════════════════════════ */
 #code-editor {
   position: absolute;
   inset: 0;
@@ -267,25 +315,30 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
   color: transparent;
   caret-color: var(--text);
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: var(--ed-font-size);
+  line-height: var(--ed-line-height);
   border: none;
   outline: none;
   resize: none;
-  padding: 12px 14px;
-  line-height: 1.75;
+  padding: var(--ed-pad-top) var(--ed-pad-x);
+  white-space: pre;            /* ← FIX CURSOR: pre, idèntic al highlight */
   tab-size: 2;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;            /* scroll horitzontal per a línies llargues */
   z-index: 1;
-  white-space: pre-wrap;   /* consistent amb l'overlay */
-  word-wrap: break-word;
 }
 #code-editor::selection { background: rgba(240,192,48,0.2); }
 
-/* Línies marcades durant l'execució */
-.code-line        { display: block; min-height: calc(0.8rem * 1.75); border-left: 2px solid transparent; padding-left: 2px; transition: background 0.1s; }
-.code-line.active { background: var(--accent-dim); border-left-color: var(--accent); }
-.code-line.error  { background: var(--error-dim);  border-left-color: var(--error); }
+
+/* ── RESSALTAT SINTÀCTIC (colors dels spans) ─ */
+
+.hl-kw   { color: var(--accent); font-weight: 700; }
+.hl-cmd  { color: #9cdcfe; }
+.hl-cond { color: #c586c0; }
+.hl-user { color: #4ec9b0; }
+.hl-num  { color: var(--accent); }
+.hl-cm   { color: var(--muted); font-style: italic; }
+.hl-br   { color: var(--muted); }
 
 
 /* ── LOG ──────────────────────────────────────────── */
@@ -299,7 +352,6 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
   max-height: 50%;
   border-top: 1px solid var(--border);
 }
-
 #log-resize {
   height: 5px;
   background: var(--border);
@@ -322,7 +374,6 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 #log-resize.dragging { background: var(--accent); }
 #log-resize:hover::after,
 #log-resize.dragging::after { background: #000; opacity: 0.5; }
-
 #log {
   flex: 1;
   overflow-y: auto;
@@ -362,22 +413,11 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 }
 .c-a { background: #181510; }
 .c-k { background: #1e1500; }
-.wall-i { color: #3a3a38; line-height: 1; }
+.wall-i  { color: #3a3a38; line-height: 1; }
 .water-i { animation: bob 2.5s ease-in-out infinite; display: inline-block; line-height: 1; }
 @keyframes bob { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-2px); } }
 .karel-i { color: var(--accent); filter: drop-shadow(0 0 5px rgba(245,200,66,.7)); animation: kpulse 1.2s ease-in-out infinite; line-height: 1; }
 @keyframes kpulse { 0%,100% { filter:drop-shadow(0 0 4px rgba(245,200,66,.6)); } 50% { filter:drop-shadow(0 0 9px rgba(245,200,66,1)); } }
-
-
-/* ── RESSALTAT SINTÀCTIC ──────────────────────────── */
-
-.hl-kw   { color: var(--accent); font-weight: 700; }
-.hl-cmd  { color: #9cdcfe; }
-.hl-cond { color: #c586c0; }
-.hl-user { color: #4ec9b0; }
-.hl-num  { color: var(--accent); }
-.hl-cm   { color: var(--muted); font-style: italic; }
-.hl-br   { color: var(--muted); }
 
 
 /* ── BOTONS ───────────────────────────────────────── */
@@ -416,31 +456,9 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 
 .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 100; align-items: center; justify-content: center; }
 .modal-bg.open { display: flex; }
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  width: 440px;
-  max-width: 95vw;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0,0,0,.7);
-}
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; width: 440px; max-width: 95vw; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.7); }
 .modal-wide { width: 700px; }
-.modal-hd {
-  padding: 10px 14px;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--muted);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
+.modal-hd { padding: 10px 14px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .modal-hd button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; }
 .modal-hd button:hover { color: var(--text); }
 .modal-ft { padding: 8px 12px; border-top: 1px solid var(--border); display: flex; gap: 6px; justify-content: flex-end; background: var(--surface); flex-shrink: 0; }
@@ -453,13 +471,7 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 
 /* ── REPTES ───────────────────────────────────────── */
 
-#challenges-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  padding: 14px;
-  overflow-y: auto;
-}
+#challenges-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px; overflow-y: auto; }
 .ch-card { padding: 12px 14px; border: 1px solid var(--border); border-radius: 5px; cursor: pointer; background: #0d0d0d; transition: border-color .1s, background .1s; display: flex; flex-direction: column; gap: 4px; }
 .ch-card:hover { border-color: var(--accent); background: var(--accent-dim); }
 .ch-num   { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
@@ -514,15 +526,16 @@ body.edit-page { overflow: hidden; }
 body.light {
   --bg: #f0f0eb; --surface: #e5e5e0; --border: #ccccc8;
   --text: #1a1a16; --muted: #888880; --accent: #906800;
-  --accent-dim: rgba(144,104,0,.1); --error: #cc2222; --error-dim: rgba(204,34,34,.1);
+  --accent-dim: rgba(144,104,0,.12); --error: #cc2222; --error-dim: rgba(204,34,34,.12);
 }
-body.light .c-e    { background: #deded8 !important; }
-body.light .c-p    { background:#c8c8c2!important; background-image:linear-gradient(45deg,rgba(0,0,0,.08) 25%,transparent 25%),linear-gradient(-45deg,rgba(0,0,0,.08) 25%,transparent 25%)!important; background-size:10px 10px!important; }
+body.light .c-e { background: #deded8 !important; }
+body.light .c-p { background:#c8c8c2!important; background-image:linear-gradient(45deg,rgba(0,0,0,.08) 25%,transparent 25%),linear-gradient(-45deg,rgba(0,0,0,.08) 25%,transparent 25%)!important; background-size:10px 10px!important; }
 body.light .c-a    { background: #d4d0b8 !important; }
 body.light .c-k    { background: #e8d890 !important; }
 body.light .wall-i { color: #b0b0a8 !important; }
 body.light .editor-wrap, body.light #log, body.light .edit-tools, body.light .blank-form, body.light #challenges-list { background: #e8e8e3 !important; }
 body.light #code-highlight { color: var(--text) !important; }
+body.light #line-bg        { background: transparent; }
 body.light #log            { background: #e0e0da !important; }
 body.light .hl-cm          { color: #aaa89e !important; }
 body.light .ch-card        { background: #e0e0da; }

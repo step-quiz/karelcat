@@ -18,6 +18,7 @@ const I18N = {
       reset: '↺ Reinicia', clear_log: '⌫ Log',
       speed: 'Velocitat:', bag: 'Motxilla:', close: 'Tanca',
       level_easy: '⭐ Fàcil', level_medium: '⭐⭐ Mitjà', level_hard: '⭐⭐⭐ Difícil',
+      lbl_codelang: 'Codi:', lbl_userlang: 'Idioma:',
     },
     state: { idle: 'aturat', running: 'executant', step: 'pas a pas', error: 'error' },
     speed: ['Molt lent','Lent','Normal','Ràpid','Molt ràpid','Màxim'],
@@ -93,6 +94,7 @@ const I18N = {
       reset: '↺ Reinicia', clear_log: '⌫ Log',
       speed: 'Velocidad:', bag: 'Mochila:', close: 'Cerrar',
       level_easy: '⭐ Fácil', level_medium: '⭐⭐ Medio', level_hard: '⭐⭐⭐ Difícil',
+      lbl_codelang: 'Código:', lbl_userlang: 'Idioma:',
     },
     state: { idle: 'detenido', running: 'ejecutando', step: 'paso a paso', error: 'error' },
     speed: ['Muy lento','Lento','Normal','Rápido','Muy rápido','Máximo'],
@@ -168,6 +170,7 @@ const I18N = {
       reset: '↺ Reset', clear_log: '⌫ Log',
       speed: 'Speed:', bag: 'Bag:', close: 'Close',
       level_easy: '⭐ Easy', level_medium: '⭐⭐ Medium', level_hard: '⭐⭐⭐ Hard',
+      lbl_codelang: 'Code:', lbl_userlang: 'Language:',
     },
     state: { idle: 'stopped', running: 'running', step: 'step mode', error: 'error' },
     speed: ['Very slow','Slow','Normal','Fast','Very fast','Maximum'],
@@ -239,24 +242,56 @@ const I18N = {
 // 2. SISTEMA D'IDIOMA
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-let currentLang  = localStorage.getItem('karel-lang') || 'ca';
-let currentState = 'idle';
+// ─────────────────────────────────────────────────────
+// DOS EIXOS D'IDIOMA INDEPENDENTS:
+//
+//  currentCodeLang → les paraules que el parser entén
+//                    (mentre/mientras/while, si/if, ...)
+//                    Canvia quan l'alumne o la URL ho demana.
+//                    Es desa a localStorage 'karel-codelang'.
+//
+//  currentUserLang → la llengua de la interfície
+//                    (botons, errors, log, reptes)
+//                    Es desa a localStorage 'karel-userlang'.
+//
+//  URL: ?codelang=en&userlang=ca
+//       → codi en anglès, interfície en català
+// ─────────────────────────────────────────────────────
 
-// Retorna la cadena de l'idioma actual (amb interpolació de {key})
-function t(key, vars = {}) {
-  const parts = key.split('.');
-  let obj = I18N[currentLang];
-  for (const k of parts) { obj = obj?.[k]; }
-  let str = (obj !== undefined && obj !== null) ? String(obj) : key;
-  for (const [k, v] of Object.entries(vars)) str = str.replace(`{${k}}`, v);
-  return str;
+// Normalitza els valors de la URL ('eng'→'en', 'cat'→'ca', 'cast'→'es')
+function normalizeLang(raw) {
+  if (!raw) return null;
+  const map = { cat:'ca', cast:'es', eng:'en', ca:'ca', es:'es', en:'en' };
+  return map[raw.toLowerCase()] ?? null;
 }
 
-// Velocitats: índex 0-5 (slider 1-6)
-// BUG FIX velocitat: slider cap a la dreta = MÉS RÀPID = delay menor
+// Llegim els params de la URL (prioritat màxima)
+const _urlParams   = new URLSearchParams(window.location.search);
+const _urlCodeLang = normalizeLang(_urlParams.get('codelang'));
+const _urlUserLang = normalizeLang(_urlParams.get('userlang'));
+
+let currentCodeLang = _urlCodeLang
+  || localStorage.getItem('karel-codelang')
+  || 'ca';
+
+let currentUserLang = _urlUserLang
+  || localStorage.getItem('karel-userlang')
+  || 'ca';
+
+let currentState = 'idle';
+
+// t(key) → string de la INTERFÍCIE (usa currentUserLang)
+function t(key) {
+  const parts = key.split('.');
+  let obj = I18N[currentUserLang];
+  for (const k of parts) { obj = obj?.[k]; }
+  return (obj !== undefined && obj !== null) ? String(obj) : key;
+}
+
+// Velocitats: índex 0-5 (slider 1-6), dreta = ràpid
 const SPEED_DELAYS = [2000, 800, 350, 150, 60, 10];
 
-// Tokens dinàmics (s'actualitzen amb setLang)
+// Tokens dinàmics del parser (usa currentCodeLang)
 let COMMANDS   = new Set();
 let CONDS      = new Set();
 let KEYWORDS   = new Set();
@@ -267,7 +302,8 @@ let COND_TO_ACTION = {};
 const CMD_ACTIONS  = ['move','turn-right','turn-left','turn-around','grab','drop'];
 const COND_ACTIONS = ['wall-ahead','free-ahead','water-ahead','bag-empty','bag-full'];
 
-function applyLangTokens(lang) {
+// Aplica el llenguatge de programació (tokens del parser)
+function applyCodeLang(lang) {
   const tk = I18N[lang].tokens;
   COMMANDS  = new Set(tk.commands);
   CONDS     = new Set(tk.conditions);
@@ -286,50 +322,139 @@ function applyLangTokens(lang) {
   tk.conditions.forEach((c,i) => COND_TO_ACTION[c] = COND_ACTIONS[i]);
 }
 
-function setLang(lang) {
-  if (!I18N[lang]) return;
-  currentLang = lang;
-  localStorage.setItem('karel-lang', lang);
-  applyLangTokens(lang);
-  stopProgram();
-  updateUI();
-  if (document.getElementById('code-editor')) updateEditor();
+// Codi d'exemple per a cada codelang (per omplir l'editor en canviar)
+const DEFAULT_CODE = {
+  ca: `// Karel recull totes les aigües
+// que troba en línia recta fins la paret
+
+mentre(veu-lliure) {
+  si(veu-aigua) {
+    agafa
+  }
+  avança
 }
 
+// Gira i deixa les aigües recollides
+gira.esquerra
+repeteix(3) {
+  si(no(veu-paret)) {
+    deixa
+    avança
+  }
+}`,
+  es: `// Karel recoge todas las gotas
+// que encuentra en línea recta hasta la pared
+
+mientras(hay-camino) {
+  si(hay-agua) {
+    coge
+  }
+  avanza
+}
+
+// Gira y suelta las gotas recogidas
+gira.izquierda
+repite(3) {
+  si(no(hay-pared)) {
+    suelta
+    avanza
+  }
+}`,
+  en: `// Karel grabs all water drops
+// it finds in a straight line until the wall
+
+while(path-clear) {
+  if(water-ahead) {
+    grab
+  }
+  move
+}
+
+// Turn and drop the collected drops
+turn.left
+repeat(3) {
+  if(not(wall-ahead)) {
+    drop
+    move
+  }
+}`,
+};
+
+// ── Canvia el LLENGUATGE DE PROGRAMACIÓ ──
+function setCodeLang(lang) {
+  if (!I18N[lang]) return;
+  currentCodeLang = lang;
+  localStorage.setItem('karel-codelang', lang);
+  applyCodeLang(lang);
+  stopProgram();
+  // Substituïm el codi de l'editor pel codi d'exemple del nou llenguatge
+  const ta = document.getElementById('code-editor');
+  if (ta) {
+    ta.value = DEFAULT_CODE[lang] || DEFAULT_CODE.ca;
+    localStorage.setItem(LS_KEY_CODE, ta.value);
+    updateEditor();
+  }
+  updateLangButtons();
+}
+
+// ── Canvia l'IDIOMA DE LA INTERFÍCIE ──
+function setUserLang(lang) {
+  if (!I18N[lang]) return;
+  currentUserLang = lang;
+  localStorage.setItem('karel-userlang', lang);
+  updateUI();
+}
+
+// Actualitza tots els textos de la interfície (usa currentUserLang via t())
 function updateUI() {
-  // Botons del header
+  // Header
   const btnCh = document.getElementById('btn-challenges');
   if (btnCh) btnCh.textContent = t('ui.challenges');
   const btnTheme = document.getElementById('btn-theme');
   if (btnTheme) btnTheme.textContent = t('ui.toggle_theme');
-  // Modal title
+  // Etiquetes dels dos selectors
+  const lblCode = document.getElementById('lbl-codelang');
+  if (lblCode) lblCode.textContent = t('ui.lbl_codelang');
+  const lblUser = document.getElementById('lbl-userlang');
+  if (lblUser) lblUser.textContent = t('ui.lbl_userlang');
+  // Modal
   const mct = document.getElementById('modal-challenges-title');
   if (mct) mct.textContent = t('ui.challenges_title');
-  // Controls
-  const ids = { 'btn-run': 'ui.run', 'btn-step': 'ui.step', 'btn-stop': 'ui.stop',
-                'btn-reset': 'ui.reset', 'btn-clear': 'ui.clear_log',
-                'btn-modal-close': 'ui.close' };
+  // Botons de control
+  const ids = {
+    'btn-run':        'ui.run',
+    'btn-step':       'ui.step',
+    'btn-stop':       'ui.stop',
+    'btn-reset':      'ui.reset',
+    'btn-clear':      'ui.clear_log',
+    'btn-modal-close':'ui.close',
+  };
   for (const [id, key] of Object.entries(ids)) {
     const el = document.getElementById(id);
     if (el) el.textContent = t(key);
   }
   // Etiquetes
-  const lblBag = document.getElementById('lbl-bag');
-  if (lblBag) lblBag.textContent = t('ui.bag');
+  const lblBag   = document.getElementById('lbl-bag');
+  if (lblBag)   lblBag.textContent   = t('ui.bag');
   const lblSpeed = document.getElementById('lbl-speed');
   if (lblSpeed) lblSpeed.textContent = t('ui.speed');
-  // Etiqueta de velocitat (valor actual)
   const spd = document.getElementById('speed');
   const lbl = document.getElementById('speed-lbl');
-  if (spd && lbl) lbl.textContent = t('speed')[parseInt(spd.value) - 1];
-  // Indicador d'estat (re-renderitza)
+  if (spd && lbl) lbl.textContent = spd.value;
+  // Indicador d'estat
   setStateUI(currentState);
   // Botons de llengua actius
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.toLowerCase() === currentLang ||
-      (currentLang === 'ca' && btn.textContent === 'CAT') ||
-      (currentLang === 'es' && btn.textContent === 'CAST') ||
-      (currentLang === 'en' && btn.textContent === 'ENG'));
+  updateLangButtons();
+}
+
+// Marca el botó actiu als dos selectors
+function updateLangButtons() {
+  const LANG_BTN_MAP = { 'CAT': 'ca', 'CAST': 'es', 'ENG': 'en' };
+  document.querySelectorAll('#codelang-switcher .lang-btn').forEach(btn => {
+    btn.classList.toggle('active', LANG_BTN_MAP[btn.textContent.trim()] === currentCodeLang);
+  });
+  document.querySelectorAll('#userlang-switcher .lang-btn').forEach(btn => {
+    btn.classList.toggle('active', LANG_BTN_MAP[btn.textContent.trim()] === currentUserLang);
   });
 }
 
@@ -889,58 +1014,101 @@ function tokenizeLine(line) {
   return out;
 }
 
-// BUG FIX CURSOR: era .join('\n'). Amb display:block, els spans ja
-// fan el salt de línia. El \n extra creava una línia en blanc entre
-// cada línia real, desplaçant el caret cap amunt.
+// ─────────────────────────────────────────────────────
+// FIX CURSOR (bug 4):
+//
+// Causa del bug: el codi anterior usava display:block
+// en els spans .code-line + join(''), i padding-left:2px.
+// Qualsevol propietat de layout en els spans de l'overlay
+// desplaça el text respecte al textarea, i el cursor
+// (que pertany al textarea) apareix en el lloc equivocat.
+//
+// Solució:
+//  • highlightCode: join('\n') — el \n és el separador
+//    de línia, igual que en el textarea (white-space:pre).
+//  • .code-line: spans inline purs, sense cap propietat
+//    de layout. Cap padding, cap border, cap display:block.
+//  • El fons de línia activa/error es fa amb #line-bg
+//    (capa separada) per no afectar el text de l'overlay.
+// ─────────────────────────────────────────────────────
+
 function highlightCode(code) {
   return code.split('\n').map((line, i) => {
-    const ln=i+1, ci=line.indexOf('//');
-    const content = ci!==-1
-      ? tokenizeLine(line.slice(0,ci)) + `<span class="hl-cm">${escHtml(line.slice(ci))}</span>`
+    const ln = i + 1;
+    const ci = line.indexOf('//');
+    const content = ci !== -1
+      ? tokenizeLine(line.slice(0, ci)) + `<span class="hl-cm">${escHtml(line.slice(ci))}</span>`
       : tokenizeLine(line);
+    // Span inline: NO display:block, NO padding, NO border → no desplaça res
     return `<span class="code-line" id="cln-${ln}">${content}</span>`;
-  }).join('');  // ← FIX: era '\n'
+  }).join('\n');   // ← '\n' és el separador, igual que en el textarea (white-space:pre)
 }
 
-function highlightLine(n) {
-  document.querySelectorAll('.code-line.active').forEach(el=>el.classList.remove('active'));
-  if (n) document.getElementById('cln-'+n)?.classList.add('active');
+// Actualitza el #line-bg (una fila per línia de codi)
+function updateLineBg(numLines) {
+  const bg = document.getElementById('line-bg');
+  if (!bg) return;
+  bg.innerHTML = Array.from({length: numLines}, (_, i) =>
+    `<div class="lbg-row" id="lbg-${i + 1}"></div>`
+  ).join('');
 }
-function markErrorLine(n) { if(n) document.getElementById('cln-'+n)?.classList.add('error'); }
-function clearLineMarks() { document.querySelectorAll('.code-line.active,.code-line.error').forEach(el=>el.classList.remove('active','error')); }
+
+// El marcatge de línies activa/error es fa sobre #line-bg, NO sobre .code-line
+function highlightLine(n) {
+  document.querySelectorAll('.lbg-row.active').forEach(el => el.classList.remove('active'));
+  if (n) document.getElementById('lbg-' + n)?.classList.add('active');
+}
+function markErrorLine(n) {
+  if (n) document.getElementById('lbg-' + n)?.classList.add('error');
+}
+function clearLineMarks() {
+  document.querySelectorAll('.lbg-row.active, .lbg-row.error')
+    .forEach(el => el.classList.remove('active', 'error'));
+}
 
 function updateEditor() {
-  const ta=document.getElementById('code-editor');
-  const hl=document.getElementById('code-highlight');
-  const ln=document.getElementById('line-numbers');
-  if (!ta||!hl||!ln) return;
-  const code=ta.value;
-  hl.innerHTML   = highlightCode(code);  // ← sense + '\n'
-  hl.scrollTop   = ta.scrollTop;
-  ln.innerHTML   = code.split('\n').map((_,i)=>`<div>${i+1}</div>`).join('');
-  ln.scrollTop   = ta.scrollTop;
+  const ta = document.getElementById('code-editor');
+  const hl = document.getElementById('code-highlight');
+  const ln = document.getElementById('line-numbers');
+  const bg = document.getElementById('line-bg');
+  if (!ta || !hl || !ln) return;
+  const code  = ta.value;
+  const lines = code.split('\n');
+  hl.innerHTML = highlightCode(code);
+  hl.scrollTop = ta.scrollTop;
+  ln.innerHTML = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
+  ln.scrollTop = ta.scrollTop;
+  if (bg) {
+    updateLineBg(lines.length);
+    bg.scrollTop = ta.scrollTop;
+  }
 }
 
 // Inicialització de l'editor (condicional: no existeix a edit-mapa.html)
 const codeTA = document.getElementById('code-editor');
 if (codeTA) {
-  const saved = localStorage.getItem(LS_KEY_CODE);
-  if (saved) codeTA.value = saved;
+  // (el valor inicial s'estableix a la secció 18)
 
   codeTA.addEventListener('input', () => {
     updateEditor();
     localStorage.setItem(LS_KEY_CODE, codeTA.value);
   });
+
+  // FIX 2 - cursor: sincronitzem les TRES capes (highlight, line-bg, numeració)
   codeTA.addEventListener('scroll', () => {
-    document.getElementById('code-highlight').scrollTop = codeTA.scrollTop;
-    document.getElementById('line-numbers').scrollTop   = codeTA.scrollTop;
+    const st = codeTA.scrollTop;
+    document.getElementById('code-highlight').scrollTop = st;
+    document.getElementById('line-numbers').scrollTop   = st;
+    const bg = document.getElementById('line-bg');
+    if (bg) bg.scrollTop = st;
   });
+
   codeTA.addEventListener('keydown', e => {
-    if (e.key==='Tab') {
+    if (e.key === 'Tab') {
       e.preventDefault();
-      const s=codeTA.selectionStart, end=codeTA.selectionEnd;
-      codeTA.value=codeTA.value.slice(0,s)+'  '+codeTA.value.slice(end);
-      codeTA.selectionStart=codeTA.selectionEnd=s+2;
+      const s = codeTA.selectionStart, end = codeTA.selectionEnd;
+      codeTA.value = codeTA.value.slice(0, s) + '  ' + codeTA.value.slice(end);
+      codeTA.selectionStart = codeTA.selectionEnd = s + 2;
       updateEditor();
     }
   });
@@ -957,15 +1125,15 @@ if (codeTA) {
   });
 }
 
-// Control de velocitat (6 opcions)
-// BUG FIX: slider cap a la dreta = valor alt = index alt = delay petit = MÉS RÀPID
+// Fix 3 - velocitat: mostra números 1-6 (no paraules)
+// Fix bug: t('speed') retornava l'array com a string. Usem l'índex directament.
 const speedSlider = document.getElementById('speed');
 if (speedSlider) {
   speedSlider.addEventListener('input', function () {
-    const idx  = parseInt(this.value) - 1;   // 0-based
-    stepDelay  = SPEED_DELAYS[idx];           // índex 0=molt lent, 5=màxim
+    const idx = parseInt(this.value) - 1;  // 0-5
+    stepDelay  = SPEED_DELAYS[idx];
     const lbl  = document.getElementById('speed-lbl');
-    if (lbl) lbl.textContent = t('speed')[idx];
+    if (lbl) lbl.textContent = this.value;  // mostra 1, 2, 3, 4, 5, 6
   });
 }
 
@@ -1061,15 +1229,21 @@ function parseCode(code) {
 // 18. INICIALITZACIÓ
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-// Aplica l'idioma (tokens + UI)
-applyLangTokens(currentLang);
+// Aplica els tokens del LLENGUATGE DE PROGRAMACIÓ
+applyCodeLang(currentCodeLang);
 
 // Carrega el mapa des de URL o per defecte
-const _urlMapa = new URLSearchParams(window.location.search).get('mapa');
+// (nota: _urlParams ja s'ha creat a la secció 2)
+const _urlMapa = _urlParams.get('mapa');
 loadMapFromCSV(_urlMapa ?? DEFAULT_CSV);
 
-// Inicialitza l'editor si existeix
-if (codeTA) updateEditor();
+// Omple l'editor: primer mira el localStorage, si no, codi d'exemple del codelang
+if (codeTA) {
+  const saved = localStorage.getItem(LS_KEY_CODE);
+  codeTA.value = saved || DEFAULT_CODE[currentCodeLang] || DEFAULT_CODE.ca;
+  updateEditor();
+  setTimeout(() => updateEditor(), 50);
+}
 
-// Actualitza la UI amb l'idioma desat
+// Actualitza la UI amb l'idioma de la interfície
 updateUI();

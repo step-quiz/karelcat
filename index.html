@@ -18,86 +18,83 @@
   </div>
 
   <div class="topbar-actions">
-    <!-- Selector d'idioma -->
-    <div class="lang-switcher">
-      <button class="lang-btn active" onclick="setLang('ca')">CAT</button>
-      <button class="lang-btn" onclick="setLang('es')">CAST</button>
-      <button class="lang-btn" onclick="setLang('en')">ENG</button>
+
+    <!-- Selector A: Llenguatge de programació (tokens del codi) -->
+    <div class="lang-group">
+      <span class="lang-group-lbl" id="lbl-codelang">Codi:</span>
+      <div class="lang-switcher" id="codelang-switcher">
+        <button class="lang-btn" onclick="setCodeLang('ca')">CAT</button>
+        <button class="lang-btn" onclick="setCodeLang('es')">CAST</button>
+        <button class="lang-btn" onclick="setCodeLang('en')">ENG</button>
+      </div>
     </div>
+
+    <!-- Selector B: Idioma de la interfície -->
+    <div class="lang-group">
+      <span class="lang-group-lbl" id="lbl-userlang">Idioma:</span>
+      <div class="lang-switcher" id="userlang-switcher">
+        <button class="lang-btn" onclick="setUserLang('ca')">CAT</button>
+        <button class="lang-btn" onclick="setUserLang('es')">CAST</button>
+        <button class="lang-btn" onclick="setUserLang('en')">ENG</button>
+      </div>
+    </div>
+
     <button class="btn" id="btn-challenges" onclick="openChallenges()">🎯 Reptes</button>
-    <button class="btn" id="btn-theme" onclick="toggleLight()">Fosc / Clar</button>
+    <button class="btn" id="btn-theme"      onclick="toggleLight()">Fosc / Clar</button>
   </div>
 </header>
 
 
 <div class="main">
 
-  <!-- ── Columna esquerra: MÓN DE KAREL ── -->
+  <!-- Columna esquerra: mapa -->
   <div class="map-col">
     <div class="world-area" id="world-area">
       <div id="world-grid"></div>
     </div>
 
-    <!-- Barra d'estat: només motxilla -->
     <div class="status-bar">
       <span><span id="lbl-bag">Motxilla:</span> <strong id="st-bag">0</strong> 💧</span>
     </div>
 
-    <!-- Controls d'execució -->
     <div class="exec-controls">
       <div class="btns">
-        <button class="btn p" id="btn-run"  onclick="runProgram()">▶ Executa</button>
-        <button class="btn g" id="btn-step" onclick="stepProgram()">⏭ Pas</button>
-        <button class="btn r" id="btn-stop" onclick="stopProgram()">■ Para</button>
+        <button class="btn p" id="btn-run"   onclick="runProgram()">▶ Executa</button>
+        <button class="btn g" id="btn-step"  onclick="stepProgram()">⏭ Pas</button>
+        <button class="btn r" id="btn-stop"  onclick="stopProgram()">■ Para</button>
         <button class="btn"   id="btn-reset" onclick="resetKarel()">↺ Reinicia</button>
         <button class="btn"   id="btn-clear" onclick="clearLog()">⌫ Log</button>
       </div>
       <div class="speed-row">
         <span id="lbl-speed">Velocitat:</span>
         <input type="range" id="speed" min="1" max="6" step="1" value="3">
-        <span id="speed-lbl">Normal</span>
+        <span id="speed-lbl">3</span>
       </div>
     </div>
   </div>
 
 
-  <!-- ── Columna dreta: EDITOR DE CODI ── -->
+  <!-- Columna dreta: editor de codi -->
   <div class="code-col">
     <div class="editor-wrap">
       <div id="line-numbers"></div>
       <div class="editor-inner">
-        <pre id="code-highlight" aria-hidden="true"></pre>
-        <textarea id="code-editor" spellcheck="false">// Karel recull totes les aigües
-// que troba en línia recta fins la paret
-
-mentre(veu-lliure) {
-  si(veu-aigua) {
-    agafa
-  }
-  avança
-}
-
-// Gira i deixa les aigües recollides
-gira.esquerra
-repeteix(3) {
-  si(no(veu-paret)) {
-    deixa
-    avança
-  }
-}</textarea>
+        <div  id="line-bg"        aria-hidden="true"></div>
+        <pre  id="code-highlight" aria-hidden="true"></pre>
+        <textarea id="code-editor" spellcheck="false"></textarea>
       </div>
     </div>
 
     <div id="log-wrap">
-      <div id="log-resize" title="Arrossega per canviar la mida del log"></div>
+      <div id="log-resize"></div>
       <div id="log"></div>
     </div>
   </div>
 
-</div><!-- fi .main -->
+</div>
 
 
-<!-- ══ MODALS ══ -->
+<!-- Modal: Reptes -->
 <div class="modal-bg" id="modal-challenges">
   <div class="modal modal-wide">
     <div class="modal-hd">
