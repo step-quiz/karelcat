@@ -30,9 +30,13 @@
       <div class="tool-lbl">Pinzell</div>
       <div class="brush-row">
         <button class="brush-btn active" id="brush-dot" onclick="setBrush('.')">· buit</button>
-        <button class="brush-btn"        id="brush-P"   onclick="setBrush('P')">▪ paret</button>
-        <button class="brush-btn"        id="brush-A"   onclick="setBrush('A')">💧 aigua</button>
-        <button class="brush-btn"        id="brush-K"   onclick="setBrush('K')">🤖 Karel</button>
+        <button class="brush-btn"        id="brush-P"   onclick="setBrush('P')">🪸 corall</button>
+        <button class="brush-btn"        id="brush-A"   onclick="setBrush('A')">🫧 bombolla</button>
+        <button class="brush-btn"        id="brush-K"   onclick="setBrush('K')">🪼 medusa</button>
+      </div>
+      <div class="undo-row">
+        <button class="btn" id="btn-undo" onclick="editUndo()" disabled title="Desfés (Ctrl+Z)">↩ Desfés</button>
+        <button class="btn" id="btn-redo" onclick="editRedo()" disabled title="Refés (Ctrl+Shift+Z)">↪ Refés</button>
       </div>
     </div>
 
@@ -81,9 +85,9 @@
     <!-- Llegenda -->
     <div class="tool-section legend">
       <div class="tool-lbl">Llegenda</div>
-      <div class="li"><div class="lbox lbox-karel"></div>K &gt; ^ &lt; v — Karel</div>
-      <div class="li"><div class="lbox lbox-wall"></div>P — paret</div>
-      <div class="li"><div class="lbox lbox-water"></div>A — aigua 💧</div>
+      <div class="li"><div class="lbox lbox-karel"></div>K &gt; ^ &lt; v — Medusa</div>
+      <div class="li"><div class="lbox lbox-wall"></div>P — corall (paret)</div>
+      <div class="li"><div class="lbox lbox-water"></div>A — bombolla (aigua)</div>
       <div class="li"><div class="lbox lbox-empty"></div>. — cel·la buida</div>
     </div>
 
@@ -152,6 +156,10 @@
     updateMapSize();
   };
 
+  // Embolcallem applyBlank amb undo
+  const _origApplyBlank = applyBlank;
+  applyBlank = function() { _pushUndo(); _origApplyBlank(); _updateUndoButtons(); };
+
   // Botó "Obre a Karel": obre index.html amb el mapa actual com a paràmetre URL
   function openInKarel() {
     const csv  = worldToCSV();
@@ -163,6 +171,7 @@
   setBrush('.');
   updateSizeIndicators();
   updateMapSize();
+  _updateUndoButtons();
 </script>
 </body>
 </html>
