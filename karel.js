@@ -103,6 +103,8 @@ const I18N = {
       onboard_next: 'Següent →', onboard_prev: '← Enrere', onboard_start: 'Comencem! 🚀', onboard_skip: 'Salta',
       hint_btn: '💡 Pista', hint_locked: '🔒 Pista ({time})', hint_panel_title: '💡 Pista', hint_next: 'Pista 2 →', hint_close: 'Tanca', hint_exhausted: 'Ja has vist totes les pistes!', hint_waiting: 'Pista disponible en',
       category_basic: '📘 Reptes originals', category_cp: '🎓 Code in Place (Stanford)',
+      goal_btn: '🎯 Objectiu', goal_title: '🎯 Objectiu del repte', goal_desc: 'Així ha de quedar el món quan el programa acabi:',
+      restore_btn: '📝 Codi inicial', restore_confirm: 'Vols recuperar el codi inicial del repte? Perdràs el codi actual.',
     },
     state: { idle: 'aturat', running: 'executant', step: 'pas a pas', error: 'error' },
     speed: ['Molt lent','Lent','Normal','Ràpid','Molt ràpid','Màxim'],
@@ -323,6 +325,8 @@ const I18N = {
       onboard_next: 'Siguiente →', onboard_prev: '← Atrás', onboard_start: '¡Empecemos! 🚀', onboard_skip: 'Saltar',
       hint_btn: '💡 Pista', hint_locked: '🔒 Pista ({time})', hint_panel_title: '💡 Pista', hint_next: 'Pista 2 →', hint_close: 'Cerrar', hint_exhausted: '¡Ya has visto todas las pistas!', hint_waiting: 'Pista disponible en',
       category_basic: '📘 Retos originales', category_cp: '🎓 Code in Place (Stanford)',
+      goal_btn: '🎯 Objetivo', goal_title: '🎯 Objetivo del reto', goal_desc: 'Así debe quedar el mundo cuando el programa termine:',
+      restore_btn: '📝 Código inicial', restore_confirm: '¿Quieres recuperar el código inicial del reto? Perderás el código actual.',
     },
     state: { idle: 'detenido', running: 'ejecutando', step: 'paso a paso', error: 'error' },
     speed: ['Muy lento','Lento','Normal','Rápido','Muy rápido','Máximo'],
@@ -543,6 +547,8 @@ const I18N = {
       onboard_next: 'Next →', onboard_prev: '← Back', onboard_start: "Let's go! 🚀", onboard_skip: 'Skip',
       hint_btn: '💡 Hint', hint_locked: '🔒 Hint ({time})', hint_panel_title: '💡 Hint', hint_next: 'Hint 2 →', hint_close: 'Close', hint_exhausted: 'You\'ve seen all the hints!', hint_waiting: 'Hint available in',
       category_basic: '📘 Original challenges', category_cp: '🎓 Code in Place (Stanford)',
+      goal_btn: '🎯 Goal', goal_title: '🎯 Challenge goal', goal_desc: 'This is how the world should look when the program finishes:',
+      restore_btn: '📝 Starter code', restore_confirm: 'Restore the original starter code? You will lose your current code.',
     },
     state: { idle: 'stopped', running: 'running', step: 'step mode', error: 'error' },
     speed: ['Very slow','Slow','Normal','Fast','Very fast','Maximum'],
@@ -948,6 +954,8 @@ function updateUI() {
     'btn-clear':      'ui.clear_log',
     'btn-ref':        'ui.ref_btn',
     'btn-modal-close':'ui.close',
+    'btn-goal':       'ui.goal_btn',
+    'btn-restore':    'ui.restore_btn',
   };
   for (const [id, key] of Object.entries(ids)) {
     const el = document.getElementById(id);
@@ -1015,6 +1023,27 @@ const KAREL_ASSETS = {
   MEDUSA: `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="karel-entity" fill="currentColor" shape-rendering="crispEdges"><rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/><rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/><rect x="6" y="3" width="1" height="1" fill="var(--bg)"/><rect x="7" y="3" width="1" height="1" fill="var(--bg)"/><rect x="8" y="3" width="1" height="1" fill="var(--bg)"/><rect x="9" y="3" width="1" height="1" fill="var(--bg)"/></svg>`,
   CORALL: `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" shape-rendering="crispEdges"><g fill="#9AB60C"><rect x="12" y="0" width="1" height="1"/><rect x="13" y="0" width="1" height="1"/><rect x="12" y="1" width="1" height="1"/><rect x="13" y="1" width="1" height="1"/><rect x="12" y="2" width="1" height="1"/><rect x="13" y="2" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/><rect x="13" y="3" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="13" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="13" y="8" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="4" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="4" y="10" width="1" height="1"/><rect x="5" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="6" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="5" y="12" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="9" y="12" width="1" height="1"/><rect x="10" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="4" y="13" width="1" height="1"/><rect x="5" y="13" width="1" height="1"/><rect x="6" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="9" y="13" width="1" height="1"/><rect x="10" y="13" width="1" height="1"/><rect x="11" y="13" width="1" height="1"/><rect x="3" y="14" width="1" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="5" y="14" width="1" height="1"/><rect x="6" y="14" width="1" height="1"/><rect x="7" y="14" width="1" height="1"/><rect x="8" y="14" width="1" height="1"/><rect x="9" y="14" width="1" height="1"/><rect x="10" y="14" width="1" height="1"/><rect x="11" y="14" width="1" height="1"/><rect x="12" y="14" width="1" height="1"/><rect x="13" y="14" width="1" height="1"/><rect x="1" y="15" width="1" height="1"/><rect x="2" y="15" width="1" height="1"/><rect x="3" y="15" width="1" height="1"/><rect x="4" y="15" width="1" height="1"/><rect x="5" y="15" width="1" height="1"/><rect x="6" y="15" width="1" height="1"/><rect x="7" y="15" width="1" height="1"/><rect x="8" y="15" width="1" height="1"/><rect x="9" y="15" width="1" height="1"/><rect x="10" y="15" width="1" height="1"/><rect x="11" y="15" width="1" height="1"/><rect x="12" y="15" width="1" height="1"/><rect x="13" y="15" width="1" height="1"/><rect x="14" y="15" width="1" height="1"/></g></svg>`,
   BOMBOLLA: `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" shape-rendering="crispEdges"><g fill="#90CDF4"><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="4" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="4" y="10" width="1" height="1"/><rect x="5" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="6" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/></g><g fill="#FFFFFF"><rect x="5" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/></g><g fill="#2B6CB0"><rect x="6" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="13" y="7" width="1" height="1"/><rect x="2" y="8" width="1" height="1"/><rect x="13" y="8" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="3" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="9" y="12" width="1" height="1"/></g><g fill="#63B3ED"><rect x="10" y="13" width="1" height="1"/><rect x="7" y="14" width="1" height="1"/></g></svg>`,
+};
+
+// ── Mapa d'objectius finals per a cada repte (CSV de l'estat final esperat) ──
+const GOAL_CSV = {
+  // Originals
+  1:  '.,.,.,.,K>,P\n.,.,.,.,.,.\n.,.,.,.,.,.',
+  2:  'K>,.,.\n.,.,.\n.,.,.',
+  3:  '.,.,.,.,.,.,K>,P',
+  4:  'K<,.,.,.,.\n.,.,.,.,.',
+  5:  '.,K>,.,P\n.,.,.,.\n.,.,.,.',
+  6:  'K<,.,.,.,.\n.,.,.,.,.',
+  7:  '.,.,.,.,P\nK<,A,A,A,P',
+  8:  '.,.,P,.,P,.,.\n.,.,P,.,.,.,P\n.,.,.,.,.,.,K>',
+  9:  '.,.,.,.,P\nP,.,.,.,K>',
+  // Code in Place (Stanford)
+  101:'.,.,.,.,K>\n.,.,.,.,.',
+  102:'.,.,.,K>\nP,P,.,.\n.,.,.,.',
+  103:'P,P,.,P,P\nP,K>,.,.,P\nP,P,.,P,P\n.,.,.,.,.',
+  104:'.,.,.,.,.\n.,.,.,.,.\n.,.,.,.,K>',
+  105:'.,.,.,.,.,.,.,.,K>\n.,P,.,.,.,P,.,.,.\n.,P,.,.,.,P,.,.,.',
+  106:'.,.,.,.,.,.\n.,.,.,.,.,.\n.,.,.,.,.,K>',
 };
 
 const LS_KEY_CODE = 'karel-code-v3';
@@ -1101,14 +1130,11 @@ function openChallenges() {
     groups[cat].push(ch);
   }
 
-  // Ordre de categories
-  const catOrder = ['basic', 'cp'];
-  let html = '';
-  for (const cat of catOrder) {
-    if (!groups[cat]) continue;
-    const label = t('ui.category_' + cat) || cat;
-    html += `<div class="ch-section-hd">${escHtml(label)}</div>`;
-    html += groups[cat].map(ch => {
+  // Ordre: Stanford CP primer, Originals després
+  const catOrder = ['cp', 'basic'];
+
+  function renderCards(arr) {
+    return arr.map(ch => {
       const numLabel = ch.category === 'cp'
         ? `CP ${ch.id - 100}`
         : `${escHtml(t('log.challenge'))} ${ch.id}`;
@@ -1120,6 +1146,18 @@ function openChallenges() {
         <div><span class="ch-tag ${escHtml(ch.level)}">${escHtml(t('ui.level_' + ch.level))}</span></div>
       </div>`;
     }).join('');
+  }
+
+  let html = '';
+  for (let i = 0; i < catOrder.length; i++) {
+    const cat = catOrder[i];
+    if (!groups[cat]) continue;
+    const label = t('ui.category_' + cat) || cat;
+    const openAttr = i === 0 ? ' open' : '';   // primer grup obert per defecte
+    html += `<details class="ch-details"${openAttr}>
+      <summary class="ch-summary">${escHtml(label)}<span class="ch-count">${groups[cat].length}</span></summary>
+      <div class="ch-grid">${renderCards(groups[cat])}</div>
+    </details>`;
   }
   list.innerHTML = html;
 
@@ -1148,6 +1186,18 @@ function loadChallenge(id) {
   closeModal('modal-challenges');
   const logLabel = chUI.category === 'cp' ? `CP ${id - 100}` : `${t('log.challenge')} ${id}`;
   log(`${logLabel}: ${chUI.title}`, 'ok');
+
+  // Mostra botons d'objectiu i codi inicial
+  const btnGoal = document.getElementById('btn-goal');
+  const btnRestore = document.getElementById('btn-restore');
+  if (btnGoal) {
+    btnGoal.style.display = GOAL_CSV[id] ? '' : 'none';
+    btnGoal.textContent = t('ui.goal_btn') || '🎯 Objectiu';
+  }
+  if (btnRestore) {
+    btnRestore.style.display = '';
+    btnRestore.textContent = t('ui.restore_btn') || '📝 Codi inicial';
+  }
 }
 
 function openBlankModal() { openModal('modal-blank'); }
@@ -2515,6 +2565,63 @@ function checkChallengeSuccess() {
 
     openModal('modal-success');
   }, 400);
+}
+
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 17b-bis. OBJECTIU + RESTAURAR CODI
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+function renderGoalPreview(csv, container) {
+  const { grid, rows, cols, kStart } = parseCSV(csv);
+  const maxDim = Math.max(rows, cols);
+  const cellPx = Math.max(18, Math.min(38, Math.floor(280 / maxDim)));
+  const fs = Math.max(10, cellPx - 6) + 'px';
+  let html = `<div class="goal-grid" style="grid-template-columns:repeat(${cols},${cellPx}px);grid-template-rows:repeat(${rows},${cellPx}px);gap:2px;">`;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const isKarel = (c === kStart.x && r === kStart.y);
+      if (isKarel) {
+        html += `<div class="gcell c-k" style="font-size:${fs}">${KAREL_ASSETS.MEDUSA.replace('class="karel-entity"', 'class="karel-entity" data-dir="' + DIRS[kStart.dir].dataDir + '"')}</div>`;
+      } else {
+        const v = grid[r][c];
+        if (v === 'P') html += `<div class="gcell c-p" style="font-size:${fs}">${KAREL_ASSETS.CORALL}</div>`;
+        else if (v === 'A') html += `<div class="gcell c-a" style="font-size:${fs}">${KAREL_ASSETS.BOMBOLLA}</div>`;
+        else html += `<div class="gcell c-e"></div>`;
+      }
+    }
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function showGoalModal() {
+  if (!currentChallengeId) return;
+  const csv = GOAL_CSV[currentChallengeId];
+  if (!csv) return;
+  const container = document.getElementById('goal-grid');
+  const descEl = document.getElementById('goal-desc');
+  const titleEl = document.getElementById('modal-goal-title');
+  if (titleEl) titleEl.textContent = t('ui.goal_title') || '🎯 Objectiu';
+  if (descEl) descEl.textContent = t('ui.goal_desc') || '';
+  renderGoalPreview(csv, container);
+  openModal('modal-goal');
+}
+
+function restoreChallengeCode() {
+  if (!currentChallengeId) return;
+  const msg = t('ui.restore_confirm') || 'Recuperar el codi inicial?';
+  if (!confirm(msg)) return;
+  const chCode = I18N[currentCodeLang].challenges.find(c => c.id === currentChallengeId);
+  if (!chCode) return;
+  loadMapFromCSV(chCode.csv);
+  const ta = document.getElementById('code-editor');
+  if (ta) {
+    ta.value = chCode.code;
+    localStorage.setItem(LS_KEY_CODE, chCode.code);
+    updateEditor();
+  }
+  log(t('ui.restore_btn') || '📝 Codi inicial', 'ok');
 }
 
 

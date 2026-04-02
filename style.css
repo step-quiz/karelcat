@@ -541,7 +541,15 @@ body.light .lbg-row.active {
 
 /* ── REPTES ───────────────────────────────────────── */
 
-#challenges-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px; overflow-y: auto; }
+#challenges-list { padding: 10px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.ch-details { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.ch-details[open] { border-color: var(--accent); }
+.ch-summary { padding: 10px 14px; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.5px; color: var(--accent); cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; background: rgba(255,255,255,.03); }
+.ch-summary::-webkit-details-marker { display: none; }
+.ch-summary::before { content: '▸'; font-size: .8rem; transition: transform .15s; }
+.ch-details[open] > .ch-summary::before { transform: rotate(90deg); }
+.ch-count { margin-left: auto; font-size: 0.6rem; font-weight: 400; background: var(--border); color: var(--muted); padding: 1px 7px; border-radius: 9px; }
+.ch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 14px; }
 .ch-card { padding: 12px 14px; border: 1px solid var(--border); border-radius: 5px; cursor: pointer; background: #0d0d0d; transition: border-color .1s, background .1s; display: flex; flex-direction: column; gap: 4px; }
 .ch-card:hover { border-color: var(--accent); background: var(--accent-dim); }
 .ch-num   { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
@@ -553,8 +561,15 @@ body.light .lbg-row.active {
 .ch-tag.easy   { background: rgba(80,180,80,.15);  color: #80c880; }
 .ch-tag.medium { background: rgba(221,221,216,.15); color: var(--accent); }
 .ch-tag.hard   { background: rgba(224,85,85,.15);  color: var(--error); }
-.ch-section-hd { grid-column: 1 / -1; padding: 10px 4px 4px; margin-top: 6px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.6px; color: var(--accent); border-bottom: 1px solid var(--border); }
-.ch-section-hd:first-child { margin-top: 0; }
+
+/* ── Goal preview grid ── */
+.goal-grid-wrap { display: flex; justify-content: center; padding: 8px 0; }
+.goal-grid { display: inline-grid; gap: 2px; background: var(--border); padding: 2px; border-radius: 4px; }
+.gcell { display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 2px; }
+.gcell.c-e { background: var(--surface); }
+.gcell.c-p { background: var(--surface); }
+.gcell.c-a { background: var(--surface); }
+.gcell.c-k { background: var(--surface); }
 
 
 /* ── EDIT-MAPA.HTML ───────────────────────────────── */
@@ -651,6 +666,9 @@ body.light .blank-form     { background: #eee9df !important; }
 body.light .edit-tools     { background: #eee9df !important; }
 body.light .ch-card        { background: #ebe6da; }
 body.light .ch-card:hover  { background: var(--accent-dim); }
+body.light .ch-details     { border-color: #ccccc8; }
+body.light .ch-summary     { background: rgba(0,0,0,.03); }
+body.light .gcell.c-e, body.light .gcell.c-p, body.light .gcell.c-a, body.light .gcell.c-k { background: #E0E4E8; }
 body.light .lbox-empty     { background: #e5e0d5; }
 
 /* Cel·les del tauler: tonalitats càlides */
@@ -729,7 +747,7 @@ body.light .autocomplete-dropdown { box-shadow: 0 4px 14px rgba(0,0,0,.2); }
   .map-col  { border-right: none; border-bottom: 1px solid var(--border); }
   .code-col { min-height: 60vh; }
   .world-area { min-height: 40vw; }
-  #challenges-list { grid-template-columns: 1fr; }
+  .ch-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 820px) and (orientation: portrait) {
