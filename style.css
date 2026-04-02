@@ -527,7 +527,7 @@ body.light .lbg-row.active {
 .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 100; align-items: center; justify-content: center; }
 .modal-bg.open { display: flex; }
 .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; width: 440px; max-width: 95vw; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.7); }
-.modal-wide { width: 700px; height: 90vh; }
+.modal-wide { width: 700px; }
 .modal-hd { padding: 10px 14px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .modal-hd button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; }
 .modal-hd button:hover { color: var(--text); }
@@ -541,7 +541,7 @@ body.light .lbg-row.active {
 
 /* ── REPTES ───────────────────────────────────────── */
 
-#challenges-list { padding: 10px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 0; }
+#challenges-list { padding: 10px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; max-height: calc(90vh - 110px); }
 .ch-details { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
 .ch-details[open] { border-color: var(--accent); }
 .ch-summary { padding: 10px 14px; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.5px; color: var(--accent); cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; background: rgba(255,255,255,.03); }
@@ -820,6 +820,7 @@ body.light .autocomplete-dropdown { box-shadow: 0 4px 14px rgba(0,0,0,.2); }
 
 @media (max-width: 600px) {
   .modal-wide { height: 85vh; }   /* en mòbil usa tota l'alçada disponible */
+  #challenges-list { max-height: calc(85vh - 110px); }
   .topbar { padding: 0 10px; gap: 8px; flex-wrap: nowrap; }
   .topbar-hamburger { display: flex; align-items: center; justify-content: center; }
 
