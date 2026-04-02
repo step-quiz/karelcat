@@ -2792,5 +2792,5 @@ if (codeTA) {
 // Actualitza la UI amb l'idioma de la interfície
 updateUI();
 
-// Millora 2: mostra l'onboarding si és la primera visita
-setTimeout(maybeShowOnboard, 500);
+// Millora 2: mostra l'onboarding si és la primera visita (no si ve amb ?mapa=)
+if (!_urlMapa) setTimeout(maybeShowOnboard, 500);
