@@ -30,21 +30,21 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
 
-/* ── MODE CLAR — redefinició completa de variables ─── */
+/* ── MODE CLAR — Paper càlid ─────────────────────── */
 body.light {
-  --bg:         #f5f5f5;
-  --surface:    #ffffff;
-  --border:     #e0e0e0;
-  --text:       #242424;
-  --muted:      #6e6e6e;
-  --accent:     #0066cc;            /* blau més fosc per contrast sobre fons clar */
-  --accent-dim: rgba(0,102,204,0.10);
-  --error:      #d32f2f;
-  --error-dim:  rgba(211,47,47,0.10);
-  --cell-empty: #dde3ec;
-  --cell-wall:  #c8cdd8;
-  --cell-aqua:  #c8dff5;
-  --cell-karel: #f5d0ef;
+  --bg:         #f0ece3;            /* paper de quadern, càlid */
+  --surface:    #faf7f2;            /* superfície lleugerament més clara */
+  --border:     #d9d3c7;            /* vora tònica terra */
+  --text:       #1a1510;            /* marró molt fosc, més natural que negre pur */
+  --muted:      #7a6f60;            /* mut càlid */
+  --accent:     #0055aa;            /* blau una mica més fosc per contrast sobre crema */
+  --accent-dim: rgba(0,85,170,0.10);
+  --error:      #c0392b;
+  --error-dim:  rgba(192,57,43,0.10);
+  --cell-empty: #e2ddd4;            /* cel·la buida: sorra */
+  --cell-wall:  #c9c2b5;            /* paret: pedra càlida */
+  --cell-aqua:  #c5daf0;            /* cel·la d'aigua: blau suau */
+  --cell-karel: #f2cce8;            /* cel·la Karel: rosa crema */
 }
 body.light { background: var(--bg); color: var(--text); }
 body {
