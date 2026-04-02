@@ -639,27 +639,42 @@ body.light .world-area.editing-always .cell:hover::after { background: rgba(221,
 }
 
 
-/* ── MODE CLAR ────────────────────────────────────── */
+/* ── MODE CLAR — overrides d'elements hardcodejats ── */
 
-body.light {
-  --bg: #d2d2cb; --surface: #e5e5e0; --border: #ccccc8;
-  --text: #10100f; --muted: #5c5c58; --accent: #1a1a16;     /* FIX WCAG: muted era #888880 (~3.3:1), ara ~4.7:1; accent era #906800 (~3.5:1), ara ~5.0:1 */
-  --accent-dim: rgba(221,221,216,.12); --error: #cc2222; --error-dim: rgba(204,34,34,.12);
-}
-body.light .c-e { background: #E0E4E8 !important; }
-body.light .c-p { background: #E0E4E8 !important; }
-body.light .c-a { background: #E0E4E8 !important; }
-body.light .c-k { background: #E0E4E8 !important; }
-body.light .karel-entity { color: #B9138D; filter: drop-shadow(0 0 3px rgba(185,19,141,.4)); }
-body.light .editor-wrap, body.light #log, body.light .edit-tools, body.light .blank-form, body.light #challenges-list { background: #e8e8e3 !important; }
-body.light #code-highlight { color: var(--text) !important; }
-body.light #line-bg        { background: transparent; }
-body.light #log            { background: #e0e0da !important; }
-body.light .hl-cm          { color: #aaa89e !important; }
-body.light .ch-card        { background: #e0e0da; }
+/* Fons de l'editor i àrees hardcodejades en negre */
+body.light .editor-wrap    { background: #eee9df !important; }
+body.light #line-numbers   { background: #eee9df !important; }
+body.light #log            { background: #e8e3d8 !important; }
+body.light .blank-form     { background: #eee9df !important; }
+body.light .edit-tools     { background: #eee9df !important; }
+body.light .ch-card        { background: #ebe6da; }
 body.light .ch-card:hover  { background: var(--accent-dim); }
-body.light .lbox-empty     { background: #e0e4e8; }
-body.light .lang-btn.active { background: var(--accent); color: #000; }
+body.light .lbox-empty     { background: #e5e0d5; }
+
+/* Cel·les del tauler: tonalitats càlides */
+body.light .c-e { background: var(--cell-empty) !important; }
+body.light .c-p { background: var(--cell-wall)  !important; }
+body.light .c-a { background: var(--cell-aqua)  !important; }
+body.light .c-k { background: var(--cell-karel) !important; }
+body.light .karel-entity { color: #B9138D; filter: drop-shadow(0 0 3px rgba(185,19,141,.4)); }
+
+/* Text base de l'editor */
+body.light #code-highlight { color: var(--text); }
+body.light #line-bg        { background: transparent; }
+
+/* Ressaltat sintàctic: versions fosques per a fons clar
+   — els colors originals (cian, rosa, verd) estan calibrats per negre */
+body.light .hl-kw   { color: #0047ab; }   /* blau cobalt — keywords */
+body.light .hl-cmd  { color: #0070a0; }   /* cian fosc   — comandes */
+body.light .hl-cond { color: #8b1a8b; }   /* porpra fosc — condicions */
+body.light .hl-user { color: #1a6b5a; }   /* verd bosc   — funcions usuari */
+body.light .hl-num  { color: #3a7a3a; }   /* verd mig    — números */
+body.light .hl-cm   { color: #8c826e; }   /* ocre mut    — comentaris */
+body.light .hl-br   { color: #7a7060; }   /* terra       — claus/parèntesis */
+
+/* Botons de llengua actiu i ref-token kw */
+body.light .lang-btn.active          { background: var(--accent); color: #fff; }
+body.light .ref-token.kw             { background: rgba(0,71,171,.08); color: #0047ab; border-color: rgba(0,71,171,.18); }
 
 
 /* ── AUTOCOMPLETAT ────────────────────────────────── */
