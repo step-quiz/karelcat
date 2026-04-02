@@ -422,10 +422,10 @@ body.light .lbg-row.active {
   user-select: none;
   overflow: hidden;
 }
-.c-e { background: #0c1017; }
-.c-p { background: #9ab60c; }
-.c-a { background: #2b6cb0; }
-.c-k { background: #B9138D; }
+.c-e { background: #0C1017; }
+.c-p { background: #262D01; }
+.c-a { background: #021831; }
+.c-k { background: #2C0221; }
 
 /* ── ASSETS SVG (Pixel Art) ──────────────────────── */
 
@@ -557,10 +557,10 @@ body.light .world-area.editing-always .cell:hover::after { background: rgba(185,
 .legend { gap: 5px; }
 .li { display: flex; align-items: center; gap: 7px; font-size: 0.62rem; color: var(--muted); }
 .lbox { width:13px; height:13px; border-radius:2px; flex-shrink:0; border:1px solid var(--border); }
-.lbox-karel { background:#B9138D; border-color:var(--accent); }
-.lbox-wall  { background:#9ab60c; }
-.lbox-water { background:#2b6cb0; }
-.lbox-empty { background:#0c1017; }
+.lbox-karel { background:#2C0221; border-color:var(--accent); }
+.lbox-wall  { background:#262D01; }
+.lbox-water { background:#021831; }
+.lbox-empty { background:#0C1017; }
 
 /* Undo/Redo buttons */
 .undo-row { display: flex; gap: 4px; }
@@ -616,10 +616,10 @@ body.light {
   --text: #10100f; --muted: #5c5c58; --accent: #b9138d;     /* FIX WCAG: muted era #888880 (~3.3:1), ara ~4.7:1; accent era #906800 (~3.5:1), ara ~5.0:1 */
   --accent-dim: rgba(185,19,141,.12); --error: #cc2222; --error-dim: rgba(204,34,34,.12);
 }
-body.light .c-e { background: #e0e4e8 !important; }
-body.light .c-p { background: #9ab60c !important; }
-body.light .c-a { background: #2b6cb0 !important; }
-body.light .c-k { background: #B9138D !important; }
+body.light .c-e { background: #E0E4E8 !important; }
+body.light .c-p { background: #E9F0C7 !important; }
+body.light .c-a { background: #CEDDEE !important; }
+body.light .c-k { background: #ECC6E2 !important; }
 body.light .karel-entity { color: var(--accent); filter: drop-shadow(0 0 3px rgba(185,19,141,.4)); }
 body.light .editor-wrap, body.light #log, body.light .edit-tools, body.light .blank-form, body.light #challenges-list { background: #e8e8e3 !important; }
 body.light #code-highlight { color: var(--text) !important; }
