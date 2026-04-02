@@ -101,6 +101,9 @@ const I18N = {
       success_title: '¡Repte superat!', success_msg: 'Excel·lent! Has resolt l\'exercici correctament.',
       success_more: '🎯 Més reptes', success_close: 'Continua',
       onboard_next: 'Següent →', onboard_prev: '← Enrere', onboard_start: 'Comencem! 🚀', onboard_skip: 'Salta',
+      return_title: 'Benvingut de nou!', return_subtitle: 'Que vols fer?',
+      return_lbl_challenge: 'Tria un repte', return_desc_challenge: 'Clàssics o Code in Place (Stanford)',
+      return_lbl_csv: 'Carrega un mapa CSV', return_desc_csv: 'Obre un mapa personalitzat des del teu ordinador',
       hint_btn: '💡 Pista', hint_locked: '🔒 Pista ({time})', hint_panel_title: '💡 Pista', hint_next: 'Pista 2 →', hint_close: 'Tanca', hint_exhausted: 'Ja has vist totes les pistes!', hint_waiting: 'Pista disponible en',
       category_basic: '📘 Reptes originals', category_cp: '🎓 Code in Place (Stanford)',
       goal_btn: '🎯 Objectiu', goal_title: '🎯 Objectiu del repte', goal_desc: 'Així ha de quedar el món quan el programa acabi:',
@@ -323,6 +326,9 @@ const I18N = {
       success_title: '¡Reto superado!', success_msg: '¡Excelente! Has resuelto el ejercicio correctamente.',
       success_more: '🎯 Más retos', success_close: 'Continuar',
       onboard_next: 'Siguiente →', onboard_prev: '← Atrás', onboard_start: '¡Empecemos! 🚀', onboard_skip: 'Saltar',
+      return_title: '¡Bienvenido de nuevo!', return_subtitle: '¿Qué quieres hacer?',
+      return_lbl_challenge: 'Elegir un reto', return_desc_challenge: 'Clásicos o Code in Place (Stanford)',
+      return_lbl_csv: 'Cargar un mapa CSV', return_desc_csv: 'Abre un mapa personalizado desde tu ordenador',
       hint_btn: '💡 Pista', hint_locked: '🔒 Pista ({time})', hint_panel_title: '💡 Pista', hint_next: 'Pista 2 →', hint_close: 'Cerrar', hint_exhausted: '¡Ya has visto todas las pistas!', hint_waiting: 'Pista disponible en',
       category_basic: '📘 Retos originales', category_cp: '🎓 Code in Place (Stanford)',
       goal_btn: '🎯 Objetivo', goal_title: '🎯 Objetivo del reto', goal_desc: 'Así debe quedar el mundo cuando el programa termine:',
@@ -545,6 +551,9 @@ const I18N = {
       success_title: 'Challenge complete!', success_msg: 'Excellent! You solved the exercise correctly.',
       success_more: '🎯 More challenges', success_close: 'Continue',
       onboard_next: 'Next →', onboard_prev: '← Back', onboard_start: "Let's go! 🚀", onboard_skip: 'Skip',
+      return_title: 'Welcome back!', return_subtitle: 'What do you want to do?',
+      return_lbl_challenge: 'Pick a challenge', return_desc_challenge: 'Classic exercises or Code in Place (Stanford)',
+      return_lbl_csv: 'Load a CSV map', return_desc_csv: 'Open a custom map from your computer',
       hint_btn: '💡 Hint', hint_locked: '🔒 Hint ({time})', hint_panel_title: '💡 Hint', hint_next: 'Hint 2 →', hint_close: 'Close', hint_exhausted: 'You\'ve seen all the hints!', hint_waiting: 'Hint available in',
       category_basic: '📘 Original challenges', category_cp: '🎓 Code in Place (Stanford)',
       goal_btn: '🎯 Goal', goal_title: '🎯 Challenge goal', goal_desc: 'This is how the world should look when the program finishes:',
@@ -2701,7 +2710,21 @@ function onboardSkip() {
 }
 
 function maybeShowOnboard() {
-  if (!localStorage.getItem(LS_ONBOARD)) openOnboard();
+  if (!localStorage.getItem(LS_ONBOARD)) {
+    openOnboard();
+  } else {
+    openReturnWelcome();
+  }
+}
+
+function openReturnWelcome() {
+  document.getElementById('return-title').textContent      = t('ui.return_title')        || 'Benvingut de nou!';
+  document.getElementById('return-subtitle').textContent   = t('ui.return_subtitle')     || 'Que vols fer?';
+  document.getElementById('return-lbl-challenge').textContent = t('ui.return_lbl_challenge') || 'Tria un repte';
+  document.getElementById('return-desc-challenge').textContent= t('ui.return_desc_challenge')|| 'Clàssics o Code in Place (Stanford)';
+  document.getElementById('return-lbl-csv').textContent    = t('ui.return_lbl_csv')      || 'Carrega un mapa CSV';
+  document.getElementById('return-desc-csv').textContent   = t('ui.return_desc_csv')     || 'Obre un mapa personalitzat des del teu ordinador';
+  openModal('modal-return');
 }
 
 

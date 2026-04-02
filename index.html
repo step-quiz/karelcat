@@ -137,6 +137,25 @@
   </div>
 </div>
 
+<!-- Modal: Retorn (2a+ visita) -->
+<div class="modal-bg" id="modal-return">
+  <div class="modal modal-return">
+    <span class="return-icon" id="return-icon">👋</span>
+    <div class="return-title"   id="return-title"></div>
+    <div class="return-subtitle" id="return-subtitle"></div>
+    <div class="return-options">
+      <button class="return-opt-btn" id="return-opt-challenge" onclick="closeModal('modal-return'); openChallenges()">
+        <span class="opt-icon">🎯</span>
+        <span><span class="opt-label" id="return-lbl-challenge"></span><span class="opt-desc" id="return-desc-challenge"></span></span>
+      </button>
+      <button class="return-opt-btn" id="return-opt-csv" onclick="closeModal('modal-return'); triggerOpenCSV()">
+        <span class="opt-icon">📂</span>
+        <span><span class="opt-label" id="return-lbl-csv"></span><span class="opt-desc" id="return-desc-csv"></span></span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Benvinguda (Millora 2) -->
 <div class="modal-bg" id="modal-onboard">
   <div class="modal modal-onboard">

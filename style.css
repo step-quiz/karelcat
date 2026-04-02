@@ -541,7 +541,7 @@ body.light .lbg-row.active {
 
 /* ── REPTES ───────────────────────────────────────── */
 
-#challenges-list { padding: 10px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+#challenges-list { padding: 10px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 0; }
 .ch-details { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
 .ch-details[open] { border-color: var(--accent); }
 .ch-summary { padding: 10px 14px; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.5px; color: var(--accent); cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; background: rgba(255,255,255,.03); }
@@ -1059,6 +1059,23 @@ body.light .help-btn { background: #fff0aa; border-color: #b89a00; }
    ══════════════════════════════════════════════════════ */
 
 .modal-onboard { max-width: 430px; }
+
+/* ── Modal de retorn (2a+ visita) ── */
+.modal-return { max-width: 380px; text-align: center; }
+.modal-return .return-icon { font-size: 2.6rem; display: block; margin: 18px 0 8px; line-height: 1; }
+.modal-return .return-title { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; color: var(--fg); }
+.modal-return .return-subtitle { font-size: .82rem; color: var(--fg-muted); margin-bottom: 20px; }
+.modal-return .return-options { display: flex; flex-direction: column; gap: 10px; padding: 0 20px 20px; }
+.return-opt-btn {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; border-radius: 7px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--fg); cursor: pointer;
+  font-size: .9rem; text-align: left; transition: border-color .12s, background .12s;
+}
+.return-opt-btn:hover { border-color: var(--accent); background: var(--accent-dim); }
+.return-opt-btn .opt-icon { font-size: 1.6rem; flex-shrink: 0; }
+.return-opt-btn .opt-label { font-weight: 600; display: block; font-size: .88rem; }
+.return-opt-btn .opt-desc  { display: block; font-size: .76rem; color: var(--fg-muted); margin-top: 2px; }
 
 .onboard-body {
   text-align: center;
