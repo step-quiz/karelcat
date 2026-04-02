@@ -48,7 +48,13 @@ body {
   flex-shrink: 0;
 }
 
-.logo {
+.logo-icon {
+  display: inline-flex;
+  align-items: center;
+  color: #B9138D;
+  filter: drop-shadow(0 0 3px rgba(185,19,141,.5));
+}
+body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,141,.4)); }
   font-family: 'Syne', sans-serif;
   font-size: 0.9rem;
   font-weight: 800;
@@ -440,13 +446,13 @@ body.light .lbg-row.active {
 .karel-entity {
   transition: transform 0.2s ease-in-out;
   transform-origin: center center;
-  color: var(--accent);
-  filter: drop-shadow(0 0 4px rgba(221,221,216,.5));
+  color: #E684CC;
+  filter: drop-shadow(0 0 4px rgba(230,132,204,.5));
   animation: medusa-pulse 2s ease-in-out infinite;
 }
 @keyframes medusa-pulse {
-  0%,100% { filter: drop-shadow(0 0 3px rgba(221,221,216,.4)); }
-  50%     { filter: drop-shadow(0 0 8px rgba(221,221,216,.8)); }
+  0%,100% { filter: drop-shadow(0 0 3px rgba(230,132,204,.4)); }
+  50%     { filter: drop-shadow(0 0 8px rgba(230,132,204,.8)); }
 }
 
 /* Direcció de la Medusa via data-dir (JS: svg.setAttribute('data-dir', ...)) */
@@ -620,7 +626,7 @@ body.light .c-e { background: #E0E4E8 !important; }
 body.light .c-p { background: #E0E4E8 !important; }
 body.light .c-a { background: #E0E4E8 !important; }
 body.light .c-k { background: #E0E4E8 !important; }
-body.light .karel-entity { color: var(--accent); filter: drop-shadow(0 0 3px rgba(221,221,216,.4)); }
+body.light .karel-entity { color: #B9138D; filter: drop-shadow(0 0 3px rgba(185,19,141,.4)); }
 body.light .editor-wrap, body.light #log, body.light .edit-tools, body.light .blank-form, body.light #challenges-list { background: #e8e8e3 !important; }
 body.light #code-highlight { color: var(--text) !important; }
 body.light #line-bg        { background: transparent; }
