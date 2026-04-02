@@ -70,7 +70,6 @@
         <button class="btn"   id="btn-clear" onclick="clearLog()">⌫ Log</button>
         <button class="btn"   id="btn-hint"  onclick="showNextHint()" style="display:none" disabled>🔒 Pista</button>
         <button class="btn"   id="btn-goal"    onclick="showGoalModal()" style="display:none">🎯 Objectiu</button>
-        <button class="btn"   id="btn-restore" onclick="restoreChallengeCode()" style="display:none">📝 Codi inicial</button>
       </div>
       <!-- Millora 2: panell de pistes -->
       <div id="hint-panel" class="hint-panel"></div>
@@ -157,17 +156,19 @@
 
 <!-- Modal: Objectiu del repte -->
 <div class="modal-bg" id="modal-goal">
-  <div class="modal" style="max-width:460px;">
+  <div class="modal" style="max-width:480px;">
     <div class="modal-hd">
       <span id="modal-goal-title">🎯 Objectiu</span>
       <button onclick="closeModal('modal-goal')">✕</button>
     </div>
-    <div id="goal-body" style="padding:14px;">
-      <div id="goal-desc" style="font-size:.72rem;color:var(--muted);margin-bottom:10px;line-height:1.6;"></div>
+    <div id="goal-body" class="goal-body">
+      <div id="goal-challenge-name" class="goal-challenge-name"></div>
+      <div id="goal-instructions" class="goal-instructions"></div>
+      <div id="goal-visual-label" class="goal-visual-label"></div>
       <div id="goal-grid" class="goal-grid-wrap"></div>
     </div>
     <div class="modal-ft">
-      <button class="btn" onclick="closeModal('modal-goal')">Tanca</button>
+      <button class="btn" id="btn-goal-close" onclick="closeModal('modal-goal')">Tanca</button>
     </div>
   </div>
 </div>

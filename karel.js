@@ -955,7 +955,6 @@ function updateUI() {
     'btn-ref':        'ui.ref_btn',
     'btn-modal-close':'ui.close',
     'btn-goal':       'ui.goal_btn',
-    'btn-restore':    'ui.restore_btn',
   };
   for (const [id, key] of Object.entries(ids)) {
     const el = document.getElementById(id);
@@ -1187,16 +1186,11 @@ function loadChallenge(id) {
   const logLabel = chUI.category === 'cp' ? `CP ${id - 100}` : `${t('log.challenge')} ${id}`;
   log(`${logLabel}: ${chUI.title}`, 'ok');
 
-  // Mostra botons d'objectiu i codi inicial
+  // Mostra botó d'objectiu (instruccions + previsualització)
   const btnGoal = document.getElementById('btn-goal');
-  const btnRestore = document.getElementById('btn-restore');
   if (btnGoal) {
-    btnGoal.style.display = GOAL_CSV[id] ? '' : 'none';
+    btnGoal.style.display = '';
     btnGoal.textContent = t('ui.goal_btn') || '🎯 Objectiu';
-  }
-  if (btnRestore) {
-    btnRestore.style.display = '';
-    btnRestore.textContent = t('ui.restore_btn') || '📝 Codi inicial';
   }
 }
 
@@ -2597,31 +2591,43 @@ function renderGoalPreview(csv, container) {
 
 function showGoalModal() {
   if (!currentChallengeId) return;
-  const csv = GOAL_CSV[currentChallengeId];
-  if (!csv) return;
-  const container = document.getElementById('goal-grid');
-  const descEl = document.getElementById('goal-desc');
+  const ch = I18N[currentUserLang]?.challenges?.find(c => c.id === currentChallengeId);
+  if (!ch) return;
+
+  // Títol del modal
   const titleEl = document.getElementById('modal-goal-title');
   if (titleEl) titleEl.textContent = t('ui.goal_title') || '🎯 Objectiu';
-  if (descEl) descEl.textContent = t('ui.goal_desc') || '';
-  renderGoalPreview(csv, container);
-  openModal('modal-goal');
-}
 
-function restoreChallengeCode() {
-  if (!currentChallengeId) return;
-  const msg = t('ui.restore_confirm') || 'Recuperar el codi inicial?';
-  if (!confirm(msg)) return;
-  const chCode = I18N[currentCodeLang].challenges.find(c => c.id === currentChallengeId);
-  if (!chCode) return;
-  loadMapFromCSV(chCode.csv);
-  const ta = document.getElementById('code-editor');
-  if (ta) {
-    ta.value = chCode.code;
-    localStorage.setItem(LS_KEY_CODE, chCode.code);
-    updateEditor();
+  // Nom del repte
+  const nameEl = document.getElementById('goal-challenge-name');
+  if (nameEl) {
+    const numLabel = ch.category === 'cp' ? `CP ${ch.id - 100}` : `${t('log.challenge')} ${ch.id}`;
+    nameEl.textContent = `${numLabel}: ${ch.title}`;
   }
-  log(t('ui.restore_btn') || '📝 Codi inicial', 'ok');
+
+  // Instruccions del repte (desc amb HTML sanititzat)
+  const instrEl = document.getElementById('goal-instructions');
+  if (instrEl) instrEl.innerHTML = sanitizeHtml(ch.desc);
+
+  // Previsualització visual de l'objectiu
+  const csv = GOAL_CSV[currentChallengeId];
+  const container = document.getElementById('goal-grid');
+  const labelEl = document.getElementById('goal-visual-label');
+  if (csv && container) {
+    if (labelEl) labelEl.textContent = t('ui.goal_desc') || '';
+    renderGoalPreview(csv, container);
+    container.style.display = '';
+    if (labelEl) labelEl.style.display = '';
+  } else {
+    if (container) container.style.display = 'none';
+    if (labelEl) labelEl.style.display = 'none';
+  }
+
+  // Botó tanca
+  const btnClose = document.getElementById('btn-goal-close');
+  if (btnClose) btnClose.textContent = t('ui.close') || 'Tanca';
+
+  openModal('modal-goal');
 }
 
 

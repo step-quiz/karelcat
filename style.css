@@ -562,6 +562,14 @@ body.light .lbg-row.active {
 .ch-tag.medium { background: rgba(221,221,216,.15); color: var(--accent); }
 .ch-tag.hard   { background: rgba(224,85,85,.15);  color: var(--error); }
 
+/* ── Goal modal content ── */
+.goal-body { padding: 16px; }
+.goal-challenge-name { font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.goal-instructions { font-size: 0.72rem; color: var(--muted); line-height: 1.7; margin-bottom: 14px; padding: 10px 12px; background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 5px; }
+.goal-instructions em { color: var(--accent); font-style: normal; }
+.goal-instructions code { color: #9cdcfe; font-family: var(--mono); }
+.goal-visual-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; text-align: center; }
+
 /* ── Goal preview grid ── */
 .goal-grid-wrap { display: flex; justify-content: center; padding: 8px 0; }
 .goal-grid { display: inline-grid; gap: 2px; background: var(--border); padding: 2px; border-radius: 4px; }
@@ -669,6 +677,7 @@ body.light .ch-card:hover  { background: var(--accent-dim); }
 body.light .ch-details     { border-color: #ccccc8; }
 body.light .ch-summary     { background: rgba(0,0,0,.03); }
 body.light .gcell.c-e, body.light .gcell.c-p, body.light .gcell.c-a, body.light .gcell.c-k { background: #E0E4E8; }
+body.light .goal-instructions { background: rgba(0,0,0,.04); }
 body.light .lbox-empty     { background: #e5e0d5; }
 
 /* Cel·les del tauler: tonalitats càlides */
