@@ -55,7 +55,8 @@ body {
   filter: drop-shadow(0 0 3px rgba(185,19,141,.5));
 }
 body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,141,.4)); }
-  font-family: 'Syne', sans-serif;
+
+.logo {
   font-size: 0.9rem;
   font-weight: 800;
   color: var(--accent);
