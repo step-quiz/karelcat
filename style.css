@@ -8,10 +8,10 @@
   --border:     #2a2a2a;
   --text:       #ddddd8;
   --muted:      #8a8a85;
-  --accent:     #ddddd8;
-  --accent-dim: rgba(221,221,216,0.13);
-  --error:      #e30d0d;
-  --error-dim:  rgba(227,13,13,0.13);
+  --accent:     #569cd6;            /* FIX: era #ddddd8 = igual que --text, sense contrast */
+  --accent-dim: rgba(86,156,214,0.13);
+  --error:      #ff5252;            /* FIX: suavitzat de #e30d0d per evitar agressivitat sobre negre */
+  --error-dim:  rgba(255,82,82,0.13);
   --mono:       'Space Mono','Courier New',monospace;
   --cell-size:  44px;
   --topbar-h:   46px;
@@ -20,10 +20,33 @@
   --ed-line-height: 1.75;
   --ed-pad-top:     12px;
   --ed-pad-x:       14px;
+  /* Cel·les del tauler — extret a variables per facilitar el mode clar */
+  --cell-empty: #0C1017;
+  --cell-wall:  #0C1017;
+  --cell-aqua:  #000E1F;
+  --cell-karel: #24001A;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
+
+/* ── MODE CLAR — redefinició completa de variables ─── */
+body.light {
+  --bg:         #f5f5f5;
+  --surface:    #ffffff;
+  --border:     #e0e0e0;
+  --text:       #242424;
+  --muted:      #6e6e6e;
+  --accent:     #0066cc;            /* blau més fosc per contrast sobre fons clar */
+  --accent-dim: rgba(0,102,204,0.10);
+  --error:      #d32f2f;
+  --error-dim:  rgba(211,47,47,0.10);
+  --cell-empty: #dde3ec;
+  --cell-wall:  #c8cdd8;
+  --cell-aqua:  #c8dff5;
+  --cell-karel: #f5d0ef;
+}
+body.light { background: var(--bg); color: var(--text); }
 body {
   font-family: var(--mono);
   background: var(--bg);
@@ -270,24 +293,24 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
   height: calc(var(--ed-font-size) * var(--ed-line-height));
 }
 .lbg-row.active {
-  background: rgba(221,221,216,0.20);
+  background: rgba(86,156,214,0.20);
   box-shadow: inset 3px 0 0 var(--accent);   /* barra esquerra accent */
   animation: step-pulse 0.3s ease;
 }
 .lbg-row.error  { background: var(--error-dim); }
 
 @keyframes step-pulse {
-  0%   { background: rgba(221,221,216,0.50); }
-  100% { background: rgba(221,221,216,0.20); }
+  0%   { background: rgba(86,156,214,0.50); }
+  100% { background: rgba(86,156,214,0.20); }
 }
 body.light .lbg-row.active {
-  background: rgba(221,221,216,0.15);
+  background: rgba(0,102,204,0.12);
   box-shadow: inset 3px 0 0 var(--accent);
   animation: step-pulse-light 0.3s ease;
 }
 @keyframes step-pulse-light {
-  0%   { background: rgba(221,221,216,0.40); }
-  100% { background: rgba(221,221,216,0.15); }
+  0%   { background: rgba(0,102,204,0.28); }
+  100% { background: rgba(0,102,204,0.12); }
 }
 
 
@@ -352,16 +375,16 @@ body.light .lbg-row.active {
   overflow-x: auto;            /* scroll horitzontal per a línies llargues */
   z-index: 1;
 }
-#code-editor::selection { background: rgba(221,221,216,0.2); }
+#code-editor::selection { background: rgba(86,156,214,0.25); }
 
 
 /* ── RESSALTAT SINTÀCTIC (colors dels spans) ─ */
 
-.hl-kw   { color: var(--accent); font-weight: 700; }
+.hl-kw   { color: #569cd6; font-weight: 700; }  /* FIX: blau clàssic per keywords (era var(--accent)) */
 .hl-cmd  { color: #9cdcfe; }
 .hl-cond { color: #c586c0; }
 .hl-user { color: #4ec9b0; }
-.hl-num  { color: var(--accent); }
+.hl-num  { color: #b5cea8; }                    /* FIX: verd clàssic per números (era var(--accent)) */
 .hl-cm   { color: var(--muted); font-style: italic; }
 .hl-br   { color: var(--muted); }
 
@@ -429,10 +452,10 @@ body.light .lbg-row.active {
   user-select: none;
   overflow: hidden;
 }
-.c-e { background: #0C1017; }
-.c-p { background: #0C1017; }
-.c-a { background: #000E1F; }
-.c-k { background: #24001A; }
+.c-e { background: var(--cell-empty); }
+.c-p { background: var(--cell-wall); }
+.c-a { background: var(--cell-aqua); }
+.c-k { background: var(--cell-karel); }
 
 /* ── ASSETS SVG (Pixel Art) ──────────────────────── */
 
@@ -489,7 +512,7 @@ body.light .lbg-row.active {
 .btn:hover  { border-color: var(--accent); color: var(--accent); }
 .btn:active { transform: scale(0.96); }
 .btn.p { background: var(--accent); color: #000; border-color: var(--accent); }
-.btn.p:hover { background: #aaaaaa; border-color: #aaaaaa; color: #000; }
+.btn.p:hover { background: #7db8e8; border-color: #7db8e8; color: #000; }
 .btn.g { background: transparent; color: var(--accent); border-color: var(--accent); }
 .btn.g:hover { background: var(--accent-dim); }
 .btn.r { background: transparent; color: var(--muted); border-color: var(--border); }
