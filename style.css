@@ -174,11 +174,11 @@ body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,
   margin: 0 4px;
   flex-shrink: 0;
 }
-.toolbar-spacer { flex: 1; }
 .toolbar-bag {
   font-size: 0.65rem;
   color: var(--muted);
   white-space: nowrap;
+  margin-right: auto;
 }
 .toolbar-bag strong { color: var(--text); }
 
@@ -188,8 +188,11 @@ body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,
   gap: 6px;
   color: var(--muted);
   font-size: 0.62rem;
+  flex: 0 0 30vw;
+  max-width: 30vw;
+  min-width: 120px;
 }
-.speed-row input[type=range] { width: 70px; }
+.speed-row input[type=range] { flex: 1; width: auto; }
 input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 #speed-lbl { color: var(--text); min-width: 16px; text-align: center; }
 
@@ -212,6 +215,17 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 }
 .config-panel.open { display: flex; flex-direction: column; gap: 8px; }
 
+.config-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 2px 0;
+}
+.config-theme-btn {
+  align-self: stretch;
+  justify-content: flex-start;
+  font-size: 0.72rem;
+}
+
 
 /* ── LAYOUT PRINCIPAL ─────────────────────────────── */
 
@@ -219,7 +233,7 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 65% 35%;
+  grid-template-columns: 70% 30%;
   overflow: hidden;
 }
 

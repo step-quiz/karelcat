@@ -38,11 +38,12 @@
             <button class="lang-btn" onclick="setUserLang('en')">ENG</button>
           </div>
         </div>
+        <div class="config-divider"></div>
+        <button class="btn config-theme-btn" id="btn-theme" onclick="toggleLight()">🌓 Fosc / Clar</button>
       </div>
     </div>
 
     <button class="btn" id="btn-challenges" onclick="openChallenges()">🎯 Reptes</button>
-    <button class="btn" id="btn-theme"      onclick="toggleLight()">Fosc / Clar</button>
   </div>
 
   <button class="topbar-hamburger" id="topbar-hamburger" aria-label="Menú" aria-expanded="false">☰</button>
@@ -51,12 +52,13 @@
 
 <!-- TOOLBAR: controls d'execució en una sola fila -->
 <div class="toolbar">
-  <button class="btn" id="btn-ref" onclick="toggleRef()">📋 Ref</button>
+  <button class="btn" id="btn-ref" onclick="toggleRef()">📋 Referència</button>
   <div class="speed-row">
     <span id="lbl-speed">Vel:</span>
     <input type="range" id="speed" min="1" max="6" step="1" value="2">
     <span id="speed-lbl">3</span>
   </div>
+  <span class="toolbar-bag"><span id="lbl-bag">Motxilla:</span> <strong id="st-bag">0</strong> 🫧</span>
   <div class="toolbar-sep"></div>
   <button class="btn p" id="btn-run"   onclick="runProgram()">▶ Executa</button>
   <button class="btn g" id="btn-step"  onclick="stepProgram()">⏭ Pas</button>
@@ -65,8 +67,6 @@
   <button class="btn"   id="btn-clear" onclick="clearLog()">⌫ Log</button>
   <button class="btn"   id="btn-hint"  onclick="showNextHint()" style="display:none" disabled>🔒 Pista</button>
   <button class="btn"   id="btn-goal"  onclick="showGoalModal()" style="display:none">🎯 Objectiu</button>
-  <div class="toolbar-spacer"></div>
-  <span class="toolbar-bag"><span id="lbl-bag">Motxilla:</span> <strong id="st-bag">0</strong> 🫧</span>
 </div>
 
 
