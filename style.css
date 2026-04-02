@@ -37,8 +37,8 @@ body.light {
   --border:     #d9d3c7;            /* vora tònica terra */
   --text:       #1a1510;            /* marró molt fosc, més natural que negre pur */
   --muted:      #7a6f60;            /* mut càlid */
-  --accent:     #5a5a54;            /* gris fosc — contrast net sobre fons crema */
-  --accent-dim: rgba(90,90,84,0.10);
+  --accent:     #73736C;            /* gris fosc — contrast net sobre fons crema */
+  --accent-dim: rgba(115,115,108,0.10);
   --error:      #c0392b;
   --error-dim:  rgba(192,57,43,0.10);
   --cell-empty: #e2ddd4;            /* cel·la buida: sorra */
@@ -674,7 +674,7 @@ body.light .hl-br   { color: #7a7060; }   /* terra       — claus/parèntesis *
 
 /* Botons de llengua actiu i ref-token kw */
 body.light .lang-btn.active          { background: var(--accent); color: #fff; }
-body.light .ref-token.kw             { background: rgba(90,90,84,.08); color: #5a5a54; border-color: rgba(90,90,84,.18); }
+body.light .ref-token.kw             { background: rgba(115,115,108,.08); color: #73736C; border-color: rgba(115,115,108,.18); }
 
 
 /* ── AUTOCOMPLETAT ────────────────────────────────── */
