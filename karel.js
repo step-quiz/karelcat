@@ -2158,7 +2158,10 @@ if (codeTA) {
   ta.addEventListener('input', () => {
     const word = currentWord();
     if (word.length < 2) { hideAC(); return; }
-    const matches = getVocab().filter(it => it.text.startsWith(word) && it.text !== word);
+    const wordLower = word.toLowerCase();
+    const matches = getVocab().filter(it =>
+      it.text.startsWith(wordLower) && it.text !== wordLower
+    );
     if (matches.length) showAC(matches); else hideAC();
   });
 
