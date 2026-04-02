@@ -683,8 +683,8 @@ body.light .lbox-empty     { background: #e5e0d5; }
 /* Cel·les del tauler: tonalitats càlides */
 body.light .c-e { background: var(--cell-empty) !important; }
 body.light .c-p { background: var(--cell-wall)  !important; }
-body.light .c-a { background: var(--cell-aqua)  !important; }
-body.light .c-k { background: var(--cell-karel) !important; }
+body.light .c-a { background: var(--cell-empty) !important; }
+body.light .c-k { background: var(--cell-empty) !important; }
 body.light .karel-entity { color: #B9138D; filter: drop-shadow(0 0 3px rgba(185,19,141,.4)); }
 
 /* Text base de l'editor */
