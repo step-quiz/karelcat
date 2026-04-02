@@ -1219,7 +1219,24 @@ function applyBlank() {
   closeModal('modal-blank');
 }
 
-function triggerOpenCSV() { document.getElementById('file-input')?.click(); }
+function triggerOpenCSV() {
+  // A edit-mapa.html existeix #file-input; a index.html usem #welcome-file-input
+  const input = document.getElementById('file-input') || document.getElementById('welcome-file-input');
+  input?.click();
+}
+
+function handleWelcomeCSV(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const csv = e.target.result.trim();
+    const url = location.href.split('?')[0] + '?mapa=' + encodeURIComponent(csv);
+    location.href = url;
+  };
+  reader.readAsText(file);
+  evt.target.value = '';
+}
 
 function handleFileOpen(evt) {
   const file = evt.target.files[0];
