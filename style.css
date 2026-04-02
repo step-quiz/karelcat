@@ -8,8 +8,8 @@
   --border:     #2a2a2a;
   --text:       #ddddd8;
   --muted:      #8a8a85;
-  --accent:     #569cd6;            /* FIX: era #ddddd8 = igual que --text, sense contrast */
-  --accent-dim: rgba(86,156,214,0.13);
+  --accent:     #a8a8a2;            /* gris clar — contrast net sobre fons fosc */
+  --accent-dim: rgba(168,168,162,0.13);
   --error:      #ff5252;            /* FIX: suavitzat de #e30d0d per evitar agressivitat sobre negre */
   --error-dim:  rgba(255,82,82,0.13);
   --mono:       'Space Mono','Courier New',monospace;
@@ -37,8 +37,8 @@ body.light {
   --border:     #d9d3c7;            /* vora tònica terra */
   --text:       #1a1510;            /* marró molt fosc, més natural que negre pur */
   --muted:      #7a6f60;            /* mut càlid */
-  --accent:     #0055aa;            /* blau una mica més fosc per contrast sobre crema */
-  --accent-dim: rgba(0,85,170,0.10);
+  --accent:     #5a5a54;            /* gris fosc — contrast net sobre fons crema */
+  --accent-dim: rgba(90,90,84,0.10);
   --error:      #c0392b;
   --error-dim:  rgba(192,57,43,0.10);
   --cell-empty: #e2ddd4;            /* cel·la buida: sorra */
@@ -512,7 +512,7 @@ body.light .lbg-row.active {
 .btn:hover  { border-color: var(--accent); color: var(--accent); }
 .btn:active { transform: scale(0.96); }
 .btn.p { background: var(--accent); color: #000; border-color: var(--accent); }
-.btn.p:hover { background: #7db8e8; border-color: #7db8e8; color: #000; }
+.btn.p:hover { background: #c8c8c2; border-color: #c8c8c2; color: #000; }
 .btn.g { background: transparent; color: var(--accent); border-color: var(--accent); }
 .btn.g:hover { background: var(--accent-dim); }
 .btn.r { background: transparent; color: var(--muted); border-color: var(--border); }
@@ -674,7 +674,7 @@ body.light .hl-br   { color: #7a7060; }   /* terra       — claus/parèntesis *
 
 /* Botons de llengua actiu i ref-token kw */
 body.light .lang-btn.active          { background: var(--accent); color: #fff; }
-body.light .ref-token.kw             { background: rgba(0,71,171,.08); color: #0047ab; border-color: rgba(0,71,171,.18); }
+body.light .ref-token.kw             { background: rgba(90,90,84,.08); color: #5a5a54; border-color: rgba(90,90,84,.18); }
 
 
 /* ── AUTOCOMPLETAT ────────────────────────────────── */
