@@ -104,6 +104,8 @@ const I18N = {
       return_title: 'Benvingut de nou!', return_subtitle: 'Que vols fer?',
       return_lbl_challenge: 'Tria un repte', return_desc_challenge: 'Clàssics o Code in Place (Stanford)',
       return_lbl_csv: 'Carrega un mapa CSV', return_desc_csv: 'Obre un mapa personalitzat des del teu ordinador',
+      return_lbl_edit: 'Edita mapa', return_desc_edit: 'Crea o modifica un mapa des de l\'editor visual',
+      onboard_tutorial: 'Coneix Karel en 2 minuts 📖',
       hint_btn: '💡 Pista', hint_locked: '🔒 Pista ({time})', hint_panel_title: '💡 Pista', hint_next: 'Pista 2 →', hint_close: 'Tanca', hint_exhausted: 'Ja has vist totes les pistes!', hint_waiting: 'Pista disponible en',
       category_basic: '📘 Reptes originals', category_cp: '🎓 Code in Place (Stanford)',
       goal_btn: '🎯 Objectiu', goal_title: '🎯 Objectiu del repte', goal_desc: 'Així ha de quedar el món quan el programa acabi:',
@@ -329,6 +331,8 @@ const I18N = {
       return_title: '¡Bienvenido de nuevo!', return_subtitle: '¿Qué quieres hacer?',
       return_lbl_challenge: 'Elegir un reto', return_desc_challenge: 'Clásicos o Code in Place (Stanford)',
       return_lbl_csv: 'Cargar un mapa CSV', return_desc_csv: 'Abre un mapa personalizado desde tu ordenador',
+      return_lbl_edit: 'Editar mapa', return_desc_edit: 'Crea o modifica un mapa desde el editor visual',
+      onboard_tutorial: 'Conoce a Karel en 2 minutos 📖',
       hint_btn: '💡 Pista', hint_locked: '🔒 Pista ({time})', hint_panel_title: '💡 Pista', hint_next: 'Pista 2 →', hint_close: 'Cerrar', hint_exhausted: '¡Ya has visto todas las pistas!', hint_waiting: 'Pista disponible en',
       category_basic: '📘 Retos originales', category_cp: '🎓 Code in Place (Stanford)',
       goal_btn: '🎯 Objetivo', goal_title: '🎯 Objetivo del reto', goal_desc: 'Así debe quedar el mundo cuando el programa termine:',
@@ -554,6 +558,8 @@ const I18N = {
       return_title: 'Welcome back!', return_subtitle: 'What do you want to do?',
       return_lbl_challenge: 'Pick a challenge', return_desc_challenge: 'Classic exercises or Code in Place (Stanford)',
       return_lbl_csv: 'Load a CSV map', return_desc_csv: 'Open a custom map from your computer',
+      return_lbl_edit: 'Edit map', return_desc_edit: 'Create or modify a map with the visual editor',
+      onboard_tutorial: 'Meet Karel in 2 minutes 📖',
       hint_btn: '💡 Hint', hint_locked: '🔒 Hint ({time})', hint_panel_title: '💡 Hint', hint_next: 'Hint 2 →', hint_close: 'Close', hint_exhausted: 'You\'ve seen all the hints!', hint_waiting: 'Hint available in',
       category_basic: '📘 Original challenges', category_cp: '🎓 Code in Place (Stanford)',
       goal_btn: '🎯 Goal', goal_title: '🎯 Challenge goal', goal_desc: 'This is how the world should look when the program finishes:',
@@ -2702,6 +2708,21 @@ function renderOnboardStep() {
       : (t('ui.onboard_next')  || 'Següent →');
   }
   if (skipBtn) skipBtn.textContent = t('ui.onboard_skip') || 'Salta';
+
+  // Tutorial button: only on last step (first visit)
+  const tutBtn = document.getElementById('onboard-tutorial');
+  if (tutBtn) {
+    const isLast2 = onboardStep === steps.length - 1;
+    tutBtn.style.display = isLast2 ? 'block' : 'none';
+    tutBtn.textContent = t('ui.onboard_tutorial') || '📖 Coneix Karel en 2 minuts';
+  }
+  // Edit map button: only on last step
+  const editBtn = document.getElementById('onboard-editmap');
+  if (editBtn) {
+    const isLast3 = onboardStep === steps.length - 1;
+    editBtn.style.display = isLast3 ? 'block' : 'none';
+    editBtn.textContent = '🗺️ ' + (t('ui.return_lbl_edit') || 'Edita mapa');
+  }
 }
 
 function onboardNext() {
@@ -2741,6 +2762,8 @@ function openReturnWelcome() {
   document.getElementById('return-desc-challenge').textContent= t('ui.return_desc_challenge')|| 'Clàssics o Code in Place (Stanford)';
   document.getElementById('return-lbl-csv').textContent    = t('ui.return_lbl_csv')      || 'Carrega un mapa CSV';
   document.getElementById('return-desc-csv').textContent   = t('ui.return_desc_csv')     || 'Obre un mapa personalitzat des del teu ordinador';
+  document.getElementById('return-lbl-edit').textContent   = t('ui.return_lbl_edit')     || 'Edita mapa';
+  document.getElementById('return-desc-edit').textContent  = t('ui.return_desc_edit')    || 'Crea o modifica un mapa des de l\'editor visual';
   openModal('modal-return');
 }
 

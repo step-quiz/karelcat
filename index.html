@@ -152,6 +152,10 @@
         <span class="opt-icon">📂</span>
         <span><span class="opt-label" id="return-lbl-csv"></span><span class="opt-desc" id="return-desc-csv"></span></span>
       </button>
+      <button class="return-opt-btn" id="return-opt-edit" onclick="closeModal('modal-return'); window.location.href='edit-mapa.html'">
+        <span class="opt-icon">🗺️</span>
+        <span><span class="opt-label" id="return-lbl-edit"></span><span class="opt-desc" id="return-desc-edit"></span></span>
+      </button>
     </div>
   </div>
 </div>
@@ -169,6 +173,8 @@
       <button class="btn"   id="onboard-prev" onclick="onboardPrev()" style="visibility:hidden">← Enrere</button>
       <button class="btn p" id="onboard-next" onclick="onboardNext()">Següent →</button>
     </div>
+    <button class="btn-onboard-tutorial" id="onboard-tutorial" onclick="window.location.href='tutorial.html'" style="display:none">📖 Coneix Karel en 2 minuts</button>
+    <button class="btn-onboard-tutorial" id="onboard-editmap" onclick="window.location.href='edit-mapa.html'" style="display:none">🗺️ Edita mapa</button>
     <button class="btn-onboard-skip" id="onboard-skip" onclick="onboardSkip()">Salta</button>
   </div>
 </div>
