@@ -90,7 +90,7 @@ const I18N = {
     ui: {
       challenges: '🎯 Reptes',
       challenges_title: '🎯 Reptes — tria un exercici per començar',
-      toggle_theme: 'Fosc / Clar',
+      toggle_theme: 'Fosc / Clar', config_btn: 'Configuració',
       run: '▶ Executa', step: '⏭ Pas', stop: '■ Para',
       reset: '↺ Reinicia', clear_log: '⌫ Missatges',
       speed: 'Velocitat:', bag: 'Motxilla:', close: 'Tanca',
@@ -317,7 +317,7 @@ const I18N = {
     ui: {
       challenges: '🎯 Retos',
       challenges_title: '🎯 Retos — elige un ejercicio para comenzar',
-      toggle_theme: 'Oscuro / Claro',
+      toggle_theme: 'Oscuro / Claro', config_btn: 'Configuración',
       run: '▶ Ejecuta', step: '⏭ Paso', stop: '■ Para',
       reset: '↺ Reinicia', clear_log: '⌫ Mensajes',
       speed: 'Velocidad:', bag: 'Mochila:', close: 'Cerrar',
@@ -544,7 +544,7 @@ const I18N = {
     ui: {
       challenges: '🎯 Challenges',
       challenges_title: '🎯 Challenges — pick an exercise to start',
-      toggle_theme: 'Dark / Light',
+      toggle_theme: 'Dark / Light', config_btn: 'Settings',
       run: '▶ Run', step: '⏭ Step', stop: '■ Stop',
       reset: '↺ Reset', clear_log: '⌫ Messages',
       speed: 'Speed:', bag: 'Bag:', close: 'Close',
@@ -952,6 +952,8 @@ function updateUI() {
   if (btnCh) btnCh.textContent = t('ui.challenges');
   const btnTheme = document.getElementById('btn-theme');
   if (btnTheme) btnTheme.textContent = t('ui.toggle_theme');
+  const lblConfig = document.getElementById('lbl-config');
+  if (lblConfig) lblConfig.textContent = t('ui.config_btn') || 'Configuració';
   // Etiquetes dels dos selectors
   const lblCode = document.getElementById('lbl-codelang');
   if (lblCode) lblCode.textContent = t('ui.lbl_codelang');
@@ -1281,13 +1283,23 @@ function copyMapURL() {
 
 function toggleLight() {
   document.body.classList.toggle('light');
-  // FIX: desa la preferència de tema
   localStorage.setItem('karel-theme', document.body.classList.contains('light') ? 'light' : 'dark');
 }
-// FIX: restaura el tema desat al carregar
 (function restoreTheme() {
   if (localStorage.getItem('karel-theme') === 'light') document.body.classList.add('light');
 })();
+
+// Config dropdown
+function toggleConfig() {
+  const panel = document.getElementById('config-panel');
+  if (panel) panel.classList.toggle('open');
+}
+// Tanca config si es fa clic fora
+document.addEventListener('click', function(e) {
+  const wrap = document.querySelector('.config-dropdown-wrap');
+  const panel = document.getElementById('config-panel');
+  if (wrap && panel && !wrap.contains(e.target)) panel.classList.remove('open');
+});
 
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
