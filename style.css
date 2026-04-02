@@ -42,9 +42,9 @@ body.light {
   --error:      #dc2626;
   --error-dim:  rgba(220,38,38,0.08);
   --cell-empty: #ffffff;            /* cel·la buida: blanc */
-  --cell-wall:  #1a1a1a;            /* paret: negre */
+  --cell-wall:  #ffffff;            /* paret: fons blanc (com bombolla) */
   --cell-aqua:  #dbeafe;            /* cel·la d'aigua: blau pàl·lid */
-  --cell-karel: #f0f0f0;            /* cel·la Karel: gris molt clar */
+  --cell-karel: #ffffff;            /* cel·la Karel: blanc */
 }
 body.light { background: var(--bg); color: var(--text); }
 body {
@@ -77,7 +77,7 @@ body {
   color: #B9138D;
   filter: drop-shadow(0 0 3px rgba(185,19,141,.5));
 }
-body.light .logo-icon { color: #2563eb; filter: drop-shadow(0 0 2px rgba(37,99,235,.3)); }
+body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,141,.3)); }
 
 .logo {
   font-size: 0.9rem;
@@ -541,7 +541,7 @@ body.light .lbg-row.active {
 
 /* ── REPTES ───────────────────────────────────────── */
 
-#challenges-list { padding: 10px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 0; }
+#challenges-list { padding: 10px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; flex: 1 1 0px; min-height: 0; }
 .ch-details { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
 .ch-details[open] { border-color: var(--accent); }
 .ch-summary { padding: 10px 14px; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.5px; color: var(--accent); cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; background: rgba(255,255,255,.03); }
@@ -666,7 +666,7 @@ body.light .world-area.editing-always .cell:hover::after { background: rgba(37,9
 
 /* ── MODE CLAR — overrides d'elements hardcodejats ── */
 
-/* Fons de l'editor i àrees hardcodejades en negre */
+/* Fons de l'editor i àrees — Stanford blanc net */
 body.light .editor-wrap    { background: #ffffff !important; }
 body.light #line-numbers   { background: #f5f5f5 !important; }
 body.light #log            { background: #f5f5f5 !important; }
@@ -680,120 +680,73 @@ body.light .gcell.c-e, body.light .gcell.c-p, body.light .gcell.c-a, body.light 
 body.light .goal-instructions { background: #f8f9fa; }
 body.light .lbox-empty     { background: #f0f0f0; }
 
-/* Cel·les del tauler: estil Stanford — blanc net amb línies */
+/* Cel·les del tauler: fons blanc per a totes */
 body.light .c-e { background: var(--cell-empty) !important; }
 body.light .c-p { background: var(--cell-wall)  !important; }
 body.light .c-a { background: var(--cell-empty) !important; }
 body.light .c-k { background: var(--cell-empty) !important; }
-body.light .karel-entity { color: #1a1a1a; filter: none; animation: none; }
+/* Medusa: MATEIX color rosat que en mode fosc */
+body.light .karel-entity { color: #E684CC; filter: drop-shadow(0 0 4px rgba(230,132,204,.5)); }
 
 /* ── Stanford-like World Grid (light mode) ─────────────── */
-/* La graella Stanford mostra interseccions amb "+" i línies fines.
-   Aproximem l'estil fent servir el gap com a línies i creus CSS. */
-body.light .world-area {
-  background: #ffffff;
-}
+body.light .world-area { background: #ffffff; }
 body.light #world-grid {
   background: #a0a0a0;   /* les línies del grid (gap) */
-  gap: 1px;
-  padding: 1px;
-  border-radius: 0;
+  gap: 1px; padding: 1px; border-radius: 0;
   border: 2px solid #333;
 }
-body.light .cell {
-  border-radius: 0;
-}
-/* Marca "+" a cada cel·la buida, simulant les interseccions Stanford */
+body.light .cell { border-radius: 0; }
+/* Marca "+" a cada cel·la buida */
 body.light .c-e::after {
-  content: '+';
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.55em;
-  color: #a0a0a0;
-  pointer-events: none;
-  font-family: var(--mono);
-  line-height: 1;
+  content: '+'; position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.55em; color: #a0a0a0; pointer-events: none;
+  font-family: var(--mono); line-height: 1;
 }
-/* Paret: bloc sòlid fosc (com Stanford) */
-body.light .c-p {
-  border-radius: 0;
-}
-/* Karel: sense pulsació, negre sòlid, estil net */
+body.light .c-p { border-radius: 0; }
 body.light .c-k::after { content: none; }
-/* Gota d'aigua: tint blau net */
+/* Gota d'aigua: tint blau intens */
 body.light .c-a svg g[fill="#90CDF4"] { fill: #3b82f6; }
 body.light .c-a svg g[fill="#FFFFFF"] { fill: #93c5fd; }
 body.light .c-a svg g[fill="#2B6CB0"] { fill: #1d4ed8; }
 body.light .c-a svg g[fill="#63B3ED"] { fill: #60a5fa; }
 body.light .c-a svg { animation: none; }
 
-/* Topbar: blanc net amb ombra subtil */
-body.light .topbar {
-  background: #ffffff;
-  border-bottom: 1px solid #d0d0d0;
-  box-shadow: 0 1px 3px rgba(0,0,0,.06);
-}
-/* Status bar i controls */
-body.light .status-bar {
-  background: #f8f9fa;
-}
-body.light .exec-controls {
-  background: #f8f9fa;
-}
-/* Botons: estil net */
-body.light .btn {
-  background: #ffffff;
-  border-color: #d0d0d0;
-  color: var(--text);
-}
-body.light .btn:hover {
-  background: #f0f4ff;
-  border-color: var(--accent);
-  color: var(--accent);
-}
-body.light .btn.p {
-  background: var(--accent);
-  color: #ffffff;
-  border-color: var(--accent);
-}
-body.light .btn.p:hover {
-  background: #1d4ed8;
-}
-/* Modal: ombra més neta */
+/* Topbar, status, controls: blanc net */
+body.light .topbar { background: #ffffff; border-bottom: 1px solid #d0d0d0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+body.light .status-bar { background: #f8f9fa; }
+body.light .exec-controls { background: #f8f9fa; }
+body.light .btn { background: #ffffff; border-color: #d0d0d0; color: var(--text); }
+body.light .btn:hover { background: #f0f4ff; border-color: var(--accent); color: var(--accent); }
+body.light .btn.p { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.light .btn.p:hover { background: #1d4ed8; }
 body.light .modal-bg { background: rgba(0,0,0,.45); }
 body.light .modal { box-shadow: 0 20px 60px rgba(0,0,0,.15); border-color: #d0d0d0; }
 body.light .modal-hd { border-bottom-color: #e0e0e0; }
 body.light .modal-ft { border-top-color: #e0e0e0; background: #f8f9fa; }
-/* Challenge tags */
 body.light .ch-tag.easy   { background: rgba(34,197,94,.12);  color: #16a34a; }
 body.light .ch-tag.medium { background: rgba(37,99,235,.10);  color: #2563eb; }
 body.light .ch-tag.hard   { background: rgba(220,38,38,.10);  color: #dc2626; }
 body.light .ch-desc code  { color: #0000ff; }
-/* Log area */
 body.light #log-wrap { border-top-color: #e0e0e0; }
 body.light #log-resize { background: #e0e0e0; }
 body.light #log-resize::after { background: #999; }
 body.light .log-ok  { color: #16a34a; }
 body.light .log-err { color: #dc2626; }
-/* Speed slider */
 body.light input[type=range] { accent-color: var(--accent); }
-/* Map column border */
 body.light .map-col { border-right-color: #e0e0e0; }
 
 /* Text base de l'editor */
 body.light #code-highlight { color: var(--text); }
 body.light #line-bg        { background: transparent; }
 
-/* Ressaltat sintàctic: Stanford-like — blau/verd/vermell clàssic */
-body.light .hl-kw   { color: #0000ff; }   /* blau pur — keywords (com Stanford) */
+/* Ressaltat sintàctic: Stanford-like */
+body.light .hl-kw   { color: #0000ff; }   /* blau pur — keywords */
 body.light .hl-cmd  { color: #008080; }   /* teal     — comandes */
 body.light .hl-cond { color: #7b1fa2; }   /* porpra   — condicions */
 body.light .hl-user { color: #006400; }   /* verd fosc — funcions usuari */
 body.light .hl-num  { color: #098658; }   /* verd     — números */
-body.light .hl-cm   { color: #008000; }   /* verd clàssic — comentaris (com Stanford) */
+body.light .hl-cm   { color: #008000; }   /* verd clàssic — comentaris */
 body.light .hl-br   { color: #333333; }   /* gris fosc — claus/parèntesis */
 
 /* Botons de llengua actiu i ref-token kw */

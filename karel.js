@@ -2709,18 +2709,16 @@ function renderOnboardStep() {
   }
   if (skipBtn) skipBtn.textContent = t('ui.onboard_skip') || 'Salta';
 
-  // Tutorial button: only on last step (first visit)
+  // Tutorial & edit-map buttons: only visible on last step
+  const isLastStep = onboardStep === steps.length - 1;
   const tutBtn = document.getElementById('onboard-tutorial');
   if (tutBtn) {
-    const isLast2 = onboardStep === steps.length - 1;
-    tutBtn.style.display = isLast2 ? 'block' : 'none';
+    tutBtn.style.display = isLastStep ? 'block' : 'none';
     tutBtn.textContent = t('ui.onboard_tutorial') || '📖 Coneix Karel en 2 minuts';
   }
-  // Edit map button: only on last step
   const editBtn = document.getElementById('onboard-editmap');
   if (editBtn) {
-    const isLast3 = onboardStep === steps.length - 1;
-    editBtn.style.display = isLast3 ? 'block' : 'none';
+    editBtn.style.display = isLastStep ? 'block' : 'none';
     editBtn.textContent = '🗺️ ' + (t('ui.return_lbl_edit') || 'Edita mapa');
   }
 }
