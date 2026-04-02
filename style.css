@@ -553,6 +553,8 @@ body.light .lbg-row.active {
 .ch-tag.easy   { background: rgba(80,180,80,.15);  color: #80c880; }
 .ch-tag.medium { background: rgba(221,221,216,.15); color: var(--accent); }
 .ch-tag.hard   { background: rgba(224,85,85,.15);  color: var(--error); }
+.ch-section-hd { grid-column: 1 / -1; padding: 10px 4px 4px; margin-top: 6px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.6px; color: var(--accent); border-bottom: 1px solid var(--border); }
+.ch-section-hd:first-child { margin-top: 0; }
 
 
 /* ── EDIT-MAPA.HTML ───────────────────────────────── */

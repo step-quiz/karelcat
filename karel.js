@@ -102,6 +102,7 @@ const I18N = {
       success_more: '🎯 Més reptes', success_close: 'Continua',
       onboard_next: 'Següent →', onboard_prev: '← Enrere', onboard_start: 'Comencem! 🚀', onboard_skip: 'Salta',
       hint_btn: '💡 Pista', hint_locked: '🔒 Pista ({time})', hint_panel_title: '💡 Pista', hint_next: 'Pista 2 →', hint_close: 'Tanca', hint_exhausted: 'Ja has vist totes les pistes!', hint_waiting: 'Pista disponible en',
+      category_basic: '📘 Reptes originals', category_cp: '🎓 Code in Place (Stanford)',
     },
     state: { idle: 'aturat', running: 'executant', step: 'pas a pas', error: 'error' },
     speed: ['Molt lent','Lent','Normal','Ràpid','Molt ràpid','Màxim'],
@@ -202,60 +203,97 @@ const I18N = {
       not_kw: 'no', and_kw: 'i', or_kw: 'o',
     },
     challenges: [
-      { id:1, title:'Hola, Karel!', level:'easy',
+      { id:1, category:'basic', title:'Hola, Karel!', level:'easy',
         desc:"Karel és a l'esquerra. Fes-la avançar fins topar amb la paret del fons. Pista: usa <em>mentre</em> i la condició <em>veu-lliure</em>.",
         csv:'K>,.,.,.,.,P\n.,.,.,.,.,.\n.,.,.,.,.,.',
         code:'// Avança fins la paret\n// Pista: mentre(veu-lliure) { avança }\n\n',
         hints:['Has d\'avançar moltes vegades. En lloc d\'escriure avança repetidament, pensa en un bucle que s\'atura tot sol quan troba la paret.',
                'Solució: mentre(veu-lliure) { avança } — el bucle llegeix la condició cada vegada i s\'atura quan ja no pot avançar.'] },
-      { id:2, title:'Recull una gota', level:'easy',
+      { id:2, category:'basic', title:'Recull una gota', level:'easy',
         desc:"Hi ha una gota d'aigua just al davant de Karel. Fes que l'agafi. L'ordre <em>agafa</em> pren l'aigua que hi ha al davant.",
         csv:'K>,A,.\n.,.,.\n.,.,.',
         code:'// Agafa la gota que hi ha al davant\n\n',
         hints:['La gota és just davant de Karel. L\'ordre agafa pren el que hi ha al davant sense necessitat de moure\'s primer.',
                'El programa té una sola instrucció: agafa'] },
-      { id:3, title:'Recull totes les gotes', level:'easy',
+      { id:3, category:'basic', title:'Recull totes les gotes', level:'easy',
         desc:"Hi ha diverses gotes disperses en línia recta. Karel ha de recollir-les totes mentre avança fins la paret. Combina <em>mentre</em>, <em>si</em> i <em>agafa</em>.",
         csv:'K>,A,.,A,A,.,A,P',
         code:'// Recull totes les gotes fins arribar a la paret\n\n',
         hints:['No totes les caselles tenen gota. Dins del bucle, comprova primer si hi ha gota amb si(veu-aigua) i, si n\'hi ha, agafa-la.',
                'Estructura completa: mentre(veu-lliure) { si(veu-aigua) { agafa } avança }'] },
-      { id:4, title:'Corre i torna', level:'easy',
+      { id:4, category:'basic', title:'Corre i torna', level:'easy',
         desc:"Karel ha d'arribar fins la paret i tornar al punt de partida. Pista: <em>gira.enrere</em> gira 180° en una sola instrucció!",
         csv:'K>,.,.,.,.\n.,.,.,.,.',
         code:'// Arriba fins la paret, gira i torna\n\n',
         hints:['Primer usa un bucle per arribar a la paret. Després has de girar 180°. Hi ha una ordre que ho fa en una sola instrucció!',
                'Usa gira.enrere per girar completament. Llavors un altre bucle mentre(veu-lliure) { avança } per tornar.'] },
-      { id:5, title:'Condicions combinades', level:'medium',
+      { id:5, category:'basic', title:'Condicions combinades', level:'medium',
         desc:"Usa els operadors <em>i</em> i <em>o</em> per combinar condicions. Per exemple: <code>si(veu-lliure i veu-aigua)</code>. Karel ha d'agafar les gotes NOMÉS si el camí és lliure.",
         csv:'K>,A,.,P\n.,A,.,.\n.,.,.,.',
         code:'// Combina condicions amb \'i\' i \'o\'\n// Exemple: si(veu-lliure i veu-aigua) { agafa }\n\n',
         hints:['L\'operador i combina dues condicions. Pensa: quan vol agafar Karel? Quan hi ha gota I el camí és lliure al mateix temps.',
                'Estructura: mentre(veu-lliure) { si(veu-aigua i veu-lliure) { agafa } avança } — prova-ho!'] },
-      { id:6, title:'Primer procediment', level:'medium',
+      { id:6, category:'basic', title:'Primer procediment', level:'medium',
         desc:"Defineix un <em>procediment</em> anomenat <code>mig-gir</code> que giri Karel 180°. Després usa'l per recollir gotes i tornar al punt de partida.",
         csv:'K>,A,A,A,.\n.,.,.,.,.',
         code:'procediment mig-gir {\n  // Escriu les instruccions aquí\n}\n\n// Programa principal\n\n',
         hints:['Un procediment és com crear una ordre nova. Defineix mig-gir com un bloc d\'instruccions i fes-lo servir al programa principal com si fos una ordre normal.',
                'procediment mig-gir { gira.enrere } — Programa principal: mentre(veu-lliure) { si(veu-aigua) { agafa } avança } mig-gir mentre(veu-lliure) { avança }'] },
-      { id:7, title:'Recull i diposita', level:'medium',
+      { id:7, category:'basic', title:'Recull i diposita', level:'medium',
         desc:"Karel ha de recollir les gotes de la primera fila i dipositar-les a la segona. Usa <em>gira.dreta</em> per baixar de fila i <em>deixa</em> per posar l'aigua on és Karel.",
         csv:'K>,A,A,A,P\n.,.,.,.,P',
         code:'// Pas 1: recull les gotes\n\n// Pas 2: baixa i diposita-les\n\n',
         hints:['Divideix el problema en dues fases: primer recull totes les gotes de la primera fila avançant fins la paret, després baixa a la fila inferior i diposita-les.',
                'Per baixar: gira.dreta avança gira.esquerra — Per dipositar: mentre(veu-lliure) { si(motxilla-plena) { deixa } avança }'] },
-      { id:8, title:'Laberint', level:'hard',
+      { id:8, category:'basic', title:'Laberint', level:'hard',
         desc:"Karel ha de navegar pel laberint fent servir <em>si</em> i <em>sinó</em> per decidir quan girar. Observa bé el mapa!",
         csv:'K>,.,P,.,P,.,.\n.,.,P,.,.,.,P\n.,.,.,.,.,.,.',
         code:'// Navega el laberint\n// Pista: comprova en quines direccions hi ha parets\n\n',
         hints:['Karel no veu tot el laberint. Ha de decidir a cada pas: puc avançar? Si no, giro. Usa si i sinó per gestionar cada situació.',
                'Estructura base: mentre(veu-lliure) { avança } sinó { gira.dreta } — potser necessites combinar diverses condicions.'] },
-      { id:9, title:'Serpenteja (difícil)', level:'hard',
+      { id:9, category:'basic', title:'Serpenteja (difícil)', level:'hard',
         desc:"Karel ha de recollir totes les gotes anant en ziga-zaga per les dues files. Defineix procediments per organitzar el codi!",
         csv:'K>,A,A,A,P\nP,A,A,A,.',
         code:'procediment baixa-i-recull {\n  // ...\n}\n\n// Programa principal\n\n',
         hints:['Pensa en dues fases: primera fila d\'esquerra a dreta recollint gotes, baixar a la segona i anar de dreta a esquerra. Defineix procediments per a cada fase.',
                'Procediment per canviar de fila: gira.dreta avança gira.dreta — Usa mentre a cada fila: mentre(veu-lliure) { si(veu-aigua) { agafa } avança }'] },
+      // ── CODE IN PLACE (Stanford) ──
+      { id:101, category:'cp', title:'Welcome Karel', level:'easy',
+        desc:"Primer contacte! Karel és a l'esquerra i hi ha una gota al final del camí. Fes-la avançar fins a la gota i que l'agafi. És el teu <em>Hello World</em> robòtic!",
+        csv:'K>,.,.,.,A\n.,.,.,.,.',
+        code:'// Avança fins la gota i agafa-la\n\n',
+        hints:['Karel necessita arribar fins a la gota. Escriu instruccions avança repetides vegades o usa un bucle per arribar-hi.',
+               'Solució: mentre(veu-lliure) { avança } agafa — Primer avança fins que no pugui més, després agafa la gota que té al davant.'] },
+      { id:102, category:'cp', title:'Puja el graó (Step Up)', level:'easy',
+        desc:"Karel ha de pujar un graó format per parets per arribar a la gota de dalt. No existeix <em>gira.dreta</em> directe a Stanford: allà cal girar tres cops a l'esquerra! Prova de definir un <em>procediment</em> per fer-ho.",
+        csv:'.,.,.,A\nP,P,.,.\nK>,.,.,.',
+        code:'// Defineix un procediment per girar a la dreta\nprocediment gira-dreta {\n  gira.esquerra\n  gira.esquerra\n  gira.esquerra\n}\n\n// Programa principal: puja el graó\n\n',
+        hints:['Karel ha d\'anar cap a la dreta, pujar (girar a l\'esquerra = mirar amunt, avançar) i llavors girar a la dreta per agafar la gota.',
+               'Ruta: avança avança gira.esquerra avança avança gira-dreta agafa — Fixa\'t com el procediment gira-dreta simplifica el codi!'] },
+      { id:103, category:'cp', title:'Recull el diari (Collect Newspaper)', level:'medium',
+        desc:"Karel viu dins d'una casa envoltada de parets 🪸 amb una porta al mig. Ha de <strong>sortir</strong>, <strong>recollir el diari</strong> (gota) i <strong>tornar a casa</strong> a la posició original. Descompon el problema en passos!",
+        csv:'P,P,.,P,P\nP,K>,.,.,P\nP,P,.,P,P\n.,A,.,.,.',
+        code:'// Descomposició: divideix en subproblemes\nprocediment surt-de-casa {\n  // ...\n}\nprocediment recull-diari {\n  // ...\n}\nprocediment torna-a-casa {\n  // ...\n}\n\n// Programa principal\nsurt-de-casa\nrecull-diari\ntorna-a-casa\n',
+        hints:['Pensa en 3 fases: 1) Arribar a la porta i sortir, 2) Anar fins al diari i agafar-lo, 3) Tornar pel mateix camí fins la posició inicial.',
+               'Ruta de sortida: avança gira.dreta avança avança gira.dreta avança agafa — Retorn: gira.enrere avança gira.esquerra avança avança gira.esquerra avança'] },
+      { id:104, category:'cp', title:'Segueix el rastre (Beeper Path)', level:'medium',
+        desc:"Un rastre de gotes forma un camí sinuós pel món. Karel ha de seguir el rastre recollint cada gota fins que s'acabi. Usa <em>mentre</em> amb <em>veu-aigua</em> per detectar el camí!",
+        csv:'K>,A,A,.,.\n.,.,A,.,.\n.,.,A,A,A',
+        code:'// Segueix el rastre de gotes\n// Pista: comprova en quina direcció hi ha aigua\n\n',
+        hints:['El rastre gira! Quan no trobis gota al davant, prova de girar a la dreta o a l\'esquerra per trobar la continuació del camí.',
+               'Estratègia: a cada pas, agafa la gota, després mira si n\'hi ha al davant. Si no, gira a la dreta i comprova. Si tampoc, gira a l\'esquerra (dues vegades des de la dreta).'] },
+      { id:105, category:'cp', title:'Cursa de tanques (Steeple Chase)', level:'hard',
+        desc:"Karel ha de córrer d'esquerra a dreta saltant tanques (parets) d'alçada variable fins arribar a la gota final. Quan topi amb una tanca, ha de pujar-la, saltar i baixar a l'altre costat!",
+        csv:'.,.,.,.,.,.,.,.,A\n.,P,.,.,.,P,.,.,.\nK>,P,.,.,.,P,.,.,.',
+        code:'// Corre i salta les tanques!\nprocediment salta-tanca {\n  // Puja, creua i baixa\n}\n\n// Programa principal\n\n',
+        hints:['Divideix en dues accions: córrer (avançar mentre el camí és lliure) i saltar (quan hi ha paret, pujar, creuar el cim i baixar).',
+               'Per saltar: gira.esquerra mentre(veu-paret) { avança } avança gira.dreta avança gira.dreta mentre(veu-lliure) { avança } gira.esquerra — Cal refinar-ho, prova pas a pas!'] },
+      { id:106, category:'cp', title:'Neteja el món (Cleanup Karel)', level:'hard',
+        desc:"Gotes escampades per tot el món! Karel ha d'escombrar tot l'espai en mode <strong>serpentina</strong>: una fila cap a la dreta, baixa, la següent cap a l'esquerra, baixa, i així. Ha de recollir cada gota que trobi.",
+        csv:'K>,.,A,.,A,.\n.,A,.,.,.,A\nA,.,.,A,.,.',
+        code:'// Escombra el món en serpentina\nprocediment neteja-fila {\n  mentre(veu-lliure) {\n    si(veu-aigua) { agafa }\n    avança\n  }\n  // No oblidis comprovar l\'última casella!\n}\n\nprocediment baixa-i-gira-esquerra {\n  // ...\n}\nprocediment baixa-i-gira-dreta {\n  // ...\n}\n\n// Programa principal\n\n',
+        hints:['La serpentina té dues fases que s\'alternen: fila cap a la dreta (acabant contra la paret dreta) i fila cap a l\'esquerra (acabant contra la paret esquerra). A cada canvi, baixa una fila.',
+               'Estructura: neteja-fila baixa-i-gira-esquerra neteja-fila baixa-i-gira-dreta neteja-fila — Cada procediment de baixada gira Karel per fregar en sentit contrari.'] },
       ],
       onboard: [
         { icon:'🪼', title:'Hola! Jo soc en Karel',
@@ -284,6 +322,7 @@ const I18N = {
       success_more: '🎯 Más retos', success_close: 'Continuar',
       onboard_next: 'Siguiente →', onboard_prev: '← Atrás', onboard_start: '¡Empecemos! 🚀', onboard_skip: 'Saltar',
       hint_btn: '💡 Pista', hint_locked: '🔒 Pista ({time})', hint_panel_title: '💡 Pista', hint_next: 'Pista 2 →', hint_close: 'Cerrar', hint_exhausted: '¡Ya has visto todas las pistas!', hint_waiting: 'Pista disponible en',
+      category_basic: '📘 Retos originales', category_cp: '🎓 Code in Place (Stanford)',
     },
     state: { idle: 'detenido', running: 'ejecutando', step: 'paso a paso', error: 'error' },
     speed: ['Muy lento','Lento','Normal','Rápido','Muy rápido','Máximo'],
@@ -384,60 +423,97 @@ const I18N = {
       not_kw: 'no', and_kw: 'y', or_kw: 'o',
     },
     challenges: [
-      { id:1, title:'¡Hola, Karel!', level:'easy',
+      { id:1, category:'basic', title:'¡Hola, Karel!', level:'easy',
         desc:"Karel está a la izquierda. Hazla avanzar hasta topar con la pared del fondo. Pista: usa <em>mientras</em> y la condición <em>hay-camino</em>.",
         csv:'K>,.,.,.,.,P\n.,.,.,.,.,.\n.,.,.,.,.,.',
         code:'// Avanza hasta la pared\n// Pista: mientras(hay-camino) { avanza }\n\n',
         hints:['Tienes que avanzar muchas veces. En lugar de escribir avanza repetidamente, piensa en un bucle que se detiene solo al encontrar la pared.',
                'Solución: mientras(hay-camino) { avanza } — el bucle comprueba la condición cada vez y se detiene cuando no puede avanzar.'] },
-      { id:2, title:'Recoge una gota', level:'easy',
+      { id:2, category:'basic', title:'Recoge una gota', level:'easy',
         desc:"Hay una gota de agua justo delante de Karel. Haz que la recoja. La orden <em>coge</em> toma el agua que hay delante.",
         csv:'K>,A,.\n.,.,.\n.,.,.',
         code:'// Recoge la gota que hay delante\n\n',
         hints:['La gota está justo delante de Karel. La orden coge toma lo que hay delante sin necesidad de moverse primero.',
                'El programa tiene una sola instrucción: coge'] },
-      { id:3, title:'Recoge todas las gotas', level:'easy',
+      { id:3, category:'basic', title:'Recoge todas las gotas', level:'easy',
         desc:"Hay varias gotas dispersas en línea recta. Karel debe recogerlas todas mientras avanza hasta la pared. Combina <em>mientras</em>, <em>si</em> y <em>coge</em>.",
         csv:'K>,A,.,A,A,.,A,P',
         code:'// Recoge todas las gotas hasta llegar a la pared\n\n',
         hints:['No todas las casillas tienen gota. Dentro del bucle, comprueba primero si hay gota con si(hay-agua) y, si la hay, recógela.',
                'Estructura completa: mientras(hay-camino) { si(hay-agua) { coge } avanza }'] },
-      { id:4, title:'Corre y vuelve', level:'easy',
+      { id:4, category:'basic', title:'Corre y vuelve', level:'easy',
         desc:"Karel debe llegar hasta la pared y volver al punto de partida. Pista: <em>gira.atrás</em> gira 180° en una sola instrucción!",
         csv:'K>,.,.,.,.\n.,.,.,.,.',
         code:'// Llega hasta la pared, gira y vuelve\n\n',
         hints:['Primero usa un bucle para llegar a la pared. Luego tienes que girar 180°. ¡Hay una orden que lo hace en una sola instrucción!',
                'Usa gira.atrás para girar completamente. Luego otro bucle mientras(hay-camino) { avanza } para volver.'] },
-      { id:5, title:'Condiciones combinadas', level:'medium',
+      { id:5, category:'basic', title:'Condiciones combinadas', level:'medium',
         desc:"Usa los operadores <em>y</em> y <em>o</em> para combinar condiciones. Por ejemplo: <code>si(hay-camino y hay-agua)</code>. Karel debe coger las gotas SOLO si el camino es libre.",
         csv:'K>,A,.,P\n.,A,.,.\n.,.,.,.',
         code:'// Combina condiciones con \'y\' y \'o\'\n// Ejemplo: si(hay-camino y hay-agua) { coge }\n\n',
         hints:['El operador y combina dos condiciones. Piensa: ¿cuándo quiere coger Karel? Cuando hay gota Y el camino está libre al mismo tiempo.',
                'Estructura: mientras(hay-camino) { si(hay-agua y hay-camino) { coge } avanza } — ¡pruébalo!'] },
-      { id:6, title:'Primer procedimiento', level:'medium',
+      { id:6, category:'basic', title:'Primer procedimiento', level:'medium',
         desc:"Define un <em>procedimiento</em> llamado <code>medio-giro</code> que gire Karel 180°. Luego úsalo para recoger gotas y volver al punto de partida.",
         csv:'K>,A,A,A,.\n.,.,.,.,.',
         code:'procedimiento medio-giro {\n  // Escribe las instrucciones aquí\n}\n\n// Programa principal\n\n',
         hints:['Un procedimiento es como crear una nueva orden. Define medio-giro como un bloque de instrucciones y úsalo en el programa principal como si fuera una orden normal.',
                'procedimiento medio-giro { gira.atrás } — Programa principal: mientras(hay-camino) { si(hay-agua) { coge } avanza } medio-giro mientras(hay-camino) { avanza }'] },
-      { id:7, title:'Recoge y deposita', level:'medium',
+      { id:7, category:'basic', title:'Recoge y deposita', level:'medium',
         desc:"Karel debe recoger las gotas de la primera fila y depositarlas en la segunda. Usa <em>gira.derecha</em> para bajar de fila y <em>suelta</em> para poner el agua donde está Karel.",
         csv:'K>,A,A,A,P\n.,.,.,.,P',
         code:'// Paso 1: recoge las gotas\n\n// Paso 2: baja y deposítalas\n\n',
         hints:['Divide el problema en dos fases: primero recoge todas las gotas de la primera fila avanzando hasta la pared, luego baja a la fila inferior y deposítalas.',
                'Para bajar: gira.derecha avanza gira.izquierda — Para depositar: mientras(hay-camino) { si(mochila-llena) { suelta } avanza }'] },
-      { id:8, title:'Laberinto', level:'hard',
+      { id:8, category:'basic', title:'Laberinto', level:'hard',
         desc:"Karel debe navegar por el laberinto usando <em>si</em> y <em>sino</em> para decidir cuándo girar. ¡Observa bien el mapa!",
         csv:'K>,.,P,.,P,.,.\n.,.,P,.,.,.,P\n.,.,.,.,.,.,.',
         code:'// Navega el laberinto\n// Pista: comprueba en qué direcciones hay paredes\n\n',
         hints:['Karel no ve todo el laberinto. Tiene que decidir en cada paso: ¿puedo avanzar? Si no, giro. Usa si y sino para gestionar cada situación.',
                'Estructura base: mientras(hay-camino) { avanza } sino { gira.derecha } — quizás necesitas combinar varias condiciones.'] },
-      { id:9, title:'Serpentea (difícil)', level:'hard',
+      { id:9, category:'basic', title:'Serpentea (difícil)', level:'hard',
         desc:"Karel debe recoger todas las gotas en zigzag por las dos filas. ¡Define procedimientos para organizar el código!",
         csv:'K>,A,A,A,P\nP,A,A,A,.',
         code:'procedimiento baja-y-recoge {\n  // ...\n}\n\n// Programa principal\n\n',
         hints:['Piensa en dos fases: primera fila de izquierda a derecha recogiendo gotas, bajar a la segunda y ir de derecha a izquierda. Define procedimientos para cada fase.',
                'Procedimiento para cambiar de fila: gira.derecha avanza gira.derecha — Usa mientras en cada fila: mientras(hay-camino) { si(hay-agua) { coge } avanza }'] },
+      // ── CODE IN PLACE (Stanford) ──
+      { id:101, category:'cp', title:'Welcome Karel', level:'easy',
+        desc:"¡Primer contacto! Karel está a la izquierda y hay una gota al final del camino. Hazla avanzar hasta la gota y que la recoja. ¡Es tu <em>Hello World</em> robótico!",
+        csv:'K>,.,.,.,A\n.,.,.,.,.',
+        code:'// Avanza hasta la gota y recógela\n\n',
+        hints:['Karel necesita llegar hasta la gota. Escribe instrucciones avanza repetidas veces o usa un bucle para llegar.',
+               'Solución: mientras(hay-camino) { avanza } coge — Primero avanza hasta que no pueda más, luego coge la gota que tiene delante.'] },
+      { id:102, category:'cp', title:'Sube el escalón (Step Up)', level:'easy',
+        desc:"Karel debe subir un escalón formado por paredes para llegar a la gota de arriba. En Stanford no existe <em>gira.derecha</em> directo: ¡hay que girar tres veces a la izquierda! Prueba a definir un <em>procedimiento</em>.",
+        csv:'.,.,.,A\nP,P,.,.\nK>,.,.,.',
+        code:'// Define un procedimiento para girar a la derecha\nprocedimiento gira-derecha {\n  gira.izquierda\n  gira.izquierda\n  gira.izquierda\n}\n\n// Programa principal: sube el escalón\n\n',
+        hints:['Karel debe ir a la derecha, subir (girar a la izquierda = mirar arriba, avanzar) y luego girar a la derecha para coger la gota.',
+               'Ruta: avanza avanza gira.izquierda avanza avanza gira-derecha coge — ¡Fíjate cómo el procedimiento gira-derecha simplifica el código!'] },
+      { id:103, category:'cp', title:'Recoge el periódico (Collect Newspaper)', level:'medium',
+        desc:"Karel vive dentro de una casa rodeada de paredes 🪸 con una puerta en el centro. Debe <strong>salir</strong>, <strong>recoger el periódico</strong> (gota) y <strong>volver a casa</strong> a la posición original. ¡Descompón el problema en pasos!",
+        csv:'P,P,.,P,P\nP,K>,.,.,P\nP,P,.,P,P\n.,A,.,.,.',
+        code:'// Descomposición: divide en subproblemas\nprocedimiento sal-de-casa {\n  // ...\n}\nprocedimiento recoge-periodico {\n  // ...\n}\nprocedimiento vuelve-a-casa {\n  // ...\n}\n\n// Programa principal\nsal-de-casa\nrecoge-periodico\nvuelve-a-casa\n',
+        hints:['Piensa en 3 fases: 1) Llegar a la puerta y salir, 2) Ir hasta el periódico y recogerlo, 3) Volver por el mismo camino hasta la posición inicial.',
+               'Ruta de salida: avanza gira.derecha avanza avanza gira.derecha avanza coge — Retorno: gira.atrás avanza gira.izquierda avanza avanza gira.izquierda avanza'] },
+      { id:104, category:'cp', title:'Sigue el rastro (Beeper Path)', level:'medium',
+        desc:"Un rastro de gotas forma un camino sinuoso por el mundo. Karel debe seguir el rastro recogiendo cada gota hasta que se acabe. ¡Usa <em>mientras</em> con <em>hay-agua</em> para detectar el camino!",
+        csv:'K>,A,A,.,.\n.,.,A,.,.\n.,.,A,A,A',
+        code:'// Sigue el rastro de gotas\n// Pista: comprueba en qué dirección hay agua\n\n',
+        hints:['¡El rastro gira! Cuando no encuentres gota delante, prueba a girar a la derecha o a la izquierda para encontrar la continuación del camino.',
+               'Estrategia: en cada paso, coge la gota, luego mira si hay otra delante. Si no, gira a la derecha y comprueba. Si tampoco, gira a la izquierda (dos veces desde la derecha).'] },
+      { id:105, category:'cp', title:'Carrera de vallas (Steeple Chase)', level:'hard',
+        desc:"Karel debe correr de izquierda a derecha saltando vallas (paredes) de altura variable hasta llegar a la gota final. Cuando tope con una valla, ¡debe subirla, saltar y bajar al otro lado!",
+        csv:'.,.,.,.,.,.,.,.,A\n.,P,.,.,.,P,.,.,.\nK>,P,.,.,.,P,.,.,.',
+        code:'// ¡Corre y salta las vallas!\nprocedimiento salta-valla {\n  // Sube, cruza y baja\n}\n\n// Programa principal\n\n',
+        hints:['Divide en dos acciones: correr (avanzar mientras el camino esté libre) y saltar (cuando hay pared, subir, cruzar la cima y bajar).',
+               'Para saltar: gira.izquierda mientras(hay-pared) { avanza } avanza gira.derecha avanza gira.derecha mientras(hay-camino) { avanza } gira.izquierda — ¡Hay que refinarlo, prueba paso a paso!'] },
+      { id:106, category:'cp', title:'Limpia el mundo (Cleanup Karel)', level:'hard',
+        desc:"¡Gotas esparcidas por todo el mundo! Karel debe barrer todo el espacio en modo <strong>serpentina</strong>: una fila hacia la derecha, baja, la siguiente hacia la izquierda, baja, y así. Debe recoger cada gota que encuentre.",
+        csv:'K>,.,A,.,A,.\n.,A,.,.,.,A\nA,.,.,A,.,.',
+        code:'// Barre el mundo en serpentina\nprocedimiento limpia-fila {\n  mientras(hay-camino) {\n    si(hay-agua) { coge }\n    avanza\n  }\n  // ¡No olvides comprobar la última casilla!\n}\n\nprocedimiento baja-y-gira-izquierda {\n  // ...\n}\nprocedimiento baja-y-gira-derecha {\n  // ...\n}\n\n// Programa principal\n\n',
+        hints:['La serpentina tiene dos fases que se alternan: fila hacia la derecha (acabando contra la pared derecha) y fila hacia la izquierda (acabando contra la pared izquierda). En cada cambio, baja una fila.',
+               'Estructura: limpia-fila baja-y-gira-izquierda limpia-fila baja-y-gira-derecha limpia-fila — Cada procedimiento de bajada gira Karel para barrer en sentido contrario.'] },
       ],
       onboard: [
         { icon:'🪼', title:'¡Hola! Soy Karel',
@@ -466,6 +542,7 @@ const I18N = {
       success_more: '🎯 More challenges', success_close: 'Continue',
       onboard_next: 'Next →', onboard_prev: '← Back', onboard_start: "Let's go! 🚀", onboard_skip: 'Skip',
       hint_btn: '💡 Hint', hint_locked: '🔒 Hint ({time})', hint_panel_title: '💡 Hint', hint_next: 'Hint 2 →', hint_close: 'Close', hint_exhausted: 'You\'ve seen all the hints!', hint_waiting: 'Hint available in',
+      category_basic: '📘 Original challenges', category_cp: '🎓 Code in Place (Stanford)',
     },
     state: { idle: 'stopped', running: 'running', step: 'step mode', error: 'error' },
     speed: ['Very slow','Slow','Normal','Fast','Very fast','Maximum'],
@@ -566,60 +643,97 @@ const I18N = {
       not_kw: 'not', and_kw: 'and', or_kw: 'or',
     },
     challenges: [
-      { id:1, title:'Hello, Karel!', level:'easy',
+      { id:1, category:'basic', title:'Hello, Karel!', level:'easy',
         desc:"Karel is on the left. Make it move until it hits the end wall. Hint: use <em>while</em> and the condition <em>path-clear</em>.",
         csv:'K>,.,.,.,.,P\n.,.,.,.,.,.\n.,.,.,.,.,.',
         code:'// Move until the wall\n// Hint: while(path-clear) { move }\n\n',
         hints:['You need to move many times. Instead of writing move over and over, think of a loop that stops by itself when it hits the wall.',
                'Solution: while(path-clear) { move } — the loop checks the condition each time and stops when Karel can\'t move.'] },
-      { id:2, title:'Grab a drop', level:'easy',
+      { id:2, category:'basic', title:'Grab a drop', level:'easy',
         desc:"There is a water drop right in front of Karel. Make it grab it. The <em>grab</em> command picks up the water in front of Karel.",
         csv:'K>,A,.\n.,.,.\n.,.,.',
         code:'// Grab the drop in front\n\n',
         hints:['The drop is right in front of Karel. The grab command picks up whatever is in front, no need to move first.',
                'The program is just one instruction: grab'] },
-      { id:3, title:'Grab all drops', level:'easy',
+      { id:3, category:'basic', title:'Grab all drops', level:'easy',
         desc:"There are several drops scattered in a straight line. Karel must grab them all while moving to the wall. Combine <em>while</em>, <em>if</em> and <em>grab</em>.",
         csv:'K>,A,.,A,A,.,A,P',
         code:'// Grab all drops until reaching the wall\n\n',
         hints:['Not every cell has a drop. Inside the loop, first check if there is a drop with if(water-ahead) and only then grab it.',
                'Full structure: while(path-clear) { if(water-ahead) { grab } move }'] },
-      { id:4, title:'Run and return', level:'easy',
+      { id:4, category:'basic', title:'Run and return', level:'easy',
         desc:"Karel must reach the wall and come back to the start. Hint: <em>turn.around</em> rotates 180° in a single command!",
         csv:'K>,.,.,.,.\n.,.,.,.,.',
         code:'// Reach the wall, turn around and come back\n\n',
         hints:['First use a loop to reach the wall. Then you need to turn 180°. There is a command that does it in a single instruction!',
                'Use turn.around to rotate fully. Then another loop while(path-clear) { move } to go back.'] },
-      { id:5, title:'Combined conditions', level:'medium',
+      { id:5, category:'basic', title:'Combined conditions', level:'medium',
         desc:"Use the <em>and</em> and <em>or</em> operators to combine conditions. For example: <code>if(path-clear and water-ahead)</code>. Karel must grab drops ONLY if the path is clear.",
         csv:'K>,A,.,P\n.,A,.,.\n.,.,.,.',
         code:'// Combine conditions with \'and\' and \'or\'\n// Example: if(path-clear and water-ahead) { grab }\n\n',
         hints:['The and operator combines two conditions. Think: when does Karel want to grab? When there is water AND the path is clear at the same time.',
                'Structure: while(path-clear) { if(water-ahead and path-clear) { grab } move } — try it!'] },
-      { id:6, title:'First procedure', level:'medium',
+      { id:6, category:'basic', title:'First procedure', level:'medium',
         desc:"Define a <em>procedure</em> called <code>half-turn</code> that rotates Karel 180°. Then use it to grab drops and return to the starting point.",
         csv:'K>,A,A,A,.\n.,.,.,.,.',
         code:'procedure half-turn {\n  // Write instructions here\n}\n\n// Main program\n\n',
         hints:['A procedure is like creating a new command. Define half-turn as a block of instructions and use it in the main program like any other command.',
                'procedure half-turn { turn.around } — Main program: while(path-clear) { if(water-ahead) { grab } move } half-turn while(path-clear) { move }'] },
-      { id:7, title:'Grab and drop', level:'medium',
+      { id:7, category:'basic', title:'Grab and drop', level:'medium',
         desc:"Karel must grab the drops from the first row and drop them in the second. Use <em>turn.right</em> to go down a row and <em>drop</em> to place the water where Karel is.",
         csv:'K>,A,A,A,P\n.,.,.,.,P',
         code:'// Step 1: grab drops from the first row\n\n// Step 2: go down and drop them\n\n',
         hints:['Split the problem into two phases: first collect all drops from the first row moving to the wall, then go down to the second row and drop them.',
                'To go down: turn.right move turn.left — To drop: while(path-clear) { if(bag-full) { drop } move }'] },
-      { id:8, title:'Maze', level:'hard',
+      { id:8, category:'basic', title:'Maze', level:'hard',
         desc:"Karel must navigate the maze using <em>if</em> and <em>else</em> to decide when to turn. Look carefully at the map!",
         csv:'K>,.,P,.,P,.,.\n.,.,P,.,.,.,P\n.,.,.,.,.,.,.',
         code:'// Navigate the maze\n// Hint: check which directions have walls\n\n',
         hints:['Karel can\'t see the whole maze. It must decide at each step: can I move? If not, turn. Use if and else to handle each situation.',
                'Base structure: while(path-clear) { move } else { turn.right } — you may need to combine several conditions.'] },
-      { id:9, title:'Zigzag (hard)', level:'hard',
+      { id:9, category:'basic', title:'Zigzag (hard)', level:'hard',
         desc:"Karel must grab all drops in a zigzag pattern through both rows. Define procedures to organize the code into small parts!",
         csv:'K>,A,A,A,P\nP,A,A,A,.',
         code:'procedure go-down-grab {\n  // ...\n}\n\n// Main program\n\n',
         hints:['Think in two phases: first row left to right collecting drops, go down to the second and go right to left. Define procedures for each phase.',
                'Procedure to change row: turn.right move turn.right — Use while on each row: while(path-clear) { if(water-ahead) { grab } move }'] },
+      // ── CODE IN PLACE (Stanford) ──
+      { id:101, category:'cp', title:'Welcome Karel', level:'easy',
+        desc:"First contact! Karel is on the left and there is a drop at the end of the path. Make it walk to the drop and grab it. This is your robotic <em>Hello World</em>!",
+        csv:'K>,.,.,.,A\n.,.,.,.,.',
+        code:'// Walk to the drop and grab it\n\n',
+        hints:['Karel needs to reach the drop. Write move instructions repeatedly or use a loop to get there.',
+               'Solution: while(path-clear) { move } grab — First walk until you can\'t, then grab the drop in front.'] },
+      { id:102, category:'cp', title:'Step Up', level:'easy',
+        desc:"Karel must climb a step made of walls to reach the drop above. At Stanford there is no direct <em>turn.right</em>: you must turn left three times! Try defining a <em>procedure</em> for it.",
+        csv:'.,.,.,A\nP,P,.,.\nK>,.,.,.',
+        code:'// Define a procedure to turn right\nprocedure turn-right {\n  turn.left\n  turn.left\n  turn.left\n}\n\n// Main program: climb the step\n\n',
+        hints:['Karel must go right, go up (turn left = face up, move) and then turn right to grab the drop.',
+               'Route: move move turn.left move move turn-right grab — Notice how the turn-right procedure simplifies the code!'] },
+      { id:103, category:'cp', title:'Collect Newspaper', level:'medium',
+        desc:"Karel lives inside a house surrounded by walls 🪸 with a door in the middle. It must <strong>exit</strong>, <strong>collect the newspaper</strong> (drop) and <strong>return home</strong> to the original position. Decompose the problem into steps!",
+        csv:'P,P,.,P,P\nP,K>,.,.,P\nP,P,.,P,P\n.,A,.,.,.',
+        code:'// Decomposition: split into subproblems\nprocedure exit-house {\n  // ...\n}\nprocedure get-newspaper {\n  // ...\n}\nprocedure return-home {\n  // ...\n}\n\n// Main program\nexit-house\nget-newspaper\nreturn-home\n',
+        hints:['Think in 3 phases: 1) Reach the door and exit, 2) Go to the newspaper and grab it, 3) Return along the same path to the starting position.',
+               'Exit route: move turn.right move move turn.right move grab — Return: turn.around move turn.left move move turn.left move'] },
+      { id:104, category:'cp', title:'Beeper Path', level:'medium',
+        desc:"A trail of drops forms a winding path through the world. Karel must follow the trail, grabbing each drop until it ends. Use <em>while</em> with <em>water-ahead</em> to detect the path!",
+        csv:'K>,A,A,.,.\n.,.,A,.,.\n.,.,A,A,A',
+        code:'// Follow the trail of drops\n// Hint: check which direction has water\n\n',
+        hints:['The trail turns! When you don\'t find a drop ahead, try turning right or left to find where the trail continues.',
+               'Strategy: at each step, grab the drop, then check if there is one ahead. If not, turn right and check. If still not, turn left (twice from right).'] },
+      { id:105, category:'cp', title:'Steeple Chase', level:'hard',
+        desc:"Karel must run from left to right, jumping over hurdles (walls) of varying height to reach the final drop. When it hits a hurdle, it must climb up, leap over and come back down!",
+        csv:'.,.,.,.,.,.,.,.,A\n.,P,.,.,.,P,.,.,.\nK>,P,.,.,.,P,.,.,.',
+        code:'// Run and jump the hurdles!\nprocedure jump-hurdle {\n  // Climb, cross and descend\n}\n\n// Main program\n\n',
+        hints:['Split into two actions: run (move while path is clear) and jump (when there is a wall, climb, cross the top and descend).',
+               'To jump: turn.left while(wall-ahead) { move } move turn.right move turn.right while(path-clear) { move } turn.left — Refine it, test step by step!'] },
+      { id:106, category:'cp', title:'Cleanup Karel', level:'hard',
+        desc:"Drops scattered everywhere! Karel must sweep the entire space in <strong>serpentine</strong> mode: one row to the right, down, next row to the left, down, and so on. It must grab every drop it finds.",
+        csv:'K>,.,A,.,A,.\n.,A,.,.,.,A\nA,.,.,A,.,.',
+        code:'// Sweep the world in serpentine\nprocedure clean-row {\n  while(path-clear) {\n    if(water-ahead) { grab }\n    move\n  }\n  // Don\'t forget to check the last cell!\n}\n\nprocedure go-down-turn-left {\n  // ...\n}\nprocedure go-down-turn-right {\n  // ...\n}\n\n// Main program\n\n',
+        hints:['The serpentine alternates two phases: row to the right (ending against the right wall) and row to the left (ending against the left wall). At each switch, go down one row.',
+               'Structure: clean-row go-down-turn-left clean-row go-down-turn-right clean-row — Each go-down procedure turns Karel to sweep in the opposite direction.'] },
       ],
       onboard: [
         { icon:'🪼', title:"Hi! I'm Karel",
@@ -978,13 +1092,37 @@ function openChallenges() {
   const challenges = I18N[currentUserLang].challenges;
   const list = document.getElementById('challenges-list');
   if (!list) return;
-  list.innerHTML = challenges.map(ch => `
-    <div class="ch-card" data-challenge-id="${ch.id}" role="button" tabindex="0">
-      <div class="ch-num">${escHtml(t('log.challenge'))} ${ch.id}</div>
-      <div class="ch-title">${sanitizeHtml(ch.title)}</div>
-      <div class="ch-desc">${sanitizeHtml(ch.desc)}</div>
-      <div><span class="ch-tag ${escHtml(ch.level)}">${escHtml(t('ui.level_' + ch.level))}</span></div>
-    </div>`).join('');
+
+  // Agrupa reptes per categoria
+  const groups = {};
+  for (const ch of challenges) {
+    const cat = ch.category || 'basic';
+    if (!groups[cat]) groups[cat] = [];
+    groups[cat].push(ch);
+  }
+
+  // Ordre de categories
+  const catOrder = ['basic', 'cp'];
+  let html = '';
+  for (const cat of catOrder) {
+    if (!groups[cat]) continue;
+    const label = t('ui.category_' + cat) || cat;
+    html += `<div class="ch-section-hd">${escHtml(label)}</div>`;
+    html += groups[cat].map(ch => {
+      const numLabel = ch.category === 'cp'
+        ? `CP ${ch.id - 100}`
+        : `${escHtml(t('log.challenge'))} ${ch.id}`;
+      return `
+      <div class="ch-card" data-challenge-id="${ch.id}" role="button" tabindex="0">
+        <div class="ch-num">${numLabel}</div>
+        <div class="ch-title">${sanitizeHtml(ch.title)}</div>
+        <div class="ch-desc">${sanitizeHtml(ch.desc)}</div>
+        <div><span class="ch-tag ${escHtml(ch.level)}">${escHtml(t('ui.level_' + ch.level))}</span></div>
+      </div>`;
+    }).join('');
+  }
+  list.innerHTML = html;
+
   // Event delegation: evita inline onclick
   list.onclick = e => {
     const card = e.target.closest('[data-challenge-id]');
@@ -1008,7 +1146,8 @@ function loadChallenge(id) {
     updateEditor();
   }
   closeModal('modal-challenges');
-  log(`${t('log.challenge')} ${id}: ${chUI.title}`, 'ok');
+  const logLabel = chUI.category === 'cp' ? `CP ${id - 100}` : `${t('log.challenge')} ${id}`;
+  log(`${logLabel}: ${chUI.title}`, 'ok');
 }
 
 function openBlankModal() { openModal('modal-blank'); }
@@ -2327,6 +2466,22 @@ function isChallengeSuccess(id) {
         && (Math.abs(karel.x - karelInit.x) + Math.abs(karel.y - karelInit.y)) >= 4;
     case 9: // Serpenteja: recull totes les gotes
       return noWaterOnMap() && karel.motxilla > 0;
+
+    // ── CODE IN PLACE (Stanford) ──
+    case 101: // Welcome Karel: avança fins la gota i agafa-la
+      return noWaterOnMap() && karel.motxilla > 0;
+    case 102: // Step Up: Karel ha de pujar el graó i agafar la gota (fila 0)
+      return noWaterOnMap() && karel.motxilla > 0 && karel.y === 0;
+    case 103: // Collect Newspaper: recull diari i torna a la posició original
+      return noWaterOnMap() && karel.motxilla > 0
+        && karel.x === karelInit.x && karel.y === karelInit.y;
+    case 104: // Beeper Path: segueix el rastre recollint totes les gotes
+      return noWaterOnMap() && karel.motxilla > 0;
+    case 105: // Steeple Chase: arriba a la gota final saltant tanques
+      return noWaterOnMap() && karel.motxilla > 0;
+    case 106: // Cleanup Karel: recull totes les gotes (escombrat complet)
+      return noWaterOnMap() && karel.motxilla > 0;
+
     default: return false;
   }
 }
@@ -2346,8 +2501,10 @@ function checkChallengeSuccess() {
     const icons = ['🎉','🏆','⭐','🚀','🌟'];
     const icon  = icons[currentChallengeId % icons.length];
     document.getElementById('success-icon').textContent     = icon;
-    document.getElementById('success-challenge').textContent =
-      (t('log.challenge') || 'Repte') + ' ' + ch.id + ': ' + ch.title;
+    const chLabel = ch.category === 'cp'
+      ? 'CP ' + (ch.id - 100) + ': ' + ch.title
+      : (t('log.challenge') || 'Repte') + ' ' + ch.id + ': ' + ch.title;
+    document.getElementById('success-challenge').textContent = chLabel;
     document.getElementById('success-title').textContent    = t('ui.success_title');
     document.getElementById('success-msg').textContent      = t('ui.success_msg');
 
