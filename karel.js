@@ -1284,6 +1284,8 @@ function copyMapURL() {
 function toggleLight() {
   document.body.classList.toggle('light');
   localStorage.setItem('karel-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  const panel = document.getElementById('config-panel');
+  if (panel) panel.classList.remove('open');
 }
 (function restoreTheme() {
   if (localStorage.getItem('karel-theme') === 'light') document.body.classList.add('light');

@@ -141,6 +141,7 @@ body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,
   color: var(--muted);
   white-space: nowrap;
   margin-right: auto;
+  margin-left: 3.5%;
 }
 #state-dot {
   width: 8px; height: 8px;
@@ -178,7 +179,7 @@ body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,
   font-size: 0.65rem;
   color: var(--muted);
   white-space: nowrap;
-  margin-left: 10px;
+  margin-left: 3.5%;
 }
 .toolbar-bag strong { color: var(--text); }
 
