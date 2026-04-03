@@ -1134,6 +1134,9 @@ document.addEventListener('keydown', e => {
 });
 
 function openChallenges() {
+  // Tanca el config panel si està obert
+  closeConfig();
+
   const challenges = I18N[currentUserLang].challenges;
   const list = document.getElementById('challenges-list');
   if (!list) return;
@@ -1284,12 +1287,16 @@ function copyMapURL() {
 function toggleLight() {
   document.body.classList.toggle('light');
   localStorage.setItem('karel-theme', document.body.classList.contains('light') ? 'light' : 'dark');
-  const panel = document.getElementById('config-panel');
-  if (panel) panel.classList.remove('open');
+  closeConfig();
 }
 (function restoreTheme() {
   if (localStorage.getItem('karel-theme') === 'light') document.body.classList.add('light');
 })();
+
+function closeConfig() {
+  const panel = document.getElementById('config-panel');
+  if (panel) panel.classList.remove('open');
+}
 
 // Config dropdown
 function toggleConfig() {
