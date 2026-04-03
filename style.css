@@ -570,7 +570,7 @@ body.light .lbg-row.active {
 .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 100; align-items: center; justify-content: center; }
 .modal-bg.open { display: flex; }
 .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; width: 440px; max-width: 95vw; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.7); }
-.modal-wide { width: 700px; }
+.modal-wide { width: 700px; height: 72vh; }
 .modal-hd { padding: 10px 14px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .modal-hd button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; }
 .modal-hd button:hover { color: var(--text); }
