@@ -45,7 +45,6 @@ function execAction(step) {
     K.markErrorLine(step.line);
     K.setStateUI('error');
     stopProgram();
-    notifyGoalResult(false); // ← B.6
     return false;
   }
 
@@ -61,7 +60,6 @@ function execAction(step) {
     K.markErrorLine(line);
     K.setStateUI('error');
     stopProgram();
-    notifyGoalResult(false); // ← B.6
     return false;
   }
 
