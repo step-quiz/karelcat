@@ -425,11 +425,27 @@ body.light .lbg-row.active {
 .c-p { background: var(--cell-wall); }
 .c-a { background: var(--cell-aqua); }
 .c-k { background: var(--cell-karel); }
+.c-ka { background: var(--cell-karel); }
 
 /* ── ASSETS SVG (Pixel Art) ──────────────────────── */
 
 /* Contenidor general: l'SVG omple tota la cel·la */
 .cell svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Perla visible quan Karel ocupa la seva casella */
+.pearl-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 38%;
+  height: 38%;
+  pointer-events: none;
+}
+.pearl-badge svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -507,6 +523,7 @@ body.light .c-e { background: var(--cell-empty) !important; }
 body.light .c-p { background: var(--cell-wall)  !important; }
 body.light .c-a { background: var(--cell-empty) !important; }
 body.light .c-k { background: var(--cell-empty) !important; }
+body.light .c-ka { background: var(--cell-empty) !important; }
 /* Medusa: MATEIX color rosat que en mode fosc */
 body.light .karel-entity { color: #E684CC; filter: drop-shadow(0 0 4px rgba(230,132,204,.5)); }
 body.light .karel-outline { display: inline; }
