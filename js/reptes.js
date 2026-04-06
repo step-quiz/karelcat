@@ -23,11 +23,11 @@ K.REPTES = {
     enunciat: '🎯 Repte 1 — Primers passos: En Karel s\'ha de moure fins a la perla i recollir-la. Quantes vegades cal moure?',
     map:
 `K>,.,.,A,.,.\n` +
-`.,.,.,.,.,.\n` +
-`.,.,.,.,.,.\n`,
+`.,.,.,.,.,.` +
+`\n.,.,.,.,.,.`,
     code:
-`// Repte 1: Primers passos
-// Porta en Karel fins a la perla i recull-la.
+`# Repte 1: Primers passos
+# Porta en Karel fins a la perla i recull-la.
 
 `,
   },
@@ -36,14 +36,14 @@ K.REPTES = {
     titol:    'La perla al racó',
     enunciat: '🎯 Repte 2 — La perla al racó: En Karel és al centre. La perla és al racó inferior dret. Arriba-hi i recull-la.',
     map:
-`.,.,.,.,.,.\n` +
-`.,.,.,.,.,.\n` +
-`.,.,K>,.,A,.\n` +
-`.,.,.,.,.,.\n` +
-`.,.,.,.,.,.\n`,
+`.,.,.,.,.,.` +
+`\n.,.,.,.,.,.` +
+`\n.,.,K>,.,A,.` +
+`\n.,.,.,.,.,.` +
+`\n.,.,.,.,.,.`,
     code:
-`// Repte 2: La perla al racó
-// En Karel ha d'arribar a la perla i recollir-la.
+`# Repte 2: La perla al racó
+# En Karel ha d'arribar a la perla i recollir-la.
 
 `,
   },
@@ -52,12 +52,12 @@ K.REPTES = {
     titol:    'El passadís',
     enunciat: '🎯 Repte 3 — El passadís: En Karel ha de recollir totes les perles del passadís i arribar a l\'extrem oposat.',
     map:
-`P,P,P,P,P,P,P\n` +
-`K>,A,A,A,A,A,.\n` +
-`P,P,P,P,P,P,P\n`,
+`P,P,P,P,P,P,P` +
+`\nK>,A,A,A,A,A,.` +
+`\nP,P,P,P,P,P,P`,
     code:
-`// Repte 3: El passadís
-// Recull totes les perles i arriba a l'extrem dret.
+`# Repte 3: El passadís
+# Recull totes les perles i arriba a l'extrem dret.
 
 `,
   },
@@ -66,13 +66,13 @@ K.REPTES = {
     titol:    'Anar i tornar',
     enunciat: '🎯 Repte 4 — Anar i tornar: En Karel ha de recollir la perla de la dreta i portar-la fins al quadrat marcat a l\'esquerra.',
     map:
-`.,.,.,.,.,.\n` +
-`.,.,.,.,.,.\n` +
-`K>,.,.,.,A,.\n` +
-`.,.,.,.,.,.\n`,
+`.,.,.,.,.,.` +
+`\n.,.,.,.,.,.` +
+`\nK>,.,.,.,A,.` +
+`\n.,.,.,.,.,.`,
     code:
-`// Repte 4: Anar i tornar
-// Agafa la perla de la dreta i porta-la fins a la posició inicial.
+`# Repte 4: Anar i tornar
+# Agafa la perla de la dreta i porta-la fins a la posició inicial.
 
 `,
   },
@@ -81,14 +81,14 @@ K.REPTES = {
     titol:    'El laberint',
     enunciat: '🎯 Repte 5 — El laberint: En Karel ha de trobar el camí fins a la perla evitant les roques.',
     map:
-`K>,.,P,.,.,.\n` +
-`.,.,P,.,P,.\n` +
-`.,.,.,.,P,.\n` +
-`P,P,P,.,P,.\n` +
-`.,.,.,.,.,A\n`,
+`K>,.,P,.,.,.` +
+`\n.,.,P,.,P,.` +
+`\n.,.,.,.,P,.` +
+`\nP,P,P,.,P,.` +
+`\n.,.,.,.,.,A`,
     code:
-`// Repte 5: El laberint
-// Troba el camí fins a la perla evitant les roques.
+`# Repte 5: El laberint
+# Troba el camí fins a la perla evitant les roques.
 
 `,
   },

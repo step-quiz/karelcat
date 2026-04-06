@@ -14,15 +14,17 @@
 
 K.CODE_LANGS = {
   en: {
-    _name: 'English',
-    commands:   ['move','turn_right','turn_left','turn_around','grab','drop'],
-    conditions: ['rock_ahead','path_clear','pearl_here','bag_empty','bag_full'],
-    keywords:   ['if','else','while','repeat','proc','not','and','or'],
+    _name: 'English (Python)',
+    commands:   ['move','turn_left','turn_right','turn_around','grab','drop'],
+    conditions: ['front_is_clear','front_is_blocked','pearl_here','bag_is_empty','bag_is_full'],
+    keywords:   ['if','else','while','for','in','range','def','not','and','or'],
     if_kw:      'if',
     else_kw:    ['else'],
     while_kw:   'while',
-    repeat_kw:  'repeat',
-    proc_kw:    'proc',
+    for_kw:     'for',
+    in_kw:      'in',
+    range_kw:   'range',
+    def_kw:     'def',
     not_kw:     'not',
     and_kw:     'and',
     or_kw:      'or',

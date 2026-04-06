@@ -13,7 +13,7 @@ function tokenizeLine(line) {
       let ws = '';
       while (i < line.length && /\s/.test(line[i])) ws += line[i++];
       out += K.escHtml(ws);
-    } else if ('{}()'.includes(c)) {
+    } else if ('():'.includes(c)) {
       out += `<span class="hl-br">${K.escHtml(c)}</span>`;
       i++;
     } else if (/[0-9]/.test(c)) {
@@ -22,8 +22,9 @@ function tokenizeLine(line) {
       out += `<span class="hl-num">${n}</span>`;
     } else {
       let w = '';
-      while (i < line.length && !/[\s{}()\/]/.test(line[i])) w += line[i++];
-      if      (L.KEYWORDS.has(w)) out += `<span class="hl-kw">${K.escHtml(w)}</span>`;
+      while (i < line.length && !/[\s():\/]/.test(line[i])) w += line[i++];
+      if      (w === '_')          out += `<span class="hl-kw">${K.escHtml(w)}</span>`;
+      else if (L.KEYWORDS.has(w)) out += `<span class="hl-kw">${K.escHtml(w)}</span>`;
       else if (L.COMMANDS.has(w)) out += `<span class="hl-cmd">${K.escHtml(w)}</span>`;
       else if (L.CONDS.has(w))    out += `<span class="hl-cond">${K.escHtml(w)}</span>`;
       else                        out += `<span class="hl-user">${K.escHtml(w)}</span>`;
@@ -35,7 +36,7 @@ function tokenizeLine(line) {
 function highlightCode(code) {
   return code.split('\n').map((line, i) => {
     const ln = i + 1;
-    const ci = line.indexOf('//');
+    const ci = line.indexOf('#');
     const content = ci !== -1
       ? tokenizeLine(line.slice(0, ci)) + `<span class="hl-cm">${K.escHtml(line.slice(ci))}</span>`
       : tokenizeLine(line);

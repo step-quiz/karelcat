@@ -1,5 +1,8 @@
 // ════════════════════════════════════════════════════════
 // parser.js — Classe Parser: tokens → AST
+//
+// Gramàtica basada en indentació (Python-compatible).
+// Els blocs es delimiten per nivell d'INDENT, no per { }.
 // ════════════════════════════════════════════════════════
 
 class KarelSyntaxError extends Error {
@@ -12,34 +15,82 @@ class KarelSyntaxError extends Error {
 
 class Parser {
   constructor(toks) { this.toks = toks; this.i = 0; }
-  peek() { return this.toks[this.i]; }
+
+  // Accés als tokens
+  peek(offset = 0) {
+    const idx = this.i + offset;
+    return idx < this.toks.length ? this.toks[idx] : this.toks[this.toks.length - 1];
+  }
   next() { return this.toks[this.i++]; }
 
+  // Retorna el nivell d'indentació del pròxim token, o -1 si EOF
+  peekIndent() {
+    const tok = this.peek();
+    if (tok.t === 'INDENT') return tok.v;
+    if (tok.t === 'EOF')    return -1;
+    return null; // token no esperat aquí
+  }
+
+  // Consumeix un token del tipus (i valor) esperats, o llança error
   eat(t, v) {
     const tok = this.peek();
     if (tok.t !== t || (v !== undefined && tok.v !== v)) {
       const got  = tok.v ?? tok.t;
       const want = v ?? t;
-      const errCode = (t === '{' || t === '}') ? 'syntax_brace'
+      const errCode = (t === ':')         ? 'syntax_colon'
                     : (t === '(' || t === ')') ? 'syntax_paren'
-                    : t === 'N'                ? 'syntax_number'
-                    :                            'syntax_instr';
+                    : t === 'N'           ? 'syntax_number'
+                    :                       'syntax_instr';
       throw new KarelSyntaxError(
         K.tf('parse.expected', { want, got, n: tok.line }),
-        errCode,
-        tok.line
+        errCode, tok.line
       );
     }
     return this.next();
   }
 
+  // Consumeix NL si és present (final de línia d'una instrucció)
+  eatNL() { if (this.peek().t === 'NL') this.next(); }
+
+  // ── Punt d'entrada ──────────────────────────────────────
+
   parseAll() {
-    const s = [];
-    while (this.peek().t !== 'EOF') s.push(this.parseStmt());
-    return s;
+    const stmts = this.parseStmtsAt(0);
+    // Ignorar EOF residual
+    return stmts;
   }
 
-  parseStmt() {
+  // ── Blocs per indentació ─────────────────────────────────
+
+  // Parseja totes les instruccions al nivell exacte `level`
+  parseStmtsAt(level) {
+    const stmts = [];
+    while (this.peekIndent() === level) {
+      this.next();                      // consumeix INDENT
+      stmts.push(this.parseStmt(level));
+    }
+    return stmts;
+  }
+
+  // Parseja el bloc indentat que segueix una capçalera `... :`
+  // parentIndent: el nivell de la capçalera que obre el bloc
+  parseBlock(parentIndent) {
+    const nextIndent = this.peekIndent();
+    if (nextIndent === -1 || nextIndent <= parentIndent) {
+      // Bloc buit: error de l'alumne
+      const tok = this.peek();
+      throw new KarelSyntaxError(
+        K.tf('parse.unexpected', { tok: tok.v ?? tok.t, n: tok.line }),
+        'syntax_instr', tok.line
+      );
+    }
+    return this.parseStmtsAt(nextIndent);
+  }
+
+  // ── Instruccions ─────────────────────────────────────────
+
+  // myIndent: nivell de la instrucció actual (necessari per detectar `else`)
+  parseStmt(myIndent) {
     const tok  = this.peek();
     const line = tok.line;
     const L    = K.lang;
@@ -53,38 +104,64 @@ class Parser {
 
     const w = tok.v;
 
-    if (L.COMMANDS.has(w))  { this.next(); return { type: 'command', name: w, line }; }
+    // ── Comanda built-in: move(), turn_left(), etc. ──
+    if (L.COMMANDS.has(w)) {
+      this.next();
+      this.eat('('); this.eat(')');
+      this.eatNL();
+      return { type: 'command', name: w, line };
+    }
 
+    // ── if condicio(): ──
     if (w === L.KW_IF) {
-      this.next(); this.eat('(');
+      this.next();                      // consumeix 'if'
       const cond = this.parseCond();
-      this.eat(')');
-      const thenB = this.parseBlock();
+      this.eat(':');
+      this.eatNL();
+      const thenB = this.parseBlock(myIndent);
+
+      // Detectar `else` al mateix nivell d'indentació
       let elseB = [];
-      const nxt = this.peek();
-      if (nxt.t === 'W' && L.KW_ELSE_ALIASES.includes(nxt.v)) {
-        this.next();
-        elseB = this.parseBlock();
+      if (this.peekIndent() === myIndent) {
+        // Mirem 1 token endavant (el que ve després de l'INDENT)
+        const nextW = this.peek(1);
+        if (nextW.t === 'W' && L.KW_ELSE_ALIASES.includes(nextW.v)) {
+          this.next();                  // consumeix INDENT
+          this.next();                  // consumeix 'else'
+          this.eat(':');
+          this.eatNL();
+          elseB = this.parseBlock(myIndent);
+        }
       }
       return { type: 'if', cond, then: thenB, else: elseB, line };
     }
 
+    // ── while condicio(): ──
     if (w === L.KW_WHILE) {
-      this.next(); this.eat('(');
+      this.next();
       const cond = this.parseCond();
-      this.eat(')');
-      return { type: 'while', cond, body: this.parseBlock(), line };
+      this.eat(':');
+      this.eatNL();
+      return { type: 'while', cond, body: this.parseBlock(myIndent), line };
     }
 
-    if (w === L.KW_REPEAT) {
-      this.next(); this.eat('(');
+    // ── for _ in range(N): ──
+    if (w === L.KW_FOR) {
+      this.next();                      // consumeix 'for'
+      this.eat('W', '_');               // variable throw-away
+      this.eat('W', L.KW_IN);
+      this.eat('W', L.KW_RANGE);
+      this.eat('(');
       const num = this.eat('N');
       this.eat(')');
-      return { type: 'repeat', count: num.v, body: this.parseBlock(), line };
+      this.eat(':');
+      this.eatNL();
+      return { type: 'repeat', count: num.v, body: this.parseBlock(myIndent), line };
     }
 
-    if (w === L.KW_PROC) {
-      this.next();
+    // ── def nom(): ──
+    if (w === L.KW_DEF) {
+      this.next();                      // consumeix 'def'
       const nt = this.peek();
       if (nt.t !== 'W') {
         throw new KarelSyntaxError(
@@ -93,22 +170,21 @@ class Parser {
         );
       }
       const name = nt.v;
-      this.next();
-      return { type: 'proc', name, body: this.parseBlock(), line };
+      this.next();                      // consumeix el nom
+      this.eat('('); this.eat(')');
+      this.eat(':');
+      this.eatNL();
+      return { type: 'proc', name, body: this.parseBlock(myIndent), line };
     }
 
-    // Crida a procediment definit per l'usuari
+    // ── Crida a procediment definit per l'alumne: nom() ──
     this.next();
+    this.eat('('); this.eat(')');
+    this.eatNL();
     return { type: 'call', name: w, line };
   }
 
-  parseBlock() {
-    this.eat('{');
-    const s = [];
-    while (this.peek().t !== '}' && this.peek().t !== 'EOF') s.push(this.parseStmt());
-    this.eat('}');
-    return s;
-  }
+  // ── Condicions ───────────────────────────────────────────
 
   parseCond()    { return this.parseOrCond(); }
 
@@ -117,7 +193,7 @@ class Parser {
     while (this.peek().t === 'W' && this.peek().v === K.lang.KW_OR) {
       const ln = this.peek().line;
       this.next();
-      l = { type: 'or', left: l, right: this.parseAndCond(), ln };
+      l = { type: 'or', left: l, right: this.parseAndCond(), line: ln };
     }
     return l;
   }
@@ -127,7 +203,7 @@ class Parser {
     while (this.peek().t === 'W' && this.peek().v === K.lang.KW_AND) {
       const ln = this.peek().line;
       this.next();
-      l = { type: 'and', left: l, right: this.parseNotCond(), ln };
+      l = { type: 'and', left: l, right: this.parseNotCond(), line: ln };
     }
     return l;
   }
@@ -136,10 +212,15 @@ class Parser {
     const tok = this.peek();
     if (tok.t === 'W' && tok.v === K.lang.KW_NOT) {
       const line = tok.line;
-      this.next(); this.eat('(');
-      const inner = this.parseCond();
-      this.eat(')');
-      return { type: 'not', inner, line };
+      this.next();                      // consumeix 'not'
+      // Suportar tant `not cond()` com `not(cond())` (Python-compatible)
+      if (this.peek().t === '(') {
+        this.next();                    // consumeix '('
+        const inner = this.parseCond();
+        this.eat(')');
+        return { type: 'not', inner, line };
+      }
+      return { type: 'not', inner: this.parseAtomCond(), line };
     }
     return this.parseAtomCond();
   }
@@ -148,6 +229,7 @@ class Parser {
     const tok = this.peek(), line = tok.line;
     if (tok.t === 'W' && K.lang.CONDS.has(tok.v)) {
       this.next();
+      this.eat('('); this.eat(')');
       return { type: 'condition', name: tok.v, line };
     }
     throw new KarelSyntaxError(
@@ -163,7 +245,7 @@ function parseCode(code) {
     return new Parser(K.tokenize(code)).parseAll();
   } catch (e) {
     const ln      = (e instanceof KarelSyntaxError) ? e.errorLine : null;
-    const errCode = (e instanceof KarelSyntaxError) ? e.code : 'syntax_instr';
+    const errCode = (e instanceof KarelSyntaxError) ? e.code      : 'syntax_instr';
     K.logError(`❌ ${K.t('err.syntax')}: ${e.message}`, errCode, ln);
     if (ln) K.markErrorLine(ln);
     K.setStateUI('error');

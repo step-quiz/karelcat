@@ -35,9 +35,11 @@ K.lang = {
   KEYWORDS:        new Set(),
   KW_IF:           '',
   KW_WHILE:        '',
-  KW_REPEAT:       '',
+  KW_FOR:          '',
+  KW_IN:           '',
+  KW_RANGE:        '',
   KW_ELSE_ALIASES: [],
-  KW_PROC:         '',
+  KW_DEF:          '',
   KW_NOT:          '',
   KW_AND:          '',
   KW_OR:           '',
@@ -54,9 +56,11 @@ function applyCodeLang(lang) {
   L.KEYWORDS        = new Set(tk.keywords);
   L.KW_IF           = tk.if_kw;
   L.KW_WHILE        = tk.while_kw;
-  L.KW_REPEAT       = tk.repeat_kw;
+  L.KW_FOR          = tk.for_kw;
+  L.KW_IN           = tk.in_kw;
+  L.KW_RANGE        = tk.range_kw;
   L.KW_ELSE_ALIASES = tk.else_kw;
-  L.KW_PROC         = tk.proc_kw;
+  L.KW_DEF          = tk.def_kw;
   L.KW_NOT          = tk.not_kw;
   L.KW_AND          = tk.and_kw;
   L.KW_OR           = tk.or_kw;
