@@ -141,7 +141,7 @@ function runProgram() {
   S.interpreter = gen; S.stepMode = false; S.running = true;
   K.setStateUI('running');
   K.log(K.t('log.running'), 'ok');
-  tick();
+  S.tickTimer = setTimeout(tick, 800);
 }
 
 function stepProgram() {
