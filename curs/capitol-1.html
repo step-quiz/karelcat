@@ -70,27 +70,27 @@
            SECCIÓ 2 — move
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>La primera ordre: <code>move</code></h2>
+        <h2>La primera ordre: <code>move()</code></h2>
 
-        <p><code>move</code> fa avançar en Karel una casella en la direcció que mira. Si davant seu hi ha un límit que impedeix avançar, el programa s'atura i mostra un error.</p>
+        <p><code>move()</code> fa avançar en Karel una casella en la direcció que mira. Si davant seu hi ha un límit que impedeix avançar, el programa s'atura i mostra un error.</p>
 
         <p>Les ordres s'escriuen una per línia. En Karel les executa en ordre estricte, de dalt a baix, sense saltar-se'n cap.</p>
 
-        <p>En l'exemple següent, en Karel mira cap a l'Est i té tres ordres <code>move</code>.</p>
+        <p>En l'exemple següent, en Karel mira cap a l'Est i té tres ordres <code>move()</code>.</p>
         
         <p>En aquests exemples, no pots modificar el codi. Prem ▶ <strong>Executa</strong> i observa com funciona:</p>
 
         <div class="simulador"
              data-map=".,.,.,.,.\n.,.,.,.,.\nK>,.,.,.,.\n.,.,.,.,."
-             data-code="move
-move
-move
+             data-code="move()
+move()
+move()
 "
              data-readonly="true"
              data-height="300">
         </div>
 
-        <p>En Karel ha avançat tres caselles cap a la dreta perquè mirava cap a l'Est i tenia tres ordres <code>move</code>. Si hagués trobat un impediment per avançar, el programa hauria fallat.</p>
+        <p>En Karel ha avançat tres caselles cap a la dreta perquè mirava cap a l'Est i tenia tres ordres <code>move()</code>. Si hagués trobat un impediment per avançar, el programa hauria fallat.</p>
       </section>
 
 
@@ -98,9 +98,9 @@ move
            SECCIÓ 3 — turn_left
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Girar a l'esquerra: <code>turn_left</code></h2>
+        <h2>Girar a l'esquerra: <code>turn_left()</code></h2>
 
-        <p><code>turn_left</code> fa que en Karel giri 90° cap a l'esquerra des del seu punt de vista. Girar <em>no</em> és avançar: en Karel canvia de direcció però no es mou de casella.</p>
+        <p><code>turn_left()</code> fa que en Karel giri 90° cap a l'esquerra des del seu punt de vista. Girar <em>no</em> és avançar: en Karel canvia de direcció però no es mou de casella.</p>
 
         <p>Per exemple, en l'exemple veuràs que en Karel està mirant cap a l'Est (la dreta). Quan faci un gir a l'esquerra, mirarà cap al Nord (amunt). Si torna a girar a l'esquerra, mirarà cap a l'Oest (l'esquerra). Finalment, al cap de quatre girs cap a l'esquerra, tornarà a la mateixa orientació inicial, és a dir, mirant cap a l'Est (la dreta).</p>
 
@@ -108,17 +108,17 @@ move
 
         <div class="simulador"
              data-map=".,.,.,.,.\n.,.,.,.,.\n.,.,.,.,.\nK>,.,.,.,."
-             data-code="move
-move
-turn_left
-move
-move
+             data-code="move()
+move()
+turn_left()
+move()
+move()
 "
              data-readonly="true"
              data-height="310">
         </div>
 
-        <p>Primer en Karel avança dues caselles cap a l'Est. Llavors <code>turn_left</code> el fa mirar cap al Nord. Finalment avança dues caselles cap amunt. En Karel ha recorregut un camí que fa cantonada.</p>
+        <p>Primer en Karel avança dues caselles cap a l'Est. Llavors <code>turn_left()</code> el fa mirar cap al Nord. Finalment avança dues caselles cap amunt. En Karel ha recorregut un camí que fa cantonada.</p>
       </section>
 
 
@@ -126,19 +126,19 @@ move
            SECCIÓ 4 — turn_right
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Girar a la dreta: <code>turn_right</code></h2>
+        <h2>Girar a la dreta: <code>turn_right()</code></h2>
 
-        <p><code>turn_right</code> fa que en Karel giri 90° cap a la dreta des del seu punt de vista. El funcionament és molt similar a <code>turn_left</code>.</p>
+        <p><code>turn_right()</code> fa que en Karel giri 90° cap a la dreta des del seu punt de vista. El funcionament és molt similar a <code>turn_left()</code>.</p>
 
         <p>En l'exemple següent, en Karel comença a l'extrem superior esquerre, i mirant cap a l'Est. Avança dues caselles i gira a la dreta (per tant, mirarà al Sud). I avança dues caselles més:</p>
 
         <div class="simulador"
              data-map="K>,.,.,.,.\n.,.,.,.,.\n.,.,.,.,.\n.,.,.,.,."
-             data-code="move
-move
-turn_right
-move
-move
+             data-code="move()
+move()
+turn_right()
+move()
+move()
 "
              data-readonly="true"
              data-height="300">
@@ -146,9 +146,9 @@ move
 
         <p>Fins ara coneixes les tres ordres bàsiques de moviment:</p>
         <ul>
-          <li><code>move</code> — avança una casella en la direcció i sentit actual.</li>
-          <li><code>turn_left</code> — gira 90° cap a l'esquerra (des del punt de vista de Karel).</li>
-          <li><code>turn_right</code> — gira 90° cap a la dreta (des del punt de vista de Karel).</li>
+          <li><code>move()</code> — avança una casella en la direcció i sentit actual.</li>
+          <li><code>turn_left()</code> — gira 90° cap a l'esquerra (des del punt de vista de Karel).</li>
+          <li><code>turn_right()</code> — gira 90° cap a la dreta (des del punt de vista de Karel).</li>
         </ul>
         <p>Amb aquestes tres ordres pots portar en Karel a qualsevol casella del seu món.</p>
       </section>
@@ -164,12 +164,12 @@ move
           En Karel és a l'extrem inferior esquerre del seu món, i està orientat mirant cap a l'Est. Hi ha una perla a l'extrem oposat. Escriu el codi per portar en Karel fins a sobre de la casella on és la perla.
         </div>
 
-        <p>Pista. Hauràs d'escriure, en total, set ordres <code>move</code> i una ordre <code>turn_left</code></p>
+        <p>Pista. Hauràs d'escriure, en total, set ordres <code>move()</code> i una ordre <code>turn_left()</code></p>
 
         <div class="simulador"
              data-map=".,.,.,.,A\n.,.,.,.,.\n.,.,.,.,.\nK>,.,.,.,."
              data-goal=".,.,.,.,K^\n.,.,.,.,.\n.,.,.,.,.\n.,.,.,.,."
-             data-code="// Escriu el teu codi aquí:
+             data-code="# Escriu el teu codi aquí:
 
 "
              data-label="Exercici"
