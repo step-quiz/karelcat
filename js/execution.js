@@ -2,6 +2,38 @@
 // execution.js — Control d'execució + execAction
 // ════════════════════════════════════════════════════════
 
+// ── Compara l'estat actual amb el goal (B.6) ─────────────
+// Ignora la direcció final de Karel: l'important és on ha arribat
+// i com ha quedat el món (perles, roques).
+function compareGoal(goalCSV) {
+  const goal    = K.parseCSV(goalCSV);
+  const current = K.parseCSV(K.currentStateToCSV());
+
+  // Dimensions han de coincidir
+  if (goal.rows !== current.rows || goal.cols !== current.cols) return false;
+
+  // Posició final de Karel (sense direcció)
+  if (goal.kStart.x !== current.kStart.x) return false;
+  if (goal.kStart.y !== current.kStart.y) return false;
+
+  // Contingut de cada casella
+  for (let r = 0; r < goal.rows; r++)
+    for (let c = 0; c < goal.cols; c++)
+      if (goal.grid[r][c] !== current.grid[r][c]) return false;
+
+  return true;
+}
+
+// Emet el resultat cap al pare si estem en mode exercici
+function notifyGoalResult(success) {
+  if (!K.goalCSV || !K.goalId) return;
+  window.parent.postMessage(
+    { type: 'karel-result', goalId: K.goalId, success },
+    '*'
+  );
+}
+
+
 // ── Executa una acció individual ──
 
 function execAction(step) {
@@ -13,6 +45,7 @@ function execAction(step) {
     K.markErrorLine(step.line);
     K.setStateUI('error');
     stopProgram();
+    notifyGoalResult(false); // ← B.6
     return false;
   }
 
@@ -28,6 +61,7 @@ function execAction(step) {
     K.markErrorLine(line);
     K.setStateUI('error');
     stopProgram();
+    notifyGoalResult(false); // ← B.6
     return false;
   }
 
@@ -119,6 +153,7 @@ function doStep() {
     K.clearLineMarks();
     S.running = false; S.interpreter = null;
     K.setStateUI('idle');
+    notifyGoalResult(compareGoal(K.goalCSV)); // ← B.6
     return;
   }
   execAction(res.value);
@@ -133,6 +168,7 @@ function tick() {
     K.clearLineMarks();
     S.running = false; S.interpreter = null;
     K.setStateUI('idle');
+    notifyGoalResult(compareGoal(K.goalCSV)); // ← B.6
     return;
   }
   const ok = execAction(res.value);

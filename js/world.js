@@ -64,6 +64,19 @@ function worldToCSV() {
 }
 
 
+// ── Estat actual → CSV (per a la comparació de goal) ──
+function currentStateToCSV() {
+  const S  = K.state;
+  const AR = ['>', 'v', '<', '^'];
+  return S.world.grid.map((row, r) =>
+    row.map((c, col) =>
+      (S.karel.x === col && S.karel.y === r) ? 'K' + AR[S.karel.dir] : c
+    ).join(',')
+  ).join('\n');
+}
+K.currentStateToCSV = currentStateToCSV;
+
+
 // ── Helpers del món ──
 
 function isRock(x, y) {

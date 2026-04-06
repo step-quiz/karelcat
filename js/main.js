@@ -44,6 +44,14 @@
     useLocalStorage = false;
   }
 
+  // Paràmetres de feedback d'exercici (B.6)
+  const urlGoal   = params.get('goal')   ? decodeParam(params.get('goal')) : null;
+  const urlGoalId = params.get('goalId') || null;
+
+  // Emmagatzema al namespace K perquè execution.js hi pugui accedir
+  K.goalCSV = urlGoal   || '';
+  K.goalId  = urlGoalId || '';
+
   // 0) Aplica el tema guardat (fosc per defecte, clar si l'usuari ho va triar)
   //    (si ?theme=light ja estava aplicat inline; initTheme el sincronitza)
   K.initTheme();
