@@ -52,6 +52,17 @@
   K.goalCSV = urlGoal   || '';
   K.goalId  = urlGoalId || '';
 
+  // Origen segur per a postMessage cap al pare (evita enviar a '*').
+  // S'obté de document.referrer quan el simulador és dins un iframe;
+  // si no n'hi ha (standalone), es manté window.location.origin com a fallback.
+  K.parentOrigin = (() => {
+    try {
+      return document.referrer
+        ? new URL(document.referrer).origin
+        : window.location.origin;
+    } catch { return window.location.origin; }
+  })();
+
   // 0) Aplica el tema guardat (fosc per defecte, clar si l'usuari ho va triar)
   //    (si ?theme=light ja estava aplicat inline; initTheme el sincronitza)
   K.initTheme();
@@ -86,7 +97,7 @@
     // Esborra el feedback i reseteja el món en qualsevol modificació del codi (B.6)
     ta.addEventListener('input', () => {
       if (K.goalId) {
-        window.parent.postMessage({ type: 'karel-clear', goalId: K.goalId }, '*');
+        window.parent.postMessage({ type: 'karel-clear', goalId: K.goalId }, K.parentOrigin);
       }
       // Reset silent: el codi ha canviat, l'estat anterior ja no és vàlid
       K.stopProgram();

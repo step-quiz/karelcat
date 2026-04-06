@@ -35,9 +35,15 @@ function* runStmt(node) {
       break;
     }
 
-    case 'repeat':
+    case 'repeat': {
+      const MAX_REPEAT = 10000;
+      if (node.count > MAX_REPEAT) {
+        yield { type: 'error', code: 'inf_loop', msg: K.t('log.inf_loop'), line: node.line };
+        return;
+      }
       for (let i = 0; i < node.count; i++) yield* runStmts(node.body);
       break;
+    }
 
     case 'call': {
       const body = S.procs[node.name];

@@ -29,7 +29,7 @@ function notifyGoalResult(success) {
   if (!K.goalCSV || !K.goalId) return;
   window.parent.postMessage(
     { type: 'karel-result', goalId: K.goalId, success },
-    '*'
+    K.parentOrigin
   );
 }
 
@@ -117,7 +117,7 @@ function buildInterpreter() {
 // Emet al pare que cal esborrar el banner de feedback (B.6)
 function notifyClearFeedback() {
   if (!K.goalId) return;
-  window.parent.postMessage({ type: 'karel-clear', goalId: K.goalId }, '*');
+  window.parent.postMessage({ type: 'karel-clear', goalId: K.goalId }, K.parentOrigin);
 }
 
 function runProgram() {

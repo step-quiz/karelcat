@@ -8,9 +8,29 @@
 //   - Emet INDENT, NL per al parser
 // ════════════════════════════════════════════════════════
 
+// Detecta automàticament la unitat d'indentació (espais per nivell)
+// a partir del mínim sagnat no nul present al codi.
+// Exemples: 2 espais → 2, 3 espais → 3, 4 espais → 4.
+function _detectIndentUnit(lines) {
+  let min = Infinity;
+  for (const raw of lines) {
+    const commentIdx = raw.indexOf('#');
+    const line = commentIdx === -1 ? raw : raw.slice(0, commentIdx);
+    if (line.trim() === '') continue;
+    let s = 0;
+    while (s < line.length && line[s] === ' ') s++;
+    if (s > 0 && s < min) min = s;
+  }
+  return min === Infinity ? 2 : min;
+}
+
 function tokenize(code) {
-  const toks = [];
+  const toks  = [];
   const lines = code.split('\n');
+
+  // Detecta la unitat d'indentació una sola vegada per tot el codi.
+  // Així 3 espais/nivell, 4 espais/nivell, etc. funcionen tots correctament.
+  const indentUnit = _detectIndentUnit(lines);
 
   for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
     const lineNum = lineIdx + 1;
@@ -23,11 +43,12 @@ function tokenize(code) {
     // Ignorar línies buides (o que eren només comentari)
     if (line.trim() === '') continue;
 
-    // Calcular nivell d'indentació
+    // Calcular nivell d'indentació dividint pels espais detectats com a unitat.
+    // Math.round absorbeix 1 espai de desviació accidental (ex: 5 espais amb
+    // unitat 4 → nivell 1, no 2).
     let spaces = 0;
     while (spaces < line.length && line[spaces] === ' ') spaces++;
-    // Accepta 2 o 4 espais per nivell; normalitzem a unitats de 2
-    const indentLevel = Math.round(spaces / 2);
+    const indentLevel = Math.round(spaces / indentUnit);
     toks.push({ t: 'INDENT', v: indentLevel, line: lineNum });
 
     // Tokenitzar la part no-indentada de la línia
