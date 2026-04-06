@@ -17,7 +17,7 @@ function calcCellSize() {
 
 function _cellKey(col, row) {
   const S = K.state;
-  if (S.karel.x === col && S.karel.y === row) return 'K' + S.karel.dir;
+  if (S.karel.x === col && S.karel.y === row) return 'K' + S.karel.dir + S.world.grid[row][col];
   return S.world.grid[row][col];
 }
 
@@ -26,8 +26,11 @@ function _applyCellContent(div, col, row, fs) {
   div.className = 'cell';
   div.style.fontSize = fs;
   if (S.karel.x === col && S.karel.y === row) {
+    const hasPearl = S.world.grid[row][col] === 'A';
     div.classList.add('c-k');
-    div.innerHTML = K.KAREL_ASSETS.MEDUSA;
+    if (hasPearl) div.classList.add('c-ka');
+    div.innerHTML = K.KAREL_ASSETS.MEDUSA
+      + (hasPearl ? `<span class="pearl-badge">${K.KAREL_ASSETS.PEARL}</span>` : '');
     const svg = div.querySelector('.karel-entity');
     if (svg) svg.setAttribute('data-dir', K.DIRS[S.karel.dir].dataDir);
   } else {
