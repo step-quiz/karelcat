@@ -179,9 +179,9 @@ function initSidebarToggle() {
 
   if (overlay) overlay.addEventListener('click', close);
 
-  // Tanca en navegar (mòbil)
+  // Tanca en navegar (mòbil vertical o horitzontal)
   sidebar.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    if (window.innerWidth <= 820) close();
+    if (window.innerWidth <= 820 || window.innerHeight <= 500) close();
   }));
 }
 
