@@ -82,6 +82,9 @@ function renderSidebar(currentNum) {
 //        data-height="340">
 //   </div>
 
+let _goalUid = 0;
+function nextGoalId() { return 'goal-' + (++_goalUid); }
+
 function renderSimuladors() {
   const divs = document.querySelectorAll('.simulador');
   divs.forEach(div => {
@@ -91,6 +94,9 @@ function renderSimuladors() {
     const readonly = div.dataset.readonly === 'true';
     const title    = div.dataset.title || '';
     const label    = div.dataset.label || '';   // 'Exemple' | 'Exercici' | ''
+    const rawGoal  = div.dataset.goal || '';
+    const goalCSV  = rawGoal.replace(/\\n/g, '\n');
+    const goalId   = goalCSV ? nextGoalId() : '';
 
     // Substitueix \n literals (de l'atribut HTML) per salts de línia reals
     const map  = rawMap.replace(/\\n/g, '\n');
@@ -104,8 +110,13 @@ function renderSimuladors() {
     // Respecta el tema actual de la pàgina
     const theme   = document.body.classList.contains('curs-light') ? '&theme=light' : '';
 
+    // Paràmetres de feedback (B.6)
+    const goalParams = goalCSV
+      ? `&goal=${btoa(unescape(encodeURIComponent(goalCSV)))}&goalId=${goalId}`
+      : '';
+
     const iframe = document.createElement('iframe');
-    iframe.src        = `../index.html?embed=1&map=${encMap}&code=${encCode}${roParam}${theme}`;
+    iframe.src        = `../index.html?embed=1&map=${encMap}&code=${encCode}${roParam}${theme}${goalParams}`;
     iframe.className  = 'simulador-frame';
     iframe.style.height = height + 'px';
     iframe.title      = title || 'Simulador Karel';
@@ -122,6 +133,15 @@ function renderSimuladors() {
       wrap.appendChild(badge);
     }
     wrap.appendChild(iframe);
+
+    // Placeholder de feedback (B.6)
+    if (goalCSV) {
+      const fb = document.createElement('div');
+      fb.className = 'simulador-feedback';
+      fb.dataset.goalId = goalId;
+      wrap.appendChild(fb);
+    }
+
     if (title) {
       const cap = document.createElement('p');
       cap.className = 'simulador-caption';
@@ -195,3 +215,19 @@ function toggleCursTheme() {
 window.injectCursLogo     = injectCursLogo;
 window.toggleCursTheme    = toggleCursTheme;
 window.updateCursThemeBtn = updateCursThemeBtn;
+
+// ── Listener global de feedback d'exercicis (B.6) ────────
+window.addEventListener('message', function(e) {
+  if (!e.data || e.data.type !== 'karel-result') return;
+  const fb = document.querySelector(
+    `.simulador-feedback[data-goal-id="${e.data.goalId}"]`
+  );
+  if (!fb) return;
+  if (e.data.success) {
+    fb.className = 'simulador-feedback fb-ok';
+    fb.textContent = '✓ Correcte! En Karel ha arribat a l\'objectiu.';
+  } else {
+    fb.className = 'simulador-feedback fb-error';
+    fb.textContent = '✗ Encara no. Comprova el codi i torna-ho a intentar.';
+  }
+});

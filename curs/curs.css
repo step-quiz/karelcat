@@ -444,6 +444,38 @@ body.curs-light .chapter-section h2 { color: #1a1a1a; }
   font-style: italic;
 }
 
+/* ── Feedback d'exercici (B.6) ───────────────────────── */
+.simulador-feedback {
+  display: none;
+  padding: 0.55rem 1rem;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.simulador-feedback.fb-ok {
+  display: block;
+  background: color-mix(in srgb, var(--bg) 60%, #22c55e 40%);
+  color: #14532d;
+  border: 1px solid #86efac;
+}
+body.curs-light .simulador-feedback.fb-ok {
+  background: #dcfce7;
+  color: #14532d;
+}
+.simulador-feedback.fb-error {
+  display: block;
+  background: color-mix(in srgb, var(--bg) 60%, #ef4444 40%);
+  color: #7f1d1d;
+  border: 1px solid #fca5a5;
+}
+body.curs-light .simulador-feedback.fb-error {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
 
 /* ── Seccions d'exercici ─────────────────────────────── */
 
