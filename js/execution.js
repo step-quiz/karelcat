@@ -126,6 +126,12 @@ function runProgram() {
   const S = K.state;
   if (S.running) return;
   notifyClearFeedback(); // ← B.6
+  // Sempre partim de l'estat inicial: el codi ha de ser la solució completa
+  stopProgram();
+  S.world.grid = S.worldInit.map(r => [...r]);
+  S.karel = { ...S.karelInit };
+  K.renderWorldFull();
+  K.updateStatus();
   const gen = buildInterpreter();
   if (!gen) return;
   // Cada execució nova és pàgina en blanc
@@ -142,6 +148,11 @@ function stepProgram() {
   const S = K.state;
   if (!S.running && !S.interpreter) {
     notifyClearFeedback(); // ← B.6
+    // Sempre partim de l'estat inicial: el codi ha de ser la solució completa
+    S.world.grid = S.worldInit.map(r => [...r]);
+    S.karel = { ...S.karelInit };
+    K.renderWorldFull();
+    K.updateStatus();
     const gen = buildInterpreter();
     if (!gen) return;
     K.clearLineMarks();
