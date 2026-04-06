@@ -83,11 +83,19 @@
     K.updateEditor();
     setTimeout(() => K.updateEditor(), 50);
 
-    // Esborra el feedback en qualsevol modificació del codi (B.6)
+    // Esborra el feedback i reseteja el món en qualsevol modificació del codi (B.6)
     ta.addEventListener('input', () => {
       if (K.goalId) {
         window.parent.postMessage({ type: 'karel-clear', goalId: K.goalId }, '*');
       }
+      // Reset silent: el codi ha canviat, l'estat anterior ja no és vàlid
+      K.stopProgram();
+      const S = K.state;
+      S.world.grid = S.worldInit.map(r => [...r]);
+      S.karel = { ...S.karelInit };
+      K.clearLineMarks();
+      K.renderWorldFull();
+      K.updateStatus();
     });
   }
 
