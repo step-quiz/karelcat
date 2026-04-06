@@ -82,6 +82,13 @@
 
     K.updateEditor();
     setTimeout(() => K.updateEditor(), 50);
+
+    // Esborra el feedback en qualsevol modificació del codi (B.6)
+    ta.addEventListener('input', () => {
+      if (K.goalId) {
+        window.parent.postMessage({ type: 'karel-clear', goalId: K.goalId }, '*');
+      }
+    });
   }
 
   // 5) Auto-escala del grid en redimensionar

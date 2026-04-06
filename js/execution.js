@@ -116,9 +116,16 @@ function buildInterpreter() {
   return K.runStmts(ast.filter(n => n.type !== 'proc'));
 }
 
+// Emet al pare que cal esborrar el banner de feedback (B.6)
+function notifyClearFeedback() {
+  if (!K.goalId) return;
+  window.parent.postMessage({ type: 'karel-clear', goalId: K.goalId }, '*');
+}
+
 function runProgram() {
   const S = K.state;
   if (S.running) return;
+  notifyClearFeedback(); // ← B.6
   const gen = buildInterpreter();
   if (!gen) return;
   // Cada execució nova és pàgina en blanc
@@ -134,6 +141,7 @@ function runProgram() {
 function stepProgram() {
   const S = K.state;
   if (!S.running && !S.interpreter) {
+    notifyClearFeedback(); // ← B.6
     const gen = buildInterpreter();
     if (!gen) return;
     K.clearLineMarks();
@@ -185,6 +193,7 @@ function stopProgram() {
 
 function resetKarel() {
   const S = K.state;
+  notifyClearFeedback(); // ← B.6
   stopProgram();
   S.world.grid = S.worldInit.map(r => [...r]);
   S.karel = { ...S.karelInit };
