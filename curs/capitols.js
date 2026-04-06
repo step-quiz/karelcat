@@ -218,7 +218,20 @@ window.updateCursThemeBtn = updateCursThemeBtn;
 
 // ── Listener global de feedback d'exercicis (B.6) ────────
 window.addEventListener('message', function(e) {
-  if (!e.data || e.data.type !== 'karel-result') return;
+  if (!e.data) return;
+
+  // Qualsevol trigger (▶ Executa, pas a pas, Reinicia, tecla) reseteja el feedback
+  if (e.data.type === 'karel-clear') {
+    const fb = document.querySelector(
+      `.simulador-feedback[data-goal-id="${e.data.goalId}"]`
+    );
+    if (!fb) return;
+    fb.className = 'simulador-feedback';
+    fb.textContent = '';
+    return;
+  }
+
+  if (e.data.type !== 'karel-result') return;
   const fb = document.querySelector(
     `.simulador-feedback[data-goal-id="${e.data.goalId}"]`
   );
