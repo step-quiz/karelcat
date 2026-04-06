@@ -13,6 +13,12 @@ class KarelSyntaxError extends Error {
   }
 }
 
+// Tradueix noms de token interns a text llegible per l'alumne
+function tokLabel(tok) {
+  if (tok.v !== undefined) return tok.v;
+  return { NL: '↵', EOF: 'fi del programa', INDENT: 'indentació' }[tok.t] ?? tok.t;
+}
+
 class Parser {
   constructor(toks) { this.toks = toks; this.i = 0; }
 
@@ -35,7 +41,7 @@ class Parser {
   eat(t, v) {
     const tok = this.peek();
     if (tok.t !== t || (v !== undefined && tok.v !== v)) {
-      const got  = tok.v ?? tok.t;
+      const got  = tokLabel(tok);
       const want = v ?? t;
       const errCode = (t === ':')         ? 'syntax_colon'
                     : (t === '(' || t === ')') ? 'syntax_paren'
@@ -80,7 +86,7 @@ class Parser {
       // Bloc buit: error de l'alumne
       const tok = this.peek();
       throw new KarelSyntaxError(
-        K.tf('parse.unexpected', { tok: tok.v ?? tok.t, n: tok.line }),
+        K.tf('parse.unexpected', { tok: tokLabel(tok), n: tok.line }),
         'syntax_instr', tok.line
       );
     }
@@ -97,7 +103,7 @@ class Parser {
 
     if (tok.t !== 'W') {
       throw new KarelSyntaxError(
-        K.tf('parse.unexpected', { tok: tok.v ?? tok.t, n: line }),
+        K.tf('parse.unexpected', { tok: tokLabel(tok), n: line }),
         'syntax_instr', line
       );
     }
@@ -233,7 +239,7 @@ class Parser {
       return { type: 'condition', name: tok.v, line };
     }
     throw new KarelSyntaxError(
-      K.tf('parse.unknown_cond', { tok: tok.v ?? tok.t, n: line }),
+      K.tf('parse.unknown_cond', { tok: tokLabel(tok), n: line }),
       'syntax_cond', line
     );
   }
