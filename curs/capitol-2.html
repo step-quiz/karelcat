@@ -7,52 +7,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
-<body>
+<body class="curs-light">
 
 
 <!-- ══════════════════════════════════════════════════════
      CAPÇALERA
+     (logo via injectCursLogo(), sense toggle de tema)
      ══════════════════════════════════════════════════════ -->
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
 
-  <a href="index.html" class="curs-header-logo">
-    <span class="logo-icon">
-      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-           shape-rendering="crispEdges" width="18" height="18" aria-hidden="true">
-        <rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/>
-        <rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/>
-        <rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/>
-        <rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/>
-        <rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/>
-        <rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/>
-        <rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/>
-        <rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/>
-        <rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/>
-        <rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/>
-        <rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/>
-        <rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/>
-        <rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/>
-        <rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/>
-        <rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/>
-        <rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/>
-        <rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/>
-        <rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/>
-        <rect x="6" y="3" width="1" height="1" fill="#141414"/>
-        <rect x="7" y="3" width="1" height="1" fill="#141414"/>
-        <rect x="8" y="3" width="1" height="1" fill="#141414"/>
-        <rect x="9" y="3" width="1" height="1" fill="#141414"/>
-      </svg>
-    </span>
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
     Karel
-  </a>
+  </span>
 
   <span class="curs-header-title">Capítol 2 — Agafa i deixa</span>
-
-  <div class="curs-header-actions">
-    <button id="btn-curs-theme" class="btn-curs-theme"
-            onclick="toggleCursTheme()" title="Canvia el tema" aria-label="Canvia el tema">☀️</button>
-  </div>
 </header>
 
 
@@ -64,7 +34,10 @@
   <div id="sidebar-overlay" aria-hidden="true"></div>
 
   <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
-    <div class="sidebar-header">Capítols</div>
+    <div class="sidebar-header">
+      <a href="index.html" class="active">Capítols</a>
+      <a href="../index.html">Simulador</a>
+    </div>
     <div id="sidebar-nav"></div>
   </nav>
 
@@ -215,6 +188,7 @@ grab()
 
         <div class="simulador"
              data-map=".,.,.,.,.\nK>,A,.,A,.\n.,.,.,.,."
+             data-goal=".,.,.,.,.\n.,.,.,.,K>\n.,.,.,.,."
              data-code="# Escriu el teu codi aquí:
 
 "
@@ -243,14 +217,10 @@ grab()
 <script>const CURRENT_CAPITOL = 2;</script>
 <script src="capitols.js"></script>
 <script>
+  injectCursLogo();
   renderSidebar(CURRENT_CAPITOL);
   renderSimuladors();
   initSidebarToggle();
-
-  (function () {
-    const btn = document.getElementById('btn-curs-theme');
-    if (btn) btn.textContent = document.body.classList.contains('curs-light') ? '🌙' : '☀️';
-  })();
 </script>
 
 </body>
