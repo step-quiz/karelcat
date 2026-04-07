@@ -84,9 +84,7 @@ const LS_KEY_THEME = 'karel-theme';
 
 // ── Mapa i codi per defecte ──
 
-const DEFAULT_CSV =
-`K>,.,.,.,A,.
-.,.,.,P,.,.\n.,.,.,.,.,.\n.,P,.,.,.,.\n.,.,.,.,A,.`;
+const DEFAULT_CSV = `K>,.,.,.,A,.|.,.,.,P,.,.|.,.,.,.,.,.|.,P,.,.,.,.|.,.,.,.,A,.`;
 
 const DEFAULT_CODE = `# Benvingut a Karel!
 # Prem Executa per veure en Karel moure's

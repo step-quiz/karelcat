@@ -5,7 +5,7 @@
 // ── CSV → estructura del món ──
 
 function parseCSV(csv) {
-  const lines = csv.trim().split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('//'));
+  const lines = csv.trim().split('|').map(l => l.trim()).filter(l => l && !l.startsWith('//'));
   const grid = [];
   let kStart = { x: 0, y: 0, dir: 0 };
   let foundK = false;
@@ -60,7 +60,7 @@ function worldToCSV() {
     row.map((c, col) =>
       (S.karelInit.x === col && S.karelInit.y === r) ? 'K' + AR[S.karelInit.dir] : c
     ).join(',')
-  ).join('\n');
+  ).join('|');
 }
 
 
@@ -72,7 +72,7 @@ function currentStateToCSV() {
     row.map((c, col) =>
       (S.karel.x === col && S.karel.y === r) ? 'K' + AR[S.karel.dir] : c
     ).join(',')
-  ).join('\n');
+  ).join('|');
 }
 K.currentStateToCSV = currentStateToCSV;
 
