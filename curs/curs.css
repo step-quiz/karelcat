@@ -17,7 +17,7 @@
   --mono:         'Space Mono', 'Courier New', monospace;
   --sans:         system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  --sidebar-w:    240px;
+  --sidebar-w:    200px;
   --header-h:     48px;
   --content-max:  960px;
   --gap:          2rem;
