@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 2 — El passadís | Karelcat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <style>
+    /* ── Badges de dificultat ── */
+    .dificultat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+    }
+    .dificultat-facil {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .dificultat-intermedi {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .dificultat-dificil {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* ── Caixa de consell pedagògic ── */
+    .consell-box {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1.2rem 0;
+      font-size: 0.93rem;
+      color: #0c4a6e;
+    }
+    .consell-box strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0284c7;
+    }
+
+    /* ── Capçalera del repte amb número i badge ── */
+    .repte-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .repte-numero {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    /* ── Solució de referència (només visible al codi font) ── */
+    /* La solució s'inclou en un comentari HTML per al professor,
+       NO en cap atribut data-code visible a l'alumne. */
+  </style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-title">Capítol 10 — Reptes</span>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div class="sidebar-header">
+      <a href="index.html" class="active">Capítols</a>
+      <a href="../index.html">Simulador</a>
+    </div>
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 10</span>
+        <h1>Reptes</h1>
+      </header>
+
+
+      <!-- ══════════════════════════════════════════
+           REPTE A2 — EL PASSADÍS
+           ══════════════════════════════════════════ -->
+      <section class="chapter-section chapter-exercise">
+
+        <h2>
+          Repte 2 — El passadís
+          <span class="dificultat-badge dificultat-facil">★ Fàcil</span>
+        </h2>
+
+        <!-- Enunciat -->
+        <div class="exercise-enunciat">
+          En Karel es troba al principi d'un passadís fosc. Hi ha perles
+          escampades per terra — algunes caselles en tenen, d'altres no — però
+          no sap fins on arriba el passadís.<br><br>
+          <strong>La teva feina:</strong> escriu un programa perquè en Karel
+          reculli <em>totes</em> les perles del passadís i s'aturi a l'extrem dret.<br><br>
+          <strong>Restricció important:</strong> la longitud del passadís és
+          desconeguda (entre 7 i 12 caselles en els mons de test).
+          El teu codi ha de funcionar per a qualsevol longitud, no només
+          per al món que veus.
+        </div>
+
+        <div class="consell-box">
+          <strong>💡 Pista del fencepost</strong>
+          Si escrius <code>while front_is_clear(): move()</code>, en Karel
+          s'atura just <em>abans</em> de l'última casella. Pot quedar-hi una perla
+          que mai no recull. Pensa: quan acaba el <code>while</code>, on és en
+          Karel exactament? Queda alguna casella sense comprovar?
+        </div>
+
+        <!-- Simulador — món inicial (test A: 8 caselles) -->
+        <div class="simulador"
+             data-map="K>,A,.,A,A,.,A,."
+             data-code="# En Karel ha de recollir totes les perles del passadís
+# i arribar a l'extrem dret.
+
+while front_is_clear():
+    # El teu codi aquí
+    move()
+
+# Recorda: pot quedar alguna casella sense comprovar!
+"
+             data-goal=".,.,.,.,.,.,.,K>"
+             data-label="Repte 2 — Test A (8 caselles)"
+             data-title="En Karel és a l'extrem esquerre. Hi ha perles a les caselles 1, 3, 4 i 6. Ha de recollir-les totes i arribar a l'extrem dret."
+             data-height="260">
+        </div>
+
+        <!-- Simulador — món de test B (9 caselles) -->
+        <div class="simulador"
+             data-map="K>,.,A,.,A,.,.,A,."
+             data-code="# Mateix codi — prova amb 9 caselles.
+
+while front_is_clear():
+    # El teu codi aquí
+    move()
+
+# Recorda: pot quedar alguna casella sense comprovar!
+"
+             data-goal=".,.,.,.,.,.,.,.,.K>"
+             data-label="Repte 2 — Test B (9 caselles)"
+             data-title="Mateix repte, passadís de 9 caselles. El teu codi ha de funcionar sense canvis."
+             data-height="260">
+        </div>
+
+        <!-- Simulador — món de test C (12 caselles) -->
+        <div class="simulador"
+             data-map="K>,A,A,.,.,A,.,A,.,.,A,."
+             data-code="# Mateix codi — prova amb 12 caselles.
+
+while front_is_clear():
+    # El teu codi aquí
+    move()
+
+# Recorda: pot quedar alguna casella sense comprovar!
+"
+             data-goal=".,.,.,.,.,.,.,.,.,.,.,K>"
+             data-label="Repte 2 — Test C (12 caselles)"
+             data-title="Mateix repte, passadís de 12 caselles. El teu codi ha de funcionar sense canvis."
+             data-height="260">
+        </div>
+
+      </section>
+
+
+      <!-- ══════════════════════════════════════════
+           NAVEGACIÓ
+           ══════════════════════════════════════════ -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="repte-1.html" class="btn-nav btn-nav--prev">← Repte 1</a>
+        <a href="repte-3.html" class="btn-nav btn-nav--next">Repte 3 →</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  No apareix en cap data-code visible a l'alumne.
+  ════════════════════════════════════════════════════════
+
+  while front_is_clear():
+      if pearl_here():
+          grab()
+      move()
+  if pearl_here():
+      grab()
+
+  Nota: el bucle while comprova front_is_clear() ABANS de moure's.
+  Quan la condició és falsa, en Karel és a l'última casella però
+  encara no l'ha comprovat per perles. El if final fora del while
+  és el "fencepost fix": gestiona exactament aquesta última casella.
+
+  Error habitual de l'alumne: posar el grab() dins del move(), o
+  comprovar pearl_here() DESPRÉS de move() (que ja ha avançat).
+  La solució correcta comprova PRIMER si hi ha perla, DESPRÉS mou.
+  ════════════════════════════════════════════════════════
+-->
+
+<script>const CURRENT_CAPITOL = 10;</script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
