@@ -86,9 +86,10 @@
 
   <div id="sidebar-overlay" aria-hidden="true"></div>
 
-  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
     <div class="sidebar-header">
-      <a href="index.html" class="active">Capítols</a>
+      <a href="index.html">Capítols</a>
+      <a href="index.html#reptes" class="active">Reptes</a>
       <a href="../index.html">Simulador</a>
     </div>
     <div id="sidebar-nav"></div>
@@ -151,7 +152,7 @@ while front_is_clear():
 "
              data-label="Repte 2 — El passadís"
              data-title="Prova el teu codi als tres mons. El mateix algorisme ha de funcionar per a qualsevol longitud."
-             data-height="500">
+             data-height="320">
         </div>
 
       </section>
@@ -195,11 +196,11 @@ if pearl_here():
   ════════════════════════════════════════════════════════
 -->
 
-<script>const CURRENT_CAPITOL = 10;</script>
+<script>const CURRENT_REPTE = 2;</script>
 <script src="capitols.js"></script>
 <script>
   injectCursLogo();
-  renderSidebar(CURRENT_CAPITOL);
+  renderReptesSidebar(CURRENT_REPTE);
   renderSimuladors();
   initSidebarToggle();
 </script>

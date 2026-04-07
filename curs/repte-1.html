@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Repte 1 — El diari | Karelcat</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="curs.css?v=2">
+  <link rel="stylesheet" href="curs.css">
   <style>
     /* ── Badges de dificultat ── */
     .dificultat-badge {
@@ -86,9 +86,10 @@
 
   <div id="sidebar-overlay" aria-hidden="true"></div>
 
-  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
     <div class="sidebar-header">
-      <a href="index.html" class="active">Capítols</a>
+      <a href="index.html">Capítols</a>
+      <a href="index.html#reptes" class="active">Reptes</a>
       <a href="../index.html">Simulador</a>
     </div>
     <div id="sidebar-nav"></div>
@@ -194,7 +195,7 @@ torna_a_casa()
 "
              data-label="Repte 1 — La cova"
              data-title="Prova el teu codi als tres mons. El mateix algorisme ha de funcionar per a qualsevol mida de cova."
-             data-height="500">
+             data-height="360">
         </div>
 
       </section>
@@ -250,11 +251,11 @@ Mons de test:
   ════════════════════════════════════════════════════════
 -->
 
-<script>const CURRENT_CAPITOL = 10;</script>
+<script>const CURRENT_REPTE = 1;</script>
 <script src="capitols.js"></script>
 <script>
   injectCursLogo();
-  renderSidebar(CURRENT_CAPITOL);
+  renderReptesSidebar(CURRENT_REPTE);
   renderSimuladors();
   initSidebarToggle();
 </script>

@@ -40,11 +40,34 @@ const CAPITOLS_DATA = [
   { num: 7,  titol: 'Mentre',                    arxiu: 'capitol-7.html'  },
   { num: 8,  titol: 'Combinant condicions',      arxiu: 'capitol-8.html'  },
   { num: 9,  titol: 'Com escriure codi',         arxiu: 'capitol-9.html'  },
-  { num: 10, titol: 'Reptes',                    arxiu: 'capitol-10.html' },
 ];
 
 
 // ── B.2 — Genera i munta la barra lateral ────────────────
+
+const REPTES_DATA = [
+  { num: 1, titol: 'El diari',    arxiu: 'repte-1.html' },
+  { num: 2, titol: 'El passadís', arxiu: 'repte-2.html' },
+];
+
+function renderReptesSidebar(currentNum) {
+  const nav = document.getElementById('sidebar-nav');
+  if (!nav) return;
+
+  let html = '<ul class="sidebar-list">';
+  for (const r of REPTES_DATA) {
+    const isActive = r.num === currentNum;
+    html += `
+      <li class="sidebar-item${isActive ? ' active' : ''}">
+        <a href="${r.arxiu}" class="sidebar-link">
+          <span class="sidebar-num">${String(r.num).padStart(2, '0')}</span>
+          <span class="sidebar-titol">${r.titol}</span>
+        </a>
+      </li>`;
+  }
+  html += '</ul>';
+  nav.innerHTML = html;
+}
 
 function renderSidebar(currentNum) {
   const nav = document.getElementById('sidebar-nav');
