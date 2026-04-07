@@ -77,7 +77,7 @@ if pearl_here():
 else:
     drop()
 
-# Bucle comptat
+# Bucle comptat (la variable pot ser qualsevol identificador; _ és la convenció)
 for _ in range(N):
     move()
 
@@ -218,7 +218,7 @@ js/reptes.js      — 5 reptes predefinits + gestió de ?repte=N
 |---|-------|-------|---------------|
 | A.1 | Coneix en Karel | ✅ **FET** | `move()`, `turn_left()`, `turn_right()`. Món, graella, direccions. |
 | A.2 | Agafa i deixa | ✅ **FET** | `grab()`, `drop()`, motxilla, `pearl_here()`. Errors. |
-| A.3 | Repeteix | ⬜ pending | `for _ in range(N):`, indentació, blocs. |
+| A.3 | Repeteix | ⬜ pending | `for <var> in range(N):`, indentació, blocs. La variable és convencionalment `_`. |
 | A.4 | Procediments | ⬜ pending | `def nom():`. Crear ordres noves. |
 | A.5 | Descomposició | ⬜ pending | Cap sintaxi nova. Mètode top-down. Precondicions/postcondicions. |
 | A.6 | Condicionals | ⬜ pending | `if cond():` / `else:`. |
@@ -280,7 +280,7 @@ Qualsevol canvi futur ha de respectar aquests principis:
 5. **Escalabilitat additiva**: afegir un idioma, un capítol, un repte o un mode hauria de ser **additiu** (afegir codi) i mai **invasiu** (modificar codi existent).
 6. **L'alumne és un adolescent català de 16 anys** que mai ha programat, dins d'una classe de 40 minuts amb el professor present.
 7. **El codi en anglès, Python-compatible**: l'alumne aprèn `while`, `if`, `def`, `move()` — les paraules que farà servir a la vida professional. Les explicacions li arriben en català.
-8. **Python primer**: qualsevol programa Karel vàlid ha de ser Python vàlid. Quan hi hagi dubte sobre una decisió sintàctica, el criteri és la compatibilitat amb Python.
+8. **Python primer**: qualsevol programa Karel vàlid ha de ser Python vàlid. Quan hi hagi dubte sobre una decisió sintàctica, el criteri és la compatibilitat amb Python. Per exemple, `for` accepta qualsevol identificador com a variable de bucle (no sols `_`), tot i que `_` és la convenció recomanada als capítols del curs.
 
 ---
 
