@@ -12,12 +12,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-
-  <span class="curs-header-logo">
-    <span class="logo-icon"></span>
-    Karel
-  </span>
-
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
   <span class="curs-header-title">Capítol 8 — Combinant condicions</span>
 </header>
 
@@ -57,21 +52,42 @@
 
 
       <section class="chapter-section">
-        <h2>Exemple d'ús amb "and" i "not"</h2>
-        <p>En aquest exemple, volem que en Karel avanci mentre el camí estigui lliure <strong>I</strong> no hi hagi cap perla a terra. Així que utilitzem <code>while front_is_clear() and not pearl_here():</code>.</p>
+        <h2>Exemple 1: L'operador "and" (i)</h2>
+        <p>En aquest exemple, volem que en Karel avanci mentre el camí estigui lliure <strong>I</strong> no hi hagi cap perla a terra. Així que utilitzem <code>front_is_clear() and not pearl_here()</code>. S'aturarà tan aviat com una de les dues coses deixi de ser veritat.</p>
 
         <div class="simulador"
-             data-map="K>,.,.,.,A,.,P\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
+             data-map="K>,.,.,.,.,.,A\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
              data-code="while front_is_clear() and not pearl_here():
     move()
 
-# Un cop s'atura, agafa la perla
+# Un cop s'atura (perquè ha trobat la perla), l'agafa
 grab()
 "
              data-readonly="true"
-             data-label="Exemple"
-             data-title="Prem ▶ Executa. En Karel avança fins a trobar la perla i s'atura, ja que una de les condicions deixa de complir-se."
+             data-label="Exemple 1"
+             data-title="En Karel avança fins a trobar la perla i s'atura."
              data-height="320">
+        </div>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Exemple 2: L'operador "or" (o)</h2>
+        <p>L'operador <code>or</code> és ideal per donar alternatives a en Karel. En aquest món, en Karel està en un passadís cec que gira a l'esquerra. Li direm: "mentre puguis avançar de front <strong>O</strong> tinguis espai a l'esquerra, continua el teu camí".</p>
+        <p>Dins del bucle, utilitzem un <code>if</code> per dir-li que, si es troba la paret al davant, giri cap a la nova obertura.</p>
+
+        <div class="simulador"
+             data-map="P,P,P,P,P,P\nP,P,P,P,.,P\nP,P,P,P,.,P\nP,K>,.,.,.,P\nP,P,P,P,P,P"
+             data-code="# Segueix el passadís girant si cal
+while front_is_clear() or left_is_clear():
+    if not front_is_clear():
+        turn_left()
+    move()
+"
+             data-readonly="true"
+             data-label="Exemple 2"
+             data-title="La condició 'or' permet que el bucle continuï viu encara que tingui una paret al davant, gràcies a l'espai de l'esquerra."
+             data-height="350">
         </div>
       </section>
 
@@ -80,12 +96,12 @@ grab()
         <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          En Karel ha d'avançar per tot el passadís fins a arribar a la paret. Mentre avança, ha de recollir les perles <strong>només</strong> si té el costat dret bloquejat.
+          En Karel ha d'avançar per tot el passadís fins a arribar a la paret. Mentre avança, ha de recollir les perles <strong>només</strong> si té el costat dret bloquejat per una roca.
           <br><br>
-          Fes servir la condició <code>pearl_here() and not right_is_clear()</code> (o una combinació similar) dins d'un bucle que el faci avançar.
+          Fes servir la condició <code>pearl_here() and not right_is_clear()</code> dins d'un bucle que el faci avançar i analitzar cada pas.
         </div>
 
-        <p><strong>Pista:</strong> Necessitaràs un bucle <code>while</code> per anar avançant pel passadís, i a dins, utilitzar un <code>if</code> combinant les condicions per saber si has d'agafar la perla abans de fer el pas.</p>
+        <p><strong>Pista:</strong> Necessitaràs un bucle <code>while</code> per anar avançant pel passadís, i a dins, utilitzar un <code>if</code> combinant les condicions per saber si has d'agafar la perla.</p>
 
         <div class="simulador"
              data-map=".,.,.,.,.,.,.\nK>,A,A,.,A,A,P\n.,P,.,.,P,.,."
@@ -94,8 +110,8 @@ grab()
 
 "
              data-label="Exercici"
-             data-title="Recull les perles que estan just a sobre de les roques de sota."
-             data-height="340">
+             data-title="Recull les perles que tenen una roca a sota."
+             data-height="360">
         </div>
       </section>
 
@@ -105,9 +121,12 @@ grab()
         <a href="capitol-9.html" class="btn-nav btn-nav--next">Capítol següent →</a>
       </nav>
 
-    </div></main>
+    </div>
+  </main>
 
-</div><script>const CURRENT_CAPITOL = 8;</script>
+</div>
+
+<script>const CURRENT_CAPITOL = 8;</script>
 <script src="capitols.js"></script>
 <script>
   injectCursLogo();
@@ -117,4 +136,4 @@ grab()
 </script>
 
 </body>
-</html>
+</html>s
