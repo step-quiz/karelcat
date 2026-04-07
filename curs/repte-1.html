@@ -144,7 +144,7 @@
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          En Karel viu en una petita cova de roques. Cada matí surt, recull la
+          En Karel viu en una cova de roques. Cada matí surt, recull la
           perla que hi ha just a la porta, i torna a casa.<br><br>
           <strong>La teva feina:</strong> escriu el programa perquè en Karel
           (1) surti de la cova, (2) reculli la perla, i (3) torni al punt de
@@ -156,20 +156,22 @@
           <pre style="margin:0.7rem 0 0; background:#f1f5f9; padding:0.7rem 1rem; border-radius:6px; font-size:0.9rem;">surt_de_la_cova()
 recull_la_perla()
 torna_a_casa()</pre>
+          La fondària de la cova és <strong>desconeguda</strong>: el teu codi
+          ha de funcionar per als tres mons de test.
         </div>
 
         <div class="consell-box">
           <strong>💡 Pista de disseny</strong>
-          El professor no avalua només que en Karel arribi a la perla —
-          avalua <em>com has organitzat el codi</em>. Una solució d'una sola
-          funció gegant no és acceptable. Pensa en les precondicions i
-          postcondicions de cada funció: on comença en Karel? On ha de
-          quedar quan la funció acaba?
+          El professor avalua <em>com has organitzat el codi</em>, no només
+          que en Karel arribi a la perla. Una solució amb tres
+          <code>move()</code> hardcoded falla si la cova és més curta o
+          més llarga. Pensa: quina condició li diu a en Karel que ha
+          arribat al final de la cova?
         </div>
 
-        <!-- Simulador — món inicial -->
+        <!-- Simulador — Test A: cova curta (2 passos) -->
         <div class="simulador"
-             data-map="P,P,P,.|K>,.,.,A|P,P,P,."
+             data-map="P,P,P,P|K>,.,A,P|P,P,P,P"
              data-code="def surt_de_la_cova():
     # El teu codi aquí
 
@@ -187,10 +189,62 @@ surt_de_la_cova()
 recull_la_perla()
 torna_a_casa()
 "
-             data-goal="P,P,P,.|K>,.,.,.|P,P,P,."
-             data-label="Repte 1"
-             data-title="En Karel és dins de la cova (col·lumna 0). La perla és just a fora (col·lumna 3). Ha de sortir, recollir-la i tornar a casa."
-             data-height="460">
+             data-goal="P,P,P,P|K>,.,.P|P,P,P,P"
+             data-label="Repte 1 — Test A (cova curta)"
+             data-title="Cova de 2 passos. En Karel ha de sortir, recollir la perla i tornar."
+             data-height="320">
+        </div>
+
+        <!-- Simulador — Test B: cova estàndard (3 passos) -->
+        <div class="simulador"
+             data-map="P,P,P,P,P|K>,.,.,A,P|P,P,P,P,P"
+             data-code="def surt_de_la_cova():
+    # El teu codi aquí
+
+
+def recull_la_perla():
+    # El teu codi aquí
+
+
+def torna_a_casa():
+    # El teu codi aquí
+
+
+# ── Programa principal ──
+surt_de_la_cova()
+recull_la_perla()
+torna_a_casa()
+"
+             data-goal="P,P,P,P,P|K>,.,.,.P|P,P,P,P,P"
+             data-label="Repte 1 — Test B (cova estàndard)"
+             data-title="Cova de 3 passos. Mateix codi, món diferent."
+             data-height="320">
+        </div>
+
+        <!-- Simulador — Test C: cova llarga (4 passos) -->
+        <div class="simulador"
+             data-map="P,P,P,P,P,P|K>,.,.,.,A,P|P,P,P,P,P,P"
+             data-code="def surt_de_la_cova():
+    # El teu codi aquí
+
+
+def recull_la_perla():
+    # El teu codi aquí
+
+
+def torna_a_casa():
+    # El teu codi aquí
+
+
+# ── Programa principal ──
+surt_de_la_cova()
+recull_la_perla()
+torna_a_casa()
+"
+             data-goal="P,P,P,P,P,P|K>,.,.,.,.,P|P,P,P,P,P,P"
+             data-label="Repte 1 — Test C (cova llarga)"
+             data-title="Cova de 4 passos. Mateix codi, món diferent."
+             data-height="320">
         </div>
 
       </section>
@@ -217,27 +271,32 @@ torna_a_casa()
   ════════════════════════════════════════════════════════
 
   def surt_de_la_cova():
-      move()
-      move()
-      move()
+      while front_is_clear():
+          move()
 
   def recull_la_perla():
       grab()
 
   def torna_a_casa():
       turn_around()
-      move()
-      move()
-      move()
+      while front_is_clear():
+          move()
       turn_around()
 
   surt_de_la_cova()
   recull_la_perla()
   torna_a_casa()
 
-  Nota: turn_around() fa dues crides a turn_left() internament.
-  La solució mínima té 3 funcions netes. La clau pedagògica és
-  veure que l'alumne no posa el grab() dins de surt_de_la_cova().
+  Mons de test:
+    A — cova curta  (2 passos): P,P,P,P|K>,.,A,P|P,P,P,P
+    B — cova normal (3 passos): P,P,P,P,P|K>,.,.,A,P|P,P,P,P,P
+    C — cova llarga (4 passos): P,P,P,P,P,P|K>,.,.,.,A,P|P,P,P,P,P,P
+
+  Clau pedagògica: la paret dreta és la condició de parada per a
+  surt_de_la_cova(); la frontera esquerra del món per a torna_a_casa().
+  Un alumne que hardcodi move()×N passa el test B però falla A i C.
+  La solució correcta usa while front_is_clear() dins de cada funció.
+  La descomposició en tres funcions continua sent obligatòria.
   ════════════════════════════════════════════════════════
 -->
 

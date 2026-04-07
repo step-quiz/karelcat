@@ -20,7 +20,7 @@
 | # | Fitxer | Títol | Grup | Dificultat | Estat |
 |---|--------|-------|------|------------|-------|
 | 1 | `repte-1.html` | El diari | A | ★ Fàcil | ✅ Implementat |
-| 2 | `repte-2.html` | El passadís | A | ★ Fàcil | ⬜ Pendent |
+| 2 | `repte-2.html` | El passadís | A | ★ Fàcil | ✅ Implementat |
 | 3 | `repte-3.html` | L'escala diagonal | A | ★ Fàcil | ⬜ Pendent |
 | 4 | `repte-4.html` | Distribuir les perles | A | ★ Fàcil | ⬜ Pendent |
 | 5 | `repte-5.html` | El serpentí | B | ★★ Intermedi | ⬜ Pendent |
@@ -37,42 +37,34 @@
 ### ✅ Repte 1 — El diari (A1, ★ Fàcil)
 
 **Fitxer:** `curs/repte-1.html`
-**Conceptes:** descomposició procedimental, seqüència fixada.
+**Conceptes:** descomposició procedimental, `while front_is_clear()`, pre/postcondicions.
 **Adaptació de:** Collect Newspaper Karel (Stanford CS106A).
 
-**Mapa inicial:**
+**Mons de test (3 simuladors):**
 ```
-P,P,P,.
-K>,.,.,A
-P,P,P,.
+Test A — cova curta  (2 passos): P,P,P,P|K>,.,A,P|P,P,P,P
+Test B — cova normal (3 passos): P,P,P,P,P|K>,.,.,A,P|P,P,P,P,P
+Test C — cova llarga (4 passos): P,P,P,P,P,P|K>,.,.,.,A,P|P,P,P,P,P,P
 ```
-*(4 columnes × 3 files. La cova és la part esquerra amb roques a dalt i baix. L'obertura és a la dreta. La perla és a la columna 3.)*
+*(Cova tancada per la dreta amb una roca. La paret dreta és la condició de parada per a `surt_de_la_cova()`; la frontera esquerra del món per a `torna_a_casa()`.)*
 
-**Mapa final (data-goal):**
-```
-P,P,P,.
-K>,.,.,. 
-P,P,P,.
-```
-*(En Karel ha tornat a la posició inicial i la perla ha desaparegut del món.)*
+**Mapa final (data-goal):** Karel de tornada a la posició inicial, cap perla al món.
 
-**Clau pedagògica:** L'alumne ha d'escriure exactament tres funcions (`surt_de_la_cova()`, `recull_la_perla()`, `torna_a_casa()`). El programa principal ha de ser de 3 línies. Es puntua el disseny, no només el resultat.
+**Clau pedagògica:** Un alumne que hardcodi `move()×N` passa el test B però falla els tests A i C. La solució correcta usa `while front_is_clear(): move()` dins de cada funció. La descomposició en tres funcions amb noms clars continua sent obligatòria.
 
 **Solució de referència (professor):**
 ```python
 def surt_de_la_cova():
-    move()
-    move()
-    move()
+    while front_is_clear():
+        move()
 
 def recull_la_perla():
     grab()
 
 def torna_a_casa():
     turn_around()
-    move()
-    move()
-    move()
+    while front_is_clear():
+        move()
     turn_around()
 
 surt_de_la_cova()
@@ -83,28 +75,50 @@ torna_a_casa()
 **Notes d'implementació:**
 - La navegació del repte apunta a `capitol-9.html` (anterior) i `repte-2.html` (següent).
 - El badge de dificultat `★ Fàcil` es mostra amb CSS inline al fitxer.
-- La introducció al capítol 10 (filosofia + badgets de dificultat) es troba a la secció inicial d'aquest fitxer. Els reptes 2–10 **no han de repetir** aquesta introducció; han de comenar directament amb el seu repte i incloure la navegació prev/next adequada.
+- La introducció al capítol 10 (filosofia + badges de dificultat) es troba a la secció inicial d'aquest fitxer. Els reptes 2–10 **no han de repetir** aquesta introducció; han de començar directament amb el seu repte i incloure la navegació prev/next adequada.
 
 ---
 
-### ⬜ Repte 2 — El passadís (A2, ★ Fàcil)
+### ✅ Repte 2 — El passadís (A2, ★ Fàcil)
 
+**Fitxer:** `curs/repte-2.html`
 **Conceptes:** `while` + `if`, error de pal de paller (fencepost).
 **Adaptació de:** Cleanup Karel.
 
-**Enunciat:** Hi ha perles disperses en una fila de longitud desconeguda (7–12 caselles). En Karel ha de recollir-les totes i arribar a l'extrem dret del passadís.
-
-**Mapa exemple:**
+**Mapa inicial (test A — 8 caselles):**
 ```
 K>,A,.,A,A,.,A,.
 ```
-*(1 fila × 8 columnes. Longitud variable entre 7 i 12 en els tests reals.)*
 
-**Clau pedagògica:** El bucle `while front_is_clear()` s'atura una casella massa aviat. L'alumne ha de detectar el fencepost i afegir `if pearl_here(): grab()` fora del `while`.
+**Mapa inicial (test B — 9 caselles):**
+```
+K>,.,A,.,A,.,.,A,.
+```
 
-**Notes d'implementació pendents:**
-- Dissenyar 3 mons de test amb longituds 7, 9 i 12.
-- El `data-goal` pot ometre's o deixar-se buit (Karel a l'extrem dret, cap perla al món).
+**Mapa inicial (test C — 12 caselles):**
+```
+K>,A,A,.,.,A,.,A,.,.,A,.
+```
+
+**Mapa final (data-goal):** Karel a l'extrem dret, cap perla al món. Ex.: `.,.,.,.,.,.,.,K>` (8 caselles).
+
+**Clau pedagògica:** El bucle `while front_is_clear()` s'atura quan el camí és bloquejat, però en aquell moment en Karel és a l'última casella i encara no l'ha comprovat. L'alumne ha de detectar el fencepost i afegir `if pearl_here(): grab()` fora del `while`.
+
+**Solució de referència (professor):**
+```python
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+if pearl_here():
+    grab()
+```
+
+**Notes d'implementació:**
+- S'han implementat 3 mons de test (longituds 8, 9 i 12) com a simuladors separats en el mateix fitxer.
+- El `data-goal` usa Karel a l'extrem dret sense perles.
+- El `data-code` inicial inclou l'esquelet amb el `while` per guiar l'alumne cap al fencepost error.
+- La navegació: anterior → `repte-1.html`, següent → `repte-3.html`.
 
 ---
 
@@ -255,4 +269,4 @@ P,P,P,.,P,.
 
 ---
 
-*Última actualització: sessió 1 — Implementat repte-1.html (A1, El diari).*
+*Última actualització: sessió 2 — Implementat repte-2.html (A2, El passadís). Revisat repte-1.html: 3 mons de test (coves de 2, 3 i 4 passos), solució actualitzada a `while front_is_clear()`.*
