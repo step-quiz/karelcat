@@ -152,7 +152,7 @@ class Parser {
     }
 
     // ── for <var> in range(N): ──
-    // La variable pot ser qualsevol identificador vàlid (convencionalment '_').
+    // La variable pot ser qualsevol identificador (convencionalment 'i' o '_').
     // El seu valor s'ignora durant l'execució (bucle comptat pur).
     if (w === L.KW_FOR) {
       this.next();                      // consumeix 'for'
