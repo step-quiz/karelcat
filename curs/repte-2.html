@@ -209,12 +209,12 @@ while front_is_clear():
   No apareix en cap data-code visible a l'alumne.
   ════════════════════════════════════════════════════════
 
-  while front_is_clear():
-      if pearl_here():
-          grab()
-      move()
-  if pearl_here():
-      grab()
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+if pearl_here():
+    grab()
 
   Nota: el bucle while comprova front_is_clear() ABANS de moure's.
   Quan la condició és falsa, en Karel és a l'última casella però
