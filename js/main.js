@@ -76,6 +76,14 @@
   // 3) Carrega el mapa
   K.loadMapFromCSV(initMap);
 
+  // Inicialitza la motxilla si ve per paràmetre (?bag=N, usat pels simuladors del curs)
+  const bagN = params.get('bag') ? parseInt(params.get('bag'), 10) : 0;
+  if (bagN > 0) {
+    K.state.karel.motxilla    = bagN;
+    K.state.karelInit.motxilla = bagN;
+    K.updateStatus();
+  }
+
   // 4) Inicialitza l'editor de codi
   K.initEditor();
   const ta = document.getElementById('code-editor');
