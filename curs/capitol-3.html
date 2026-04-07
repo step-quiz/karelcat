@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 3 — Repeteix | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body class="curs-light">
+
+
+<!-- ══════════════════════════════════════════════════════
+     CAPÇALERA
+     (logo via injectCursLogo(), sense toggle de tema)
+     ══════════════════════════════════════════════════════ -->
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+
+  <span class="curs-header-title">Capítol 3 — Repeteix</span>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════
+     LAYOUT PRINCIPAL
+     ══════════════════════════════════════════════════════ -->
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div class="sidebar-header">
+      <a href="index.html" class="active">Capítols</a>
+      <a href="../index.html">Simulador</a>
+    </div>
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 3</span>
+        <h1>Repeteix</h1>
+        <p class="chapter-lead">Escriure la mateixa ordre deu vegades és tediós i propens a errors. En aquest capítol descobrirem <code>for _ in range(N):</code>, la instrucció que permet dir-li a en Karel «fes això N vegades» amb una sola línia.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — El problema de la repetició
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Repetir és avorrit (per als humans)</h2>
+
+        <p>Fins ara hem escrit una ordre per línia. Funciona, però imagina que en Karel ha de moure's dotze caselles: hauries d'escriure <code>move()</code> dotze vegades seguides. Si després t'adones que eren onze i no dotze, has de comptar i esborrar.</p>
+
+        <p>Els ordinadors no s'avorreixen de repetir. Som nosaltres qui hem de trobar una manera d'expressar la repetició de forma clara i curta.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — for _ in range(N)
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Repetir N vegades: <code>for _ in range(N):</code></h2>
+
+        <p><code>for _ in range(N):</code> li diu a en Karel que executi les ordres del bloc de sota exactament <strong>N</strong> vegades. Les ordres del bloc han d'anar <strong>indentades</strong> (desplaçades dos espais cap a la dreta). Això és com li dius a en Karel on comença i on acaba el que s'ha de repetir.</p>
+
+        <p>Compara les dues maneres de fer el mateix:</p>
+
+        <pre><code># Sense for (5 línies):          # Amb for (2 línies):
+move()                            for _ in range(5):
+move()                              move()
+move()
+move()
+move()</code></pre>
+
+        <p>El resultat és exactament el mateix. Però ara, si vols canviar el nombre de passos, només canvies el <code>5</code>.</p>
+
+        <p>Observa com en Karel fa cinc <code>move()</code> amb una sola instrucció <code>for</code>:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.,.\nK>,.,.,.,.,.\\n.,.,.,.,.,."
+             data-code="for _ in range(5):
+    move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="Cinc passos, dues línies de codi. Si el món hagués tingut quinze columnes, hauríem escrit range(15)."
+             data-height="440">
+        </div>
+
+        <p>Cinc passos, dues línies de codi. Si el món hagués tingut quinze columnes, hauríem escrit <code>range(15)</code>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — La indentació és el bloc
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>La indentació marca el que es repeteix</h2>
+
+        <p>La indentació (els dos espais del davant) no és decoració: és la manera com el programa sap quines ordres formen part del bucle i quines no. Tot el que va indentat sota el <code>for</code> es repeteix. El que torna a l'esquerra ja queda fora.</p>
+
+        <pre><code>for _ in range(3):
+    move()      # ← es repeteix 3 vegades
+    turn_left() # ← també es repeteix 3 vegades
+move()          # ← s'executa UNA SOLA VEGADA, després del bucle</code></pre>
+
+        <p>Si la indentació no és consistent, el programa no funcionarà com esperes.</p>
+
+        <p>En aquest exemple, en Karel fa tres passos cap a l'Est, gira a l'esquerra i fa tres passos cap al Nord. El <code>turn_left()</code> queda fora del bucle, entre els dos <code>for</code>:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.\n.,.,.,.\n.,.,.,.\nK>,.,.,"
+             data-code="for _ in range(3):
+    move()
+turn_left()
+for _ in range(3):
+    move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="Dos bucles for separats per un turn_left(). El turn_left() no va indentat, per tant no forma part de cap for."
+             data-height="480">
+        </div>
+
+        <p>Dos bucles <code>for</code> separats per un <code>turn_left()</code>. En Karel ha fet una cantonada. Compte: el <code>turn_left()</code> no va indentat, per tant no forma part de cap <code>for</code>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          En Karel és a l'extrem inferior esquerre i la perla és a l'extrem superior dret. El món té 5 columnes i 4 files. Porta en Karel fins a la perla i recull-la usant dos bucles <code>for</code> i un <code>turn_left()</code>.
+        </div>
+
+        <p>Pista: necessites moure't 4 caselles cap a l'Est, girar cap al Nord i moure't 3 caselles cap amunt. Pots fer-ho amb menys de 6 línies de codi.</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,A\n.,.,.,.,.\n.,.,.,.,.\nK>,.,.,.,."
+             data-code="# Escriu el teu codi aquí:
+
+"
+             data-label="Exercici"
+             data-title="Porta en Karel fins a la perla de l'extrem superior dret i recull-la."
+             data-height="480">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-2.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-4.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+
+</div>
+
+
+<script>const CURRENT_CAPITOL = 3;</script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
