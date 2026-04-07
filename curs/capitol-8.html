@@ -58,15 +58,15 @@
 
       <section class="chapter-section">
         <h2>Exemple d'ús amb "and" i "not"</h2>
-        <p>En aquest exemple, volem que en Karel avanci mentre el camí estigui lliure <strong>I</strong> no hi hagi cap perla a terra. Així que utilitzem <code>while front_is_clear() and not beepers_present():</code>.</p>
+        <p>En aquest exemple, volem que en Karel avanci mentre el camí estigui lliure <strong>I</strong> no hi hagi cap perla a terra. Així que utilitzem <code>while front_is_clear() and not pearl_here():</code>.</p>
 
         <div class="simulador"
              data-map="K>,.,.,.,A,.,P\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
-             data-code="while front_is_clear() and not beepers_present():
+             data-code="while front_is_clear() and not pearl_here():
     move()
 
 # Un cop s'atura, agafa la perla
-pick_beeper()
+grab()
 "
              data-readonly="true"
              data-label="Exemple"
@@ -82,7 +82,7 @@ pick_beeper()
         <div class="exercise-enunciat">
           En Karel ha d'avançar per tot el passadís fins a arribar a la paret. Mentre avança, ha de recollir les perles <strong>només</strong> si té el costat dret bloquejat.
           <br><br>
-          Fes servir la condició <code>beepers_present() and not right_is_clear()</code> (o una combinació similar) dins d'un bucle que el faci avançar.
+          Fes servir la condició <code>pearl_here() and not right_is_clear()</code> (o una combinació similar) dins d'un bucle que el faci avançar.
         </div>
 
         <p><strong>Pista:</strong> Necessitaràs un bucle <code>while</code> per anar avançant pel passadís, i a dins, utilitzar un <code>if</code> combinant les condicions per saber si has d'agafar la perla abans de fer el pas.</p>
