@@ -51,7 +51,7 @@
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 3</span>
         <h1>Repeteix</h1>
-        <p class="chapter-lead">Escriure la mateixa ordre deu vegades és tediós i propens a errors. En aquest capítol descobrirem <code>for _ in range(N):</code>, la instrucció que permet dir-li a en Karel «fes això N vegades» amb una sola línia.</p>
+        <p class="chapter-lead">Escriure la mateixa ordre deu vegades és tediós i propens a errors. En aquest capítol descobrirem <code>for i in range(N):</code>, la instrucció que permet dir-li a en Karel «fes això N vegades» amb una sola línia.</p>
       </header>
 
 
@@ -68,17 +68,17 @@
 
 
       <!-- ─────────────────────────────────────────
-           SECCIÓ 2 — for _ in range(N)
+           SECCIÓ 2 — for i in range(N)
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Repetir N vegades: <code>for _ in range(N):</code></h2>
+        <h2>Repetir N vegades: <code>for i in range(N):</code></h2>
 
-        <p><code>for _ in range(N):</code> li diu a en Karel que executi les ordres del bloc de sota exactament <strong>N</strong> vegades. Les ordres del bloc han d'anar <strong>indentades</strong> (desplaçades dos espais cap a la dreta). Això és com li dius a en Karel on comença i on acaba el que s'ha de repetir.</p>
+        <p><code>for i in range(N):</code> li diu a en Karel que executi les ordres del bloc de sota exactament <strong>N</strong> vegades. Les ordres del bloc han d'anar <strong>indentades</strong> (desplaçades dos espais cap a la dreta). Això és com li dius a en Karel on comença i on acaba el que s'ha de repetir.</p>
 
         <p>Compara les dues maneres de fer el mateix:</p>
 
         <pre><code># Sense for (5 línies):          # Amb for (2 línies):
-move()                            for _ in range(5):
+move()                            for i in range(5):
 move()                              move()
 move()
 move()
@@ -90,7 +90,7 @@ move()</code></pre>
 
         <div class="simulador"
              data-map=".,.,.,.,.,.\nK>,.,.,.,.,.\\n.,.,.,.,.,."
-             data-code="for _ in range(5):
+             data-code="for i in range(5):
     move()
 "
              data-readonly="true"
@@ -111,7 +111,7 @@ move()</code></pre>
 
         <p>La indentació (els dos espais del davant) no és decoració: és la manera com el programa sap quines ordres formen part del bucle i quines no. Tot el que va indentat sota el <code>for</code> es repeteix. El que torna a l'esquerra ja queda fora.</p>
 
-        <pre><code>for _ in range(3):
+        <pre><code>for i in range(3):
     move()      # ← es repeteix 3 vegades
     turn_left() # ← també es repeteix 3 vegades
 move()          # ← s'executa UNA SOLA VEGADA, després del bucle</code></pre>
@@ -122,10 +122,10 @@ move()          # ← s'executa UNA SOLA VEGADA, després del bucle</code></pre>
 
         <div class="simulador"
              data-map=".,.,.,.\n.,.,.,.\n.,.,.,.\nK>,.,.,"
-             data-code="for _ in range(3):
+             data-code="for i in range(3):
     move()
 turn_left()
-for _ in range(3):
+for i in range(3):
     move()
 "
              data-readonly="true"
