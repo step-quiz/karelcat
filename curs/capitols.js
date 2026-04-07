@@ -144,6 +144,8 @@ function _renderMultiMon(div) {
   const label    = div.dataset.label || '';
   const title    = div.dataset.title || '';
   const n        = maps.length;
+  let monLabels  = [];
+  try { monLabels = JSON.parse(div.dataset.labels); } catch { monLabels = []; }
 
   // Estat de validació per a cada món
   const monState = maps.map(() => 'pending');
@@ -176,6 +178,16 @@ function _renderMultiMon(div) {
   btns.forEach(b => bar.appendChild(b));
   wrap.appendChild(bar);
 
+  // Contenidor relatiu per poder superposar el label de món actiu
+  const iframeWrap = document.createElement('div');
+  iframeWrap.className = 'simulador-iframe-wrap';
+
+  // Label del món actiu, flotant a dalt-dreta (sobre el mapa)
+  const monActiveLabel = document.createElement('div');
+  monActiveLabel.className = 'mon-active-label';
+  monActiveLabel.textContent = monLabels[0] || 'Món 1';
+  iframeWrap.appendChild(monActiveLabel);
+
   // iframe (comença al món 0)
   const iframe = document.createElement('iframe');
   iframe.className    = 'simulador-frame';
@@ -184,7 +196,8 @@ function _renderMultiMon(div) {
   iframe.setAttribute('loading', 'lazy');
   iframe.setAttribute('allowfullscreen', '');
   iframe.src = _iframeSrc(maps[0], code, goals[0] || '', goalIds[0], readonly, bag);
-  wrap.appendChild(iframe);
+  iframeWrap.appendChild(iframe);
+  wrap.appendChild(iframeWrap);
 
   // Feedback global: "X / N mons superats"
   const fbGlobal = document.createElement('div');
@@ -206,6 +219,7 @@ function _renderMultiMon(div) {
     const currentCode = _readCode(iframe) ?? code;
     btns[activeIdx].classList.remove('mon-btn--active');
     btns[newIdx].classList.add('mon-btn--active');
+    monActiveLabel.textContent = monLabels[newIdx] || `Món ${newIdx + 1}`;
     activeIdx = newIdx;
     iframe.src = _iframeSrc(
       maps[newIdx],

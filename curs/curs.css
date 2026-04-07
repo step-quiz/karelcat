@@ -476,6 +476,27 @@ body.curs-light .simulador-feedback.fb-error {
   color: #7f1d1d;
 }
 
+/* ── Label de món actiu (overlay sobre el panel del mapa) ── */
+.simulador-iframe-wrap {
+  position: relative;
+}
+.mon-active-label {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  width: 38%;          /* aprox. l'ample del panel del mapa dins l'iframe */
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-hi);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.85;
+}
+
 /* ── Selector de mons (capítol 10 — mode N mons) ─────── */
 .mon-switcher {
   display: flex;
