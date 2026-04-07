@@ -185,7 +185,7 @@ function _renderMultiMon(div) {
   // Label del món actiu, flotant a dalt-dreta (sobre el mapa)
   const monActiveLabel = document.createElement('div');
   monActiveLabel.className = 'mon-active-label';
-  monActiveLabel.textContent = monLabels[0] || 'Món 1';
+  monActiveLabel.textContent = 'Món 1';
   iframeWrap.appendChild(monActiveLabel);
 
   // iframe (comença al món 0)
@@ -219,7 +219,7 @@ function _renderMultiMon(div) {
     const currentCode = _readCode(iframe) ?? code;
     btns[activeIdx].classList.remove('mon-btn--active');
     btns[newIdx].classList.add('mon-btn--active');
-    monActiveLabel.textContent = monLabels[newIdx] || `Món ${newIdx + 1}`;
+    monActiveLabel.textContent = `Món ${newIdx + 1}`;
     activeIdx = newIdx;
     iframe.src = _iframeSrc(
       maps[newIdx],

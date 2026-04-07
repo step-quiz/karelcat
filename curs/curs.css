@@ -483,8 +483,8 @@ body.curs-light .simulador-feedback.fb-error {
 .mon-active-label {
   position: absolute;
   top: 10px;
+  left: 62%;           /* el panel del mapa comença ~62% des de l'esquerra */
   right: 0;
-  width: 38%;          /* aprox. l'ample del panel del mapa dins l'iframe */
   text-align: center;
   font-family: var(--mono);
   font-size: 0.78rem;
