@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 9 — Com escriure codi | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+
+  <span class="curs-header-title">Capítol 9 — Com escriure codi</span>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div class="sidebar-header">
+      <a href="index.html" class="active">Capítols</a>
+      <a href="../index.html">Simulador</a>
+    </div>
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 9</span>
+        <h1>Com escriure codi</h1>
+        <p class="chapter-lead">Aprèn a escriure codi net, entenedor i ben estructurat utilitzant comentaris i definint les teves pròpies ordres per a en Karel.</p>
+      </header>
+
+
+      <section class="chapter-section">
+        <h2>Els comentaris</h2>
+        <p>Quan els programes es fan llargs, és molt útil deixar notes per a nosaltres mateixos o per a altres persones que llegeixin el codi. Aquestes notes s'anomenen <strong>comentaris</strong>.</p>
+        <p>En el codi d'en Karel, qualsevol text que vagi després d'un coixinet (<code>#</code>) serà ignorat per l'ordinador. Serveix exclusivament per a tu.</p>
+        <div class="code-block" style="background: var(--surface); padding: 1rem; border-radius: 4px; font-family: var(--mono); font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid var(--border);">
+          # Això és un comentari. En Karel l'ignorarà.<br>
+          move()  # Això mou en Karel un pas endavant.
+        </div>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Crear les teves pròpies ordres</h2>
+        <p>T'has fixat que en Karel no sap girar a la dreta? Per fer-ho, sempre hem hagut d'escriure <code>turn_left()</code> tres vegades. Si hem de girar a la dreta molt sovint, escriure això una vegada i una altra és pesat i fa que el codi sigui llarg i repetitiu.</p>
+        <p>La solució és <strong>ensenyar-li una ordre nova</strong> a en Karel utilitzant la paraula <code>def</code> (de "definir"). Això s'anomena crear una <strong>funció</strong>.</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.\n.,.,.,.\nK>,.,.,."
+             data-code="# Definim com girar a la dreta
+def turn_right():
+    turn_left()
+    turn_left()
+    turn_left()
+
+# Ara ja podem utilitzar la nova ordre
+move()
+turn_right()
+move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="Hem definit turn_right(). Fixa't que l'interior de la funció ha d'anar indentat (amb espais)."
+             data-height="360">
+        </div>
+        
+        <p><strong>Divideix i venceràs:</strong> Definir funcions amb noms clars fa que el teu codi principal sigui curt, net i es llegeixi com una història.</p>
+      </section>
+
+
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          En Karel ha d'anar a buscar la perla, agafar-la, <strong>donar mitja volta</strong> i tornar al punt exacte des d'on ha sortit.
+          <br><br>
+          En lloc d'escriure totes les ordres seguides, primer <strong>defineix una funció</strong> anomenada <code>turn_around()</code> (girar mitja volta), que estigui formada per dos <code>turn_left()</code>. Després, utilitza aquesta i altres ordres per resoldre el problema.
+        </div>
+
+        <p><strong>Pista:</strong> Defineix la funció a la part superior del codi. Recorda utilitzar un bucle <code>while</code> per anar més ràpid pels passadissos en lloc de posar molts <code>move()</code>!</p>
+
+        <div class="simulador"
+             data-map="K>,.,.,.,.,.,P\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
+             data-goal="K<,.,.,.,.,.,.\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
+             data-code="# Defineix la funció turn_around() aquí:
+
+
+# Escriu el programa principal a partir d'aquí:
+
+"
+             data-label="Exercici"
+             data-title="Karel ha d'acabar mirant cap a l'Oest a la casella inicial, amb la perla recollida."
+             data-height="400">
+        </div>
+      </section>
+
+
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-8.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-10.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+    </div></main>
+
+</div><script>const CURRENT_CAPITOL = 9;</script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
