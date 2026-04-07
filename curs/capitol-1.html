@@ -88,7 +88,7 @@ move()
              data-height="300">
         </div>
 
-        <p>En Karel ha avançat tres caselles cap a la dreta perquè mirava cap a l'Est i tenia tres ordres <code>move()</code>. Si hagués trobat un impediment per avançar, el programa hauria retornat un error.</p>
+        <p>En Karel ha avançat tres caselles cap a la dreta, perquè mirava cap a l'Est i tenia tres ordres <code>move()</code>. Si hagués trobat un impediment per avançar, el programa hauria retornat un error.</p>
       </section>
 
 
@@ -98,11 +98,11 @@ move()
       <section class="chapter-section">
         <h2>Girar a l'esquerra: <code>turn_left()</code></h2>
 
-        <p><code>turn_left()</code> fa que en Karel giri 90° cap a l'esquerra des del seu punt de vista. Girar <em>no</em> és avançar: en Karel canvia de direcció però no es mou de casella.</p>
+        <p><code>turn_left()</code> fa que en Karel giri 90° en sentit antihorari (cap a l'esquerra). Girar <em>no</em> és avançar: en Karel canvia de direcció però no es mou de casella.</p>
 
-        <p>Per exemple, en l'exemple veuràs que en Karel està mirant cap a l'Est (la dreta). Quan faci un gir a l'esquerra, mirarà cap al Nord (amunt). Si torna a girar a l'esquerra, mirarà cap a l'Oest (l'esquerra). Finalment, al cap de quatre girs cap a l'esquerra, tornarà a la mateixa orientació inicial, és a dir, mirant cap a l'Est (la dreta).</p>
+        <p>Observa l'exemple: Karel està mirant cap a l'Est (dreta). Quan faci un gir a l'esquerra, mirarà cap al Nord (amunt).</p>
 
-        <p>Observa l'exemple: en Karel avança dues caselles, gira a l'esquerra i avança dues caselles més.</p>
+        <p>Fem que Karel avanci dues caselles; després, li diem que giri a l'esquerra i, finalment, que avanci dues caselles més.</p>
 
         <div class="simulador"
              data-map=".,.,.,.,.\n.,.,.,.,.\n.,.,.,.,.\nK>,.,.,.,."
@@ -115,8 +115,6 @@ move()
              data-readonly="true"
              data-height="310">
         </div>
-
-        <p>Primer en Karel avança dues caselles cap a l'Est. Llavors <code>turn_left()</code> el fa mirar cap al Nord. Finalment avança dues caselles cap amunt. En Karel ha recorregut un camí que fa cantonada.</p>
       </section>
 
 
@@ -126,9 +124,9 @@ move()
       <section class="chapter-section">
         <h2>Girar a la dreta: <code>turn_right()</code></h2>
 
-        <p><code>turn_right()</code> fa que en Karel giri 90° cap a la dreta des del seu punt de vista. El funcionament és molt similar a <code>turn_left()</code>.</p>
+        <p><code>turn_right()</code> indica a Karel que ha de girar 90° en sentit horari (cap a la dreta). El seu funcionament és molt similar a <code>turn_left()</code>.</p>
 
-        <p>En l'exemple següent, en Karel comença a l'extrem superior esquerre, i mirant cap a l'Est. Avança dues caselles i gira a la dreta (per tant, mirarà al Sud). I avança dues caselles més:</p>
+        <p>En l'exemple següent, en Karel comença a l'extrem superior esquerre, i mirant cap a l'Est. Avança dues caselles i gira a la dreta (per tant, mirarà al Sud). Finalment, avança dues caselles més:</p>
 
         <div class="simulador"
              data-map="K>,.,.,.,.\n.,.,.,.,.\n.,.,.,.,.\n.,.,.,.,."
@@ -142,13 +140,13 @@ move()
              data-height="300">
         </div>
 
-        <p>Fins ara coneixes les tres ordres bàsiques de moviment:</p>
+        <p>Fins ara coneixes les tres instruccions bàsiques de moviment:</p>
         <ul>
           <li><code>move()</code> — avança una casella en la direcció i sentit actual.</li>
-          <li><code>turn_left()</code> — gira 90° cap a l'esquerra (des del punt de vista de Karel).</li>
-          <li><code>turn_right()</code> — gira 90° cap a la dreta (des del punt de vista de Karel).</li>
+          <li><code>turn_left()</code> — gira 90° cap a l'esquerra (sentit antihorari).</li>
+          <li><code>turn_right()</code> — gira 90° cap a la dreta (sentit horari).</li>
         </ul>
-        <p>Amb aquestes tres ordres pots portar en Karel a qualsevol casella del seu món.</p>
+        <p>Amb aquestes tres instruccions, pots portar en Karel a qualsevol casella del seu món.</p>
       </section>
 
 
@@ -159,11 +157,8 @@ move()
         <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          En Karel és a l'extrem inferior esquerre del seu món, i està orientat mirant cap a l'Est. Hi ha una perla a l'extrem oposat. Escriu el codi per portar en Karel fins a sobre de la casella on és la perla.
+          En Karel és a l'extrem inferior esquerre del seu món, i està mirant cap a l'Est. Hi ha una perla a l'extrem oposat. Escriu el codi per portar en Karel fins a sobre de la casella on és la perla.
         </div>
-
-        <p>Pista. Hauràs d'escriure, en total, set ordres <code>move()</code> i una ordre <code>turn_left()</code></p>
-
         <div class="simulador"
              data-map=".,.,.,.,A\n.,.,.,.,.\n.,.,.,.,.\nK>,.,.,.,."
              data-goal=".,.,.,.,K^\n.,.,.,.,.\n.,.,.,.,.\n.,.,.,.,."
