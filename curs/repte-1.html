@@ -144,16 +144,16 @@
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          En Karel viu en una cova de roques. Cada matí surt, recull la
-          perla que hi ha just a la porta, i torna a casa.<br><br>
+          En Karel té a prop una cova de roques. Cada matí entra a la cova, recull la
+          perla que hi ha al fons, i torna a casa.<br><br>
           <strong>La teva feina:</strong> escriu el programa perquè en Karel
-          (1) surti de la cova, (2) reculli la perla, i (3) torni al punt de
+          (1) entri a la cova, (2) reculli la perla, i (3) torni al punt de
           partida.<br><br>
           <strong>Restricció important:</strong> has d'usar <strong>tres funcions</strong>
-          amb noms clars: <code>surt_de_la_cova()</code>,
+          amb noms clars: <code>entra_a_la_cova()</code>,
           <code>recull_la_perla()</code> i <code>torna_a_casa()</code>.
           El programa principal ha de ser tan senzill com això:
-          <pre style="margin:0.7rem 0 0; background:#f1f5f9; padding:0.7rem 1rem; border-radius:6px; font-size:0.9rem;">surt_de_la_cova()
+          <pre style="margin:0.7rem 0 0; background:#f1f5f9; padding:0.7rem 1rem; border-radius:6px; font-size:0.9rem;">entra_a_la_cova()
 recull_la_perla()
 torna_a_casa()</pre>
           La fondària de la cova és <strong>desconeguda</strong>: el teu codi
@@ -172,10 +172,10 @@ torna_a_casa()</pre>
         <!-- Simulador — Test A: cova curta (2 passos) -->
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
-             data-maps='["P,P,P,P|K>,.,A,P|P,P,P,P", "P,P,P,P,P|K>,P,.,A,P|P,P,P,P,P", "P,P,P,P,P,P|K>,.,.,.,A,P|P,P,P,P,P,P"]'
-             data-goals='["P,P,P,P|K>,.,.,P|P,P,P,P", "P,P,P,P,P|K>,.,.,.,P|P,P,P,P,P", "P,P,P,P,P,P|K>,.,.,.,.,P|P,P,P,P,P,P"]'
+             data-maps='[".,P,P,P|K>,.,A,P|.,P,P,P", ".,P,P,P,P|K>,.,.,A,P|.,P,P,P,P", ".,P,P,P,P,P|K>,.,.,.,A,P|.,P,P,P,P,P"]'
+             data-goals='[".,P,P,P|K>,.,.,P|.,P,P,P", ".,P,P,P,P|K>,.,.,.,P|.,P,P,P,P", ".,P,P,P,P,P|K>,.,.,.,.,P|.,P,P,P,P,P"]'
              data-labels='["Cova curta", "Cova estàndard", "Cova llarga"]'
-             data-code="def surt_de_la_cova():
+             data-code="def entra_a_la_cova():
     # El teu codi aquí
 
 
@@ -188,12 +188,10 @@ def torna_a_casa():
 
 
 # ── Programa principal ──
-surt_de_la_cova()
+entra_a_la_cova()
 recull_la_perla()
 torna_a_casa()
 "
-             data-label="Repte 1 — La cova"
-             data-title="Prova el teu codi als tres mons. El mateix algorisme ha de funcionar per a qualsevol mida de cova."
              data-height="360">
         </div>
 
@@ -220,7 +218,7 @@ torna_a_casa()
   No apareix en cap data-code visible a l'alumne.
   ════════════════════════════════════════════════════════
 
-def surt_de_la_cova():
+def entra_a_la_cova():
     while front_is_clear():
         move()
 
@@ -233,7 +231,7 @@ def torna_a_casa():
         move()
     turn_around()
 
-surt_de_la_cova()
+entra_a_la_cova()
 recull_la_perla()
 torna_a_casa()
 
@@ -243,7 +241,7 @@ Mons de test:
     C — cova llarga (4 passos): P,P,P,P,P,P|K>,.,.,.,A,P|P,P,P,P,P,P
 
   Clau pedagògica: la paret dreta és la condició de parada per a
-  surt_de_la_cova(); la frontera esquerra del món per a torna_a_casa().
+  entra_a_la_cova(); la frontera esquerra del món per a torna_a_casa().
   Un alumne que hardcodi move()×N passa el test B però falla A i C.
   La solució correcta usa while front_is_clear() dins de cada funció.
   La descomposició en tres funcions continua sent obligatòria.
