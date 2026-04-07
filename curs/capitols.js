@@ -77,7 +77,7 @@ function renderSidebar(currentNum) {
 //   MODE N MONS (capítol 10, reptes):
 //   data-maps     (string) JSON array de CSVs: '["map1","map2","map3"]'
 //   data-goals    (string) JSON array de goals paral·lel a data-maps
-//                          Dins del JSON, els salts de línia s'escriuen com \\n
+//                          Les files se separen amb | (barra vertical)
 //
 //   COMUNS als dos modes:
 //   data-code     (string) Codi Karel inicial
@@ -89,8 +89,8 @@ function renderSidebar(currentNum) {
 //
 // Exemple N mons (capítol 10):
 //   <div class="simulador"
-//        data-maps='["K>,.,A\\n.,.,.", "K>,A,.\\n.,.,.", "K>,.,.\\n.,A,."]'
-//        data-goals='[".,.,K>\\n.,.,.", ".,.,K>\\n.,.,.", ".,.,K>\\n.,.,." ]'
+//        data-maps='["K>,.,A|.,.,.", "K>,A,.|.,.,.", "K>,.,.|.,A,."]'
+//        data-goals='[".,.,K>|.,.,.", ".,.,K>|.,.,.", ".,.,K>|.,.,." ]'
 //        data-code="# escriu la solució aquí"
 //        data-height="380"
 //        data-label="Exercici">
@@ -137,11 +137,7 @@ function _renderMultiMon(div) {
   try { maps  = JSON.parse(div.dataset.maps);  } catch { maps  = []; }
   try { goals = JSON.parse(div.dataset.goals); } catch { goals = []; }
 
-  // Normalitza els \n literals dels CSV dins del JSON
-  maps  = maps.map(m => m.replace(/\\n/g, '\n'));
-  goals = goals.map(g => g.replace(/\\n/g, '\n'));
-
-  const code     = (div.dataset.code  || '').replace(/\\n/g, '\n');
+  const code     = (div.dataset.code  || '').replace(/\\n/g, '\n');  // ← conservar: és codi font, no mapa
   const height   = parseInt(div.dataset.height || '380', 10);
   const readonly = div.dataset.readonly === 'true';
   const bag      = parseInt(div.dataset.bag || '0', 10);
@@ -264,12 +260,12 @@ function _renderSingleMon(div) {
   const title   = div.dataset.title || '';
   const label   = div.dataset.label || '';
   const rawGoal = div.dataset.goal || '';
-  const goalCSV = rawGoal.replace(/\\n/g, '\n');
+  const goalCSV = rawGoal;          // ← ja ve amb | directament
   const goalId  = goalCSV ? nextGoalId() : '';
   const bag     = parseInt(div.dataset.bag || '0', 10);
 
-  const map  = rawMap.replace(/\\n/g, '\n');
-  const code = rawCode.replace(/\\n/g, '\n');
+  const map  = rawMap;              // ← ja ve amb | directament
+  const code = rawCode.replace(/\\n/g, '\n');  // ← conservar: és codi font, no mapa
 
   const iframe = document.createElement('iframe');
   iframe.src        = _iframeSrc(map, code, goalCSV, goalId, readonly, bag);

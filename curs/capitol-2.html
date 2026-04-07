@@ -82,7 +82,7 @@
         <p>En l'exemple, en Karel avança fins a la perla i la recull:</p>
 
         <div class="simulador"
-             data-map="K>,.,A,.,.\n.,.,.,.,.\n.,.,.,.,."
+             data-map="K>,.,A,.,.|.,.,.,.,.|.,.,.,.,."
              data-code="move()
 move()
 grab()
@@ -111,7 +111,7 @@ move()
         <p>Observa com en Karel recull la perla, avança, i la deixa en una altra casella:</p>
 
         <div class="simulador"
-             data-map="K>,A,.,.,.\n.,.,.,.,.\n.,.,.,.,."
+             data-map="K>,A,.,.,.|.,.,.,.,.|.,.,.,.,."
              data-code="move()
 grab()
 move()
@@ -162,7 +162,7 @@ move()
         <p>Prova-ho: en l'exemple següent el codi té un error deliberat. En Karel intenta fer <code>grab()</code> en una casella buida. Executa'l i mira el missatge:</p>
 
         <div class="simulador"
-             data-map="K>,.,.,.,.\n.,.,.,.,.\n.,.,.,.,."
+             data-map="K>,.,.,.,.|.,.,.,.,.|.,.,.,.,."
              data-code="move()
 grab()
 "
@@ -189,8 +189,8 @@ grab()
         <p>Pista: recorda que <code>grab()</code> recull <strong>una</strong> perla per execució. Si n'hi ha dues al llarg del camí, hauràs de fer <code>grab()</code> dues vegades, cada cop a la casella correcta. Al final, fes <code>drop()</code> dues vegades per deixar-les totes dues.</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.\nK>,A,.,A,.\n.,.,.,.,."
-             data-goal=".,.,.,.,.\n.,.,.,.,K>\n.,.,.,.,."
+             data-map=".,.,.,.,.|K>,A,.,A,.|.,.,.,.,."
+             data-goal=".,.,.,.,.|.,.,.,.,K>|.,.,.,.,."
              data-code="# Escriu el teu codi aquí:
 
 "

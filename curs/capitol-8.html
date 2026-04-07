@@ -57,7 +57,7 @@
         <p>Per evitar-ho, li hem d'exigir dues coses alhora: "Mentre tinguis una perla sota teu <strong>I</strong> el teu davant estigui lliure, avança". Així no xocarà mai.</p>
 
         <div class="simulador"
-             data-map="K>,.,A,A,P\n.,.,.,.,.\n.,.,.,.,."
+             data-map="K>,.,A,A,P|.,.,.,.,.|.,.,.,.,."
              data-code="# Caminem fins que trobem perles. Després, les agafem, però sense xocar!
 while front_is_clear():
     move()          
@@ -77,7 +77,7 @@ while pearl_here() and front_is_clear():
         <p>L'operador <code>or</code> (o) ens serveix per reaccionar quan passa una cosa <strong>o</strong> en passa una altra. En aquest exemple, en Karel està patrullant el passadís. Li direm: "Fes una pirueta d'alerta (girar sobre tu mateix) si trepitges una perla <strong>O</strong> si et topes de morros amb un obstacle."</p>
 
         <div class="simulador"
-             data-map="K>,.,.,A,.,.,P\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
+             data-map="K>,.,.,A,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
              data-code="while front_is_clear():
     move()
     
@@ -107,8 +107,8 @@ while pearl_here() and front_is_clear():
         <p><strong>Pista:</strong> Al bucle <code>while</code> hauràs de combinar <code>not pearl_here()</code> amb <code>and front_is_clear()</code>.</p>
 
         <div class="simulador"
-             data-map="K>,.,.,A,.,.,P\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
-             data-goal=".,.,.,.,.,K>,P\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
+             data-map="K>,.,.,A,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
+             data-goal=".,.,.,.,.,K>,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
              data-code="# Escriu el teu codi aquí:
 
 "

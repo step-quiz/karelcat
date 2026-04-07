@@ -89,7 +89,7 @@ move()</code></pre>
         <p>Observa com en Karel fa cinc <code>move()</code> amb una sola instrucció <code>for</code>:</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.,.\nK>,.,.,.,.,.\n.,.,.,.,.,."
+             data-map=".,.,.,.,.,.|K>,.,.,.,.,.|.,.,.,.,.,."
              data-code="for i in range(5):
     move()
 "
@@ -121,7 +121,7 @@ move()          # ← s'executa UNA SOLA VEGADA, després del bucle</code></pre>
         <p>En aquest exemple, en Karel fa tres passos cap a l'Est, gira a l'esquerra i fa tres passos cap al Nord. El <code>turn_left()</code> queda fora del bucle, entre els dos <code>for</code>:</p>
 
         <div class="simulador"
-             data-map=".,.,.,.\n.,.,.,.\n.,.,.,.\nK>,.,.,"
+             data-map=".,.,.,.|.,.,.,.|.,.,.,.|K>,.,.,"
              data-code="for i in range(3):
     move()
 turn_left()
@@ -151,8 +151,8 @@ for i in range(3):
         <p>Pista: necessites moure't 4 caselles cap a l'Est, girar cap al Nord i moure't 3 caselles cap amunt. Pots fer-ho amb menys de 6 línies de codi.</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,A\n.,.,.,.,.\n.,.,.,.,.\nK>,.,.,.,."
-             data-goal=".,.,.,.,K^\n.,.,.,.,.\n.,.,.,.,.\n.,.,.,.,."
+             data-map=".,.,.,.,A|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,."
+             data-goal=".,.,.,.,K^|.,.,.,.,.|.,.,.,.,.|.,.,.,.,."
              data-code="# Escriu el teu codi aquí:
 
 "

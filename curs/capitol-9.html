@@ -51,7 +51,7 @@
         <p>En Karel sap moure's i girar, però no sap "saltar" de forma natural. Podem ensenyar-li a saltar una roca creant la funció <code>saltar_roca()</code> combinant els moviments bàsics amb les funcions que ja coneixem com <code>turn_right()</code>.</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.\n.,.,.,.,.\nK>,.,P,.,."
+             data-map=".,.,.,.,.|.,.,.,.,.|K>,.,P,.,."
              data-code="def saltar_roca():
     turn_left()
     move()
@@ -80,7 +80,7 @@ move()
         <p>Ara mira la potència d'això. Si tenim un món ple de roques i una perla al final, no hem de copiar i enganxar tot el procés de saltar cada vegada. El nostre <strong>programa principal</strong> (el bucle de sota) es llegeix com si fos una història molt senzilla i entenedora gràcies a la funció que acabem de crear!</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.,.,.,.,.\n.,.,.,.,.,.,.,.,.\nK>,.,P,.,.,P,.,A,."
+             data-map=".,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|K>,.,P,.,.,P,.,A,."
              data-code="def saltar_roca():
     turn_left()
     move()
@@ -123,8 +123,8 @@ grab()
         <p><strong>Pista:</strong> Assegura't de cridar <code>recollir_columna()</code> només si en Karel detecta que hi ha una perla en aquella casella (<code>pearl_here()</code>).</p>
 
         <div class="simulador"
-             data-map=".,A,.,.,.,A,.,.,.,A,.\n.,A,.,.,.,A,.,.,.,A,.\nK>,A,.,.,.,A,.,.,.,A,."
-             data-goal=".,.,.,.,.,.,.,.,.,.,.\n.,.,.,.,.,.,.,.,.,.,.\n.,.,.,.,.,.,.,.,.,.,K>"
+             data-map=".,A,.,.,.,A,.,.,.,A,.|.,A,.,.,.,A,.,.,.,A,.|K>,A,.,.,.,A,.,.,.,A,."
+             data-goal=".,.,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.,K>"
              data-code="# 1. Defineix la teva funció aquí a dalt:
 def recollir_columna():
     # (El teu codi per pujar, recollir i baixar)
