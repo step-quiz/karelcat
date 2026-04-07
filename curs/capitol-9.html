@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Capítol 9 — Com escriure codi | Karel</title>
+  <title>Capítol 9 — Refinament Pas a Pas | Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
@@ -18,7 +18,7 @@
     Karel
   </span>
 
-  <span class="curs-header-title">Capítol 9 — Com escriure codi</span>
+  <span class="curs-header-title">Capítol 9 — Refinament Pas a Pas</span>
 </header>
 
 
@@ -39,73 +39,60 @@
 
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 9</span>
-        <h1>Com escriure codi</h1>
-        <p class="chapter-lead">Aprèn a escriure codi net, entenedor i ben estructurat utilitzant comentaris i definint les teves pròpies ordres per a en Karel.</p>
+        <h1>Refinament Pas a Pas</h1>
+        <p class="chapter-lead">Aprèn a resoldre problemes complexos dividint-los en peces més petites amb les teves pròpies funcions, una tècnica coneguda com a disseny "Top-Down".</p>
       </header>
 
 
       <section class="chapter-section">
-        <h2>Els comentaris</h2>
-        <p>Quan els programes es fan llargs, és molt útil deixar notes per a nosaltres mateixos o per a altres persones que llegeixin el codi. Aquestes notes s'anomenen <strong>comentaris</strong>.</p>
-        <p>En el codi d'en Karel, qualsevol text que vagi després d'un coixinet (<code>#</code>) serà ignorat per l'ordinador. Serveix exclusivament per a tu.</p>
+        <h2>Divideix i Venceràs</h2>
+        <p>A mesura que els programes es fan més grans, escriure totes les ordres seguides d'una tirada es converteix en un caos. Imagina que vols que en Karel reculli perles, salti obstacles i torni a casa. Si ho escrius tot junt, si hi ha un error serà molt difícil de trobar.</p>
+        <p>La solució és el <strong>refinament pas a pas</strong>: agafar un problema gran i trencar-lo en sub-problemes utilitzant <code>def</code> per crear funcions noves. Un cop tens les sub-tasques definides, el teu programa principal es llegirà gairebé com un índex:</p>
         <div class="code-block" style="background: var(--surface); padding: 1rem; border-radius: 4px; font-family: var(--mono); font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid var(--border);">
-          # Això és un comentari. En Karel l'ignorarà.<br>
-          move()  # Això mou en Karel un pas endavant.
+          # Un programa principal net i entenedor:<br>
+          recollir_totes_les_perles()<br>
+          deixar_perles_a_la_caixa()<br>
+          tornar_a_casa()
         </div>
       </section>
 
 
       <section class="chapter-section">
-        <h2>Crear les teves pròpies ordres</h2>
-        <p>T'has fixat que en Karel no sap girar a la dreta? Per fer-ho, sempre hem hagut d'escriure <code>turn_left()</code> tres vegades. Si hem de girar a la dreta molt sovint, escriure això una vegada i una altra és pesat i fa que el codi sigui llarg i repetitiu.</p>
-        <p>La solució és <strong>ensenyar-li una ordre nova</strong> a en Karel utilitzant la paraula <code>def</code> (de "definir"). Això s'anomena crear una <strong>funció</strong>.</p>
-
-        <div class="simulador"
-             data-map=".,.,.,.\n.,.,.,.\nK>,.,.,."
-             data-code="# Definim com girar a la dreta
-def turn_right():
-    turn_left()
-    turn_left()
-    turn_left()
-
-# Ara ja podem utilitzar la nova ordre
-move()
-turn_right()
-move()
-"
-             data-readonly="true"
-             data-label="Exemple"
-             data-title="Hem definit turn_right(). Fixa't que l'interior de la funció ha d'anar indentat (amb espais)."
-             data-height="360">
-        </div>
-        
-        <p><strong>Divideix i venceràs:</strong> Definir funcions amb noms clars fa que el teu codi principal sigui curt, net i es llegeixi com una història.</p>
+        <h2>Precondicions i Postcondicions</h2>
+        <p>Quan crees una funció per resoldre una part del problema (com ara <code>recollir_una_columna()</code>), és vital que tinguis clar on és en Karel i cap a on mira <em>abans</em> de cridar la funció (<strong>Precondició</strong>) i com ha de quedar <em>després</em> d'executar-la (<strong>Postcondició</strong>).</p>
+        <p>Per exemple, si en Karel va avançant cap a l'Est i crida una funció per recollir una columna de perles, la <strong>postcondició</strong> hauria de ser que en Karel acabi a la base de la columna, mirant cap a l'Est una altra vegada, preparat per fer el següent pas sense xocar.</p>
       </section>
 
 
       <section class="chapter-section chapter-exercise">
-        <h2>Exercici</h2>
+        <h2>Exercici: Netejant les columnes</h2>
 
         <div class="exercise-enunciat">
-          En Karel ha d'anar a buscar la perla, agafar-la, <strong>donar mitja volta</strong> i tornar al punt exacte des d'on ha sortit.
+          En Karel ha de recollir totes les perles d'aquestes tres columnes.
           <br><br>
-          En lloc d'escriure totes les ordres seguides, primer <strong>defineix una funció</strong> anomenada <code>turn_around()</code> (girar mitja volta), que estigui formada per dos <code>turn_left()</code>. Després, utilitza aquesta i altres ordres per resoldre el problema.
+          En comptes d'escriure un codi llarg i repetitiu, <strong>defineix primer la funció <code>recollir_columna()</code></strong>. Aquesta funció ha de fer que en Karel (que comença mirant a l'Est) giri al Nord, reculli les perles de la seva columna, doni mitja volta fins a terra i <strong>es torni a posar mirant a l'Est</strong> (Postcondició).
+          <br><br>
+          Després, utilitza aquesta funció i un bucle al programa principal per netejar tot el món de perles!
         </div>
 
-        <p><strong>Pista:</strong> Defineix la funció a la part superior del codi. Recorda utilitzar un bucle <code>while</code> per anar més ràpid pels passadissos en lloc de posar molts <code>move()</code>!</p>
+        <p><strong>Pista:</strong> Defineix la teva funció a dalt de tot. Assegura't de fer <code>turn_left()</code>, <code>turn_right()</code> o <code>turn_around()</code> dins de la funció segons necessitis per deixar en Karel a punt per continuar pel passadís.</p>
 
         <div class="simulador"
-             data-map="K>,.,.,.,.,.,P\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
-             data-goal="K<,.,.,.,.,.,.\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
-             data-code="# Defineix la funció turn_around() aquí:
+             data-map=".,A,.,.,.,A,.,.,.,A,.\n.,A,.,.,.,A,.,.,.,A,.\nK>,A,.,.,.,A,.,.,.,A,."
+             data-goal=".,.,.,.,.,.,.,.,.,.,.\n.,.,.,.,.,.,.,.,.,.,.\n.,.,.,.,.,.,.,.,.,.,K>"
+             data-code="# Defineix aquí la teva funció per a UNA sola columna:
+def recollir_columna():
+    # (El teu codi per pujar, recollir i baixar)
 
 
-# Escriu el programa principal a partir d'aquí:
+
+# --- Programa Principal ---
+# Utilitza un bucle while i la funció que has creat:
 
 "
              data-label="Exercici"
-             data-title="Karel ha d'acabar mirant cap a l'Oest a la casella inicial, amb la perla recollida."
-             data-height="400">
+             data-title="Utilitza 'def' per separar la lògica de recollir la columna del moviment pel passadís."
+             data-height="450">
         </div>
       </section>
 
