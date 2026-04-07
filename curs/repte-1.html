@@ -170,8 +170,11 @@ torna_a_casa()</pre>
         </div>
 
         <!-- Simulador — Test A: cova curta (2 passos) -->
+        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
-             data-map="P,P,P,P|K>,.,A,P|P,P,P,P"
+             data-maps='["P,P,P,P|K>,.,A,P|P,P,P,P", "P,P,P,P,P|K>,P,.,A,P|P,P,P,P,P", "P,P,P,P,P,P|K>,.,.,.,A,P|P,P,P,P,P,P"]'
+             data-goals='["P,P,P,P|K>,.,.,P|P,P,P,P", "P,P,P,P,P|K>,.,.,.,P|P,P,P,P,P", "P,P,P,P,P,P|K>,.,.,.,.,P|P,P,P,P,P,P"]'
+             data-labels='["Cova curta", "Cova estàndard", "Cova llarga"]'
              data-code="def surt_de_la_cova():
     # El teu codi aquí
 
@@ -189,62 +192,9 @@ surt_de_la_cova()
 recull_la_perla()
 torna_a_casa()
 "
-             data-goal="P,P,P,P|K>,.,.,P|P,P,P,P"
-             data-label="Repte 1 — Test A (cova curta)"
-             data-title="Cova de 2 passos. En Karel ha de sortir, recollir la perla i tornar."
-             data-height="320">
-        </div>
-
-        <!-- Simulador — Test B: cova estàndard (3 passos) -->
-        <div class="simulador"
-             data-map="P,P,P,P,P|K>,.,.,A,P|P,P,P,P,P"
-             data-code="def surt_de_la_cova():
-    # El teu codi aquí
-
-
-def recull_la_perla():
-    # El teu codi aquí
-
-
-def torna_a_casa():
-    # El teu codi aquí
-
-
-# ── Programa principal ──
-surt_de_la_cova()
-recull_la_perla()
-torna_a_casa()
-"
-             data-goal="P,P,P,P,P|K>,.,.,.,P|P,P,P,P,P"
-             data-label="Repte 1 — Test B (cova estàndard)"
-             data-title="Cova de 3 passos. Mateix codi, món diferent."
-             data-height="320">
-        </div>
-
-        <!-- Simulador — Test C: cova llarga (4 passos) -->
-        <div class="simulador"
-             data-map="P,P,P,P,P,P|K>,.,.,.,A,P|P,P,P,P,P,P"
-             data-code="def surt_de_la_cova():
-    # El teu codi aquí
-
-
-def recull_la_perla():
-    # El teu codi aquí
-
-
-def torna_a_casa():
-    # El teu codi aquí
-
-
-# ── Programa principal ──
-surt_de_la_cova()
-recull_la_perla()
-torna_a_casa()
-"
-             data-goal="P,P,P,P,P,P|K>,.,.,.,.,P|P,P,P,P,P,P"
-             data-label="Repte 1 — Test C (cova llarga)"
-             data-title="Cova de 4 passos. Mateix codi, món diferent."
-             data-height="320">
+             data-label="Repte 1 — La cova"
+             data-title="Prova el teu codi als tres mons. El mateix algorisme ha de funcionar per a qualsevol mida de cova."
+             data-height="360">
         </div>
 
       </section>
