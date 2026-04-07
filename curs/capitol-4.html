@@ -55,7 +55,7 @@
 
 
       <!-- ─────────────────────────────────────────────
-           SECCIÓ 1 — El problema de les seqüències repetides
+           SECCIÓ 1
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
         <h2>Quan les mateixes ordres apareixen una i altra vegada</h2>
@@ -67,7 +67,7 @@
         <p>Primer, observa com es puja <strong>un sol graó</strong>. Quatre ordres:</p>
 
         <div class="simulador"
-             data-map=".,.,.,.\nP,.,.,.\nK>,.,.,."
+             data-map=".,.,.,.\n.,.,.,.\nK>,R,.,."
              data-code="turn_left()
 move()
 turn_right()
@@ -76,7 +76,7 @@ move()
              data-readonly="true"
              data-label="Exemple"
              data-title="Quatre ordres per pujar un graó. Ara imagina que has de fer-ho per cada graó d'una escala llarga."
-             data-height="380">
+             data-height="360">
         </div>
 
         <p>Quatre ordres. En Karel ha pujat un graó. Ara imagina que has de repetir-ho per cada graó d'una escala llarga.</p>
@@ -89,7 +89,7 @@ move()
       <section class="chapter-section">
         <h2>Inventar una ordre nova: <code>def nom():</code></h2>
 
-        <p><code>def</code> (abreviació de <em>define</em>, «definir») permet crear una ordre nova que en Karel reconeixarà igual que <code>move()</code> o <code>turn_left()</code>. La seva forma és:</p>
+        <p><code>def</code> (abreviació de <em>define</em>, «defínir») permet crear una ordre nova que en Karel reconeixarà igual que <code>move()</code> o <code>turn_left()</code>. La seva forma és:</p>
 
         <pre><code>def nom():
     ordre1()
@@ -103,7 +103,7 @@ move()
         <p>Ara definim <code>puja_grao()</code> i escalem tres graons. Compara el codi d'aquí amb el que necessitaries sense <code>def</code>:</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.\nP,.,.,.,.\nP,P,.,.,.\nK>,.,.,.,."
+             data-map=".,.,.,.,.\n.,.,.,R,.\n.,.,R,R,.\nK>,R,R,R,."
              data-code="def puja_grao():
     turn_left()
     move()
@@ -157,7 +157,7 @@ puja_grao()
         <p>Pista: defineix <code>puja_grao()</code> amb quatre ordres. Llavors crida'l quatre vegades i afegeix un <code>grab()</code> al final.</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,A,.\nP,.,.,.,.,.\nP,P,.,.,.,.\nP,P,P,.,.,.\nK>,.,.,.,.,."
+             data-map=".,.,.,.,A,.\n.,.,.,.,R,.\n.,.,.,R,R,.\n.,.,R,R,R,.\nK>,R,R,R,R,."
              data-code="# Defineix el procediment puja_grao() aquí:
 
 
@@ -166,7 +166,7 @@ puja_grao()
 "
              data-label="Exercici"
              data-title="Defineix puja_grao() i usa-la per arribar a la perla de la cima i recollir-la."
-             data-height="500">
+             data-height="520">
         </div>
       </section>
 
