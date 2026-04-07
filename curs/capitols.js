@@ -97,6 +97,7 @@ function renderSimuladors() {
     const rawGoal  = div.dataset.goal || '';
     const goalCSV  = rawGoal.replace(/\\n/g, '\n');
     const goalId   = goalCSV ? nextGoalId() : '';
+    const initBag  = parseInt(div.dataset.bag || '0', 10);  // perles inicials a la motxilla
 
     // Substitueix \n literals (de l'atribut HTML) per salts de línia reals
     const map  = rawMap.replace(/\\n/g, '\n');
@@ -115,8 +116,10 @@ function renderSimuladors() {
       ? `&goal=${btoa(unescape(encodeURIComponent(goalCSV)))}&goalId=${goalId}`
       : '';
 
+    const bagParam = initBag > 0 ? `&bag=${initBag}` : '';
+
     const iframe = document.createElement('iframe');
-    iframe.src        = `../index.html?embed=1&map=${encMap}&code=${encCode}${roParam}${theme}${goalParams}`;
+    iframe.src        = `../index.html?embed=1&map=${encMap}&code=${encCode}${roParam}${theme}${goalParams}${bagParam}`;
     iframe.className  = 'simulador-frame';
     iframe.style.height = height + 'px';
     iframe.title      = title || 'Simulador Karel';
