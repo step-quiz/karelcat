@@ -627,6 +627,7 @@ body.curs-light .simulador-feedback.fb-error {
 }
 
 @media (max-width: 540px) {
+  .mon-active-label { display: none; }
   .capitols-list { padding: 0 0.75rem; }
   .capitol-card a { padding: 0.85rem 1rem; }
   .chapter-nav { flex-direction: column; }
