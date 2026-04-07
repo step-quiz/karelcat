@@ -189,7 +189,7 @@ surt_de_la_cova()
 recull_la_perla()
 torna_a_casa()
 "
-             data-goal="P,P,P,P|K>,.,.P|P,P,P,P"
+             data-goal="P,P,P,P|K>,.,.,P|P,P,P,P"
              data-label="Repte 1 — Test A (cova curta)"
              data-title="Cova de 2 passos. En Karel ha de sortir, recollir la perla i tornar."
              data-height="320">
@@ -215,7 +215,7 @@ surt_de_la_cova()
 recull_la_perla()
 torna_a_casa()
 "
-             data-goal="P,P,P,P,P|K>,.,.,.P|P,P,P,P,P"
+             data-goal="P,P,P,P,P|K>,.,.,.,P|P,P,P,P,P"
              data-label="Repte 1 — Test B (cova estàndard)"
              data-title="Cova de 3 passos. Mateix codi, món diferent."
              data-height="320">
@@ -270,24 +270,24 @@ torna_a_casa()
   No apareix en cap data-code visible a l'alumne.
   ════════════════════════════════════════════════════════
 
-  def surt_de_la_cova():
-      while front_is_clear():
-          move()
+def surt_de_la_cova():
+    while front_is_clear():
+        move()
 
-  def recull_la_perla():
-      grab()
+def recull_la_perla():
+    grab()
 
-  def torna_a_casa():
-      turn_around()
-      while front_is_clear():
-          move()
-      turn_around()
+def torna_a_casa():
+    turn_around()
+    while front_is_clear():
+        move()
+    turn_around()
 
-  surt_de_la_cova()
-  recull_la_perla()
-  torna_a_casa()
+surt_de_la_cova()
+recull_la_perla()
+torna_a_casa()
 
-  Mons de test:
+Mons de test:
     A — cova curta  (2 passos): P,P,P,P|K>,.,A,P|P,P,P,P
     B — cova normal (3 passos): P,P,P,P,P|K>,.,.,A,P|P,P,P,P,P
     C — cova llarga (4 passos): P,P,P,P,P,P|K>,.,.,.,A,P|P,P,P,P,P,P
