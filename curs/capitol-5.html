@@ -118,7 +118,7 @@ torna_al_inici()</code></pre>
         <p>Observa com el codi reflecteix exactament el pla de tres fases:</p>
 
         <div class="simulador"
-             data-map=".,.,A,.,.\n.,.,.,.,.\nK>,.,A,.,.\n.,.,.,.,.\n.,.,.,.,."
+             data-map=".,.,A,.,.\\n.,.,.,.,.\\nK>,.,A,.,.\\n.,.,.,.,.\\n.,.,.,.,."
              data-code="def recull_perla_est():
     move()
     move()
@@ -188,7 +188,8 @@ def recull_perla_est():
         <p>En l'exemple de sota, en Karel ha de col·locar dues perles en dos llocs separats. Cada fase és un procediment independent que internament usa <code>move()</code> i <code>drop()</code>:</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.,.\nK>,.,.,.,.,.\n.,.,.,.,.,."
+             data-map=".,.,.,.,.,.\\nK>,.,.,.,.,.\\n.,.,.,.,.,."
+             data-bag="2"
              data-code="def deixa_perla_a_col2():
     move()
     move()
@@ -229,8 +230,8 @@ deixa_perla_a_col5()
         <p>Pista: pensa en com en Karel queda posicionat després de cada fase. <code>recull_primera()</code> el deixa a la columna 1 mirant Est; <code>recull_segona()</code> ha de partir des d'allà i arribar a la columna 3, etc.</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.,.,.\nK>,A,.,A,.,A,.\n.,.,.,.,.,.,.\n"
-             data-goal=".,.,.,.,.,.,.\n.,.,.,.,.,.,K>\n.,.,.,.,.,.,.\n"
+             data-map=".,.,.,.,.,.,.\\nK>,A,.,A,.,A,.\\n.,.,.,.,.,.,.\\n"
+             data-goal=".,.,.,.,.,.,.\\n.,.,.,.,.,.,K>\\n.,.,.,.,.,.,.\\n"
              data-code="# Defineix els tres procediments aquí:
 
 
