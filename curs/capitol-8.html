@@ -41,8 +41,8 @@
 
       <section class="chapter-section">
         <h2>Més d'una condició alhora</h2>
-        <p>Fins ara hem vist com fer que en Karel actuï segons una única condició (com ara <code>front_is_clear()</code>). Però sovint el món és complex i necessitem que en Karel comprovi dues o més coses abans de decidir què fer.</p>
-        <p>Per fer-ho, podem combinar condicions utilitzant operadors lògics: <strong><code>and</code></strong> (i), <strong><code>or</code></strong> (o), i <strong><code>not</code></strong> (no).</p>
+        <p>Fins ara hem vist com fer que en Karel actuï segons una única condició. Però de vegades necessitem que en Karel comprovi dues o més coses alhora abans de moure's o actuar per no cometre un error.</p>
+        <p>Per fer-ho, podem combinar condicions utilitzant els operadors: <strong><code>and</code></strong> (i), <strong><code>or</code></strong> (o), i <strong><code>not</code></strong> (no).</p>
         <ul>
           <li><strong><code>and</code></strong>: Es compleix només si <em>totes dues</em> condicions són certes.</li>
           <li><strong><code>or</code></strong>: Es compleix si <em>almenys una</em> de les condicions és certa.</li>
@@ -52,66 +52,73 @@
 
 
       <section class="chapter-section">
-        <h2>Exemple 1: L'operador "and" (i)</h2>
-        <p>En aquest exemple, volem que en Karel avanci mentre el camí estigui lliure <strong>I</strong> no hi hagi cap perla a terra. Així que utilitzem <code>front_is_clear() and not pearl_here()</code>. S'aturarà tan aviat com una de les dues coses deixi de ser veritat.</p>
+        <h2>Exemple 1: L'operador "and" (El rastre de perles)</h2>
+        <p>Imagina que en Karel ha de seguir un rastre de perles i anar-les recollint. S'ha d'aturar quan s'acabin les perles, <strong>però</strong> també s'ha d'aturar si es topa amb una paret per no xocar.</p>
+        <p>Si només féssim <code>while pearl_here():</code> xocaria en arribar a la paret. Per tant, necessitem dues condicions estrictes: "Mentre tinguis una perla sota teu <strong>I</strong> el teu davant estigui lliure, recull i avança".</p>
 
         <div class="simulador"
-             data-map="K>,.,.,.,.,.,A\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
-             data-code="while front_is_clear() and not pearl_here():
+             data-map="K>,A,A,A,A,P\n.,.,.,.,.,.\n.,.,.,.,.,."
+             data-code="# En Karel avançarà amb seguretat gràcies a l'and
+while pearl_here() and front_is_clear():
+    grab()
     move()
 
-# Un cop s'atura (perquè ha trobat la perla), l'agafa
+# Un cop s'atura a la casella de la paret, recull l'última
 grab()
 "
              data-readonly="true"
              data-label="Exemple 1"
-             data-title="En Karel avança fins a trobar la perla i s'atura."
-             data-height="320">
+             data-title="Prova-ho: l'and protegeix en Karel d'avançar si falta la perla o si topa amb la paret."
+             data-height="340">
         </div>
       </section>
 
 
       <section class="chapter-section">
-        <h2>Exemple 2: L'operador "or" (o)</h2>
-        <p>L'operador <code>or</code> és ideal per donar alternatives a en Karel. En aquest món, en Karel està en un passadís cec que gira a l'esquerra. Li direm: "mentre puguis avançar de front <strong>O</strong> tinguis espai a l'esquerra, continua el teu camí".</p>
-        <p>Dins del bucle, utilitzem un <code>if</code> per dir-li que, si es troba la paret al davant, giri cap a la nova obertura.</p>
+        <h2>Exemple 2: L'operador "or" i el "not"</h2>
+        <p>L'operador <code>or</code> (o) ens serveix per reaccionar quan passa una cosa <strong>o</strong> en passa una altra. En aquest exemple, en Karel està patrullant el passadís. Li direm: "Si trepitges una perla <strong>O</strong> si et quedes sense espai al davant, fes un crit d'alerta (girar sobre tu mateix)."</p>
+        <p>Aquí utilitzarem el <code>not</code> per dir "no tens espai al davant": <code>not front_is_clear()</code>.</p>
 
         <div class="simulador"
-             data-map="P,P,P,P,P,P\nP,P,P,P,.,P\nP,P,P,P,.,P\nP,K>,.,.,.,P\nP,P,P,P,P,P"
-             data-code="# Segueix el passadís girant si cal
-while front_is_clear() or left_is_clear():
-    if not front_is_clear():
-        turn_left()
+             data-map="K>,.,A,.,.,P\n.,.,.,.,.,.\n.,.,.,.,.,."
+             data-code="while front_is_clear():
     move()
+    # Si troba una perla O arriba a la paret final
+    if pearl_here() or not front_is_clear():
+        # Alerta! Una volta de 360 graus
+        turn_left()
+        turn_left()
+        turn_left()
+        turn_left()
 "
              data-readonly="true"
              data-label="Exemple 2"
-             data-title="La condició 'or' permet que el bucle continuï viu encara que tingui una paret al davant, gràcies a l'espai de l'esquerra."
-             data-height="350">
+             data-title="En Karel només farà la volta en els dos moments clau gràcies a l'operador 'or'."
+             data-height="380">
         </div>
       </section>
 
 
       <section class="chapter-section chapter-exercise">
-        <h2>Exercici</h2>
+        <h2>Exercici: Buscant el lloc perfecte</h2>
 
         <div class="exercise-enunciat">
-          En Karel ha d'avançar per tot el passadís fins a arribar a la paret. Mentre avança, ha de recollir les perles <strong>només</strong> si té el costat dret bloquejat per una roca.
+          En Karel vol avançar pel passadís per buscar un bon lloc per descansar. Ell s'aturarà de caminar <strong>només</strong> quan trobi una perla per asseure's, o si s'acaba el passadís (la paret).
           <br><br>
-          Fes servir la condició <code>pearl_here() and not right_is_clear()</code> dins d'un bucle que el faci avançar i analitzar cada pas.
+          Escriu un bucle <code>while</code> que faci avançar en Karel <strong>MENTRE NO</strong> estigui sobre una perla <strong>I</strong> el seu davant estigui lliure. Un cop s'aturi, fes que giri a l'esquerra per mirar cap al Nord.
         </div>
 
-        <p><strong>Pista:</strong> Necessitaràs un bucle <code>while</code> per anar avançant pel passadís, i a dins, utilitzar un <code>if</code> combinant les condicions per saber si has d'agafar la perla.</p>
+        <p><strong>Pista:</strong> Necessitaràs utilitzar <code>not pearl_here()</code> combinat amb <code>and front_is_clear()</code> en el teu bucle.</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.,.,.\nK>,A,A,.,A,A,P\n.,P,.,.,P,.,."
-             data-goal=".,.,.,.,.,.,.\n.,A,.,.,.,A,K>\n.,P,.,.,P,.,."
+             data-map="K>,.,.,.,A,.,P\n.,.,.,.,.,.,."
+             data-goal=".,.,.,.,K^,.,P\n.,.,.,.,.,.,."
              data-code="# Escriu el teu codi aquí:
 
 "
              data-label="Exercici"
-             data-title="Recull les perles que tenen una roca a sota."
-             data-height="360">
+             data-title="La condició del bucle while ha de combinar el 'not' i l''and'."
+             data-height="350">
         </div>
       </section>
 
@@ -136,4 +143,4 @@ while front_is_clear() or left_is_clear():
 </script>
 
 </body>
-</html>s
+</html>
