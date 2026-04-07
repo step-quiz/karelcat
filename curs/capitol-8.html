@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 8 — Combinant condicions | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    Karel
+  </span>
+
+  <span class="curs-header-title">Capítol 8 — Combinant condicions</span>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div class="sidebar-header">
+      <a href="index.html" class="active">Capítols</a>
+      <a href="../index.html">Simulador</a>
+    </div>
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 8</span>
+        <h1>Combinant condicions</h1>
+        <p class="chapter-lead">Aprèn a fer que en Karel prengui decisions més intel·ligents comprovant diverses coses al mateix temps gràcies als operadors lògics.</p>
+      </header>
+
+
+      <section class="chapter-section">
+        <h2>Més d'una condició alhora</h2>
+        <p>Fins ara hem vist com fer que en Karel actuï segons una única condició (com ara <code>front_is_clear()</code>). Però sovint el món és complex i necessitem que en Karel comprovi dues o més coses abans de decidir què fer.</p>
+        <p>Per fer-ho, podem combinar condicions utilitzant operadors lògics: <strong><code>and</code></strong> (i), <strong><code>or</code></strong> (o), i <strong><code>not</code></strong> (no).</p>
+        <ul>
+          <li><strong><code>and</code></strong>: Es compleix només si <em>totes dues</em> condicions són certes.</li>
+          <li><strong><code>or</code></strong>: Es compleix si <em>almenys una</em> de les condicions és certa.</li>
+          <li><strong><code>not</code></strong>: Serveix per comprovar el contrari d'una condició (per exemple, que no hi hagi cap perla).</li>
+        </ul>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Exemple d'ús amb "and" i "not"</h2>
+        <p>En aquest exemple, volem que en Karel avanci mentre el camí estigui lliure <strong>I</strong> no hi hagi cap perla a terra. Així que utilitzem <code>while front_is_clear() and not beepers_present():</code>.</p>
+
+        <div class="simulador"
+             data-map="K>,.,.,.,A,.,P\n.,.,.,.,.,.,.\n.,.,.,.,.,.,."
+             data-code="while front_is_clear() and not beepers_present():
+    move()
+
+# Un cop s'atura, agafa la perla
+pick_beeper()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="Prem ▶ Executa. En Karel avança fins a trobar la perla i s'atura, ja que una de les condicions deixa de complir-se."
+             data-height="320">
+        </div>
+      </section>
+
+
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          En Karel ha d'avançar per tot el passadís fins a arribar a la paret. Mentre avança, ha de recollir les perles <strong>només</strong> si té el costat dret bloquejat.
+          <br><br>
+          Fes servir la condició <code>beepers_present() and not right_is_clear()</code> (o una combinació similar) dins d'un bucle que el faci avançar.
+        </div>
+
+        <p><strong>Pista:</strong> Necessitaràs un bucle <code>while</code> per anar avançant pel passadís, i a dins, utilitzar un <code>if</code> combinant les condicions per saber si has d'agafar la perla abans de fer el pas.</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.,.,.\nK>,A,A,.,A,A,P\n.,P,.,.,P,.,."
+             data-goal=".,.,.,.,.,.,.\n.,A,.,.,.,A,K>\n.,P,.,.,P,.,."
+             data-code="# Escriu el teu codi aquí:
+
+"
+             data-label="Exercici"
+             data-title="Recull les perles que estan just a sobre de les roques de sota."
+             data-height="340">
+        </div>
+      </section>
+
+
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-7.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-9.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+    </div></main>
+
+</div><script>const CURRENT_CAPITOL = 8;</script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
