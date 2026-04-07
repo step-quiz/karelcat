@@ -107,9 +107,9 @@ function _iframeSrc(map, code, goalCSV, goalId, readonly, bag) {
   const bagParam = bag > 0  ? `&bag=${bag}` : '';
   const enc      = s => btoa(unescape(encodeURIComponent(s)));
   const goalP    = goalCSV
-    ? `&goal=${enc(goalCSV)}&goalId=${goalId}`
+    ? `&goal=${encodeURIComponent(enc(goalCSV))}&goalId=${goalId}`
     : '';
-  return `../index.html?embed=1&map=${enc(map)}&code=${enc(code)}${roParam}${theme}${goalP}${bagParam}`;
+  return `../index.html?embed=1&map=${encodeURIComponent(enc(map))}&code=${encodeURIComponent(enc(code))}${roParam}${theme}${goalP}${bagParam}`;
 }
 
 // ── Llegeix el codi de l'editor dins l'iframe (same-origin) ──
