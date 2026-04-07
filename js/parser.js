@@ -151,10 +151,12 @@ class Parser {
       return { type: 'while', cond, body: this.parseBlock(myIndent), line };
     }
 
-    // ── for _ in range(N): ──
+    // ── for <var> in range(N): ──
+    // La variable pot ser qualsevol identificador vàlid (convencionalment '_').
+    // El seu valor s'ignora durant l'execució (bucle comptat pur).
     if (w === L.KW_FOR) {
       this.next();                      // consumeix 'for'
-      this.eat('W', '_');               // variable throw-away
+      this.eat('W');                    // variable (qualsevol identificador)
       this.eat('W', L.KW_IN);
       this.eat('W', L.KW_RANGE);
       this.eat('(');

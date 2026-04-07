@@ -23,8 +23,7 @@ function tokenizeLine(line) {
     } else {
       let w = '';
       while (i < line.length && !/[\s():\/]/.test(line[i])) w += line[i++];
-      if      (w === '_')          out += `<span class="hl-kw">${K.escHtml(w)}</span>`;
-      else if (L.KEYWORDS.has(w)) out += `<span class="hl-kw">${K.escHtml(w)}</span>`;
+      if      (L.KEYWORDS.has(w)) out += `<span class="hl-kw">${K.escHtml(w)}</span>`;
       else if (L.COMMANDS.has(w)) out += `<span class="hl-cmd">${K.escHtml(w)}</span>`;
       else if (L.CONDS.has(w))    out += `<span class="hl-cond">${K.escHtml(w)}</span>`;
       else                        out += `<span class="hl-user">${K.escHtml(w)}</span>`;
