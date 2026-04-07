@@ -479,37 +479,48 @@ body.curs-light .simulador-feedback.fb-error {
 /* ── Selector de mons (capítol 10 — mode N mons) ─────── */
 .mon-switcher {
   display: flex;
-  gap: 0;
+  gap: 8px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  padding: 0 12px;
+  padding: 10px 14px;
   flex-wrap: wrap;
 }
 
 .mon-btn {
   font-family: var(--mono);
   font-size: 0.78rem;
-  padding: 7px 14px;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  padding: 6px 16px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
   color: var(--muted);
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
-  margin-bottom: -1px;
+  transition: color 0.12s, border-color 0.12s, background 0.12s,
+              transform 0.12s, box-shadow 0.12s, font-size 0.12s, padding 0.12s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 .mon-btn:hover {
   color: var(--fg);
+  border-color: var(--accent-hi);
+  background: var(--surface);
+  font-size: 0.94rem;
+  padding: 5px 19px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
 }
 .mon-btn--active {
   color: var(--accent-hi);
-  border-bottom-color: var(--accent-hi);
-  font-weight: 600;
+  border-color: var(--accent-hi);
+  background: var(--surface);
+  box-shadow: 0 0 0 2px var(--accent-hi), 0 2px 6px rgba(0,0,0,0.12);
 }
-.mon-btn.status-ok  { color: #16a34a; }
-.mon-btn.status-err { color: #dc2626; }
-.mon-btn--active.status-ok  { border-bottom-color: #16a34a; }
-.mon-btn--active.status-err { border-bottom-color: #dc2626; }
+.mon-btn.status-ok               { color: #16a34a; border-color: #16a34a; }
+.mon-btn.status-err              { color: #dc2626; border-color: #dc2626; }
+.mon-btn--active.status-ok       { box-shadow: 0 0 0 2px #16a34a, 0 2px 6px rgba(0,0,0,0.12); }
+.mon-btn--active.status-err      { box-shadow: 0 0 0 2px #dc2626, 0 2px 6px rgba(0,0,0,0.12); }
+.mon-btn:hover.status-ok         { border-color: #16a34a; }
+.mon-btn:hover.status-err        { border-color: #dc2626; }
 
 
 /* ── Seccions d'exercici ─────────────────────────────── */
