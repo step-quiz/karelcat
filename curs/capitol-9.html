@@ -12,12 +12,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-
-  <span class="curs-header-logo">
-    <span class="logo-icon"></span>
-    Karel
-  </span>
-
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
   <span class="curs-header-title">Capítol 9 — Refinament Pas a Pas</span>
 </header>
 
@@ -40,27 +35,75 @@
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 9</span>
         <h1>Refinament Pas a Pas</h1>
-        <p class="chapter-lead">Aprèn a resoldre problemes complexos dividint-los en peces més petites amb les teves pròpies funcions, una tècnica coneguda com a disseny "Top-Down".</p>
+        <p class="chapter-lead">Aprèn a resoldre problemes complexos dividint-los en tasques més petites gràcies a la creació de les teves pròpies funcions.</p>
       </header>
 
 
       <section class="chapter-section">
-        <h2>Divideix i Venceràs</h2>
-        <p>A mesura que els programes es fan més grans, escriure totes les ordres seguides d'una tirada es converteix en un caos. Imagina que vols que en Karel reculli perles, salti obstacles i torni a casa. Si ho escrius tot junt, si hi ha un error serà molt difícil de trobar.</p>
-        <p>La solució és el <strong>refinament pas a pas</strong>: agafar un problema gran i trencar-lo en sub-problemes utilitzant <code>def</code> per crear funcions noves. Un cop tens les sub-tasques definides, el teu programa principal es llegirà gairebé com un índex:</p>
-        <div class="code-block" style="background: var(--surface); padding: 1rem; border-radius: 4px; font-family: var(--mono); font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid var(--border);">
-          # Un programa principal net i entenedor:<br>
-          recollir_totes_les_perles()<br>
-          deixar_perles_a_la_caixa()<br>
-          tornar_a_casa()
+        <h2>Divideix i Venceràs (Top-Down Design)</h2>
+        <p>Quan els programes es fan grans, escriure totes les ordres seguides en un sol bloc es converteix en un caos difícil de llegir. La solució és el <strong>refinament pas a pas</strong>: trencar un problema gran en sub-problemes i utilitzar <code>def</code> per crear funcions per a cadascun.</p>
+        <p>És molt important pensar en la <strong>Precondició</strong> (com està en Karel abans d'executar la funció) i la <strong>Postcondició</strong> (com el deixem quan la funció acaba). Si crees una funció per superar un obstacle, hauries d'assegurar-te que, al final, en Karel torna a estar a terra i mirant endavant, a punt per continuar.</p>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Exemple 1: Ensenyant una habilitat nova</h2>
+        <p>En Karel sap moure's i girar, però no sap "saltar" de forma natural. Podem ensenyar-li a saltar una roca creant la funció <code>saltar_roca()</code> combinant els moviments bàsics amb les funcions que ja coneixem com <code>turn_right()</code>.</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.\n.,.,.,.,.\nK>,.,P,.,."
+             data-code="def saltar_roca():
+    turn_left()
+    move()
+    turn_right()
+    move()
+    turn_right()
+    move()
+    turn_left()
+
+# Provem si la nova habilitat funciona:
+move()
+saltar_roca()
+move()
+"
+             data-readonly="true"
+             data-label="Exemple 1"
+             data-title="Defineix la funció al principi del document utilitzant espais (indentació) per al contingut."
+             data-height="400">
         </div>
       </section>
 
 
       <section class="chapter-section">
-        <h2>Precondicions i Postcondicions</h2>
-        <p>Quan crees una funció per resoldre una part del problema (com ara <code>recollir_una_columna()</code>), és vital que tinguis clar on és en Karel i cap a on mira <em>abans</em> de cridar la funció (<strong>Precondició</strong>) i com ha de quedar <em>després</em> d'executar-la (<strong>Postcondició</strong>).</p>
-        <p>Per exemple, si en Karel va avançant cap a l'Est i crida una funció per recollir una columna de perles, la <strong>postcondició</strong> hauria de ser que en Karel acabi a la base de la columna, mirant cap a l'Est una altra vegada, preparat per fer el següent pas sense xocar.</p>
+        <h2>Exemple 2: Un codi principal molt més net</h2>
+        <p>Ara mira la potència d'això. Si tenim un món ple de roques i una perla al final, no hem de copiar i enganxar tot el procés de saltar cada vegada. El nostre <strong>programa principal</strong> (el bucle de sota) es llegeix com si fos una història molt senzilla i entenedora gràcies a la funció que acabem de crear!</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.,.,.,.,.\n.,.,.,.,.,.,.,.,.\nK>,.,P,.,.,P,.,A,."
+             data-code="def saltar_roca():
+    turn_left()
+    move()
+    turn_right()
+    move()
+    turn_right()
+    move()
+    turn_left()
+
+# --- Programa Principal ---
+# Repetir fins trobar la perla
+while not pearl_here():
+    if front_is_clear():
+        move()
+    else:
+        saltar_roca()
+
+grab()
+"
+             data-readonly="true"
+             data-label="Exemple 2"
+             data-title="El programa principal pot delegar tasques complexes a les funcions que has creat."
+             data-height="450">
+        </div>
       </section>
 
 
@@ -70,29 +113,30 @@
         <div class="exercise-enunciat">
           En Karel ha de recollir totes les perles d'aquestes tres columnes.
           <br><br>
-          En comptes d'escriure un codi llarg i repetitiu, <strong>defineix primer la funció <code>recollir_columna()</code></strong>. Aquesta funció ha de fer que en Karel (que comença mirant a l'Est) giri al Nord, reculli les perles de la seva columna, doni mitja volta fins a terra i <strong>es torni a posar mirant a l'Est</strong> (Postcondició).
+          En comptes d'escriure un codi repetitiu, <strong>defineix primer la funció <code>recollir_columna()</code></strong>. Aquesta funció ha de fer que en Karel (que comença a sota de la columna, mirant a l'Est) giri al Nord, reculli les 3 perles, doni mitja volta (<code>turn_around()</code>) fins a terra i <strong>es torni a posar mirant a l'Est</strong> (Postcondició).
           <br><br>
-          Després, utilitza aquesta funció i un bucle al programa principal per netejar tot el món de perles!
+          Després, utilitza aquesta funció i un bucle al programa principal per netejar tot el món!
         </div>
 
-        <p><strong>Pista:</strong> Defineix la teva funció a dalt de tot. Assegura't de fer <code>turn_left()</code>, <code>turn_right()</code> o <code>turn_around()</code> dins de la funció segons necessitis per deixar en Karel a punt per continuar pel passadís.</p>
+        <p><strong>Pista:</strong> Assegura't de cridar <code>recollir_columna()</code> només si en Karel detecta que hi ha una perla en aquella casella (<code>pearl_here()</code>).</p>
 
         <div class="simulador"
              data-map=".,A,.,.,.,A,.,.,.,A,.\n.,A,.,.,.,A,.,.,.,A,.\nK>,A,.,.,.,A,.,.,.,A,."
              data-goal=".,.,.,.,.,.,.,.,.,.,.\n.,.,.,.,.,.,.,.,.,.,.\n.,.,.,.,.,.,.,.,.,.,K>"
-             data-code="# Defineix aquí la teva funció per a UNA sola columna:
+             data-code="# 1. Defineix la teva funció aquí a dalt:
 def recollir_columna():
     # (El teu codi per pujar, recollir i baixar)
 
 
 
-# --- Programa Principal ---
-# Utilitza un bucle while i la funció que has creat:
-
+# 2. Programa Principal:
+while front_is_clear():
+    # Fes servir if pearl_here(), la teva funció i move()
+    
 "
              data-label="Exercici"
-             data-title="Utilitza 'def' per separar la lògica de recollir la columna del moviment pel passadís."
-             data-height="450">
+             data-title="El programa principal ha de ser tan senzill com l'Exemple 2."
+             data-height="480">
         </div>
       </section>
 
@@ -102,9 +146,12 @@ def recollir_columna():
         <a href="capitol-10.html" class="btn-nav btn-nav--next">Capítol següent →</a>
       </nav>
 
-    </div></main>
+    </div>
+  </main>
 
-</div><script>const CURRENT_CAPITOL = 9;</script>
+</div>
+
+<script>const CURRENT_CAPITOL = 9;</script>
 <script src="capitols.js"></script>
 <script>
   injectCursLogo();
