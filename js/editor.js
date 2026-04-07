@@ -146,6 +146,12 @@ function initEditor() {
       ta.selectionStart = ta.selectionEnd = s + 2;
       updateEditor();
     }
+    // Ctrl+Enter: equivalent a clicar el botó Executa/Atura
+    // Només s'activa si el cursor és dins el textarea (focus actiu)
+    if (e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      K.handleRunClick();
+    }
   });
 
   // Dreceres de teclat globals
