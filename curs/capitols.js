@@ -69,90 +69,251 @@ function renderSidebar(currentNum) {
 // ── B.4 — Converteix .simulador divs en iframes funcionals ──
 //
 // Atributs reconeguts al div.simulador:
+//
+//   MODE 1 MON (capítols 1–9, comportament original):
 //   data-map      (string) CSV del mapa (raw, sense escapar)
+//   data-goal     (string) CSV de l'estat final esperat
+//
+//   MODE N MONS (capítol 10, reptes):
+//   data-maps     (string) JSON array de CSVs: '["map1","map2","map3"]'
+//   data-goals    (string) JSON array de goals paral·lel a data-maps
+//                          Dins del JSON, els salts de línia s'escriuen com \\n
+//
+//   COMUNS als dos modes:
 //   data-code     (string) Codi Karel inicial
 //   data-readonly (string) "true" → textarea en mode lectura
-//   data-height   (number) alçada en px (per defecte: 340)
+//   data-height   (number) alçada en px (340 per defecte, 380 recomanat per a reptes)
 //   data-title    (string) text de llegenda sota el simulador (opcional)
+//   data-label    (string) badge: 'Exemple' | 'Exercici' | ''
+//   data-bag      (number) perles inicials a la motxilla
 //
-// Exemple d'ús en una pàgina de capítol:
+// Exemple N mons (capítol 10):
 //   <div class="simulador"
-//        data-map="K>,.,.,.,.,.\n.,.,.,.,.,."
-//        data-code="move\nmove\n"
-//        data-height="340">
+//        data-maps='["K>,.,A\\n.,.,.", "K>,A,.\\n.,.,.", "K>,.,.\\n.,A,."]'
+//        data-goals='[".,.,K>\\n.,.,.", ".,.,K>\\n.,.,.", ".,.,K>\\n.,.,." ]'
+//        data-code="# escriu la solució aquí"
+//        data-height="380"
+//        data-label="Exercici">
 //   </div>
+// ════════════════════════════════════════════════════════
 
 let _goalUid = 0;
 function nextGoalId() { return 'goal-' + (++_goalUid); }
 
+// ── Construeix la URL de l'iframe a partir de les dades en clar ──
+function _iframeSrc(map, code, goalCSV, goalId, readonly, bag) {
+  const theme    = document.body.classList.contains('curs-light') ? '&theme=light' : '';
+  const roParam  = readonly ? '&readonly=1' : '';
+  const bagParam = bag > 0  ? `&bag=${bag}` : '';
+  const enc      = s => btoa(unescape(encodeURIComponent(s)));
+  const goalP    = goalCSV
+    ? `&goal=${enc(goalCSV)}&goalId=${goalId}`
+    : '';
+  return `../index.html?embed=1&map=${enc(map)}&code=${enc(code)}${roParam}${theme}${goalP}${bagParam}`;
+}
+
+// ── Llegeix el codi de l'editor dins l'iframe (same-origin) ──
+function _readCode(iframe) {
+  try {
+    const ta = iframe.contentWindow.document.getElementById('code-editor');
+    return ta ? ta.value : null;
+  } catch { return null; }
+}
+
+// ── Actualitza el text i les classes de color d'un botó de món ──
+function _updateBtnLabel(btn, idx, status) {
+  const icons = { pending: '○', ok: '✓', error: '✗' };
+  btn.textContent = `Món ${idx + 1} ${icons[status] ?? '○'}`;
+  btn.classList.toggle('status-ok',  status === 'ok');
+  btn.classList.toggle('status-err', status === 'error');
+}
+
+// ── Registre global goalId → context multi-món (per al listener de postMessage) ──
+const _multiGoalRegistry = new Map();
+
+// ── Renderitza un simulador de N mons (capítol 10) ──
+function _renderMultiMon(div) {
+  let maps, goals;
+  try { maps  = JSON.parse(div.dataset.maps);  } catch { maps  = []; }
+  try { goals = JSON.parse(div.dataset.goals); } catch { goals = []; }
+
+  // Normalitza els \n literals dels CSV dins del JSON
+  maps  = maps.map(m => m.replace(/\\n/g, '\n'));
+  goals = goals.map(g => g.replace(/\\n/g, '\n'));
+
+  const code     = (div.dataset.code  || '').replace(/\\n/g, '\n');
+  const height   = parseInt(div.dataset.height || '380', 10);
+  const readonly = div.dataset.readonly === 'true';
+  const bag      = parseInt(div.dataset.bag || '0', 10);
+  const label    = div.dataset.label || '';
+  const title    = div.dataset.title || '';
+  const n        = maps.length;
+
+  // Estat de validació per a cada món
+  const monState = maps.map(() => 'pending');
+  // GoalId únic per a cada món (buit si no hi ha goal per a aquell món)
+  const goalIds  = maps.map((_, i) => goals[i] ? nextGoalId() : '');
+
+  // ── Estructura DOM ──
+  const wrap = document.createElement('div');
+  wrap.className = 'simulador-wrap simulador-wrap--multi';
+
+  if (label) {
+    const badge = document.createElement('span');
+    badge.className = `simulador-badge simulador-badge--${label.toLowerCase()}`;
+    badge.textContent = label;
+    wrap.appendChild(badge);
+  }
+
+  // Barra de botons de selecció de món
+  const bar = document.createElement('div');
+  bar.className = 'mon-switcher';
+
+  const btns = maps.map((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'mon-btn' + (i === 0 ? ' mon-btn--active' : '');
+    btn.type = 'button';
+    btn.dataset.idx = i;
+    _updateBtnLabel(btn, i, 'pending');
+    return btn;
+  });
+  btns.forEach(b => bar.appendChild(b));
+  wrap.appendChild(bar);
+
+  // iframe (comença al món 0)
+  const iframe = document.createElement('iframe');
+  iframe.className    = 'simulador-frame';
+  iframe.style.height = height + 'px';
+  iframe.title        = title || 'Simulador Karel';
+  iframe.setAttribute('loading', 'lazy');
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.src = _iframeSrc(maps[0], code, goals[0] || '', goalIds[0], readonly, bag);
+  wrap.appendChild(iframe);
+
+  // Feedback global: "X / N mons superats"
+  const fbGlobal = document.createElement('div');
+  fbGlobal.className = 'simulador-feedback';
+  wrap.appendChild(fbGlobal);
+
+  if (title) {
+    const cap = document.createElement('p');
+    cap.className = 'simulador-caption';
+    cap.textContent = title;
+    wrap.appendChild(cap);
+  }
+
+  // ── Canvi de món: preserva el codi i recarrega l'iframe ──
+  let activeIdx = 0;
+
+  function switchMon(newIdx) {
+    if (newIdx === activeIdx) return;
+    const currentCode = _readCode(iframe) ?? code;
+    btns[activeIdx].classList.remove('mon-btn--active');
+    btns[newIdx].classList.add('mon-btn--active');
+    activeIdx = newIdx;
+    iframe.src = _iframeSrc(
+      maps[newIdx],
+      currentCode,
+      goals[newIdx] || '',
+      goalIds[newIdx],
+      readonly,
+      bag
+    );
+  }
+
+  bar.addEventListener('click', e => {
+    const btn = e.target.closest('.mon-btn');
+    if (!btn) return;
+    switchMon(parseInt(btn.dataset.idx, 10));
+  });
+
+  // ── Actualitza el feedback global ("X / N mons superats") ──
+  function updateGlobalFeedback() {
+    const nOk  = monState.filter(s => s === 'ok').length;
+    const nErr = monState.filter(s => s === 'error').length;
+    if (nOk === n) {
+      fbGlobal.className   = 'simulador-feedback fb-ok';
+      fbGlobal.textContent = `✓ Tots els mons superats (${nOk}/${n}). Ben fet!`;
+    } else if (nErr > 0 || nOk > 0) {
+      fbGlobal.className   = 'simulador-feedback fb-error';
+      fbGlobal.textContent = `${nOk}/${n} mons superats. Comprova els mons marcats amb ✗.`;
+    } else {
+      fbGlobal.className   = 'simulador-feedback';
+      fbGlobal.textContent = '';
+    }
+  }
+
+  // Registra cada goalId al registre global perquè el listener de postMessage
+  // pugui actualitzar l'estat del botó i el feedback global
+  goalIds.forEach((gid, i) => {
+    if (!gid) return;
+    _multiGoalRegistry.set(gid, {
+      monState, btns, idx: i, total: n, updateGlobalFeedback,
+    });
+  });
+
+  div.replaceWith(wrap);
+}
+
+// ── Renderitza un simulador d'1 món (comportament original, sense canvis) ──
+function _renderSingleMon(div) {
+  const rawMap  = div.dataset.map  || '';
+  const rawCode = div.dataset.code || '';
+  const height  = parseInt(div.dataset.height || '340', 10);
+  const readonly = div.dataset.readonly === 'true';
+  const title   = div.dataset.title || '';
+  const label   = div.dataset.label || '';
+  const rawGoal = div.dataset.goal || '';
+  const goalCSV = rawGoal.replace(/\\n/g, '\n');
+  const goalId  = goalCSV ? nextGoalId() : '';
+  const bag     = parseInt(div.dataset.bag || '0', 10);
+
+  const map  = rawMap.replace(/\\n/g, '\n');
+  const code = rawCode.replace(/\\n/g, '\n');
+
+  const iframe = document.createElement('iframe');
+  iframe.src        = _iframeSrc(map, code, goalCSV, goalId, readonly, bag);
+  iframe.className  = 'simulador-frame';
+  iframe.style.height = height + 'px';
+  iframe.title      = title || 'Simulador Karel';
+  iframe.setAttribute('loading', 'lazy');
+  iframe.setAttribute('allowfullscreen', '');
+
+  const wrap = document.createElement('div');
+  wrap.className = 'simulador-wrap';
+  if (label) {
+    const badge = document.createElement('span');
+    badge.className = `simulador-badge simulador-badge--${label.toLowerCase()}`;
+    badge.textContent = label;
+    wrap.appendChild(badge);
+  }
+  wrap.appendChild(iframe);
+
+  if (goalCSV) {
+    const fb = document.createElement('div');
+    fb.className = 'simulador-feedback';
+    fb.dataset.goalId = goalId;
+    wrap.appendChild(fb);
+  }
+
+  if (title) {
+    const cap = document.createElement('p');
+    cap.className = 'simulador-caption';
+    cap.textContent = title;
+    wrap.appendChild(cap);
+  }
+
+  div.replaceWith(wrap);
+}
+
+// ── Punt d'entrada: delega al mode adequat segons els atributs ──
 function renderSimuladors() {
-  const divs = document.querySelectorAll('.simulador');
-  divs.forEach(div => {
-    const rawMap   = div.dataset.map   || '';
-    const rawCode  = div.dataset.code  || '';
-    const height   = parseInt(div.dataset.height || '340', 10);
-    const readonly = div.dataset.readonly === 'true';
-    const title    = div.dataset.title || '';
-    const label    = div.dataset.label || '';   // 'Exemple' | 'Exercici' | ''
-    const rawGoal  = div.dataset.goal || '';
-    const goalCSV  = rawGoal.replace(/\\n/g, '\n');
-    const goalId   = goalCSV ? nextGoalId() : '';
-    const initBag  = parseInt(div.dataset.bag || '0', 10);  // perles inicials a la motxilla
-
-    // Substitueix \n literals (de l'atribut HTML) per salts de línia reals
-    const map  = rawMap.replace(/\\n/g, '\n');
-    const code = rawCode.replace(/\\n/g, '\n');
-
-    // Codifica a base64 per transportar CSV (comes, salts de línia) sense problemes
-    const encMap  = btoa(unescape(encodeURIComponent(map)));
-    const encCode = btoa(unescape(encodeURIComponent(code)));
-    const roParam = readonly ? '&readonly=1' : '';
-
-    // Respecta el tema actual de la pàgina
-    const theme   = document.body.classList.contains('curs-light') ? '&theme=light' : '';
-
-    // Paràmetres de feedback (B.6)
-    const goalParams = goalCSV
-      ? `&goal=${btoa(unescape(encodeURIComponent(goalCSV)))}&goalId=${goalId}`
-      : '';
-
-    const bagParam = initBag > 0 ? `&bag=${initBag}` : '';
-
-    const iframe = document.createElement('iframe');
-    iframe.src        = `../index.html?embed=1&map=${encMap}&code=${encCode}${roParam}${theme}${goalParams}${bagParam}`;
-    iframe.className  = 'simulador-frame';
-    iframe.style.height = height + 'px';
-    iframe.title      = title || 'Simulador Karel';
-    iframe.setAttribute('loading', 'lazy');
-    iframe.setAttribute('allowfullscreen', '');
-
-    // Contenidor amb llegenda opcional
-    const wrap = document.createElement('div');
-    wrap.className = 'simulador-wrap';
-    if (label) {
-      const badge = document.createElement('span');
-      badge.className = `simulador-badge simulador-badge--${label.toLowerCase()}`;
-      badge.textContent = label;
-      wrap.appendChild(badge);
+  document.querySelectorAll('.simulador').forEach(div => {
+    if (div.dataset.maps) {
+      _renderMultiMon(div);
+    } else {
+      _renderSingleMon(div);
     }
-    wrap.appendChild(iframe);
-
-    // Placeholder de feedback (B.6)
-    if (goalCSV) {
-      const fb = document.createElement('div');
-      fb.className = 'simulador-feedback';
-      fb.dataset.goalId = goalId;
-      wrap.appendChild(fb);
-    }
-
-    if (title) {
-      const cap = document.createElement('p');
-      cap.className = 'simulador-caption';
-      cap.textContent = title;
-      wrap.appendChild(cap);
-    }
-
-    div.replaceWith(wrap);
   });
 }
 
@@ -219,31 +380,46 @@ window.injectCursLogo     = injectCursLogo;
 window.toggleCursTheme    = toggleCursTheme;
 window.updateCursThemeBtn = updateCursThemeBtn;
 
-// ── Listener global de feedback d'exercicis (B.6) ────────
+// ── Listener global de feedback d'exercicis (B.6 + multi-món) ────────
 window.addEventListener('message', function(e) {
   if (!e.data) return;
+  const { type, goalId, success } = e.data;
 
-  // Qualsevol trigger (▶ Executa, pas a pas, Reinicia, tecla) reseteja el feedback
-  if (e.data.type === 'karel-clear') {
-    const fb = document.querySelector(
-      `.simulador-feedback[data-goal-id="${e.data.goalId}"]`
-    );
-    if (!fb) return;
-    fb.className = 'simulador-feedback';
-    fb.textContent = '';
+  // ── Reset de feedback (qualsevol trigger d'execució) ──
+  if (type === 'karel-clear') {
+    // Mode 1 món: feedback per data-goal-id
+    const fb = document.querySelector(`.simulador-feedback[data-goal-id="${goalId}"]`);
+    if (fb) { fb.className = 'simulador-feedback'; fb.textContent = ''; }
+
+    // Mode N mons: neteja l'estat del botó corresponent
+    const ctx = _multiGoalRegistry.get(goalId);
+    if (ctx) {
+      ctx.monState[ctx.idx] = 'pending';
+      _updateBtnLabel(ctx.btns[ctx.idx], ctx.idx, 'pending');
+      ctx.updateGlobalFeedback();
+    }
     return;
   }
 
-  if (e.data.type !== 'karel-result') return;
-  const fb = document.querySelector(
-    `.simulador-feedback[data-goal-id="${e.data.goalId}"]`
-  );
-  if (!fb) return;
-  if (e.data.success) {
-    fb.className = 'simulador-feedback fb-ok';
-    fb.textContent = '✓ Correcte! En Karel ha arribat a l\'objectiu.';
-  } else {
-    fb.className = 'simulador-feedback fb-error';
-    fb.textContent = '✗ Encara no. Comprova el codi i torna-ho a intentar.';
+  if (type !== 'karel-result') return;
+
+  // ── Mode 1 món ──
+  const fb = document.querySelector(`.simulador-feedback[data-goal-id="${goalId}"]`);
+  if (fb) {
+    if (success) {
+      fb.className   = 'simulador-feedback fb-ok';
+      fb.textContent = '✓ Correcte! En Karel ha arribat a l\'objectiu.';
+    } else {
+      fb.className   = 'simulador-feedback fb-error';
+      fb.textContent = '✗ Encara no. Comprova el codi i torna-ho a intentar.';
+    }
+  }
+
+  // ── Mode N mons ──
+  const ctx = _multiGoalRegistry.get(goalId);
+  if (ctx) {
+    ctx.monState[ctx.idx] = success ? 'ok' : 'error';
+    _updateBtnLabel(ctx.btns[ctx.idx], ctx.idx, ctx.monState[ctx.idx]);
+    ctx.updateGlobalFeedback();
   }
 });

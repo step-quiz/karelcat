@@ -476,6 +476,41 @@ body.curs-light .simulador-feedback.fb-error {
   color: #7f1d1d;
 }
 
+/* ── Selector de mons (capítol 10 — mode N mons) ─────── */
+.mon-switcher {
+  display: flex;
+  gap: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 12px;
+  flex-wrap: wrap;
+}
+
+.mon-btn {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  padding: 7px 14px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.mon-btn:hover {
+  color: var(--fg);
+}
+.mon-btn--active {
+  color: var(--accent-hi);
+  border-bottom-color: var(--accent-hi);
+  font-weight: 600;
+}
+.mon-btn.status-ok  { color: #16a34a; }
+.mon-btn.status-err { color: #dc2626; }
+.mon-btn--active.status-ok  { border-bottom-color: #16a34a; }
+.mon-btn--active.status-err { border-bottom-color: #dc2626; }
+
 
 /* ── Seccions d'exercici ─────────────────────────────── */
 
