@@ -57,8 +57,10 @@
         <p>Per evitar-ho, li hem d'exigir dues coses alhora: "Mentre tinguis una perla sota teu <strong>I</strong> el teu davant estigui lliure, avança". Així no xocarà mai.</p>
 
         <div class="simulador"
-             data-map="K>,A,A,A,P\n.,.,.,.,.\n.,.,.,.,."
-             data-code="# Si treus l' 'and front_is_clear()', en Karel xocarà contra la roca!
+             data-map="K>,.,A,A,P\n.,.,.,.,.\n.,.,.,.,."
+             data-code="# Caminem fins que trobem perles. Després, les agafem, però sense xocar!
+while front_is_clear():
+    move()          
 while pearl_here() and front_is_clear():
     move()
 "
@@ -81,11 +83,9 @@ while pearl_here() and front_is_clear():
     
     # Comprovem si ha trobat l'objectiu O si s'ha acabat el camí
     if pearl_here() or not front_is_clear():
-        # Pirueta d'alerta
-        turn_left()
-        turn_left()
-        turn_left()
-        turn_left()
+        # Fem una tombarella
+        for i in range(4):
+          turn_left()
 "
              data-readonly="true"
              data-label="Exemple 2"
