@@ -10,7 +10,7 @@
 - **Capítol 10:** no introdueix sintaxi nova. L'alumne combina tot el que sap. Inspirat en els exercicis de Stanford CS106A / Code in Place.
 - **Document de disseny de referència:** `docs/reptes.docx` (conté enunciats, mapes, principis pedagògics i ordre recomanat d'implementació).
 - **Plantilla HTML:** `curs/capitol.html` (cada repte segueix la mateixa estructura que els capítols anteriors).
-- **Regla de mapes HTML:** el separador de files és `\n` (literal, no `\\n`). Mai doblar l'escapament.
+- **Regla de mapes HTML:** el separador de files és `|` (literal, no és `\n` ni tampoc és `\\n`).
 - **Solució de referència:** s'inclou en un comentari HTML al final del fitxer, mai en `data-code`.
 
 ---
