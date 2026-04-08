@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 5 — El serpentí | Karelcat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <style>
+    /* ── Badges de dificultat ── */
+    .dificultat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+    }
+    .dificultat-facil {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .dificultat-intermedi {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .dificultat-dificil {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* ── Caixa de consell pedagògic ── */
+    .consell-box {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1.2rem 0;
+      font-size: 0.93rem;
+      color: #0c4a6e;
+    }
+    .consell-box strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0284c7;
+    }
+
+    /* ── Capçalera del repte amb número i badge ── */
+    .repte-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .repte-numero {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    /* ── Solució de referència (només visible al codi font) ── */
+    /* La solució s'inclou en un comentari HTML per al professor,
+       NO en cap atribut data-code visible a l'alumne. */
+  </style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-title">Repte 5 — El serpentí</span>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div class="sidebar-header">
+      <a href="index.html">Capítols</a>
+      <a href="repte-1.html" class="active">Reptes</a>
+      <a href="../index.html">Simulador</a>
+    </div>
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <h1>Reptes</h1>
+      </header>
+
+
+      <!-- ══════════════════════════════════════════
+           REPTE B1 — EL SERPENTÍ
+           ══════════════════════════════════════════ -->
+      <section class="chapter-section chapter-exercise">
+
+        <h2>
+          Repte 5 — El serpentí
+          <span class="dificultat-badge dificultat-intermedi">★★ Intermedi</span>
+        </h2>
+
+        <!-- Enunciat -->
+        <div class="exercise-enunciat">
+          El fons marí té dues files de caselles (la de baix i la de dalt) i un
+          nombre de perles escampades per les dues files. En Karel comença a la
+          cantonada inferior esquerra mirant cap a l'Est.<br><br>
+          La seva missió: <strong>recollir totes les perles fent un recorregut
+          en ziga-zaga</strong> — primer la fila inferior d'Est a Oest (d'esquerra
+          a dreta), llavors pujar a la fila superior, i finalment la fila
+          superior de l'Est a l'Oest (de dreta a esquerra).<br><br>
+          <strong>La teva feina:</strong> escriu un programa que funcioni sigui
+          quina sigui l'amplada del món. L'amplada és
+          <em>desconeguda</em>: el teu codi no pot dependre del nombre de
+          caselles.
+        </div>
+
+        <div class="consell-box">
+          <strong>💡 Pista — el gir entre files</strong>
+          Quan en Karel arriba a l'extrem dret de la fila inferior, ha de pujar
+          a la fila de dalt i orientar-se cap a l'Oest. Quants <code>turn_left()</code>
+          necessita per passar de mirar l'Est a mirar l'Oest passant pel Nord?
+          Recorda que un <code>turn_left()</code> gira 90° i
+          <code>turn_around()</code> gira 180°. Dissenya el gir amb cura:
+          si en Karel no queda orientat exactament cap a l'Oest quan comença la
+          fila superior, el segon <code>while</code> no avançarà ni un pas.
+        </div>
+
+        <div class="consell-box">
+          <strong>💡 Pista — l'error de pal de paller (fencepost)</strong>
+          El bucle <code>while front_is_clear()</code> s'atura <em>abans</em>
+          de moure's a l'última casella. Quan el <code>while</code> acabi, en
+          Karel és a l'última posició però encara no l'ha comprovat.
+          Afegeix un <code>if pearl_here(): grab()</code> fora del <code>while</code>
+          per no perdre cap perla de l'extrem.
+        </div>
+
+        <!-- Simulador A — amplada 4 -->
+        <p><strong>Doble fila curta</strong> — 4 caselles d'amplada</p>
+        <div class="simulador"
+             data-map=".,.,A,.|K>,A,.,A"
+             data-goal="K<,.,.,.|.,.,.,."
+             data-code="# Fase 1: recull les perles de la fila inferior cap a l'Est
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+if pearl_here():
+    grab()
+
+# Gir: puja a la fila superior i orienta't cap a l'Oest
+# (escriu aquí els girs i el move() per pujar)
+
+
+# Fase 2: recull les perles de la fila superior cap a l'Oest
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+if pearl_here():
+    grab()
+"
+             data-label="4 caselles"
+             data-title="Doble fila curta: en Karel ha de recollir les perles de les dues files en ziga-zaga."
+             data-height="340">
+        </div>
+
+        <!-- Simulador B — amplada 6 -->
+        <p><strong>Doble fila mitjana</strong> — 6 caselles d'amplada</p>
+        <div class="simulador"
+             data-map="A,.,.,A,.,.|K>,.,A,.,A,."
+             data-goal="K<,.,.,.,.,.|.,.,.,.,.,."
+             data-code="# Fase 1: recull les perles de la fila inferior cap a l'Est
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+if pearl_here():
+    grab()
+
+# Gir: puja a la fila superior i orienta't cap a l'Oest
+
+
+# Fase 2: recull les perles de la fila superior cap a l'Oest
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+if pearl_here():
+    grab()
+"
+             data-label="6 caselles"
+             data-title="Doble fila mitjana: el mateix codi ha de funcionar aquí sense canviar res."
+             data-height="340">
+        </div>
+
+        <!-- Simulador C — amplada 8 -->
+        <p><strong>Doble fila llarga</strong> — 8 caselles d'amplada</p>
+        <div class="simulador"
+             data-map=".,.,A,.,A,.,.,A|K>,A,.,A,.,.,A,."
+             data-goal="K<,.,.,.,.,.,.,.|.,.,.,.,.,.,.,."
+             data-code="# Fase 1: recull les perles de la fila inferior cap a l'Est
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+if pearl_here():
+    grab()
+
+# Gir: puja a la fila superior i orienta't cap a l'Oest
+
+
+# Fase 2: recull les perles de la fila superior cap a l'Oest
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+if pearl_here():
+    grab()
+"
+             data-label="8 caselles"
+             data-title="Doble fila llarga: el codi no pot dependre de l'amplada. Ha de funcionar aquí igual."
+             data-height="340">
+        </div>
+
+      </section>
+
+
+      <!-- ══════════════════════════════════════════
+           NAVEGACIÓ
+           ══════════════════════════════════════════ -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="repte-4.html" class="btn-nav btn-nav--prev">← Repte 4</a>
+        <a href="repte-6.html" class="btn-nav btn-nav--next">Repte 6 →</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  No apareix en cap data-code visible a l'alumne.
+  ════════════════════════════════════════════════════════
+
+def recull_fila():
+    while front_is_clear():
+        if pearl_here():
+            grab()
+        move()
+    if pearl_here():
+        grab()
+
+def puja_i_gira():
+    turn_left()
+    move()
+    turn_left()
+
+recull_fila()
+puja_i_gira()
+recull_fila()
+
+  Traça d'execució (amplada 4):
+    Inici: (0,0) Est
+    recull_fila() → recull perles fila 0, acaba a (3,0) Est
+    puja_i_gira()  → turn_left → Nord · move → (3,1) · turn_left → Oest
+    recull_fila() → recull perles fila 1, acaba a (0,1) Oest ✓
+
+  Perquè funciona:
+    · front_is_clear() + fencepost → cap dependència de la longitud.
+    · Dos turn_left() cobreixen la transició Est → Nord → Oest en dues passes.
+    · La postcondició de puja_i_gira() és (col_final, 1) Oest, que és
+      exactament la precondició de la segona crida a recull_fila().
+
+  Errors habituals de l'alumne:
+    · Fer un sol turn_left() a la transició → Karel queda mirant al Nord
+      i el segon while no avança (front_is_clear() fals de seguida).
+    · Oblidar el move() del puja_i_gira() → Karel gira però no puja
+      de fila; la segona recull_fila() recorre la mateixa fila inferior.
+    · Oblidar el fencepost → l'última perla de cada fila no es recull.
+    · Usar front_is_clear() a la condició del gir en lloc de fer-lo
+      incondicionalment → el gir pot no executar-se si Karel és a la paret.
+
+  Clau pedagògica:
+    La descomposició en recull_fila() i puja_i_gira() il·lustra que
+    una postcondició ben definida (Karel a l'extrem, orientació exacta)
+    permet encadenar fases sense sorpreses. La simetria és el regal:
+    el MATEIX recull_fila() funciona cap a l'Est i cap a l'Oest perquè
+    front_is_clear() és agnòstic de la direcció.
+  ════════════════════════════════════════════════════════
+-->
+
+<script>const CURRENT_REPTE = 5;</script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(CURRENT_REPTE);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
