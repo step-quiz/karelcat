@@ -46,8 +46,10 @@ const CAPITOLS_DATA = [
 // ── B.2 — Genera i munta la barra lateral ────────────────
 
 const REPTES_DATA = [
-  { num: 1, titol: 'El diari',    arxiu: 'repte-1.html' },
-  { num: 2, titol: 'El passadís', arxiu: 'repte-2.html' },
+  { num: 1, titol: 'El diari',          arxiu: 'repte-1.html' },
+  { num: 2, titol: 'El passadís',       arxiu: 'repte-2.html' },
+  { num: 3, titol: "L'escala diagonal", arxiu: 'repte-3.html' },
+  { num: 4, titol: 'Distribuir les perles', arxiu: 'repte-4.html' },
 ];
 
 function renderReptesSidebar(currentNum) {
