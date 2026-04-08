@@ -28,7 +28,7 @@
 | 7 | `repte-7.html` | L'escala doble | B | ★★ Intermedi | ✅ Implementat |
 | 8 | `repte-8.html` | El tauler d'escacs | C | ★★★ Avançat | ✅ Implementat |
 | 9 | `repte-9.html` | El laberint | C | ★★★ Avançat | ✅ Implementat |
-| 10 | `repte-10.html` | El punt mig | C | ★★★ Avançat | ⬜ Pendent |
+| 10 | `repte-10.html` | El punt mig | C | ★★★ Avançat | ✅ Implementat |
 
 ---
 
@@ -467,16 +467,80 @@ grab()
 
 ---
 
-### ⬜ Repte 10 — El punt mig (C3, ★★★ Avançat)
+### ✅ Repte 10 — El punt mig (C3, ★★★ Avançat)
 
+**Fitxer:** `curs/repte-10.html`
 **Conceptes:** `while`, `if`, `grab`/`drop` com a marcadors, algorisme dels dos punters.
 **Adaptació de:** Midpoint Karel (l'exercici més citat del CS106A).
 
-**Enunciat:** El món és un passadís buit de longitud desconeguda (sempre ≥1). En Karel ha de deixar una perla exactament al punt mig. Si la longitud és imparella, al centre exacte; si és parella, s'accepta qualsevol de les dues caselles centrals. Al final només ha de quedar la perla del mig.
+**Enunciat:** El món és un passadís buit de longitud desconeguda (sempre ≥ 1). En Karel porta 2 perles a la motxilla i ha de deixar exactament una perla al punt mig. Si la longitud és imparella, al centre exacte; si és parella, s'accepta qualsevol de les dues caselles centrals.
 
-**Mons de test obligatoris:** longituds 1, 2, 3, 4, 7, 8.
+**Mons de test (3 simuladors DRY — un sol editor):**
+```
+Test A — longitud 3 (imparella, centre a casella 1):
+  Inicial: K>,.,.
+  Goal:    .,K>,.
 
-**Clau pedagògica:** Descobrir l'algorisme d'aproximació simètrica (dos punters) és l'epifania principal del curs. Sense variables numèriques, l'alumne ha de trobar el mètode físic.
+Test B — longitud 7 (imparella, centre a casella 3):
+  Inicial: K>,.,.,.,.,.,.
+  Goal:    .,.,.,K>,.,.,.
+
+Test C — longitud 8 (parella, centre a casella 3 o 4):
+  Inicial: K>,.,.,.,.,.,.,.
+  Goal:    .,.,.,K<,.,.,.,.
+```
+
+**Motxilla inicial:** `data-bag="2"` (les dues perles fan de marcadors).
+
+**Nota sobre els goals:** al final de l'algorisme, Karel es queda damunt de la perla del punt mig (un dels dos marcadors). `currentStateToCSV()` mostra `K{dir}` en aquella casella (la perla queda amagada sota Karel). El goal reflecteix la posició i orientació final de Karel:
+- Longitud imparella: Karel acaba orientat **Est** (`K>`) sobre la casella central.
+- Longitud parella: Karel acaba orientat **Oest** (`K<`) sobre la casella central esquerra.
+
+**Solució de referència:**
+```python
+def camina_fins_perla():
+    while not pearl_here():
+        move()
+
+if not front_is_clear():
+    drop()  # cas especial: longitud 1
+else:
+    drop()                  # marcador esquerre (L)
+    while front_is_clear():
+        move()
+    drop()                  # marcador dret (R)
+    turn_around()           # gira cap al centre
+
+    while True:
+        grab()              # recull R
+        move()              # avança un pas cap al centre
+        if pearl_here():    # L és aquí → punt mig trobat
+            break
+        drop()              # R en nova posició
+
+        while not pearl_here():
+            move()          # torna fins a L
+        grab()              # recull L
+        turn_around()       # gira cap al centre
+        move()              # avança un pas cap al centre
+        if pearl_here():    # R és aquí → punt mig trobat
+            break
+        drop()              # L en nova posició
+
+        while not pearl_here():
+            move()          # torna fins a R
+        turn_around()       # prepara per al proper grab()
+```
+
+**Clau pedagògica:** L'algorisme dels dos punters és l'epifania final del curs. Sense variables numèriques ni aritmètica, la posició física de les perles substitueix qualsevol comptador. Cada iteració redueix en 2 la distància entre els marcadors, fins que es troben exactament al punt mig. La simetria de l'algorisme (moure dret → moure esquerre → repetir) paral·lela la de `puja_grao ↔ baixa_grao` (repte 7) i `omple_fila_des_de_on ↔ omple_fila_des_de_off` (repte 8): el curs tanca el cercle.
+
+**Esquelet visible per l'alumne:** `camina_fins_perla()` completament implementada; els dos passos de l'algorisme descrits com a comentaris, sense codi. L'alumne ha de descobrir el bucle `while True`, els `grab()`/`drop()` i les condicions de sortida.
+
+**Notes d'implementació:**
+- Format DRY: un sol `data-code`, tres mons via `data-maps`/`data-goals`/`data-labels`.
+- `data-bag="2"` — les dues perles de la motxilla fan de marcadors; no en cal cap de fixa al món.
+- El cas de longitud 1 (front bloquejat) requereix un `if not front_is_clear(): drop()` inicial; si l'alumne l'omet, el test A (longitud 3) segueix funcionant, però un eventual test de longitud 1 fallaria.
+- La navegació: anterior → `repte-9.html`, següent → `index.html` (tornar a l'índex).
 
 ---
 
@@ -489,4 +553,4 @@ grab()
 
 ---
 
-*Última actualització: sessió 9 — Implementat repte-9.html (C2, El laberint). Maze Karel DRY: format multi-món (3 laberints: Simple 3×5, Clàssic 5×6, Complex 5×7), regla de la mà dreta amb `right_is_clear()` / `front_is_clear()` dins d'una funció `pas()`. Repte-9 afegit a `REPTES_DATA` a `capitols.js`.*
+*Última actualització: sessió 10 — Implementat repte-10.html (C3, El punt mig). Midpoint Karel DRY: format multi-món (3 passadissos: longitud 3, 7, 8), algorisme dels dos punters amb `grab`/`drop` com a marcadors físics. Repte-10 afegit a `REPTES_DATA` a `capitols.js`. Tots els 10 reptes del capítol 10 implementats.*

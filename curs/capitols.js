@@ -55,6 +55,7 @@ const REPTES_DATA = [
   { num: 7, titol: "L'escala doble",    arxiu: 'repte-7.html' },
   { num: 8, titol: "El tauler d'escacs", arxiu: 'repte-8.html' },
   { num: 9, titol: 'El laberint',        arxiu: 'repte-9.html' },
+  { num: 10, titol: 'El punt mig',      arxiu: 'repte-10.html' },
 ];
 
 function renderReptesSidebar(currentNum) {
