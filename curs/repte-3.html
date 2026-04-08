@@ -121,43 +121,43 @@
           <strong>La teva feina:</strong> escriu un programa perquè en Karel
           deixi perles formant una diagonal i acabi a la cantonada superior dreta.<br><br>
           <strong>Restricció important:</strong> usa una funció
-          <code>puja_grao()</code> que faci <em>un sol graó</em> i crida-la
-          des d'un bucle <code>for</code>. El programa principal ha de ser
-          tan clar com això:
-          <pre style="margin:0.7rem 0 0; background:#f1f5f9; padding:0.7rem 1rem; border-radius:6px; font-size:0.9rem;">for i in range(N):
+          <code>puja_grao()</code> que mogui en Karel <em>un sol graó</em> i
+          crida-la des d'un bucle <code>while</code>. El programa principal
+          ha de ser tan clar com això:
+          <pre style="margin:0.7rem 0 0; background:#f1f5f9; padding:0.7rem 1rem; border-radius:6px; font-size:0.9rem;">while front_is_clear():
+    drop()
     puja_grao()</pre>
-          El nombre de graons és <strong>fix i conegut</strong> per a cada món:
-          has d'adaptar el valor de <code>N</code> al <code>range</code> según
-          la mida del món.
+          Fixa't que <strong>no cal saber quants graons té el món</strong>:
+          en Karel s'atura sol quan arriba a la paret.
         </div>
 
         <div class="consell-box">
           <strong>💡 Pista de la unitat rítmica</strong>
-          Pensa com és un sol graó: en Karel deixa una perla on és, avança
-          una casella cap a l'Est, gira cap al Nord, puja una casella i gira
-          de nou cap a l'Est. Això és exactament el cos de
-          <code>puja_grao()</code>. Si aconsegueixes fer UN graó correctament,
-          el <code>for</code> en farà tants com calgui sense cap canvi addicional.
-          Observa que l'única diferència entre els tres mons és el número del
-          <code>range</code>.
+          Pensa com és un sol graó: en Karel avança una casella cap a l'Est,
+          gira cap al Nord, puja una casella i gira de nou cap a l'Est.
+          Això és exactament el cos de <code>puja_grao()</code>: només moviment,
+          sense <code>drop()</code>. El <code>drop()</code> es fa al bucle principal,
+          just <em>abans</em> de moure's. Si aconsegueixes fer UN graó correctament,
+          el <code>while</code> en farà tants com calgui i s'aturarà sol
+          quan en Karel toqui la paret dreta.
         </div>
 
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
+             data-bag="99"
              data-maps='[".,.,.|.,.,.|K>,.,.",".,.,.,.,.|.,.,.,.,.|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,.", ".,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,."]'
              data-goals='[".,.,K>|.,A,.|A,.,.",".,.,.,.,K>|.,.,.,A,.|.,.,A,.,.|.,A,.,.,.|A,.,.,.,.", ".,.,.,.,.,.,.,K>|.,.,.,.,.,.,A,.|.,.,.,.,.,A,.,.|.,.,.,.,A,.,.,.|.,.,.,A,.,.,.,.|.,.,A,.,.,.,.,.|.,A,.,.,.,.,.,.|A,.,.,.,.,.,.,."]'
              data-labels='["3×3 (2 graons)", "5×5 (4 graons)", "8×8 (7 graons)"]'
              data-code="def puja_grao():
-    # El teu codi aquí
+    # El teu codi aquí (Pista: no cal drop() aquí!)
 
 
 # ── Programa principal ──
-# Canvia N pel nombre de graons del món que proves:
-#   Món 1 (3×3) → range(2)   Món 2 (5×5) → range(4)   Món 3 (8×8) → range(7)
-for i in range(2):
+while front_is_clear():
+    drop()
     puja_grao()
 "
-             data-title="Prova el teu codi als tres mons. Adapta el range() al nombre de graons de cada món."
+             data-title="Prova el teu codi als tres mons. El mateix codi ha de funcionar als tres sense canviar res!"
              data-height="440">
         </div>
 
@@ -185,13 +185,13 @@ for i in range(2):
   ════════════════════════════════════════════════════════
 
 def puja_grao():
-    drop()
     move()
     turn_left()
     move()
     turn_right()
 
-for i in range(4):
+while front_is_clear():
+    drop()
     puja_grao()
 
   Traça d'execució (coordenades fila, columna des de 0):
@@ -205,17 +205,18 @@ for i in range(4):
   Perles al món: (4,0) (3,1) (2,2) (1,3) — diagonal perfecta.
 
   Errors habituals de l'alumne:
-    · Posar drop() DESPRÉS de move() en comptes d'ABANS: la perla queda
-      una casella desplaçada.
+    · Posar drop() dins de puja_grao() en comptes del bucle principal:
+      la perla es deixa a la casella equivocada (un pas massa tard).
     · Oblidar el turn_right() final: el puja_grao() no restaura
       l'orientació Est i el segon graó surt en la direcció equivocada.
-    · Escriure move() move() turn_left() move() (sense drop): Karel arriba
-      però no deixa rastre.
+    · Usar for i in range(N) amb N hardcoded: funciona, però trenca
+      la filosofia DRY — el mateix codi no serveix per a tots els mons.
 
   Clau pedagògica: la funció puja_grao() té una precondició (Karel mira
   a l'Est i el camí és lliure) i una postcondició idèntica (Karel mira a
-  l'Est, una casella i un pis amunt). Gràcies a aquesta simetria, encadenar
-  N crides és trivial. Si la postcondició no es compleix, el segon graó falla.
+  l'Est, una casella i un pis amunt). Gràcies a aquesta simetria, el while
+  pot encadenar-ne tantes com calgui sense saber el nombre a priori.
+  Si la postcondició no es compleix, el segon graó falla.
   ════════════════════════════════════════════════════════
 -->
 
