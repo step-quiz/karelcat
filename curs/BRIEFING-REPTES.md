@@ -27,7 +27,7 @@
 | 6 | `repte-6.html` | Construir torres | B | ★★ Intermedi | ✅ Implementat |
 | 7 | `repte-7.html` | L'escala doble | B | ★★ Intermedi | ✅ Implementat |
 | 8 | `repte-8.html` | El tauler d'escacs | C | ★★★ Avançat | ✅ Implementat |
-| 9 | `repte-9.html` | El laberint | C | ★★★ Avançat | ⬜ Pendent |
+| 9 | `repte-9.html` | El laberint | C | ★★★ Avançat | ✅ Implementat |
 | 10 | `repte-10.html` | El punt mig | C | ★★★ Avançat | ⬜ Pendent |
 
 ---
@@ -403,23 +403,67 @@ while left_is_clear():
 
 ---
 
-### ⬜ Repte 9 — El laberint (C2, ★★★ Avançat)
+### ✅ Repte 9 — El laberint (C2, ★★★ Avançat)
 
-**Conceptes:** `while`, `if`, `and`, `not`, `def`, estratègia de la mà dreta.
+**Fitxer:** `curs/repte-9.html`
+**Conceptes:** `while`, `if/elif/else`, `right_is_clear()`, `front_is_clear()`, `def`, estratègia de la mà dreta.
 **Adaptació de:** Maze Karel / Repte predefinit 5 del projecte.
 
-**Enunciat:** En Karel és a l'entrada d'un laberint. La perla és a la sortida. Troba el camí. El laberint té sempre solució.
-
-**Mapa:** Reutilitza el laberint del repte predefinit 5 de `reptes.js`:
+**Mons de test (3 simuladors DRY — un sol editor):**
 ```
-K>,.,P,.,.,. 
-.,.,P,.,P,.
-.,.,.,.,P,.
-P,P,P,.,P,.
-.,.,.,.,.,A
+Test A — 3×5 (Simple):
+  Inicial: K>,.,.,.,P|P,P,P,.,P|.,.,.,.,A
+  Goal:    K>,.,.,.,P|P,P,P,.,P|.,.,.,.,K>
+
+Test B — 5×6 (Clàssic — laberint del repte predefinit 5):
+  Inicial: K>,.,P,.,.,.|.,.,P,.,P,.|.,.,.,.,P,.|P,P,P,.,P,.|.,.,.,.,.,A
+  Goal:    K>,.,P,.,.,.|.,.,P,.,P,.|.,.,.,.,P,.|P,P,P,.,P,.|.,.,.,.,.,K>
+
+Test C — 5×7 (Complex):
+  Inicial: K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,A
+  Goal:    K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,K>
 ```
 
-**Clau pedagògica:** Composar `not`, `and` i `or` per expressar condicions compostes. La regla de la mà dreta com a algorisme genèric.
+**Esquelet visible per l'alumne:**
+```python
+def pas():
+    # Regla de la mà dreta — tres casos mútuament excloents:
+    # 1. Si la dreta és lliure → gira a la dreta i avança un pas
+    # 2. Si la dreta és bloquejada però el davant és lliure → avança un pas
+    # 3. Si dreta i davant estan bloquejats → gira a l'esquerra (no avancis)
+
+
+# ── Programa principal ──
+while not pearl_here():
+    pas()
+
+grab()
+```
+
+**Solució de referència:**
+```python
+def pas():
+    if right_is_clear():
+        turn_right()
+        move()
+    elif front_is_clear():
+        move()
+    else:
+        turn_left()
+
+while not pearl_here():
+    pas()
+
+grab()
+```
+
+**Clau pedagògica:** La regla de la mà dreta demostra que un algorisme senzill i genèric pot resoldre problemes aparentment complexos. La descomposició en una sola funció `pas()` dins d'un `while not pearl_here()` és l'exemple més net del curs de «algorisme = bucle + condició de parada». El test C detecta qui ha confós `turn_left()` amb `turn_right()` (la mà esquerra funciona en molts laberints però no en tots).
+
+**Notes d'implementació:**
+- Format DRY: un sol `data-code`, tres mons via `data-maps`/`data-goals`/`data-labels`.
+- Test B reutilitza exactament el mapa del repte predefinit 5 de `reptes.js`.
+- `data-bag` no s'usa (Karel no porta perles pròpies; recull una perla existent).
+- La navegació: anterior → `repte-8.html`, següent → `repte-10.html`.
 
 ---
 
@@ -445,4 +489,4 @@ P,P,P,.,P,.
 
 ---
 
-*Última actualització: sessió 8 — Implementat repte-8.html (C1, El tauler d'escacs). Checkerboard Karel sense variables: `pearl_here()` com a memòria de paritat, serpentí bidireccional amb `canvia_fila_des_d_est()` / `canvia_fila_des_d_oest()`. Repte-8 afegit a `REPTES_DATA` a `capitols.js`.*
+*Última actualització: sessió 9 — Implementat repte-9.html (C2, El laberint). Maze Karel DRY: format multi-món (3 laberints: Simple 3×5, Clàssic 5×6, Complex 5×7), regla de la mà dreta amb `right_is_clear()` / `front_is_clear()` dins d'una funció `pas()`. Repte-9 afegit a `REPTES_DATA` a `capitols.js`.*

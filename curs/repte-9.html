@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 9 — El laberint | Karelcat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <style>
+    /* ── Badges de dificultat ── */
+    .dificultat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+    }
+    .dificultat-facil {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .dificultat-intermedi {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .dificultat-dificil {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* ── Caixa de consell pedagògic ── */
+    .consell-box {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1.2rem 0;
+      font-size: 0.93rem;
+      color: #0c4a6e;
+    }
+    .consell-box strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0284c7;
+    }
+
+    /* ── Capçalera del repte amb número i badge ── */
+    .repte-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .repte-numero {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    /* ── Solució de referència (només visible al codi font) ── */
+    /* La solució s'inclou en un comentari HTML per al professor,
+       NO en cap atribut data-code visible a l'alumne. */
+  </style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-title">Repte 9 — El laberint</span>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div class="sidebar-header">
+      <a href="index.html">Capítols</a>
+      <a href="repte-1.html" class="active">Reptes</a>
+      <a href="../index.html">Simulador</a>
+    </div>
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <h1>Reptes</h1>
+      </header>
+
+
+      <!-- ══════════════════════════════════════════
+           REPTE C2 — EL LABERINT
+           ══════════════════════════════════════════ -->
+      <section class="chapter-section chapter-exercise">
+
+        <h2>
+          Repte 9 — El laberint
+          <span class="dificultat-badge dificultat-dificil">★★★ Avançat</span>
+        </h2>
+
+        <!-- Enunciat -->
+        <div class="exercise-enunciat">
+          En Karel és a l'entrada d'un laberint. Alguna part del laberint conté
+          una <strong>perla</strong> que marca la sortida. El laberint té sempre
+          solució: sempre existeix un camí que porta en Karel fins a la perla.<br><br>
+          <strong>La teva feina:</strong> escriu un programa que funcioni per a
+          <em>qualsevol</em> laberint, sigui quina sigui la seva forma o mida.
+          El teu codi <em>no pot</em> assumir res sobre la geometria concreta del laberint.<br><br>
+          <strong>Restricció important:</strong> no pots codificar el camí pas a
+          pas. Has de descobrir un algorisme genèric que segueixi les parets fins
+          trobar la sortida.
+        </div>
+
+        <div class="consell-box">
+          <strong>💡 Pista — la regla de la mà dreta</strong>
+          Imagina que poses la mà dreta a la paret del laberint i camines sempre
+          mantenint el contacte amb ella. Quan la paret acaba (la dreta és lliure),
+          gires a la dreta i avances. Si la paret continua però el davant és lliure,
+          avances recte. Si tens paret tant a la dreta com al davant, gires a
+          l'esquerra (però <em>no</em> avances: potser ara el davant és lliure i
+          caldrà tornar a comprovar). Aquesta regla garanteix que trobaràs la
+          sortida en qualsevol laberint simplement connexe.
+        </div>
+
+        <div class="consell-box">
+          <strong>💡 Pista — un sol pas, repetit moltes vegades</strong>
+          La clau és definir una funció <code>pas()</code> que implementi
+          exactament un pas de la regla de la mà dreta, i repetir-la mentre
+          en Karel no sigui a la sortida:
+          <br><br>
+          <code>while not pearl_here():</code><br>
+          <code>&nbsp;&nbsp;&nbsp;&nbsp;pas()</code><br><br>
+          Dins de <code>pas()</code> tens tres casos: dreta lliure, dreta ocupada
+          però davant lliure, i dreta i davant ocupats. Cada cas fa una acció
+          diferent. Pots usar <code>right_is_clear()</code>,
+          <code>front_is_clear()</code> i <code>turn_right()</code> juntament
+          amb les funcions que ja coneixes.
+        </div>
+
+        <!-- Simulador multi-món (DRY): un sol editor, tres laberints de test -->
+        <div class="simulador"
+             data-maps='["K>,.,.,.,P|P,P,P,.,P|.,.,.,.,A","K>,.,P,.,.,.|.,.,P,.,P,.|.,.,.,.,P,.|P,P,P,.,P,.|.,.,.,.,.,A","K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,A"]'
+             data-goals='["K>,.,.,.,P|P,P,P,.,P|.,.,.,.,K>","K>,.,P,.,.,.|.,.,P,.,P,.|.,.,.,.,P,.|P,P,P,.,P,.|.,.,.,.,.,K>","K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,K>"]'
+             data-labels='["3×5 — Simple", "5×6 — Clàssic", "5×7 — Complex"]'
+             data-code="def pas():
+    # Regla de la mà dreta — tres casos mútuament excloents:
+    # 1. Si la dreta és lliure → gira a la dreta i avança un pas
+    # 2. Si la dreta és bloquejada però el davant és lliure → avança un pas
+    # 3. Si dreta i davant estan bloquejats → gira a l'esquerra (no avancis)
+
+
+# ── Programa principal ──
+while not pearl_here():
+    pas()
+
+grab()
+"
+             data-title="El mateix codi ha de resoldre els tres laberints. No codifiquis el camí: descobreix l'algorisme de la mà dreta."
+             data-height="550">
+        </div>
+
+      </section>
+
+
+      <!-- ══════════════════════════════════════════
+           NAVEGACIÓ
+           ══════════════════════════════════════════ -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="repte-8.html" class="btn-nav btn-nav--prev">← Repte 8</a>
+        <a href="repte-10.html" class="btn-nav btn-nav--next">Repte 10 →</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  No apareix en cap data-code visible a l'alumne.
+  ════════════════════════════════════════════════════════
+
+def pas():
+    if right_is_clear():
+        turn_right()
+        move()
+    elif front_is_clear():
+        move()
+    else:
+        turn_left()
+
+while not pearl_here():
+    pas()
+
+grab()
+
+
+  Traça d'execució (Test A — 3×5, inici (0,0) Est):
+
+  Mapa:
+    (0,0)=K>  (0,1)=.  (0,2)=.  (0,3)=.  (0,4)=P
+    (1,0)=P   (1,1)=P  (1,2)=P  (1,3)=.  (1,4)=P
+    (2,0)=.   (2,1)=.  (2,2)=.  (2,3)=.  (2,4)=A
+
+  1. (0,0)E: right=S=(1,0)=P → front=E=(0,1)=. → move → (0,1)E
+  2. (0,1)E: right=S=(1,1)=P → front=E=(0,2)=. → move → (0,2)E
+  3. (0,2)E: right=S=(1,2)=P → front=E=(0,3)=. → move → (0,3)E
+  4. (0,3)E: right=S=(1,3)=. → turn_right+move → (1,3)S
+  5. (1,3)S: right=W=(1,2)=P → front=S=(2,3)=. → move → (2,3)S
+  6. (2,3)S: right=W=(2,2)=. → turn_right+move → (2,2)W
+  7. (2,2)W: right=N=(1,2)=P → front=W=(2,1)=. → move → (2,1)W
+  8. (2,1)W: right=N=(1,1)=P → front=W=(2,0)=. → move → (2,0)W
+  9. (2,0)W: right=N=(1,0)=P → front=W=edge → turn_left → (2,0)S
+  10.(2,0)S: right=E=(2,1)=. → turn_right+move → (2,1)E
+  11.(2,1)E: right=S=edge → front=E=(2,2)=. → move → (2,2)E
+  12.(2,2)E: right=S=edge → front=E=(2,3)=. → move → (2,3)E
+  13.(2,3)E: right=S=edge → front=E=(2,4)=A → move → (2,4)E
+  pearl_here()=True → surt while. grab(). Karel a (2,4) Est. ✓
+
+
+  Traça d'execució (Test B — 5×6, inici (0,0) Est):
+
+  Mapa:
+    (0,0)=K>  (0,1)=.  (0,2)=P  (0,3)=.  (0,4)=.  (0,5)=.
+    (1,0)=.   (1,1)=.  (1,2)=P  (1,3)=.  (1,4)=P  (1,5)=.
+    (2,0)=.   (2,1)=.  (2,2)=.  (2,3)=.  (2,4)=P  (2,5)=.
+    (3,0)=P   (3,1)=P  (3,2)=P  (3,3)=.  (3,4)=P  (3,5)=.
+    (4,0)=.   (4,1)=.  (4,2)=.  (4,3)=.  (4,4)=.  (4,5)=A
+
+  1. (0,0)E: right=S=(1,0)=. → turn_right+move → (1,0)S
+  2. (1,0)S: right=W=edge → front=S=(2,0)=. → move → (2,0)S
+  3. (2,0)S: right=W=edge → front=S=(3,0)=P → turn_left → (2,0)E
+  4. (2,0)E: right=S=(3,0)=P → front=E=(2,1)=. → move → (2,1)E
+  5. (2,1)E: right=S=(3,1)=P → front=E=(2,2)=. → move → (2,2)E
+  6. (2,2)E: right=S=(3,2)=P → front=E=(2,3)=. → move → (2,3)E
+  7. (2,3)E: right=S=(3,3)=. → turn_right+move → (3,3)S
+  8. (3,3)S: right=W=(3,2)=P → front=S=(4,3)=. → move → (4,3)S
+  9. (4,3)S: right=W=(4,2)=. → turn_right+move → (4,2)W
+  10.(4,2)W: right=N=(3,2)=P → front=W=(4,1)=. → move → (4,1)W
+  11.(4,1)W: right=N=(3,1)=P → front=W=(4,0)=. → move → (4,0)W
+  12.(4,0)W: right=N=(3,0)=P → front=W=edge → turn_left → (4,0)S
+  13.(4,0)S: right=E=(4,1)=. (edge? no, S=edge) → front=S=edge → turn_left → (4,0)E
+  14.(4,0)E: right=S=edge → front=E=(4,1)=. → move → ... → (4,5)=A
+  pearl_here()=True → grab(). Karel a (4,5) Est. ✓
+
+
+  Traça d'execució (Test C — 5×7, inici (0,0) Est):
+
+  Mapa:
+    (0,0)=K>  (0,1)=.  (0,2)=P  (0,3)=.  (0,4)=.  (0,5)=.  (0,6)=P
+    (1,0)=.   (1,1)=.  (1,2)=P  (1,3)=.  (1,4)=P  (1,5)=.  (1,6)=P
+    (2,0)=.   (2,1)=.  (2,2)=.  (2,3)=.  (2,4)=P  (2,5)=.  (2,6)=P
+    (3,0)=P   (3,1)=P  (3,2)=P  (3,3)=P  (3,4)=P  (3,5)=.  (3,6)=P
+    (4,0)=.   (4,1)=.  (4,2)=.  (4,3)=.  (4,4)=.  (4,5)=.  (4,6)=A
+
+  La mà dreta porta en Karel per: la columna esquerra avall, la fila 2
+  cap a l'Est fins a (2,3), el pas (3,3)↓(4,3), la fila 4 retrocedint
+  cap a l'Oest fins al mur, la volta i finalment la fila 4 cap a l'Est
+  fins a (4,6)=A. Karel acaba a (4,6) Est. ✓
+
+
+  Per què funciona la regla de la mà dreta:
+    · En tot moment, en Karel manté la paret a la seva dreta.
+    · Si la paret s'acaba (right_is_clear), gira per continuar
+      mantenint-la (ara la nova paret és al front o a la dreta).
+    · Si la paret continua (right blocked) i el front és lliure,
+      avança: la paret segueix a la seva dreta.
+    · Si paret i front estan bloquejats, gira a l'esquerra fins que
+      trobi una sortida (pot requerir 1, 2 o 3 girs).
+    · Per a laberints simplement connexos (sense illes), la regla
+      garanteix trobar la sortida en temps finit.
+
+  Errors habituals de l'alumne:
+    · Girar a la dreta I avançar tot dins d'un elif → l'alumne omet
+      el move() en el primer cas o el duplica al segon.
+    · Fer move() en el cas «turn_left» → Karel entra a la paret.
+    · Usar turn_left() quan toca girar a la dreta i viceversa →
+      el programa segueix la mà esquerra (funciona en molts laberints
+      però no en tots; el test C normalment ho detecta).
+    · Oblidar el grab() final → Karel troba la perla però no la recull.
+
+  Clau pedagògica:
+    La regla de la mà dreta demostra que un algorisme senzill i genèric
+    pot resoldre problemes aparentment complexos. El repte entrena la
+    composició de condicions booleanes (right_is_clear, front_is_clear)
+    dins d'una estructura if/elif/else, i introdueix turn_right() com a
+    operació primitiva simètrica a turn_left(). La descomposició en una
+    sola funció pas() que s'invoca dins d'un while not pearl_here() és
+    l'exemple més net del curs de «algorisme = bucle + condició de parada».
+  ════════════════════════════════════════════════════════
+-->
+
+<script>const CURRENT_REPTE = 9;</script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(CURRENT_REPTE);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
