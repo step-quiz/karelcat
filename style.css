@@ -677,6 +677,11 @@ body.embed .code-col {
   min-height: 0 !important;
   border-right: 1px solid var(--border) !important;
 }
+body.embed .world-area {
+  overflow: auto;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
 
 /* En embed, el toolbar pot ser lleugerament més compacte */
 body.embed .toolbar {
