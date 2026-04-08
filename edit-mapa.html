@@ -318,6 +318,12 @@
     body.light .edit-tools { background: #f8f9fa; border-right-color: #e0e0e0; }
     body.light .tool-section { border-bottom-color: #e0e0e0; }
     body.light .brush-btn { background: #fff; border-color: #d0d0d0; }
+    body.light .brush-btn:hover {
+      background: var(--accent) !important;
+      border-color: var(--accent) !important;
+      color: #fff !important;
+      box-shadow: 0 2px 8px rgba(37,99,235,.35);
+    }
     body.light .dir-btn   { background: #fff; border-color: #d0d0d0; }
     body.light .rbtn      { background: #fff; border-color: #d0d0d0; }
     body.light .status-bar.edit-status { background: #f8f9fa; border-top-color: #e0e0e0; }
@@ -334,9 +340,25 @@
 
 <!-- ══ CAPÇALERA ══ -->
 <header class="topbar">
-  <div class="logo">🗺️ <span>Editor de mapes</span></div>
-  <div class="topbar-actions">
-    <a class="btn g" href="index.html">← Torna a Karel</a>
+  <div class="logo">
+    <span class="logo-icon">
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" shape-rendering="crispEdges" width="18" height="18">
+        <rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/>
+        <rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/>
+        <rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/>
+        <rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/>
+        <rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/>
+        <rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/>
+        <rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/>
+        <rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/>
+        <rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/>
+        <rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/>
+        <rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/>
+        <rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/>
+        <rect x="6" y="3" width="1" height="1" fill="#141414"/><rect x="7" y="3" width="1" height="1" fill="#141414"/><rect x="8" y="3" width="1" height="1" fill="#141414"/><rect x="9" y="3" width="1" height="1" fill="#141414"/>
+      </svg>
+    </span>
+    <span>Editor de mapes</span>
   </div>
 </header>
 
@@ -396,15 +418,16 @@
     <div class="tool-section">
       <div class="tool-lbl">Mapa</div>
       <div class="tool-btns">
-        <button class="btn full p" onclick="openBlankModal()">□ Mapa en blanc</button>
+        <button class="btn full"   onclick="openBlankModal()">□ Mapa en blanc</button>
         <button class="btn full"   onclick="triggerOpenCSV()">📂 Obre mapa CSV</button>
         <button class="btn full"   onclick="saveCSV()">💾 Desa mapa CSV</button>
         <button class="btn full g" onclick="copyMapURL()">🔗 Copia URL del mapa</button>
         <button class="btn full g" onclick="openInKarel()">▶ Obre a Karel</button>
+        <a class="btn full" href="index.html">← Torna a Karel</a>
       </div>
     </div>
 
-
+  </div><!-- fi .edit-tools -->
 
 
   <!-- ── Àrea central: mapa editable ── -->
