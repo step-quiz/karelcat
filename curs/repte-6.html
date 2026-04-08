@@ -166,27 +166,11 @@
              data-code="def omple_columna():
     # Pas 1 — Gira al nord i puja fins al sostre
     #          Deixa una perla a cada casella buida
-    turn_left()
-    while front_is_clear():
-        # El teu codi aquí
-        move()
-    # Atenció: l'error de pal de paller! Comprova la darrera casella
 
     # Pas 2 — Torna al terra i orienta't cap a l'Est
-    turn_around()
-    while front_is_clear():
-        move()
-    # (Quin gir et porta del Sud cap a l'Est?)
-
-
-def avança_a_seguent():
-    move()
-    move()
-    move()
 
 
 # ── Programa principal ──
-omple_columna()
 while front_is_clear():
     avança_a_seguent()
     omple_columna()
