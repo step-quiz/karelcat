@@ -23,8 +23,8 @@
 | 2 | `repte-2.html` | El passadís | A | ★ Fàcil | ✅ Implementat |
 | 3 | `repte-3.html` | L'escala diagonal | A | ★ Fàcil | ✅ Implementat |
 | 4 | `repte-4.html` | Distribuir les perles | A | ★ Fàcil | ✅ Implementat |
-| 5 | `repte-5.html` | El serpentí | B | ★★ Intermedi | ⬜ Pendent |
-| 6 | `repte-6.html` | Construir torres | B | ★★ Intermedi | ⬜ Pendent |
+| 5 | `repte-5.html` | El serpentí | B | ★★ Intermedi | ✅ Implementat |
+| 6 | `repte-6.html` | Construir torres | B | ★★ Intermedi | ✅ Implementat |
 | 7 | `repte-7.html` | L'escala doble | B | ★★ Intermedi | ⬜ Pendent |
 | 8 | `repte-8.html` | El tauler d'escacs | C | ★★★ Avançat | ⬜ Pendent |
 | 9 | `repte-9.html` | El laberint | C | ★★★ Avançat | ⬜ Pendent |
@@ -172,7 +172,7 @@ while not bag_is_empty():
 
 ---
 
-### ⬜ Repte 5 — El serpentí (B1, ★★ Intermedi)
+### ✅ Repte 5 — El serpentí (B1, ★★ Intermedi)
 
 **Conceptes:** `while`, `if`, girs condicionals, navegació multi-fila.
 **Adaptació de:** Cleanup Karel (variant dues files).
@@ -189,27 +189,61 @@ K>,A,.,A,.,A
 
 ---
 
-### ⬜ Repte 6 — Construir torres (B2, ★★ Intermedi)
+### ✅ Repte 6 — Construir torres (B2, ★★ Intermedi)
 
+**Fitxer:** `curs/repte-6.html`
 **Conceptes:** `def`, descomposició, pre/postcondicions, `while` imbricat.
-**Adaptació de:** Stone Mason Karel.
+**Adaptació de:** Stone Mason Karel (Stanford CS106A).
 
-**Enunciat:** El fons del mar té diverses bases marcades amb una perla al terra. En Karel ha de construir una columna de perles per damunt de cada base, d'altures variables (fins al sostre). Ha de deixar perles només si no n'hi ha.
-
-**Mapa exemple (3 columnes, altures 2, 4, 3):**
+**Mons de test (3 simuladors):**
 ```
-.,P,.,.,P,.,.,P,.
-.,P,.,.,P,.,.,P,.
-.,P,.,.,..,.,P,.
-.,P,.,.,.,.,.,.,. 
-A,P,.,A,.,.,A,.,. 
+Test A — 7×3, 3 torres (cols 0, 3, 6):
+  Inicial: .,.,.,.,.,.,.|.,.,.,.,.,.,.|K>,.,.,A,.,.,A
+  Goal:    A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,K>
+
+Test B — 7×4, 3 torres (cols 0, 3, 6):
+  Inicial: .,.,.,.,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,.|K>,.,.,A,.,.,A
+  Goal:    A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,K>
+
+Test C — 10×4, 4 torres (cols 0, 3, 6, 9):
+  Inicial: .,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.|K>,.,.,A,.,.,A,.,.,A
+  Goal:    A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,K>
 ```
-*(Roques als costats de cada base. Les torres creixen cap amunt fins al sostre.)*
 
-**Clau pedagògica:** La postcondició de `construir_torre()` (tornar al terra, orientació Est) ha de ser estricta. Un error d'un grau desorienta tot el cicle.
+**Motxilla inicial:** `data-bag="99"` (pràcticament infinita) als tres simuladors.
 
-**Notes d'implementació pendents:**
-- Dissenyar el CSV del món amb cura. Les roques han de delimitar bé cada "slot" de torre.
+**Solució de referència:**
+```python
+def omple_columna():
+    turn_left()
+    while front_is_clear():
+        if not pearl_here():
+            drop()
+        move()
+    if not pearl_here():
+        drop()
+    turn_around()
+    while front_is_clear():
+        move()
+    turn_left()
+
+def avança_a_seguent():
+    move()
+    move()
+    move()
+
+omple_columna()
+while front_is_clear():
+    avança_a_seguent()
+    omple_columna()
+```
+
+**Clau pedagògica:** La pre/postcondició de `omple_columna()` és sempre *(base de la columna, orientació Est)*. Aquesta simetria permet encadenar N crides amb un sol `while` sense cap comptador. El gir final és `turn_left()` (Sud→Est), no `turn_right()` (que donaria Oest). Un alumne que confon el gir final passa el Test A però la columna 2 es construeix en la direcció equivocada.
+
+**Notes d'implementació:**
+- Les bases (perles marcadores) es compten com a part de la torre: `if not pearl_here(): drop()` dins el bucle les preserva i no gasta motxilla de més.
+- El `while front_is_clear()` principal s'atura sol perquè els tres mons estan dissenyats sense caselles buides a la dreta de l'última torre.
+- La navegació: anterior → `repte-5.html`, següent → `repte-7.html`.
 
 ---
 
@@ -278,4 +312,4 @@ P,P,P,.,P,.
 
 ---
 
-*Última actualització: sessió 4 — Implementat repte-4.html (A4, Distribuir les perles). Perles via `data-bag`, passadís N+1 caselles. Repte-4 afegit a `REPTES_DATA` a `capitols.js`.*
+*Última actualització: sessió 6 — Implementat repte-6.html (B2, Construir torres). Stone Mason Karel amb pre/postcondicions. `omple_columna()` + `while` principal sense comptador. Repte-5 i repte-6 afegits a `REPTES_DATA` a `capitols.js`.*
