@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor de mapes — Karel en Català</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="edit-page">
+
+<!-- ══ CAPÇALERA ══ -->
+<header class="topbar">
+  <div class="logo">🗺️ <span>Editor de mapes</span></div>
+  <div class="topbar-actions">
+    <a class="btn g" href="index.html">← Torna a Karel</a>
+    <button class="btn" onclick="toggleTheme()" title="Mode fosc / clar">◑</button>
+  </div>
+</header>
+
+
+<!-- ══ LAYOUT: eines | mapa ══ -->
+<div class="edit-layout">
+
+  <!-- ── Panel esquerre: eines d'edició ── -->
+  <div class="edit-tools">
+
+    <!-- Pinzell -->
+    <div class="tool-section">
+      <div class="tool-lbl">Pinzell</div>
+      <div class="brush-row">
+        <button class="brush-btn active" id="brush-dot" onclick="setBrush('.')">· buit</button>
+        <button class="brush-btn"        id="brush-P"   onclick="setBrush('P')">🪸 corall</button>
+        <button class="brush-btn"        id="brush-A"   onclick="setBrush('A')">🫧 bombolla</button>
+        <button class="brush-btn"        id="brush-K"   onclick="setBrush('K')">🪼 medusa</button>
+      </div>
+      <div class="undo-row">
+        <button class="btn" id="btn-undo" onclick="editUndo()" disabled title="Desfés (Ctrl+Z)">↩ Desfés</button>
+        <button class="btn" id="btn-redo" onclick="editRedo()" disabled title="Refés (Ctrl+Shift+Z)">↪ Refés</button>
+      </div>
+    </div>
+
+    <!-- Direcció inicial de Karel -->
+    <div class="tool-section" id="dir-section" style="display:none">
+      <div class="tool-lbl">Direcció inicial de Karel</div>
+      <div class="dir-grid">
+        <button class="dir-btn" id="dir-0" onclick="setKarelDir(0)">→</button>
+        <button class="dir-btn" id="dir-3" onclick="setKarelDir(3)">↑</button>
+        <button class="dir-btn" id="dir-2" onclick="setKarelDir(2)">←</button>
+        <button class="dir-btn" id="dir-1" onclick="setKarelDir(1)">↓</button>
+      </div>
+    </div>
+
+    <!-- Mida del mapa -->
+    <div class="tool-section">
+      <div class="tool-lbl">Mida del mapa</div>
+      <div class="resize-table">
+        <span>Files</span>
+        <div class="resize-ctrl">
+          <button class="rbtn" onclick="removeRow()">−</button>
+          <span class="rval" id="rval-rows">5</span>
+          <button class="rbtn" onclick="addRow()">+</button>
+        </div>
+        <span>Columnes</span>
+        <div class="resize-ctrl">
+          <button class="rbtn" onclick="removeCol()">−</button>
+          <span class="rval" id="rval-cols">6</span>
+          <button class="rbtn" onclick="addCol()">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accions -->
+    <div class="tool-section">
+      <div class="tool-lbl">Mapa</div>
+      <div class="tool-btns">
+        <button class="btn full p" onclick="openBlankModal()">□ Mapa en blanc</button>
+        <button class="btn full"   onclick="triggerOpenCSV()">📂 Obre mapa CSV</button>
+        <button class="btn full"   onclick="saveCSV()">💾 Desa mapa CSV</button>
+        <button class="btn full g" onclick="copyMapURL()">🔗 Copia URL del mapa</button>
+        <button class="btn full g" onclick="openInKarel()">▶ Obre a Karel</button>
+      </div>
+    </div>
+
+    <!-- Llegenda -->
+    <div class="tool-section legend">
+      <div class="tool-lbl">Llegenda</div>
+      <div class="li"><div class="lbox lbox-karel"></div>K &gt; ^ &lt; v — Medusa</div>
+      <div class="li"><div class="lbox lbox-wall"></div>P — corall (paret)</div>
+      <div class="li"><div class="lbox lbox-water"></div>A — bombolla (aigua)</div>
+      <div class="li"><div class="lbox lbox-empty"></div>. — cel·la buida</div>
+    </div>
+
+  </div><!-- fi .edit-tools -->
+
+
+  <!-- ── Àrea central: mapa editable ── -->
+  <div class="edit-world-wrap">
+    <div class="world-area editing-always" id="world-area">
+      <div id="world-grid"></div>
+    </div>
+    <div class="status-bar edit-status">
+      <span>Posició Karel: <strong id="st-pos">—</strong></span>
+      <span>Direcció: <strong id="st-dir">—</strong></span>
+      <span>Mida: <strong id="map-size">—</strong></span>
+    </div>
+  </div>
+
+</div><!-- fi .edit-layout -->
+
+
+<!-- ══ MODALS ══ -->
+
+<!-- Modal: Mapa en blanc -->
+<div class="modal-bg" id="modal-blank">
+  <div class="modal">
+    <div class="modal-hd">
+      <span>□ Mapa en blanc</span>
+      <button onclick="closeModal('modal-blank')">✕</button>
+    </div>
+    <div class="blank-form">
+      <p class="hint">Karel es col·locarà a la cantonada superior esquerra mirant a la dreta.</p>
+      <div class="blank-row">
+        <label>Files:</label>
+        <input type="number" id="blank-rows" value="5" min="1" max="20">
+        <label>Columnes:</label>
+        <input type="number" id="blank-cols" value="7" min="1" max="20">
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn"   onclick="closeModal('modal-blank')">Cancel·la</button>
+      <button class="btn p" onclick="applyBlank()">□ Crea mapa</button>
+    </div>
+  </div>
+</div>
+
+<!-- Input ocult per obrir fitxers CSV -->
+<input type="file" id="file-input" accept=".csv,.txt" style="display:none" onchange="handleFileOpen(event)">
+
+<!-- ══ MÒDULS JS ══ -->
+<script src="js/constants.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/world.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/ui.js"></script>
+
+<script>
+// ── 1. Stub (ha d'anar primer) ──────────────────────────────────────────────
+K.stopProgram = function() {};
+
+// ── 2. Variables locals de l'editor ─────────────────────────────────────────
+let editBrush    = '.';
+let karelEditDir = 0;
+let editDragging = false;
+
+// ── 3. Override K.updateStatus ───────────────────────────────────────────────
+const _baseUpdateStatus = K.updateStatus;
+K.updateStatus = function() {
+  _baseUpdateStatus();
+  const s   = K.state;
+  const pos = document.getElementById('st-pos');
+  const dir = document.getElementById('st-dir');
+  if (pos) pos.textContent = `(${s.karelInit.x}, ${s.karelInit.y})`;
+  if (dir) dir.textContent = K.DIRS[s.karelInit.dir].arrow;
+  updateSizeIndicators();
+};
+
+// ── 4a. updateSizeIndicators ─────────────────────────────────────────────────
+function updateSizeIndicators() {
+  const r = document.getElementById('rval-rows');
+  const c = document.getElementById('rval-cols');
+  const s = document.getElementById('map-size');
+  if (r) r.textContent = K.state.world.rows;
+  if (c) c.textContent = K.state.world.cols;
+  if (s) s.textContent = `${K.state.world.cols} × ${K.state.world.rows}`;
+}
+
+// ── 4b. setBrush ─────────────────────────────────────────────────────────────
+function setBrush(b) {
+  editBrush = b;
+  const idMap = { '.': 'dot', P: 'P', A: 'A', K: 'K' };
+  ['dot','P','A','K'].forEach(id => document.getElementById('brush-'+id)?.classList.remove('active'));
+  document.getElementById('brush-' + idMap[b])?.classList.add('active');
+  const ds = document.getElementById('dir-section');
+  if (ds) ds.style.display = (b === 'K') ? '' : 'none';
+  updateDirButtons();
+}
+
+// ── 4c. setKarelDir / updateDirButtons ───────────────────────────────────────
+function setKarelDir(d) {
+  karelEditDir = d;
+  K.state.karelInit = { ...K.state.karelInit, dir: d };
+  K.state.karel     = { ...K.state.karelInit };
+  updateDirButtons();
+  K.renderWorld();
+  K.updateStatus();
+}
+
+function updateDirButtons() {
+  [0,1,2,3].forEach(d =>
+    document.getElementById('dir-'+d)?.classList.toggle('active', d === karelEditDir)
+  );
+}
+
+// ── 4d. applyBrushAt ─────────────────────────────────────────────────────────
+function applyBrushAt(col, row) {
+  const S = K.state;
+  if (col < 0 || col >= S.world.cols || row < 0 || row >= S.world.rows) return;
+  let changed = false;
+  if (editBrush === 'K') {
+    if (S.karelInit.x !== col || S.karelInit.y !== row) {
+      S.karelInit = { x: col, y: row, dir: karelEditDir, motxilla: 0 };
+      S.karel     = { ...S.karelInit };
+      changed = true;
+    }
+  } else {
+    if (S.karelInit.x === col && S.karelInit.y === row) return;
+    if (S.world.grid[row][col] !== editBrush) {
+      S.world.grid[row][col] = editBrush;
+      S.worldInit[row][col]  = editBrush;
+      changed = true;
+    }
+  }
+  if (changed) K.renderWorld();
+}
+
+// ── 4e. Grid resize ──────────────────────────────────────────────────────────
+function addRow() {
+  const S = K.state;
+  if (S.world.rows >= 20) return;
+  _pushUndo();
+  const nr = Array(S.world.cols).fill('.');
+  S.world.grid.push([...nr]);
+  S.worldInit.push([...nr]);
+  S.world.rows++;
+  K.renderWorldFull();
+  K.updateStatus();
+}
+
+function removeRow() {
+  const S = K.state;
+  if (S.world.rows <= 1) return;
+  _pushUndo();
+  if (S.karelInit.y >= S.world.rows - 1) {
+    S.karelInit = { ...S.karelInit, y: S.world.rows - 2 };
+    S.karel = { ...S.karelInit };
+  }
+  S.world.grid.pop();
+  S.worldInit.pop();
+  S.world.rows--;
+  K.renderWorldFull();
+  K.updateStatus();
+}
+
+function addCol() {
+  const S = K.state;
+  if (S.world.cols >= 20) return;
+  _pushUndo();
+  S.world.grid.forEach((r, i) => { r.push('.'); S.worldInit[i].push('.'); });
+  S.world.cols++;
+  K.renderWorldFull();
+  K.updateStatus();
+}
+
+function removeCol() {
+  const S = K.state;
+  if (S.world.cols <= 1) return;
+  _pushUndo();
+  if (S.karelInit.x >= S.world.cols - 1) {
+    S.karelInit = { ...S.karelInit, x: S.world.cols - 2 };
+    S.karel = { ...S.karelInit };
+  }
+  S.world.grid.forEach((r, i) => { r.pop(); S.worldInit[i].pop(); });
+  S.world.cols--;
+  K.renderWorldFull();
+  K.updateStatus();
+}
+
+// ── 4f. Blank map modal ──────────────────────────────────────────────────────
+function openBlankModal() {
+  document.getElementById('modal-blank')?.classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id)?.classList.remove('open');
+}
+function applyBlank() {
+  _pushUndo();
+  const rows = Math.max(1, Math.min(20, parseInt(document.getElementById('blank-rows').value) || 5));
+  const cols = Math.max(1, Math.min(20, parseInt(document.getElementById('blank-cols').value) || 7));
+  const grid = Array.from({ length: rows }, () => Array(cols).fill('.'));
+  grid[0][0] = '.';
+  const S = K.state;
+  S.world.grid  = grid;
+  S.worldInit   = grid.map(r => [...r]);
+  S.world.rows  = rows;
+  S.world.cols  = cols;
+  S.karelInit   = { x: 0, y: 0, dir: 0, motxilla: 0 };
+  S.karel       = { ...S.karelInit };
+  karelEditDir  = 0;
+  closeModal('modal-blank');
+  K.renderWorldFull();
+  K.updateStatus();
+  _updateUndoButtons();
+}
+
+// ── 4g. CSV I/O ──────────────────────────────────────────────────────────────
+function triggerOpenCSV() {
+  document.getElementById('file-input')?.click();
+}
+function handleFileOpen(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    _pushUndo();
+    K.loadMapFromCSV(e.target.result.trim());
+    K.updateStatus();
+    _updateUndoButtons();
+  };
+  reader.readAsText(file);
+}
+function saveCSV() {
+  const csv  = K.worldToCSV();
+  const blob = new Blob([csv], { type: 'text/plain' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = 'mapa.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ── 4h. URL actions ──────────────────────────────────────────────────────────
+function _mapToBase64() {
+  return btoa(unescape(encodeURIComponent(K.worldToCSV())));
+}
+function copyMapURL() {
+  const url = location.origin
+            + location.pathname.replace('edit-mapa.html', 'index.html')
+            + '?map=' + _mapToBase64();
+  navigator.clipboard.writeText(url).then(() => alert('URL copiada!'));
+}
+function openInKarel() {
+  window.location.href = 'index.html?map=' + _mapToBase64();
+}
+
+// ── 5. Undo / Redo ───────────────────────────────────────────────────────────
+const _undoStack    = [];
+const _redoStack    = [];
+const _UNDO_MAX     = 50;
+let   _dragSnapshot = null;
+
+function _takeSnapshot() {
+  const S = K.state;
+  return {
+    grid:     S.world.grid.map(r => [...r]),
+    gridInit: S.worldInit.map(r => [...r]),
+    karel:    { ...S.karelInit },
+    rows:     S.world.rows,
+    cols:     S.world.cols,
+  };
+}
+
+function _restoreSnapshot(snap) {
+  const S      = K.state;
+  S.world.grid = snap.grid.map(r => [...r]);
+  S.worldInit  = snap.gridInit.map(r => [...r]);
+  S.world.rows = snap.rows;
+  S.world.cols = snap.cols;
+  S.karelInit  = { ...snap.karel };
+  S.karel      = { ...S.karelInit };
+  karelEditDir = S.karelInit.dir;
+  K.renderWorldFull();
+  K.updateStatus();
+  _updateUndoButtons();
+}
+
+function _pushUndo() {
+  _undoStack.push(_takeSnapshot());
+  if (_undoStack.length > _UNDO_MAX) _undoStack.shift();
+  _redoStack.length = 0;
+  _updateUndoButtons();
+}
+
+function editUndo() {
+  if (!_undoStack.length) return;
+  _redoStack.push(_takeSnapshot());
+  _restoreSnapshot(_undoStack.pop());
+}
+
+function editRedo() {
+  if (!_redoStack.length) return;
+  _undoStack.push(_takeSnapshot());
+  _restoreSnapshot(_redoStack.pop());
+}
+
+function _updateUndoButtons() {
+  const u = document.getElementById('btn-undo');
+  const r = document.getElementById('btn-redo');
+  if (u) u.disabled = _undoStack.length === 0;
+  if (r) r.disabled = _redoStack.length === 0;
+}
+
+// ── 6. Inicialització ────────────────────────────────────────────────────────
+K.initTheme();
+K.applyCodeLang(K.state.codeLang);
+K.loadMapFromCSV(K.DEFAULT_CSV);
+setBrush('.');
+updateSizeIndicators();
+_updateUndoButtons();
+
+// ResizeObserver — manté l'escala del grid quan canvia la mida del panell
+const _worldArea = document.getElementById('world-area');
+if (_worldArea) {
+  let _rafId = null;
+  new ResizeObserver(() => {
+    if (K.state.world.rows <= 0) return;
+    if (_rafId) cancelAnimationFrame(_rafId);
+    _rafId = requestAnimationFrame(() => { _rafId = null; K.renderWorld(); });
+  }).observe(_worldArea);
+}
+
+// ── 7. Events de ratolí, tàctil i teclat ────────────────────────────────────
+document.getElementById('world-grid').addEventListener('mousedown', e => {
+  e.preventDefault();
+  editDragging  = true;
+  _dragSnapshot = _takeSnapshot();
+  const div = e.target.closest('.cell');
+  if (div) applyBrushAt(+div.dataset.col, +div.dataset.row);
+});
+document.getElementById('world-grid').addEventListener('mousemove', e => {
+  if (!editDragging) return;
+  const div = e.target.closest('.cell');
+  if (div) applyBrushAt(+div.dataset.col, +div.dataset.row);
+});
+document.addEventListener('mouseup', () => {
+  if (!editDragging) return;
+  editDragging = false;
+  if (_dragSnapshot) {
+    const before = JSON.stringify(_dragSnapshot);
+    const after  = JSON.stringify(_takeSnapshot());
+    if (before !== after) {
+      _undoStack.push(_dragSnapshot);
+      if (_undoStack.length > _UNDO_MAX) _undoStack.shift();
+      _redoStack.length = 0;
+      _updateUndoButtons();
+    }
+    _dragSnapshot = null;
+  }
+});
+
+document.getElementById('world-grid').addEventListener('touchstart', e => {
+  e.preventDefault();
+  _dragSnapshot = _takeSnapshot();
+  const touch = e.touches[0];
+  const el    = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.cell');
+  if (el) applyBrushAt(+el.dataset.col, +el.dataset.row);
+}, { passive: false });
+document.getElementById('world-grid').addEventListener('touchmove', e => {
+  e.preventDefault();
+  const touch = e.touches[0];
+  const el    = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.cell');
+  if (el) applyBrushAt(+el.dataset.col, +el.dataset.row);
+}, { passive: false });
+document.getElementById('world-grid').addEventListener('touchend', () => {
+  if (_dragSnapshot) {
+    const changed = JSON.stringify(_takeSnapshot()) !== JSON.stringify(_dragSnapshot);
+    if (changed) {
+      _undoStack.push(_dragSnapshot);
+      if (_undoStack.length > _UNDO_MAX) _undoStack.shift();
+      _redoStack.length = 0;
+      _updateUndoButtons();
+    }
+    _dragSnapshot = null;
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); editUndo(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' &&  e.shiftKey) { e.preventDefault(); editRedo(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'y')                 { e.preventDefault(); editRedo(); }
+});
+</script>
+</body>
+</html>
