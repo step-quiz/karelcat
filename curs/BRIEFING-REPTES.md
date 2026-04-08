@@ -21,8 +21,8 @@
 |---|--------|-------|------|------------|-------|
 | 1 | `repte-1.html` | El diari | A | ★ Fàcil | ✅ Implementat |
 | 2 | `repte-2.html` | El passadís | A | ★ Fàcil | ✅ Implementat |
-| 3 | `repte-3.html` | L'escala diagonal | A | ★ Fàcil | ⬜ Pendent |
-| 4 | `repte-4.html` | Distribuir les perles | A | ★ Fàcil | ⬜ Pendent |
+| 3 | `repte-3.html` | L'escala diagonal | A | ★ Fàcil | ✅ Implementat |
+| 4 | `repte-4.html` | Distribuir les perles | A | ★ Fàcil | ✅ Implementat |
 | 5 | `repte-5.html` | El serpentí | B | ★★ Intermedi | ⬜ Pendent |
 | 6 | `repte-6.html` | Construir torres | B | ★★ Intermedi | ⬜ Pendent |
 | 7 | `repte-7.html` | L'escala doble | B | ★★ Intermedi | ⬜ Pendent |
@@ -122,44 +122,53 @@ if pearl_here():
 
 ---
 
-### ⬜ Repte 3 — L'escala diagonal (A3, ★ Fàcil)
+### ✅ Repte 3 — L'escala diagonal (A3, ★ Fàcil)
 
-**Conceptes:** `for`, seqüència composta dins del bucle.
-**Adaptació de:** Ramp Climbing Karel.
+**Fitxer:** `curs/repte-3.html`
+**Conceptes:** `for`, seqüències compostes dins el bucle, pre/postcondicions de funció.
+**Adaptació de:** Ramp Climbing Karel (Stanford CS106A).
 
-**Enunciat:** En Karel ha de crear un rastre de perles en forma d'escala diagonal (N graons), pujant una casella i avançant una per cada graó. N és fix i conegut.
+**Mons de test (3 simuladors):**
+- Test A — 3×3, N=2 graons
+- Test B — 5×5, N=4 graons
+- Test C — 8×8, N=7 graons
 
-**Mapa exemple (N=4, món 5×5):**
-```
-.,.,.,.,A
-.,.,.,A,.
-.,.,A,.,.
-.,A,.,.,.
-K>,.,.,.,.
-```
-*(Karel comença a la cantonada inferior esquerra, ha d'arribar a la superior dreta deixant perles a la diagonal.)*
+**Motxilla inicial:** `data-bag="99"` (pràcticament infinita) als tres simuladors.
 
-**Clau pedagògica:** Identificar la unitat rítmica `puja_grao()` = `drop()` + `move()` + `turn_left()` + `move()` + `turn_right()`.
+**Funció principal:** `construeix_grao()` = `drop()` + `move()` + `turn_left()` + `move()` + `turn_right()`
+
+**Clau pedagògica:** La funció `construeix_grao()` té una precondició i postcondició idèntiques (Karel mira a l'Est). Gràcies a aquesta simetria, encadenar N crides amb `for` és trivial. Si la postcondició no es compleix (p. ex. s'oblida el `turn_right()` final), el segon graó surt en la direcció equivocada.
+
+**Notes d'implementació:**
+- Nom de funció: `construeix_grao` (en lloc de `puja_grao`) — emfatitza l'acció de construir, no només de pujar.
+- La navegació: anterior → `repte-2.html`, següent → `repte-4.html`.
 
 ---
 
-### ⬜ Repte 4 — Distribuir les perles (A4, ★ Fàcil)
+### ✅ Repte 4 — Distribuir les perles (A4, ★ Fàcil)
 
-**Conceptes:** `while`, `grab`/`drop`, separació de fases.
-**Adaptació de:** Spread Beepers.
+**Fitxer:** `curs/repte-4.html`
+**Conceptes:** `while not bag_is_empty()`, `drop()`, motxilla com a comptador implícit.
+**Adaptació de:** Spread Beepers (Stanford CS106A).
 
-**Enunciat:** En Karel comença amb una pila de perles concentrada a la primera casella del passadís (nombre desconegut). Ha d'escampar-les per tot el passadís: una perla per casella.
+**Decisió de disseny:** el motor no suporta piles (N perles per casella). Les perles s'inicialitzen a la motxilla via `data-bag`. El passadís té sempre una casella extra de marge al final (N+1 caselles per a N perles) perquè l'últim `move()` no xoqui amb la paret.
 
-**Mapa exemple:**
+**Mons de test (3 simuladors separats):**
+- Test A — 3 perles, `K>,.,.,. ` → goal `A,A,A,K>`
+- Test B — 5 perles, `K>,.,.,.,.,.` → goal `A,A,A,A,A,K>`
+- Test C — 7 perles, `K>,.,.,.,.,.,.,.` → goal `A,A,A,A,A,A,A,K>`
+
+**Solució de referència:**
+```python
+while not bag_is_empty():
+    drop()
+    move()
 ```
-K>(5),.,.,.,.,.,.,. 
-```
-*(Karel té 5 perles a la motxilla al inici. La longitud del passadís és desconeguda.)*
 
-**Clau pedagògica:** La condició de sortida és `bag_is_empty()`, no `front_is_blocked()`. La motxilla és la "memòria" temporal.
+**Clau pedagògica:** `bag_is_empty()` com a condició de parada desacobla el codi de la geometria del món. El mateix programa funciona per a qualsevol longitud de passadís (sempre que hi hagi la casella de marge final).
 
-**Notes d'implementació pendents:**
-- Comprovar si el motor suporta Karel amb perles inicials a la motxilla (en lloc de al món). Si no, adaptar el mapa per tenir la pila al terra.
+**Notes d'implementació:**
+- La navegació: anterior → `repte-3.html`, següent → `repte-5.html`.
 
 ---
 
@@ -269,4 +278,4 @@ P,P,P,.,P,.
 
 ---
 
-*Última actualització: sessió 2 — Implementat repte-2.html (A2, El passadís). Revisat repte-1.html: 3 mons de test (coves de 2, 3 i 4 passos), solució actualitzada a `while front_is_clear()`.*
+*Última actualització: sessió 4 — Implementat repte-4.html (A4, Distribuir les perles). Perles via `data-bag`, passadís N+1 caselles. Repte-4 afegit a `REPTES_DATA` a `capitols.js`.*
