@@ -65,7 +65,7 @@
 
         <p>Imagina que en Karel ha de: <strong>1)</strong> anar a buscar la primera perla, <strong>2)</strong> anar a buscar la segona perla, i <strong>3)</strong> tornar al punt de partida. Si escrius totes les ordres seguides, obtens una llista opaca que costa d'entendre i de corregir.</p>
 
-        <p>La solució és la <strong>descomposició</strong>: partir el problema gran en subproblemes que pots resoldre per separat i als quals dones un nom clar. Cada subproblema es converteix en un procediment <code>def</code>. Quan tens tots els procediments, el programa principal és simplement la llista de fases.</p>
+        <p>La solució és la <strong>descomposició</strong>: partir el problema gran en subproblemes que pots resoldre per separat i als quals dones un nom clar. Cada subproblema es converteix en una funció <code>def</code>. Quan tens totes les funcions, el programa principal és simplement la llista de fases.</p>
 
         <p>Si pots descriure la solució en tres frases («primer en Karel fa X, llavors fa Y, finalment fa Z»), ja tens l'estructura del programa.</p>
       </section>
@@ -77,7 +77,7 @@
       <section class="chapter-section">
         <h2>Un programa que s'explica sol</h2>
 
-        <p>Llegeix el codi següent. Sense saber els detalls de cada procediment, entens el que fa el programa?</p>
+        <p>Llegeix el codi següent. Sense saber els detalls de cada funció, entens el que fa el programa?</p>
 
         <pre><code>def recull_perla_est():
     move()
@@ -102,7 +102,7 @@ recull_perla_est()
 recull_perla_nord()
 torna_al_inici()</code></pre>
 
-        <p>Sí: primer recull la perla de l'Est, llavors la del Nord, i finalment torna a l'inici. Les tres últimes línies expliquen el pla sencer. Els procediments amaguen els detalls. Si vols saber com funciona un dels passos, vas a la definició. Si vols entendre el pla general, llegeixes les tres crides.</p>
+        <p>Sí: primer recull la perla de l'Est, llavors la del Nord, i finalment torna a l'inici. Les tres últimes línies expliquen el pla sencer. Les diferents funcions amaguen els detalls. Si vols saber com funciona un dels passos, vas a la definició. Si vols entendre el pla general, llegeixes les tres crides.</p>
         <p>La instrucció <code>turn_around()</code> fa que Karel giri 180°, és a dir, dona mitja volta però sense desplaçar-se.</p>
         <p><strong>Nota:</strong> en el nostre curs, el programa s'executa directament de dalt a baix — no cal escriure <code>def main():</code>. Però l'estratègia de pensar en fases i donar-los noms és exactament la mateixa.</p>
       </section>
@@ -145,7 +145,7 @@ torna_al_inici()
 "
              data-readonly="true"
              data-label="Exemple"
-             data-title="Tres procediments, tres fases. Les crides del final expliquen el pla sense necessitat de comentaris."
+             data-title="Tres funcions, o sigui, tres fases. Les crides del final expliquen el pla sense necessitat de comentaris."
              data-height="560">
         </div>
 
@@ -159,11 +159,11 @@ torna_al_inici()
       <section class="chapter-section">
         <h2>El que s'espera en entrar i en sortir</h2>
 
-        <p>Quan defineixes un procediment, és útil pensar en dos moments clau: <strong>on és en Karel quan el procediment comença</strong> (precondició) i <strong>on és quan acaba</strong> (postcondició).</p>
+        <p>Quan defineixes una funció nova, és útil pensar en dos moments clau: <strong>on és en Karel quan la funció comença?</strong> (precondició) i <strong>on és quan acaba?</strong> (postcondició).</p>
 
         <p>Per exemple, <code>recull_perla_est()</code> assumeix que en Karel mira cap a l'Est i la perla és dues caselles endavant. Si la crides en una situació diferent, el resultat no serà el que esperes.</p>
 
-        <p>Escriure un comentari breu que indiqui la precondició i postcondició d'un procediment és una bona pràctica:</p>
+        <p>Escriure un comentari breu que indiqui la precondició i postcondició d'una funció és una bona pràctica quan escrivim codi informàtic:</p>
 
         <pre><code># Precondició:  Karel mira Est, perla a 2 caselles del davant
 # Postcondició: Karel és sobre la perla (motxilla +1), mirant Est
@@ -172,9 +172,9 @@ def recull_perla_est():
     move()
     grab()</code></pre>
 
-        <p>No és obligatori, però t'ajudarà molt quan el programa comenci a créixer. Quan un procediment acaba sempre a la mateixa posició i orientació, és molt més fàcil encadenar-lo amb el següent.</p>
+        <p>No és obligatori, però t'ajudarà molt quan el programa comenci a créixer. Quan una funció acaba sempre a la mateixa posició i orientació, és molt més fàcil encadenar-lo amb la següent.</p>
 
-        <p><strong>Consell pràctic:</strong> dissenya cada procediment perquè en Karel quedi en una posició ben definida quan acabi. Això s'anomena <em>deixar el robot net</em>: el procediment recull i deixa en Karel com el va trobar (o en l'estat que el següent procediment necessita).</p>
+        <p><strong>Consell pràctic:</strong> dissenya cadascuna de les funcions perquè en Karel quedi en una posició ben definida quan acabi. Això s'anomena <em>deixar el robot net</em>: la funicó recull i deixa en Karel com el va trobar (o en l'estat que la següent funció necessita).</p>
       </section>
 
 
@@ -184,9 +184,9 @@ def recull_perla_est():
       <section class="chapter-section">
         <h2>Descomposició i repetició juntes</h2>
 
-        <p>La descomposició no exclou els bucles <code>for</code>: pots combinar les dues tècniques. Un procediment pot contenir un <code>for</code> al seu interior, i el programa principal pot cridar aquell procediment tantes vegades com calgui.</p>
+        <p>La descomposició no exclou els bucles <code>for</code>: pots combinar les dues tècniques. Una funció pot contenir un <code>for</code> al seu interior, i el programa principal pot cridar aquella funció tantes vegades com calgui.</p>
 
-        <p>En l'exemple de sota, en Karel ha de col·locar dues perles en dos llocs separats. Cada fase és un procediment independent que internament usa <code>move()</code> i <code>drop()</code>:</p>
+        <p>En l'exemple de sota, en Karel ha de col·locar dues perles en dos llocs separats. Cada fase és una funió independent, que internament usa <code>move()</code> i <code>drop()</code>:</p>
 
         <div class="simulador"
              data-map=".,.,.,.,.,.|K>,.,.,.,.,.|.,.,.,.,.,."
@@ -214,7 +214,7 @@ deixa_perla_a_col5()
              data-height="420">
         </div>
 
-        <p>Fixa't que cada procediment sap on comença (precondició) i on acaba (postcondició). <code>deixa_perla_a_col2()</code> acabarà a la columna 2 mirant Est, que és exactament on comença <code>deixa_perla_a_col5()</code>. Les fases s'encadenen sense problemes.</p>
+        <p>Fixa't que cada funció sap on comença (precondició) i on acaba (postcondició). <code>deixa_perla_a_col2()</code> acabarà a la columna 2 mirant Est, que és exactament on comença <code>deixa_perla_a_col5()</code>. Les fases s'encadenen sense problemes.</p>
       </section>
 
 
@@ -225,7 +225,7 @@ deixa_perla_a_col5()
         <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          En Karel viu en un corredor horitzontal. Hi ha tres perles situades a les columnes 1, 3 i 5 (la primera, la tercera i la cinquena casella a la dreta d'en Karel). Ha de recollir-les totes tres. Defineix un procediment per a cada fase: <code>recull_primera()</code>, <code>recull_segona()</code> i <code>recull_tercera()</code>. Llavors crida els tres procediments en ordre.
+          En Karel viu en un corredor horitzontal. Hi ha tres perles situades a les columnes 1, 3 i 5 (la primera, la tercera i la cinquena casella a la dreta d'en Karel). Ha de recollir-les totes tres. Defineix una funció per a cada fase: <code>recull_primera()</code>, <code>recull_segona()</code> i <code>recull_tercera()</code>. A continuació, has de cridar les tres funcions, en ordre.
         </div>
 
         <p>Pista: pensa en com en Karel queda posicionat després de cada fase. <code>recull_primera()</code> el deixa a la columna 1 mirant Est; <code>recull_segona()</code> ha de partir des d'allà i arribar a la columna 3, etc.</p>
@@ -233,15 +233,15 @@ deixa_perla_a_col5()
         <div class="simulador"
              data-map=".,.,.,.,.,.,.|K>,A,.,A,.,A,.|.,.,.,.,.,.,."
              data-goal=".,.,.,.,.,.,.|.,.,.,.,.,.,K>|.,.,.,.,.,.,."
-             data-code="# Defineix els tres procediments aquí:
+             data-code="# Defineix les teves tres funcions aquí:
 
 
-# Crida els tres procediments en ordre:
+# Crida les teves tres funcions, en l'ordre adequat:
 
-
+s
 "
              data-label="Exercici"
-             data-title="Defineix recull_primera(), recull_segona() i recull_tercera(). Cada procediment ha de moure en Karel fins a la perla i recollir-la."
+             data-title="Defineix recull_primera(), recull_segona() i recull_tercera(). Cada funció ha de moure en Karel fins a la perla i recollir-la."
              data-height="500">
         </div>
       </section>
