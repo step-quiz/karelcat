@@ -102,6 +102,18 @@ function front() {
   return { x: k.x + d.dx, y: k.y + d.dy };
 }
 
+function left() {
+  const k = K.state.karel;
+  const d = K.DIRS[(k.dir + 3) % 4];  // counterclockwise
+  return { x: k.x + d.dx, y: k.y + d.dy };
+}
+
+function right() {
+  const k = K.state.karel;
+  const d = K.DIRS[(k.dir + 1) % 4];  // clockwise
+  return { x: k.x + d.dx, y: k.y + d.dy };
+}
+
 
 // ── Avaluació de condicions ──
 
@@ -111,16 +123,23 @@ function evalCond(cond) {
     case 'not': return !evalCond(cond.inner);
     case 'and': return evalCond(cond.left) && evalCond(cond.right);
     case 'or':  return evalCond(cond.left) || evalCond(cond.right);
+    case 'bool_literal': return cond.value;
     case 'condition': {
       const action = L.COND_TO_ACTION[cond.name] ?? cond.name;
       const { x: fx, y: fy } = front();
+      const { x: lx, y: ly } = left();
+      const { x: rx, y: ry } = right();
       const k = K.state.karel;
       switch (action) {
-        case 'rock-ahead': return isRock(fx, fy);
-        case 'path-clear': return !isRock(fx, fy);
-        case 'pearl-here': return getCell(k.x, k.y) === 'A';
-        case 'bag-empty':  return k.motxilla === 0;
-        case 'bag-full':   return k.motxilla > 0;
+        case 'rock-ahead':   return isRock(fx, fy);
+        case 'path-clear':   return !isRock(fx, fy);
+        case 'left-clear':   return !isRock(lx, ly);
+        case 'left-blocked': return isRock(lx, ly);
+        case 'right-clear':  return !isRock(rx, ry);
+        case 'right-blocked':return isRock(rx, ry);
+        case 'pearl-here':   return getCell(k.x, k.y) === 'A';
+        case 'bag-empty':    return k.motxilla === 0;
+        case 'bag-full':     return k.motxilla > 0;
       }
     }
   }

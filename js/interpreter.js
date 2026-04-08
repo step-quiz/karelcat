@@ -8,7 +8,10 @@
 // ════════════════════════════════════════════════════════
 
 function* runStmts(stmts) {
-  for (const s of stmts) yield* runStmt(s);
+  for (const s of stmts) {
+    yield* runStmt(s);
+    if (K.state._break) return;
+  }
 }
 
 function* runStmt(node) {
@@ -31,6 +34,7 @@ function* runStmt(node) {
           return;
         }
         yield* runStmts(node.body);
+        if (S._break) { S._break = false; break; }
       }
       break;
     }
@@ -41,9 +45,16 @@ function* runStmt(node) {
         yield { type: 'error', code: 'inf_loop', msg: K.t('log.inf_loop'), line: node.line };
         return;
       }
-      for (let i = 0; i < node.count; i++) yield* runStmts(node.body);
+      for (let i = 0; i < node.count; i++) {
+        yield* runStmts(node.body);
+        if (S._break) { S._break = false; break; }
+      }
       break;
     }
+
+    case 'break':
+      S._break = true;
+      return;
 
     case 'call': {
       const body = S.procs[node.name];

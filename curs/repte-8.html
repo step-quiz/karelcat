@@ -3,73 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repte 8 — El tauler d'escacs | Karelcat</title>
+  <title>Repte 8 — El vigilant | Karelcat</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <style>
-    /* ── Badges de dificultat ── */
-    .dificultat-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      vertical-align: middle;
-      margin-left: 0.6rem;
-    }
-    .dificultat-facil {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    .dificultat-intermedi {
-      background: #fef3c7;
-      color: #92400e;
-    }
-    .dificultat-dificil {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    /* ── Caixa de consell pedagògic ── */
-    .consell-box {
-      background: #f0f9ff;
-      border-left: 4px solid #0284c7;
-      border-radius: 0 8px 8px 0;
-      padding: 0.9rem 1.1rem;
-      margin: 1.2rem 0;
-      font-size: 0.93rem;
-      color: #0c4a6e;
-    }
-    .consell-box strong {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #0284c7;
-    }
-
-    /* ── Capçalera del repte amb número i badge ── */
-    .repte-header-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-    .repte-numero {
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #6b7280;
-    }
-
-    /* ── Solució de referència (només visible al codi font) ── */
-    /* La solució s'inclou en un comentari HTML per al professor,
-       NO en cap atribut data-code visible a l'alumne. */
+    .dificultat-badge { display:inline-flex;align-items:center;gap:0.35rem;font-size:0.78rem;font-weight:700;letter-spacing:0.04em;padding:0.2rem 0.65rem;border-radius:999px;vertical-align:middle;margin-left:0.6rem; }
+    .dificultat-facil { background:#d1fae5;color:#065f46; }
+    .dificultat-intermedi { background:#fef3c7;color:#92400e; }
+    .dificultat-dificil { background:#fee2e2;color:#991b1b; }
+    .consell-box { background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 8px 8px 0;padding:0.9rem 1.1rem;margin:1.2rem 0;font-size:0.93rem;color:#0c4a6e; }
+    .consell-box strong { display:block;margin-bottom:0.3rem;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;color:#0284c7; }
   </style>
 </head>
 <body class="curs-light">
@@ -78,7 +21,7 @@
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
   <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
-  <span class="curs-header-title">Repte 8 — El tauler d'escacs</span>
+  <span class="curs-header-title">Repte 8 — El vigilant</span>
 </header>
 
 
@@ -103,136 +46,74 @@
       </header>
 
 
-      <!-- ══════════════════════════════════════════
-           REPTE C1 — EL TAULER D'ESCACS
-           ══════════════════════════════════════════ -->
       <section class="chapter-section chapter-exercise">
 
         <h2>
-          Repte 8 — El tauler d'escacs
-          <span class="dificultat-badge dificultat-dificil">★★★ Avançat</span>
+          Repte 8 — El vigilant
+          <span class="dificultat-badge dificultat-intermedi">★★ Intermedi</span>
         </h2>
 
-        <!-- Enunciat -->
         <div class="exercise-enunciat">
-          El món és un rectangle buit. En Karel ha d'omplir-lo amb un
-          <strong>patró d'escaquer</strong>: perles a les caselles «negres»
-          i res a les «blanques». La cantonada inferior esquerra és sempre
-          negra (porta perla).<br><br>
-          <strong>La teva feina:</strong> escriu un programa que funcioni
-          per a qualsevol rectangle, sigui quina sigui l'amplada i l'alçada.
-          El teu codi <em>no pot</em> dependre del nombre exacte de caselles.<br><br>
-          <strong>Restricció important:</strong> no pots usar variables
-          numèriques per comptar files ni columnes. La paritat de cada
-          casella s'ha d'inferir de l'<em>estat físic del món</em> —
-          concretament, de si en Karel ha deixat o no una perla a la
-          casella on és ara.
+          En Karel és un vigilant que patrulla el perímetre d'una illa rectangular.
+          Comença a la cantonada inferior esquerra, mirant cap a l'Est. Ha de donar
+          una volta completa a l'illa i tornar al punt de partida, seguint la vora
+          exterior.<br><br>
+          Al llarg del perímetre, algunes caselles tenen una perla. En Karel les ha de
+          recollir <strong>totes</strong> durant la seva ronda.<br><br>
+          <strong>La teva feina:</strong> escriu un programa que funcioni per a qualsevol mida
+          d'illa rectangular. El teu codi no pot dependre del nombre de caselles.<br><br>
+          <strong>Restricció:</strong> en Karel porta <strong>una perla a la motxilla</strong>.
+          Abans de començar la ronda, la deixa al terra com a marca del punt de partida.
+          La ronda acaba quan torna a trepitjar la marca.
         </div>
 
         <div class="consell-box">
-          <strong>💡 Pista — el truc de la paritat física</strong>
-          Quan en Karel acaba una fila i ha de pujar a la fila de sobre,
-          <em>la darrera casella que ha visitat</em> és la clau: si hi ha
-          perla (<code>pearl_here()</code> = <code>True</code>), la primera
-          casella de la nova fila serà «blanca» (sense perla). Si
-          <em>no</em> hi ha perla, la primera casella de la nova fila
-          serà «negra» (amb perla). Comprova la condició <strong>abans</strong>
-          de moure't a la nova fila; un cop t'has mogut ja no pots saber-ho.
+          <strong>💡 Pista — la regla del vigilant</strong>
+          Defineix una funció <code>pas_vigilant()</code> que faci exactament un pas de la ronda:
+          primer, si hi ha perla, recull-la; després, si pots avançar, avança; si no pots
+          avançar (cantonada), gira a la dreta. Repeteix-ho fins que tornis al punt de partida.
         </div>
 
         <div class="consell-box">
-          <strong>💡 Pista — el recorregut en serpentí i els dos girs</strong>
-          En Karel recorre el món en ziga-zaga: fila de baix cap a l'Est,
-          puja, fila de sobre cap a l'Oest, puja, fila cap a l'Est, …
-          El gir de transició <em>depèn de la direcció actual</em>:
-          des de l'Est cal <code>turn_left(); move(); turn_left()</code>
-          (girar al Nord, pujar, girar a l'Oest). Des de l'Oest cal
-          <code>turn_right(); move(); turn_right()</code> (girar al Nord,
-          pujar, girar a l'Est). Escriu dues funcions de transició,
-          una per a cada direcció.
+          <strong>💡 Pista — detectar el punt de partida</strong>
+          Abans de començar la ronda, deixa una perla com a «marca» amb <code>drop()</code>.
+          Llavors avança un pas per sortir de la marca, i el bucle principal és:
+          <code>while not pearl_here(): pas_vigilant()</code>. Quan el <code>while</code>
+          s'aturi, Karel haurà tornat a casa. Recull la marca al final.
         </div>
 
-        <div class="consell-box">
-          <strong>💡 Pista — <code>omple_fila_des_de_off()</code></strong>
-          L'esquelet et dóna <code>omple_fila_des_de_on()</code> ja
-          implementada: parteix d'una casella «negra», deixa perla, avança
-          dues caselles, deixa perla, … fins al final de la fila.
-          <code>omple_fila_des_de_off()</code> és la versió simètrica:
-          parteix d'una casella «blanca», avança una casella (saltant la
-          blanca), deixa perla, avança dues, deixa perla, … Observa que
-          l'estructura és gairebé idèntica, però l'ordre de les accions
-          dins del <code>while</code> s'intercanvia.
-        </div>
-
-        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
-             data-maps='[".,.,.|.,.,.|K>,.,.",".,.,.,.|.,.,.,.|.,.,.,.|K>,.,.,.",".,.,.,.,.|.,.,.,.,.|K>,.,.,.,."]'
-             data-goals='["A,.,K>|.,A,.|A,.,A","K<,A,.,A|A,.,A,.|.,A,.,A|A,.,A,.","A,.,A,.,K>|.,A,.,A,.|A,.,A,.,A"]'
-             data-labels='["3×3", "4×4", "5×3"]'
-             data-bag="99"
-             data-code="def omple_fila_des_de_on():
-    # Parteix d'una casella ON: deixa perla aquí i cada dues caselles
-    if not pearl_here():
-        drop()
-    while front_is_clear():
+             data-maps='[".,.,.,.|K>,A,.,A|.,A,.,.", ".,.,A,.,.|K>,.,.,.,A|.,A,.,.,.", ".,A,.,.,.,.|.,.,.,.,.,.|K>,.,.,A,.,A|.,.,A,.,.,."]'
+             data-goals='[".,.,.,.|K>,.,.,.|.,.,.,.", ".,.,.,.,.|K>,.,.,.,.|.,.,.,.,.", ".,.,.,.,.,.|.,.,.,.,.,.|K>,.,.,.,.,.|.,.,.,.,.,." ]'
+             data-labels='["4×3", "5×3", "6×4"]'
+             data-bag="1"
+             data-code="def pas_vigilant():
+    if pearl_here():
+        grab()
+    if front_is_clear():
         move()
-        if front_is_clear():
-            move()
-            if not pearl_here():
-                drop()
-
-
-def omple_fila_des_de_off():
-    # Parteix d'una casella OFF: salta-la i deixa perla a la següent ON
-    # El teu codi aquí — és la versió simètrica d'omple_fila_des_de_on()
-
-
-def canvia_fila_des_d_est():
-    # Des de l'Est: gira al Nord, puja una fila, gira a l'Oest
-    turn_left()
-    move()
-    turn_left()
-
-
-def canvia_fila_des_d_oest():
-    # Des de l'Oest: gira al Nord, puja una fila, gira a l'Est
-    turn_right()
-    move()
-    turn_right()
-
+    else:
+        turn_right()
 
 # ── Programa principal ──
-# La cantonada inferior esquerra sempre és ON
-omple_fila_des_de_on()
+# Marca el punt de partida
+drop()
+move()
 
-# Recorregut en serpentí: comprova pearl_here() ABANS de canviar de fila
-while left_is_clear():  # quan mires l'Est, l'esquerra = Nord = files per sobre
-    if pearl_here():
-        canvia_fila_des_d_est()
-        omple_fila_des_de_off()
-    else:
-        canvia_fila_des_d_est()
-        omple_fila_des_de_on()
+# Patrulla fins a tornar a la marca
+while not pearl_here():
+    pas_vigilant()
 
-    if not right_is_clear():  # quan mires l'Oest, la dreta = Nord; bloquejat = cim
-        break
-    if pearl_here():
-        canvia_fila_des_d_oest()
-        omple_fila_des_de_off()
-    else:
-        canvia_fila_des_d_oest()
-        omple_fila_des_de_on()
+# Recull la marca
+grab()
 "
-             data-title="El mateix codi ha de funcionar per als tres mons. Adapta la lògica al patró d'escaquer sense comptar caselles."
-             data-height="500">
+             data-title="El mateix codi ha de funcionar per als tres mons rectangulars."
+             data-height="380">
         </div>
 
       </section>
 
 
-      <!-- ══════════════════════════════════════════
-           NAVEGACIÓ
-           ══════════════════════════════════════════ -->
       <nav class="chapter-nav" aria-label="Navegació entre capítols">
         <a href="repte-7.html" class="btn-nav btn-nav--prev">← Repte 7</a>
         <a href="repte-9.html" class="btn-nav btn-nav--next">Repte 9 →</a>
@@ -247,137 +128,26 @@ while left_is_clear():  # quan mires l'Est, l'esquerra = Nord = files per sobre
 <!--
   ════════════════════════════════════════════════════════
   SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
-  No apareix en cap data-code visible a l'alumne.
-  ════════════════════════════════════════════════════════
 
-def omple_fila_des_de_on():
-    if not pearl_here():
-        drop()
-    while front_is_clear():
-        move()
-        if front_is_clear():
-            move()
-            if not pearl_here():
-                drop()
-
-def omple_fila_des_de_off():
-    while front_is_clear():
-        move()
-        if not pearl_here():
-            drop()
-        if front_is_clear():
-            move()
-
-def canvia_fila_des_d_est():
-    turn_left()
-    move()
-    turn_left()
-
-def canvia_fila_des_d_oest():
-    turn_right()
-    move()
-    turn_right()
-
-omple_fila_des_de_on()
-
-while left_is_clear():
+def pas_vigilant():
     if pearl_here():
-        canvia_fila_des_d_est()
-        omple_fila_des_de_off()
+        grab()
+    if front_is_clear():
+        move()
     else:
-        canvia_fila_des_d_est()
-        omple_fila_des_de_on()
+        turn_right()
 
-    if not right_is_clear():
-        break
-    if pearl_here():
-        canvia_fila_des_d_oest()
-        omple_fila_des_de_off()
-    else:
-        canvia_fila_des_d_oest()
-        omple_fila_des_de_on()
+drop()
+move()
 
+while not pearl_here():
+    pas_vigilant()
 
-  Traça d'execució (Test A — 3×3, inici (2,0) Est):
+grab()
 
-  Pattern ON: (row+col)%2==0  → (2,0)A (2,2)A (1,1)A (0,0)A (0,2)A
-
-  omple_fila_des_de_on() des de (2,0) Est:
-    drop (2,0)A · move(2,1) · move(2,2) · drop(2,2)A · move(2,3) NO wall
-    Karel a (2,2) Est. pearl_here()=True.
-
-  left_is_clear() Nord de (2,2)=True → entra al while.
-    pearl_here()=True → canvia_fila_des_d_est(): (2,2)→Nord→(1,2)→Oest.
-    omple_fila_des_de_off() des de (1,2) Oest:
-      move(1,1) · drop(1,1)A · move(1,0) · no front → exit.
-    Karel a (1,0) Oest. pearl_here()=False.
-
-  right_is_clear() Nord de (1,0)=True → no break.
-    pearl_here()=False → canvia_fila_des_d_oest(): (1,0)→Nord→(0,0)→Est.
-    omple_fila_des_de_on() des de (0,0) Est:
-      drop(0,0)A · move(0,1) · move(0,2) · drop(0,2)A · no front → exit.
-    Karel a (0,2) Est.
-
-  left_is_clear() Nord de (0,2)=False → surt del while.
-  Final: perles a (2,0)(2,2)(1,1)(0,0)(0,2). Karel a (0,2) Est. ✓
-
-
-  Traça d'execució (Test B — 4×4, inici (3,0) Est):
-
-  Pattern ON: (row+col)%2==1 → (3,0)A(3,2)A (2,3)A(2,1)A (1,0)A(1,2)A (0,3)A(0,1)A
-
-  omple_fila_des_de_on() des de (3,0) Est:
-    drop(3,0) · move(3,1) · move(3,2) · drop(3,2) · move(3,3) · no inner front → exit.
-    Karel a (3,3) Est. pearl_here()=False.
-
-  while left_is_clear() Nord(3,3)=True:
-    pearl_here()=False → canvia_fila_des_d_est() → (2,3) Oest.
-    omple_fila_des_de_on() des de (2,3) Oest:
-      drop(2,3)A · move(2,2) · move(2,1) · drop(2,1)A · move(2,0) · no front.
-      Karel a (2,0) Oest. pearl_here()=False.
-
-  right_is_clear() Nord(2,0)=True → no break.
-    pearl_here()=False → canvia_fila_des_d_oest() → (1,0) Est.
-    omple_fila_des_de_on() des de (1,0) Est:
-      drop(1,0)A · move(1,1) · move(1,2) · drop(1,2)A · move(1,3) · no front.
-      Karel a (1,3) Est. pearl_here()=False.
-
-  left_is_clear() Nord(1,3)=True → continua.
-    pearl_here()=False → canvia_fila_des_d_est() → (0,3) Oest.
-    omple_fila_des_de_on() des de (0,3) Oest:
-      drop(0,3)A · move(0,2) · move(0,1) · drop(0,1)A · move(0,0) · no front.
-      Karel a (0,0) Oest. pearl_here()=False.
-
-  right_is_clear() Nord(0,0)=False → BREAK.
-  Final: perles als 8 ON cells de la 4×4. Karel a (0,0) Oest. ✓
-
-
-  Per què funciona:
-    · pearl_here() comprovat ABANS de canvia_fila() és la memòria de paritat.
-      Si l'última casella de la fila anterior tenia perla (ON), la primera
-      casella de la nova fila és OFF → crida omple_fila_des_de_off().
-      Si no en tenia (OFF), la nova primera és ON → crida omple_fila_des_de_on().
-    · Les dues funcions de transició (des_d_est / des_d_oest) s'alternen
-      automàticament: while+break gestiona les files parells i senars.
-    · El left_is_clear() / right_is_clear() amb break cobreix tots els casos:
-      mons amb nombre parell i imparell de files, quadrats i rectangles.
-
-  Errors habituals de l'alumne:
-    · Comprovar pearl_here() DESPRÉS de canvia_fila(): la informació ja s'ha perdut.
-    · Usar sempre canvia_fila_des_d_est() → après d'una fila cap a l'Oest,
-      Karel baixa una fila en lloc de pujar.
-    · Oblidar el `break` → el programa es queda aturat a la darrera fila
-      buscant files per sobre que no existeixen (left/right_is_clear() infinit).
-    · Implementar omple_fila_des_de_off() com una còpia exacta d'omple_fila_des_de_on()
-      → les perles es posen a les caselles equivocades.
-
-  Clau pedagògica:
-    pearl_here() com a «variable» de paritat és l'epifania d'aquest repte.
-    L'alumne descobreix que l'estat físic del món pot substituir una variable
-    booleana, sempre que es consulti en el moment precís (just abans de moure's).
-    La simetria entre omple_fila_des_de_on() i omple_fila_des_de_off() és la
-    mateixa que entre puja_grao() i baixa_grao() del repte 7: entendre-la
-    permet escriure la funció en pocs minuts; copiar-la cegament sol trigar molt.
+  Clau pedagògica: front_is_clear() + turn_right() és suficient per
+  seguir un perímetre rectangular. Les quatre cantonades es gestionen
+  amb el mateix else. L'ús de drop() com a marcador anticipa el repte 13.
   ════════════════════════════════════════════════════════
 -->
 

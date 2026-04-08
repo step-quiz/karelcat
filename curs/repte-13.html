@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 13 — El punt mig | Karelcat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <style>
+    /* ── Badges de dificultat ── */
+    .dificultat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+    }
+    .dificultat-facil {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .dificultat-intermedi {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .dificultat-dificil {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* ── Caixa de consell pedagògic ── */
+    .consell-box {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1.2rem 0;
+      font-size: 0.93rem;
+      color: #0c4a6e;
+    }
+    .consell-box strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0284c7;
+    }
+
+    /* ── Capçalera del repte amb número i badge ── */
+    .repte-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .repte-numero {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    /* ── Solució de referència (només visible al codi font) ── */
+    /* La solució s'inclou en un comentari HTML per al professor,
+       NO en cap atribut data-code visible a l'alumne. */
+  </style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-title">Repte 13 — El punt mig</span>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div class="sidebar-header">
+      <a href="index.html">Capítols</a>
+      <a href="repte-1.html" class="active">Reptes</a>
+      <a href="../index.html">Simulador</a>
+    </div>
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <h1>Reptes</h1>
+      </header>
+
+
+      <!-- ══════════════════════════════════════════
+           REPTE C3 — EL PUNT MIG
+           ══════════════════════════════════════════ -->
+      <section class="chapter-section chapter-exercise">
+
+        <h2>
+          Repte 13 — El punt mig
+          <span class="dificultat-badge dificultat-dificil">★★★ Avançat</span>
+        </h2>
+
+        <!-- Enunciat -->
+        <div class="exercise-enunciat">
+          El món és un passadís buit de longitud desconeguda (sempre ≥ 1).
+          En Karel porta <strong>2 perles</strong> a la motxilla i ha de deixar
+          exactament <strong>una perla al punt mig</strong> del passadís.<br><br>
+          Si la longitud és <em>imparella</em>, la perla ha de quedar al centre
+          exacte. Si és <em>parella</em>, s'accepta qualsevol de les dues caselles
+          centrals.<br><br>
+          <strong>La restricció clau:</strong> el teu codi no pot saber d'entrada
+          quantes caselles té el passadís. Ha de funcionar per a
+          <em>qualsevol</em> longitud.
+        </div>
+
+        <div class="consell-box">
+          <strong>💡 Pista — dos punters que s'aproximen</strong>
+          Imagina que tens un marcador a cada extrem del passadís.
+          Si fas avançar el marcador dret un pas cap al centre, i el marcador
+          esquerre un pas cap al centre, i repeteixes fins que es troben…
+          a quina casella coincidiran?<br><br>
+          En Karel pot usar <code>drop()</code> per deixar una perla com a
+          marcador i <code>grab()</code> per recollir-la i traslladar-la.
+          Les perles de la motxilla fan d'«eines de mesura», no de decoració.
+        </div>
+
+        <div class="consell-box">
+          <strong>💡 Pista — la funció auxiliar</strong>
+          Et donem una funció que pot ser molt útil per moure't fins a un
+          marcador: <code>camina_fins_perla()</code> avança pas a pas fins que
+          en Karel sigui damunt d'una perla. Pensa com pots usar-la per tornar
+          al marcador esquerre o al marcador dret en cada iteració.
+        </div>
+
+        <!-- Simulador multi-món (DRY): un sol editor, tres passadissos de test -->
+        <div class="simulador"
+             data-maps='["K>,.,.","K>,.,.,.,.,.,.","K>,.,.,.,.,.,.,."]'
+             data-goals='[".,K>,.",".,.,.,K>,.,.,.",".,.,.,K<,.,.,.,."]'
+             data-labels='["Longitud 3 — imparella","Longitud 7 — imparella","Longitud 8 — parella"]'
+             data-bag="2"
+             data-code="def camina_fins_perla():
+    while not pearl_here():
+        move()
+
+# ── Pas 1: col·loca un marcador a cada extrem del passadís ──
+# (Usa drop() per deixar una perla com a marcador,
+#  i grab() per recollir-la quan vols traslladar-la.)
+
+
+
+# ── Pas 2: apropa els dos marcadors pas a pas fins que es trobin ──
+# Cada iteració:
+#   · Mou el marcador dret un pas cap a l'esquerra.
+#   · Mou el marcador esquerre un pas cap a la dreta.
+# Atura't quan els dos marcadors coincideixen en una mateixa casella.
+"
+             data-title="El mateix codi ha de trobar el punt mig en els tres passadissos."
+             data-height="380">
+        </div>
+
+      </section>
+
+
+      <!-- ══════════════════════════════════════════
+           NAVEGACIÓ
+           ══════════════════════════════════════════ -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="repte-12.html" class="btn-nav btn-nav--prev">← Repte 12</a>
+        <a href="index.html" class="btn-nav btn-nav--next">Tornar a l'índex →</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  No apareix en cap data-code visible a l'alumne.
+  ════════════════════════════════════════════════════════
+
+def camina_fins_perla():
+    while not pearl_here():
+        move()
+
+# Cas especial: passadís d'1 casella (front bloquejat des de l'inici)
+if not front_is_clear():
+    drop()  # Karel ja és al punt mig
+
+# Cas general: passadís de 2 o més caselles
+else:
+    drop()                  # marcador esquerre (L) a la posició inicial
+    while front_is_clear():
+        move()
+    drop()                  # marcador dret (R) a l'extrem dret
+    turn_around()           # gira per tornar cap al centre
+
+    while True:
+        # ── Mou el marcador dret un pas cap a l'esquerra ──
+        grab()              # recull R
+        move()              # avança un pas cap al centre
+        if pearl_here():    # L és aquí → els marcadors es troben → punt mig trobat!
+            break
+        drop()              # R en la nova posició
+
+        # ── Mou el marcador esquerre un pas cap a la dreta ──
+        while not pearl_here():
+            move()          # torna fins a L
+        grab()              # recull L
+        turn_around()       # gira cap al centre
+        move()              # avança un pas cap al centre
+        if pearl_here():    # R és aquí → els marcadors es troben → punt mig trobat!
+            break
+        drop()              # L en la nova posició
+
+        # ── Torna al marcador dret per a la propera iteració ──
+        while not pearl_here():
+            move()
+        turn_around()       # queda orientat cap al centre (Oest) per al proper grab()
+
+
+  ── Traça d'execució (Test A — longitud 3, inici cel·la 0, Est) ──
+
+  Món: K>,.,. → cel·les 0,1,2
+
+  Setup:
+    drop() a 0 → L=0. bag=1. Karel a 0 E.
+    move() → 1; move() → 2. front_is_clear? No.
+    drop() a 2 → R=2. bag=0. Karel a 2 E.
+    turn_around() → Karel a 2, W.
+
+  Iteració 1:
+    grab() R(2). bag=1. Karel a 2 W.
+    move() → Karel a 1 W.
+    pearl_here()? grid[0][1]='.' → No.
+    drop() R a 1. bag=0. Karel a 1 W.
+
+    while not pearl_here(): move() → Karel a 0 W. pearl_here()? Sí (L=0).
+    grab() L(0). bag=1. Karel a 0 W.
+    turn_around() → E.
+    move() → Karel a 1 E.
+    pearl_here()? grid[0][1]='A' (R=1) → Sí. Break!
+
+  Resultat: Karel a 1, orientació Est. Perla al terra a 1 (R marker).
+  currentStateToCSV() → ".,K>,." ✓ (perla al punt mig, solapada per Karel)
+
+
+  ── Traça d'execució (Test B — longitud 7, inici cel·la 0, Est) ──
+
+  Món: K>,.,.,.,.,.,. → cel·les 0..6
+
+  Setup: drop L(0), walk to 6, drop R(6), turn_around → W.
+
+  Iter 1: grab R(6), move→5, drop R(5). Walk W→0 (L). Grab L(0), turn E, move→1, drop L(1). Walk E→5 (R). Turn W.
+  Iter 2: grab R(5), move→4, drop R(4). Walk W→1 (L). Grab L(1), turn E, move→2, drop L(2). Walk E→4 (R). Turn W.
+  Iter 3: grab R(4), move→3. drop R(3). Walk W→2 (L). Grab L(2), turn E, move→3. pearl_here? Sí (R=3). Break!
+
+  Resultat: Karel a 3, Est. Perla a 3. currentStateToCSV() → ".,.,.,K>,.,.,.". ✓
+
+
+  ── Traça d'execució (Test C — longitud 8, inici cel·la 0, Est) ──
+
+  Món: K>,.,.,.,.,.,.,. → cel·les 0..7
+
+  Setup: drop L(0), walk to 7, drop R(7), turn_around → W.
+
+  Iter 1: grab R(7), move→6, drop R(6). Walk W→0 (L). Grab L(0), turn E, move→1, drop L(1). Walk E→6 (R). Turn W.
+  Iter 2: grab R(6), move→5, drop R(5). Walk W→1 (L). Grab L(1), turn E, move→2, drop L(2). Walk E→5 (R). Turn W.
+  Iter 3: grab R(5), move→4, drop R(4). Walk W→2 (L). Grab L(2), turn E, move→3. pearl_here? No (R=4). drop L(3). Walk E→4 (R). Turn W.
+  Iter 4: grab R(4), move→3. pearl_here? Sí (L=3). Break!
+
+  Resultat: Karel a 3, Oest. Perla a 3. currentStateToCSV() → ".,.,.,K<,.,.,.,.". ✓
+  (Per a longitud parella, casella 3 és una de les dues centrals vàlides.)
+
+
+  ── Per què funciona l'algorisme dels dos punters ──
+
+  · Cada iteració, el marcador dret avança 1 cap al centre i el marcador
+    esquerre avança 1 cap al centre: distància total entre ells es redueix 2.
+  · Per N imparella (N=2k+1): al final els dos marcadors es troben exactament
+    a la casella k (el centre geomètric).
+  · Per N parella (N=2k): quan el marcador dret es desplaça fins a la casella
+    on és el marcador esquerre, els dos marcadors queden a caselles adjacents
+    (k-1 i k); el punt mig cau entre ells. La casella k-1 queda com a resultat
+    (acceptable, ja que l'enunciat permet qualsevol de les dues caselles centrals).
+  · L'algorisme no usa cap variable numèrica ni comptador: l'estat físic del món
+    (presència de perla) substitueix qualsevol aritmètica. Aquí es completa la
+    progressió del curs: primer variables implícites (repte 4: motxilla com a
+    comptador), depois paritat física (repte 8: pearl_here() com a bit de paritat),
+    i ara geometria física (repte 10: posició de les perles com a punters).
+
+  ── Errors habituals de l'alumne ──
+
+  · Oblidar turn_around() per tornar cap al centre després de grab() L.
+    → Karel avança cap a la paret en comptes d'anar cap a R: error d'execució.
+  · No usar camina_fins_perla() per trobar L des de la posició actual.
+    → L'alumne usa un move() fix, que trenca per a passadissos de longituds
+    variades.
+  · No tractar el cas de longitud 1 (front_is_clear() false des de l'inici).
+    → drop() i walk no és possible; el programa intenta move() i xoca.
+  · Usar data-bag insuficient o intentar drop() sense perles a la motxilla.
+    → Error d'execució; l'alumne aprèn que les perles a la motxilla es gasten.
+  ════════════════════════════════════════════════════════
+-->
+
+<script>const CURRENT_REPTE = 13;</script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(CURRENT_REPTE);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>

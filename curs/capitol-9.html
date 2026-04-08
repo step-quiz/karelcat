@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Capítol 9 — Refinament Pas a Pas | Karel</title>
+  <title>Capítol 9 — El vocabulari complet | Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
@@ -13,7 +13,7 @@
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
   <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
-  <span class="curs-header-title">Capítol 9 — Refinament Pas a Pas</span>
+  <span class="curs-header-title">Capítol 9 — El vocabulari complet</span>
 </header>
 
 
@@ -33,126 +33,210 @@
   <main id="chapter-content" class="curs-content" tabindex="-1">
     <div class="chapter-content-inner">
 
+
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 9</span>
-        <h1>Refinament Pas a Pas</h1>
-        <p class="chapter-lead">Aprèn a resoldre problemes complexos dividint-los en tasques més petites gràcies a la creació de les teves pròpies funcions.</p>
+        <h1>El vocabulari complet d'en Karel</h1>
+        <p class="chapter-lead">Ja coneixes les instruccions bàsiques, els bucles, les condicions i els procediments. En aquest capítol completem el vocabulari d'en Karel amb eines que et permetran resoldre problemes més ambiciosos: mirar als costats, decidir entre tres o més opcions, i algunes convencions que fan el codi més net.</p>
       </header>
 
 
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 1 — turn_around() formal
+           ───────────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Divideix i Venceràs (Top-Down Design)</h2>
-        <p>Quan els programes es fan grans, escriure totes les ordres seguides en un sol bloc es converteix en un caos difícil de llegir. La solució és el <strong>refinament pas a pas</strong>: trencar un problema gran en sub-problemes i utilitzar <code>def</code> per crear funcions per a cadascun.</p>
-        <p>És molt important pensar en la <strong>Precondició</strong> (com està en Karel abans d'executar la funció) i la <strong>Postcondició</strong> (com el deixem quan la funció acaba). Si crees una funció per superar un obstacle, hauries d'assegurar-te que, al final, en Karel torna a estar a terra i mirant endavant, a punt per continuar.</p>
+        <h2>Girar en rodó: <code>turn_around()</code></h2>
+
+        <p>Ja coneixes <code>turn_around()</code> del capítol 5. Aquí el formalitzem: <code>turn_around()</code> fa que en Karel giri 180° sense moure's de casella. Si mirava l'Est, ara mira l'Oest. Si mirava el Nord, ara mira el Sud.</p>
+
+        <p>És equivalent a fer <code>turn_left()</code> dues vegades seguides (o <code>turn_right()</code> dues vegades). Tria el que et sembli més clar en cada situació.</p>
+
+        <p>Observa com en Karel va fins al final del corredor i torna:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.,.|K>,.,.,.,.,.|.,.,.,.,.,."
+             data-code="for i in range(5):
+    move()
+turn_around()
+for i in range(5):
+    move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="turn_around() fa mitja volta. En Karel va i torna sense haver de girar dues vegades."
+             data-height="300">
+        </div>
       </section>
 
 
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 2 — La convenció _
+           ───────────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Exemple 1: Ensenyant una habilitat nova</h2>
-        <p>En Karel sap moure's i girar, però no sap "saltar" de forma natural. Podem ensenyar-li a saltar una roca creant la funció <code>saltar_roca()</code> combinant els moviments bàsics amb les funcions que ja coneixem com <code>turn_right()</code>.</p>
+        <h2>La variable que no cal: <code>_</code></h2>
+
+        <p>Quan escrius <code>for i in range(5):</code>, la <code>i</code> és un nom que es crea automàticament per comptar les repeticions. Però en Karel no fem servir mai aquest comptador: només volem repetir N vegades.</p>
+
+        <p>En Python, quan un nom existeix però no el necessites, la convenció és escriure <code>_</code> (guió baix) en lloc d'una lletra:</p>
+
+        <pre><code>for _ in range(5):
+    move()</code></pre>
+
+        <p>El programa fa exactament el mateix. La diferència és de comunicació: <code>_</code> li diu a qui llegeix el codi «no necessito aquest valor, només vull repetir». Al llarg del curs i dels reptes trobaràs les dues formes: tria la que et sembli més natural.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 3 — left_is_clear / right_is_clear
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Mirar als costats: <code>left_is_clear()</code> i <code>right_is_clear()</code></h2>
+
+        <p>Fins ara, en Karel només podia mirar endavant: <code>front_is_clear()</code> i <code>front_is_blocked()</code>. Però de vegades necessita saber si té un camí lliure al costat sense haver de girar, mirar, i tornar a girar.</p>
+
+        <p>Dues condicions noves:</p>
+        <ul>
+          <li><code>left_is_clear()</code> — la casella que queda a l'<strong>esquerra</strong> d'en Karel és lliure?</li>
+          <li><code>right_is_clear()</code> — la casella que queda a la <strong>dreta</strong> d'en Karel és lliure?</li>
+        </ul>
+
+        <p>Cap de les dues mou ni gira en Karel. Només responen una pregunta.</p>
+
+        <p>En l'exemple següent, en Karel camina per un corredor. Cada cop que detecta una obertura a la dreta, hi fa una incursió i torna:</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.|.,.,.,.,.|K>,.,P,.,."
-             data-code="def saltar_roca():
-    turn_left()
+             data-map=".,.,.,.,.,.,.|K>,.,.,.,.,.,.|P,P,.,P,.,P,P"
+             data-code="while front_is_clear():
+    if right_is_clear():
+        turn_right()
+        move()
+        turn_around()
+        move()
+        turn_left()
     move()
-    turn_right()
-    move()
-    move()
-    turn_right()
-    move()
-    turn_left()
-
-# Provem si la nova habilitat funciona:
-move()
-saltar_roca()
-move()
 "
              data-readonly="true"
-             data-label="Exemple 1"
-             data-title="La funció saltar_roca() fa que en Karel pugi, avanci per sobre la roca, i torni a baixar a terra."
+             data-label="Exemple"
+             data-title="right_is_clear() detecta les obertures sense girar. En Karel explora i torna al corredor."
+             data-height="360">
+        </div>
+
+        <p>Aquí tens la taula completa de condicions d'en Karel:</p>
+
+        <pre><code># Condicions de moviment
+front_is_clear()      # el davant és lliure?
+front_is_blocked()    # el davant té obstacle?
+left_is_clear()       # l'esquerra és lliure?
+right_is_clear()      # la dreta és lliure?
+
+# Condicions del món
+pearl_here()          # hi ha una perla aquí?
+bag_is_empty()        # la motxilla és buida?</code></pre>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 4 — elif
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Tres camins: <code>if</code> / <code>elif</code> / <code>else</code></h2>
+
+        <p>Fins ara hem vist <code>if</code> (una alternativa) i <code>if/else</code> (dues alternatives). Però què passa quan hi ha tres possibilitats?</p>
+
+        <p>Per exemple: «si la dreta és lliure, gira a la dreta i avança; si no, si el davant és lliure, avança recte; si tampoc, gira a l'esquerra». Amb <code>if</code> i <code>else</code> imbricats:</p>
+
+        <pre><code>if right_is_clear():
+    turn_right()
+    move()
+else:
+    if front_is_clear():
+        move()
+    else:
+        turn_left()</code></pre>
+
+        <p>Funciona, però cada <code>else</code> afegeix un nivell d'indentació. Amb quatre o cinc casos, el codi se'n va cap a la dreta i costa de llegir.</p>
+
+        <p><code>elif</code> (contracció de «else if») resol el problema. Afegeix una condició nova al mateix nivell:</p>
+
+        <pre><code>if right_is_clear():
+    turn_right()
+    move()
+elif front_is_clear():
+    move()
+else:
+    turn_left()</code></pre>
+
+        <p>Les dues versions fan exactament el mateix. Però la versió amb <code>elif</code> és plana: totes les opcions estan al mateix nivell d'indentació. En programació, «pla» sol significar «fàcil de llegir».</p>
+
+        <p><strong>Regla:</strong> un <code>if</code> pot tenir tants <code>elif</code> com vulguis, però només un <code>else</code> al final. L'<code>else</code> és opcional.</p>
+
+        <p>Observa com en Karel navega un petit laberint amb la lògica de tres casos:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|.,.,.,.,.|K>,.,P,.,.|.,.,.,.,."
+             data-code="def pas():
+    if right_is_clear():
+        turn_right()
+        move()
+    elif front_is_clear():
+        move()
+    else:
+        turn_left()
+
+for i in range(8):
+    pas()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-title="if / elif / else: tres opcions al mateix nivell. En Karel decideix a cada pas."
              data-height="420">
         </div>
       </section>
 
 
-      <section class="chapter-section">
-        <h2>Exemple 2: Un codi principal molt més net</h2>
-        <p>Ara mira la potència d'això. Si tenim un món ple de roques i una perla al final, no hem de copiar i enganxar tot el procés de saltar cada vegada. El nostre <strong>programa principal</strong> (el bucle de sota) es llegeix com si fos una història molt senzilla i entenedora gràcies a la funció que acabem de crear!</p>
-
-        <div class="simulador"
-             data-map=".,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|K>,.,P,.,.,P,.,A,."
-             data-code="def saltar_roca():
-    turn_left()
-    move()
-    turn_right()
-    move()
-    move()
-    turn_right()
-    move()
-    turn_left()
-
-# --- Programa Principal ---
-# Repetir fins trobar la perla
-while not pearl_here():
-    if front_is_clear():
-        move()
-    else:
-        saltar_roca()
-
-grab()
-"
-             data-readonly="true"
-             data-label="Exemple 2"
-             data-title="El programa principal pot delegar tasques complexes a les funcions que has creat."
-             data-height="480">
-        </div>
-      </section>
-
-
+      <!-- ─────────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────────── -->
       <section class="chapter-section chapter-exercise">
-        <h2>Exercici: Netejant les columnes</h2>
+        <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          En Karel ha de recollir totes les perles d'aquestes tres columnes.
+          En Karel és en un corredor amb obertures laterals. Hi ha una perla amagada en una de les obertures. En Karel ha de recórrer el corredor i, a cada casella, decidir:
           <br><br>
-          En comptes d'escriure un codi repetitiu, <strong>defineix primer la funció <code>recollir_columna()</code></strong>. Aquesta funció ha de fer que en Karel (que comença a sota de la columna, mirant a l'Est) giri al Nord, reculli les 3 perles, doni mitja volta (<code>turn_around()</code>) fins a terra i <strong>es torni a posar mirant a l'Est</strong> (Postcondició).
+          <strong>1)</strong> Si hi ha una perla, recull-la.<br>
+          <strong>2)</strong> Si no hi ha perla però la dreta és lliure, gira a la dreta, avança, comprova si hi ha perla (i recull-la si n'hi ha), i torna al corredor.<br>
+          <strong>3)</strong> Si cap de les dues anteriors, simplement avança.
           <br><br>
-          Després, utilitza aquesta funció i un bucle al programa principal per netejar tot el món!
+          Usa <code>if</code>, <code>elif</code> i <code>else</code> dins d'un <code>while front_is_clear():</code>.
         </div>
 
-        <p><strong>Pista:</strong> Assegura't de cridar <code>recollir_columna()</code> només si en Karel detecta que hi ha una perla en aquella casella (<code>pearl_here()</code>).</p>
-
         <div class="simulador"
-             data-map=".,A,.,.,.,A,.,.,.,A,.|.,A,.,.,.,A,.,.,.,A,.|K>,A,.,.,.,A,.,.,.,A,."
-             data-goal=".,.,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.,K>"
-             data-code="# 1. Defineix la teva funció aquí a dalt:
-def recollir_columna():
-    # (El teu codi per pujar, recollir i baixar)
+             data-map=".,.,.,.,.,.,.|K>,.,.,.,.,.,.|P,P,.,P,A,P,P"
+             data-goal=".,.,.,.,.,.,.|.,.,.,.,.,.,K>|P,P,.,P,.,P,P"
+             data-code="# Escriu el teu codi aquí:
 
-
-
-# 2. Programa Principal:
-while front_is_clear():
-    # Fes servir if pearl_here(), la teva funció i move()
-    
 "
              data-label="Exercici"
-             data-title="El programa principal ha de ser tan senzill com l'Exemple 2."
-             data-height="480">
+             data-title="Explora el corredor i les obertures laterals per trobar la perla."
+             data-height="360">
         </div>
       </section>
 
 
+      <!-- ─────────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────────── -->
       <nav class="chapter-nav" aria-label="Navegació entre capítols">
         <a href="capitol-8.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
-        <a href="repte-1.html" class="btn-nav btn-nav--next">Reptes →</a>
+        <a href="capitol-10.html" class="btn-nav btn-nav--next">Capítol següent →</a>
       </nav>
+
 
     </div>
   </main>
 
 </div>
+
 
 <script>const CURRENT_CAPITOL = 9;</script>
 <script src="capitols.js"></script>

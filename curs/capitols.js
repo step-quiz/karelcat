@@ -39,23 +39,27 @@ const CAPITOLS_DATA = [
   { num: 6,  titol: 'Condicionals',              arxiu: 'capitol-6.html'  },
   { num: 7,  titol: 'Mentre',                    arxiu: 'capitol-7.html'  },
   { num: 8,  titol: 'Combinant condicions',      arxiu: 'capitol-8.html'  },
-  { num: 9,  titol: 'Com escriure codi',         arxiu: 'capitol-9.html'  },
+  { num: 9,  titol: 'El vocabulari complet',     arxiu: 'capitol-9.html'  },
+  { num: 10, titol: 'Del Karel al Python',       arxiu: 'capitol-10.html' },
 ];
 
 
 // ── B.2 — Genera i munta la barra lateral ────────────────
 
 const REPTES_DATA = [
-  { num: 1, titol: 'El diari',          arxiu: 'repte-1.html' },
-  { num: 2, titol: 'El passadís',       arxiu: 'repte-2.html' },
-  { num: 3, titol: "L'escala diagonal", arxiu: 'repte-3.html' },
-  { num: 4, titol: 'Distribuir les perles', arxiu: 'repte-4.html' },
-  { num: 5, titol: 'El serpentí',       arxiu: 'repte-5.html' },
-  { num: 6, titol: 'Construir torres',   arxiu: 'repte-6.html' },
-  { num: 7, titol: "L'escala doble",    arxiu: 'repte-7.html' },
-  { num: 8, titol: "El tauler d'escacs", arxiu: 'repte-8.html' },
-  { num: 9, titol: 'El laberint',        arxiu: 'repte-9.html' },
-  { num: 10, titol: 'El punt mig',      arxiu: 'repte-10.html' },
+  { num: 1,  titol: 'El diari',            arxiu: 'repte-1.html' },
+  { num: 2,  titol: 'El passadís',         arxiu: 'repte-2.html' },
+  { num: 3,  titol: "L'escala diagonal",   arxiu: 'repte-3.html' },
+  { num: 4,  titol: 'Distribuir les perles',arxiu: 'repte-4.html' },
+  { num: 5,  titol: 'El serpentí',         arxiu: 'repte-5.html' },
+  { num: 6,  titol: 'Construir torres',    arxiu: 'repte-6.html' },
+  { num: 7,  titol: "L'escala doble",      arxiu: 'repte-7.html' },
+  { num: 8,  titol: 'El vigilant',         arxiu: 'repte-8.html' },
+  { num: 9,  titol: 'Les files alternes',  arxiu: 'repte-9.html' },
+  { num: 10, titol: 'El detector',         arxiu: 'repte-10.html' },
+  { num: 11, titol: "El tauler d'escacs",  arxiu: 'repte-11.html' },
+  { num: 12, titol: 'El laberint',         arxiu: 'repte-12.html' },
+  { num: 13, titol: 'El punt mig',         arxiu: 'repte-13.html' },
 ];
 
 function renderReptesSidebar(currentNum) {

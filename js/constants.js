@@ -73,7 +73,7 @@ const SPEED_DELAYS = [2000, 800, 350, 150, 60, 10];
 // L'ordre ha de coincidir amb commands[] i conditions[] de i18n.js.
 
 const CMD_ACTIONS  = ['move','turn-left','turn-right','turn-around','grab','drop'];
-const COND_ACTIONS = ['path-clear','rock-ahead','pearl-here','bag-empty','bag-full'];
+const COND_ACTIONS = ['path-clear','rock-ahead','left-clear','left-blocked','right-clear','right-blocked','pearl-here','bag-empty','bag-full'];
 
 
 // ── LocalStorage keys ──

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 10 — Del Karel al Python | Karel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-title">Capítol 10 — Del Karel al Python</span>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div class="sidebar-header">
+      <a href="index.html" class="active">Capítols</a>
+      <a href="repte-1.html">Reptes</a>
+      <a href="../index.html">Simulador</a>
+    </div>
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 10</span>
+        <h1>Del Karel al Python</h1>
+        <p class="chapter-lead">Has completat els nou capítols del curs. Has après a pensar com un programador: descompondre problemes, escriure bucles, prendre decisions i crear funcions. Ara ve la sorpresa: tot el que has escrit ja era Python de debò.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 1 — Tot és Python
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Tot el que has escrit és Python</h2>
+
+        <p>Potser no t'ho esperaves: el codi que has escrit durant tot el curs és <strong>Python real</strong>.</p>
+
+        <p><code>for</code>, <code>while</code>, <code>if</code>, <code>elif</code>, <code>else</code>, <code>def</code>, <code>and</code>, <code>or</code>, <code>not</code>… tot això és Python. No una versió simplificada. No un llenguatge de joguina. Python de debò.</p>
+
+        <p>La diferència és que en Karel, les úniques «accions» eren <code>move()</code>, <code>grab()</code>, <code>turn_left()</code>… En Python real, les accions són molt més variades: pots escriure text a la pantalla, llegir fitxers, fer càlculs matemàtics, crear pàgines web, entrenar intel·ligències artificials. Però l'estructura del codi — bucles, condicions, funcions — és exactament la que ja coneixes.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 2 — Comparativa
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Compara: Karel vs. Python</h2>
+
+        <p>Fixa't com l'estructura és idèntica. Només canvien les accions de dins:</p>
+
+        <pre><code># Karel                           # Python
+for _ in range(5):                for _ in range(5):
+    move()                            print("Hola!")
+
+if pearl_here():                  if edat >= 18:
+    grab()                            print("Major d'edat")
+else:                             else:
+    move()                            print("Menor d'edat")
+
+def puja_grao():                  def saluda(nom):
+    turn_left()                       print("Hola, " + nom)
+    move()
+    turn_right()
+    move()</code></pre>
+
+        <p>La columna de l'esquerra la coneixes bé. La de la dreta és Python per a un ordinador real. Fixa't: l'estructura és idèntica.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 3 — Què hi ha de nou
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Què hi ha de nou a Python?</h2>
+
+        <p>Python afegeix coses que en Karel no necessitava:</p>
+
+        <p><strong>Variables</strong> — en Karel, la motxilla era l'única manera de «recordar» un número. En Python, pots guardar qualsevol valor amb un nom:</p>
+
+        <pre><code>punts = 0
+punts = punts + 10</code></pre>
+
+        <p><strong>Entrada i sortida</strong> — en Karel, el resultat del programa era la posició final d'en Karel al món. En Python, pots demanar informació a l'usuari i mostrar-li resultats:</p>
+
+        <pre><code>nom = input("Com et dius? ")
+print("Hola, " + nom + "!")</code></pre>
+
+        <p><strong>Tipus de dades</strong> — en Karel, tot eren caselles i perles. En Python hi ha números (<code>42</code>, <code>3.14</code>), text (<code>"Hola"</code>), llistes (<code>[1, 2, 3]</code>), i molt més.</p>
+
+        <p>Però la manera de pensar — descompondre el problema, crear funcions amb noms clars, usar bucles i condicions — és la mateixa. Això és el que has après amb en Karel: no un llenguatge, sinó <strong>una manera de pensar</strong>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 4 — Les 5 idees
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Les idees que no canvien mai</h2>
+
+        <p>Sigui quin sigui el llenguatge de programació que aprenguis en el futur (JavaScript, C, Java, Rust, Go…), hi trobaràs les mateixes cinc idees:</p>
+
+        <ol>
+          <li><strong>Seqüència:</strong> les instruccions s'executen en ordre, de dalt a baix.</li>
+          <li><strong>Repetició:</strong> <code>for</code> i <code>while</code> existeixen a tots els llenguatges.</li>
+          <li><strong>Decisió:</strong> <code>if/else</code> existeix a tots els llenguatges.</li>
+          <li><strong>Abstracció:</strong> les funcions (<code>def</code>) permeten donar noms a blocs de codi reutilitzables.</li>
+          <li><strong>Descomposició:</strong> partir un problema en parts amb noms clars és la tècnica fonamental de l'enginyeria del software.</li>
+        </ol>
+
+        <p>Aquestes cinc idees les has practicat amb en Karel. Ara les portaràs amb tu.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 5 — Per on continuo
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Per on continuo?</h2>
+
+        <p>Si vols continuar aprenent Python:</p>
+
+        <ul>
+          <li><strong>Python al teu ordinador:</strong> descarrega Python des de <a href="https://python.org" target="_blank">python.org</a> i obre un terminal. Prova <code>print("Hola, món!")</code> i ja estàs programant.</li>
+          <li><strong>Editors:</strong> <a href="https://code.visualstudio.com" target="_blank">VS Code</a> (gratuït) és l'editor que fan servir la majoria de programadors.</li>
+          <li><strong>Cursos:</strong> <em>Python for Everybody</em> (Universitat de Michigan), <em>CS50</em> (Harvard), <em>Automate the Boring Stuff</em> (gratuït en línia).</li>
+          <li><strong>Projectes:</strong> la millor manera d'aprendre és fent. Prova de crear un joc de preguntes, una calculadora, o un programa que generi una contrasenya aleatòria.</li>
+        </ul>
+
+        <p>Però primer: ves als <strong>Reptes</strong>. Combina tot el que saps per resoldre problemes que no tenen una sola solució correcta. Pensa bé l'algorisme abans d'escriure cap línia de codi.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-9.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="repte-1.html" class="btn-nav btn-nav--next">Reptes →</a>
+      </nav>
+
+
+    </div>
+  </main>
+
+</div>
+
+
+<script>const CURRENT_CAPITOL = 10;</script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(CURRENT_CAPITOL);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>

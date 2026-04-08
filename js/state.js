@@ -24,6 +24,7 @@ K.state = {
   // Intèrpret
   procs:      {},
   callDepth:  0,
+  _break:     false,
   stepCount:  0,
 };
 
@@ -34,6 +35,7 @@ K.lang = {
   CONDS:           new Set(),
   KEYWORDS:        new Set(),
   KW_IF:           '',
+  KW_ELIF:         '',
   KW_WHILE:        '',
   KW_FOR:          '',
   KW_IN:           '',
@@ -55,6 +57,7 @@ function applyCodeLang(lang) {
   L.CONDS           = new Set(tk.conditions);
   L.KEYWORDS        = new Set(tk.keywords);
   L.KW_IF           = tk.if_kw;
+  L.KW_ELIF         = tk.elif_kw;
   L.KW_WHILE        = tk.while_kw;
   L.KW_FOR          = tk.for_kw;
   L.KW_IN           = tk.in_kw;

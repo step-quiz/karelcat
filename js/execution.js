@@ -109,7 +109,7 @@ function buildInterpreter() {
   const S = K.state;
   const ast = K.parseCode(document.getElementById('code-editor')?.value || '');
   if (!ast) return null;
-  S.procs = {}; S.callDepth = 0; S.stepCount = 0;
+  S.procs = {}; S.callDepth = 0; S._break = false; S.stepCount = 0;
   for (const node of ast) if (node.type === 'proc') S.procs[node.name] = node.body;
   return K.runStmts(ast.filter(n => n.type !== 'proc'));
 }

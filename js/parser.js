@@ -126,17 +126,55 @@ class Parser {
       this.eatNL();
       const thenB = this.parseBlock(myIndent);
 
-      // Detectar `else` al mateix nivell d'indentació
+      // Detectar `elif` o `else` al mateix nivell d'indentació
       let elseB = [];
-      if (this.peekIndent() === myIndent) {
-        // Mirem 1 token endavant (el que ve després de l'INDENT)
+      while (this.peekIndent() === myIndent) {
         const nextW = this.peek(1);
-        if (nextW.t === 'W' && L.KW_ELSE_ALIASES.includes(nextW.v)) {
+        if (nextW.t === 'W' && nextW.v === L.KW_ELIF) {
+          // elif → desucrar com a else { if ... }
+          this.next();                  // consumeix INDENT
+          this.next();                  // consumeix 'elif'
+          const elifCond = this.parseCond();
+          this.eat(':');
+          this.eatNL();
+          const elifThen = this.parseBlock(myIndent);
+          // Construim un if anidat; el bucle continuarà per encadenar més elif/else
+          const elifNode = { type: 'if', cond: elifCond, then: elifThen, else: [], line: nextW.line };
+          elseB = [elifNode];
+          // Continuar el while: el pròxim elif/else s'enganxarà a AQUEST elifNode
+          // Per fer-ho, cal assignar al node intern, no a elseB directament.
+          // Reescrivim amb recursió per simplicitat:
+          // Detectar si ve un altre elif/else al mateix nivell
+          let tail = elifNode;
+          while (this.peekIndent() === myIndent) {
+            const nw2 = this.peek(1);
+            if (nw2.t === 'W' && nw2.v === L.KW_ELIF) {
+              this.next(); this.next();
+              const c2 = this.parseCond();
+              this.eat(':'); this.eatNL();
+              const t2 = this.parseBlock(myIndent);
+              const n2 = { type: 'if', cond: c2, then: t2, else: [], line: nw2.line };
+              tail.else = [n2];
+              tail = n2;
+            } else if (nw2.t === 'W' && L.KW_ELSE_ALIASES.includes(nw2.v)) {
+              this.next(); this.next();
+              this.eat(':'); this.eatNL();
+              tail.else = this.parseBlock(myIndent);
+              break;
+            } else {
+              break;
+            }
+          }
+          break;  // sortim del while extern
+        } else if (nextW.t === 'W' && L.KW_ELSE_ALIASES.includes(nextW.v)) {
           this.next();                  // consumeix INDENT
           this.next();                  // consumeix 'else'
           this.eat(':');
           this.eatNL();
           elseB = this.parseBlock(myIndent);
+          break;
+        } else {
+          break;
         }
       }
       return { type: 'if', cond, then: thenB, else: elseB, line };
@@ -183,6 +221,13 @@ class Parser {
       this.eat(':');
       this.eatNL();
       return { type: 'proc', name, body: this.parseBlock(myIndent), line };
+    }
+
+    // ── break ──
+    if (w === 'break') {
+      this.next();
+      this.eatNL();
+      return { type: 'break', line };
     }
 
     // ── Crida a procediment definit per l'alumne: nom() ──
@@ -239,6 +284,11 @@ class Parser {
       this.next();
       this.eat('('); this.eat(')');
       return { type: 'condition', name: tok.v, line };
+    }
+    // Boolean literals: True / False
+    if (tok.t === 'W' && (tok.v === 'True' || tok.v === 'False')) {
+      this.next();
+      return { type: 'bool_literal', value: tok.v === 'True', line };
     }
     throw new KarelSyntaxError(
       K.tf('parse.unknown_cond', { tok: tokLabel(tok), n: line }),

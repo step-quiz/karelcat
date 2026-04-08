@@ -16,9 +16,10 @@ K.CODE_LANGS = {
   en: {
     _name: 'English (Python)',
     commands:   ['move','turn_left','turn_right','turn_around','grab','drop'],
-    conditions: ['front_is_clear','front_is_blocked','pearl_here','bag_is_empty','bag_is_full'],
-    keywords:   ['if','else','while','for','in','range','def','not','and','or'],
+    conditions: ['front_is_clear','front_is_blocked','left_is_clear','left_is_blocked','right_is_clear','right_is_blocked','pearl_here','bag_is_empty','bag_is_full'],
+    keywords:   ['if','elif','else','while','for','in','range','def','not','and','or','break','True','False'],
     if_kw:      'if',
+    elif_kw:    'elif',
     else_kw:    ['else'],
     while_kw:   'while',
     for_kw:     'for',
