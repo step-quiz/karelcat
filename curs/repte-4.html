@@ -138,11 +138,12 @@
           quan no queden perles.
         </div>
 
-        <!-- Simulador A — 3 perles, passadís de 4 caselles -->
-        <p><strong>Passadís curt</strong> — 3 perles</p>
+        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
-             data-map="K>,.,.,."
-             data-goal="A,A,A,K>"
+             data-maps='["K>,.,.,.", "K>,.,.,.,.,.", "K>,.,.,.,.,.,.,." ]'
+             data-goals='["A,A,A,K>", "A,A,A,A,A,K>", "A,A,A,A,A,A,A,K>"]'
+             data-labels='["3 perles (4 caselles)", "5 perles (6 caselles)", "7 perles (8 caselles)"]'
+             data-bags='[3, 5, 7]'
              data-code="# En Karel té perles a la motxilla.
 # Ha de deixar-ne una a cada casella fins que s'esgoti.
 
@@ -150,46 +151,8 @@ while not bag_is_empty():
     # El teu codi aquí
     pass
 "
-             data-bag="3"
-             data-label="4 caselles"
-             data-title="Passadís de 4 caselles: en Karel ha de distribuir 3 perles i acabar a l'última casella."
-             data-height="240">
-        </div>
-
-        <!-- Simulador B — 5 perles, passadís de 6 caselles -->
-        <p><strong>Passadís mitjà</strong> — 5 perles</p>
-        <div class="simulador"
-             data-map="K>,.,.,.,.,."
-             data-goal="A,A,A,A,A,K>"
-             data-code="# En Karel té perles a la motxilla.
-# Ha de deixar-ne una a cada casella fins que s'esgoti.
-
-while not bag_is_empty():
-    # El teu codi aquí
-    pass
-"
-             data-bag="5"
-             data-label="6 caselles"
-             data-title="Passadís de 6 caselles: en Karel ha de distribuir 5 perles i acabar a l'última casella."
-             data-height="240">
-        </div>
-
-        <!-- Simulador C — 7 perles, passadís de 8 caselles -->
-        <p><strong>Passadís llarg</strong> — 7 perles</p>
-        <div class="simulador"
-             data-map="K>,.,.,.,.,.,.,."
-             data-goal="A,A,A,A,A,A,A,K>"
-             data-code="# En Karel té perles a la motxilla.
-# Ha de deixar-ne una a cada casella fins que s'esgoti.
-
-while not bag_is_empty():
-    # El teu codi aquí
-    pass
-"
-             data-bag="7"
-             data-label="8 caselles"
-             data-title="Passadís de 8 caselles: en Karel ha de distribuir 7 perles i acabar a l'última casella."
-             data-height="240">
+             data-title="El mateix codi ha de funcionar per als tres passadissos. La motxilla és la condició de parada."
+             data-height="280">
         </div>
 
       </section>

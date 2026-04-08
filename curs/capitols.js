@@ -111,7 +111,8 @@ function renderSidebar(currentNum) {
 //   data-height   (number) alçada en px (340 per defecte, 380 recomanat per a reptes)
 //   data-title    (string) text de llegenda sota el simulador (opcional)
 //   data-label    (string) badge: 'Exemple' | 'Exercici' | ''
-//   data-bag      (number) perles inicials a la motxilla
+//   data-bag      (number) perles inicials a la motxilla (valor únic per a tots els mons)
+//   data-bags     (string) JSON array de perles per món: '[3,5,7]' (prioritari sobre data-bag)
 //
 // Exemple N mons (capítol 10):
 //   <div class="simulador"
@@ -166,7 +167,10 @@ function _renderMultiMon(div) {
   const code     = (div.dataset.code  || '').replace(/\\n/g, '\n');  // ← conservar: és codi font, no mapa
   const height   = parseInt(div.dataset.height || '380', 10);
   const readonly = div.dataset.readonly === 'true';
-  const bag      = parseInt(div.dataset.bag || '0', 10);
+  const defaultBag = parseInt(div.dataset.bag || '0', 10);
+  let bags = [];
+  try { bags = JSON.parse(div.dataset.bags); } catch { bags = []; }
+  const getBag = i => (bags[i] !== undefined ? bags[i] : defaultBag);
   const label    = div.dataset.label || '';
   const title    = div.dataset.title || '';
   const n        = maps.length;
@@ -221,7 +225,7 @@ function _renderMultiMon(div) {
   iframe.title        = title || 'Simulador Karel';
   iframe.setAttribute('loading', 'lazy');
   iframe.setAttribute('allowfullscreen', '');
-  iframe.src = _iframeSrc(maps[0], code, goals[0] || '', goalIds[0], readonly, bag);
+  iframe.src = _iframeSrc(maps[0], code, goals[0] || '', goalIds[0], readonly, getBag(0));
   iframeWrap.appendChild(iframe);
   wrap.appendChild(iframeWrap);
 
@@ -253,7 +257,7 @@ function _renderMultiMon(div) {
       goals[newIdx] || '',
       goalIds[newIdx],
       readonly,
-      bag
+      getBag(newIdx)
     );
   }
 

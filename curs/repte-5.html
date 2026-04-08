@@ -148,11 +148,11 @@
           per no perdre cap perla de l'extrem.
         </div>
 
-        <!-- Simulador A — amplada 4 -->
-        <p><strong>Doble fila curta</strong> — 4 caselles d'amplada</p>
+        <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
-             data-map=".,.,A,.|K>,A,.,A"
-             data-goal="K<,.,.,.|.,.,.,."
+             data-maps='[".,.,A,.|K>,A,.,A", "A,.,.,A,.,.|K>,.,A,.,A,.", ".,.,A,.,A,.,.,A|K>,A,.,A,.,.,A,."]'
+             data-goals='["K<,.,.,.|.,.,.,.", "K<,.,.,.,.,.|.,.,.,.,.,.", "K<,.,.,.,.,.,.,.|.,.,.,.,.,.,.,."]'
+             data-labels='["4 caselles d'\''amplada", "6 caselles d'\''amplada", "8 caselles d'\''amplada"]'
              data-code="# Fase 1: recull les perles de la fila inferior cap a l'Est
 while front_is_clear():
     if pearl_here():
@@ -173,67 +173,8 @@ while front_is_clear():
 if pearl_here():
     grab()
 "
-             data-label="4 caselles"
-             data-title="Doble fila curta: en Karel ha de recollir les perles de les dues files en ziga-zaga."
-             data-height="340">
-        </div>
-
-        <!-- Simulador B — amplada 6 -->
-        <p><strong>Doble fila mitjana</strong> — 6 caselles d'amplada</p>
-        <div class="simulador"
-             data-map="A,.,.,A,.,.|K>,.,A,.,A,."
-             data-goal="K<,.,.,.,.,.|.,.,.,.,.,."
-             data-code="# Fase 1: recull les perles de la fila inferior cap a l'Est
-while front_is_clear():
-    if pearl_here():
-        grab()
-    move()
-if pearl_here():
-    grab()
-
-# Gir: puja a la fila superior i orienta't cap a l'Oest
-
-
-# Fase 2: recull les perles de la fila superior cap a l'Oest
-while front_is_clear():
-    if pearl_here():
-        grab()
-    move()
-if pearl_here():
-    grab()
-"
-             data-label="6 caselles"
-             data-title="Doble fila mitjana: el mateix codi ha de funcionar aquí sense canviar res."
-             data-height="340">
-        </div>
-
-        <!-- Simulador C — amplada 8 -->
-        <p><strong>Doble fila llarga</strong> — 8 caselles d'amplada</p>
-        <div class="simulador"
-             data-map=".,.,A,.,A,.,.,A|K>,A,.,A,.,.,A,."
-             data-goal="K<,.,.,.,.,.,.,.|.,.,.,.,.,.,.,."
-             data-code="# Fase 1: recull les perles de la fila inferior cap a l'Est
-while front_is_clear():
-    if pearl_here():
-        grab()
-    move()
-if pearl_here():
-    grab()
-
-# Gir: puja a la fila superior i orienta't cap a l'Oest
-
-
-# Fase 2: recull les perles de la fila superior cap a l'Oest
-while front_is_clear():
-    if pearl_here():
-        grab()
-    move()
-if pearl_here():
-    grab()
-"
-             data-label="8 caselles"
-             data-title="Doble fila llarga: el codi no pot dependre de l'amplada. Ha de funcionar aquí igual."
-             data-height="340">
+             data-title="El mateix codi ha de funcionar per als tres mons. L'amplada és desconeguda."
+             data-height="360">
         </div>
 
       </section>
