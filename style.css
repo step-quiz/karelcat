@@ -678,9 +678,8 @@ body.embed .code-col {
   border-right: 1px solid var(--border) !important;
 }
 body.embed .world-area {
-  overflow: auto;
-  align-items: flex-start;
-  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 /* En embed, el toolbar pot ser lleugerament més compacte */
