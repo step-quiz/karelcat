@@ -26,7 +26,7 @@
 | 5 | `repte-5.html` | El serpentí | B | ★★ Intermedi | ✅ Implementat |
 | 6 | `repte-6.html` | Construir torres | B | ★★ Intermedi | ✅ Implementat |
 | 7 | `repte-7.html` | L'escala doble | B | ★★ Intermedi | ✅ Implementat |
-| 8 | `repte-8.html` | El tauler d'escacs | C | ★★★ Avançat | ⬜ Pendent |
+| 8 | `repte-8.html` | El tauler d'escacs | C | ★★★ Avançat | ✅ Implementat |
 | 9 | `repte-9.html` | El laberint | C | ★★★ Avançat | ⬜ Pendent |
 | 10 | `repte-10.html` | El punt mig | C | ★★★ Avançat | ⬜ Pendent |
 
@@ -310,16 +310,96 @@ drop()
 
 ---
 
-### ⬜ Repte 8 — El tauler d'escacs (C1, ★★★ Avançat)
+### ✅ Repte 8 — El tauler d'escacs (C1, ★★★ Avançat)
 
-**Conceptes:** `while`, `if`, gestió de paritat sense variables, casos límit.
-**Adaptació de:** Checkerboard Karel (el repte més cèlebre del CS106A).
+**Fitxer:** `curs/repte-8.html`
+**Conceptes:** `while`, `if`, `pearl_here()` com a memòria de paritat, serpentí bidireccional, pre/postcondicions.
+**Adaptació de:** Checkerboard Karel (Stanford CS106A — el repte més cèlebre).
 
-**Enunciat:** En Karel ha d'omplir un món rectangular buit amb un patró d'escaquer de perles. El món pot tenir qualsevol dimensió.
+**Mons de test (3 simuladors):**
+```
+Test A — 3×3:
+  Inicial: .,.,.|.,.,.|K>,.,.
+  Goal:    A,.,K>|.,A,.|A,.,A
 
-**Clau pedagògica:** Sense variables, la paritat s'ha d'inferir de l'estat físic. El salt de fila és el punt crític. Cal gestionar casos límit: mons 1×N, N×1, dimensions senars.
+Test B — 4×4:
+  Inicial: .,.,.,.|.,.,.,.|.,.,.,.|K>,.,.,.
+  Goal:    K<,A,.,A|A,.,A,.|.,A,.,A|A,.,A,.
 
-**Mons de test obligatoris:** 1×1, 1×2, 2×1, 3×3, 4×4, 5×4.
+Test C — 5×3:
+  Inicial: .,.,.,.,.|.,.,.,.,.|K>,.,.,.,.
+  Goal:    A,.,A,.,K>|.,A,.,A,.|A,.,A,.,A
+```
+
+*(La cantonada inferior esquerra sempre és ON. El patró alterna ON/OFF per (row+col)%2.)*
+
+**Motxilla inicial:** `data-bag="99"` (pràcticament infinita).
+
+**Clau del disseny — el truc de la paritat física:**
+Al final de cada fila, `pearl_here()` codifica la paritat de la darrera casella visitada.
+- `True` (ON) → la primera casella de la nova fila és OFF → cridar `omple_fila_des_de_off()`
+- `False` (OFF) → la primera casella de la nova fila és ON → cridar `omple_fila_des_de_on()`
+
+Sense variables numèriques, l'estat físic del món substitueix el comptador de paritat.
+
+**Solució de referència:**
+```python
+def omple_fila_des_de_on():
+    if not pearl_here():
+        drop()
+    while front_is_clear():
+        move()
+        if front_is_clear():
+            move()
+            if not pearl_here():
+                drop()
+
+def omple_fila_des_de_off():
+    while front_is_clear():
+        move()
+        if not pearl_here():
+            drop()
+        if front_is_clear():
+            move()
+
+def canvia_fila_des_d_est():
+    turn_left()
+    move()
+    turn_left()
+
+def canvia_fila_des_d_oest():
+    turn_right()
+    move()
+    turn_right()
+
+omple_fila_des_de_on()
+
+while left_is_clear():
+    if pearl_here():
+        canvia_fila_des_d_est()
+        omple_fila_des_de_off()
+    else:
+        canvia_fila_des_d_est()
+        omple_fila_des_de_on()
+
+    if not right_is_clear():
+        break
+    if pearl_here():
+        canvia_fila_des_d_oest()
+        omple_fila_des_de_off()
+    else:
+        canvia_fila_des_d_oest()
+        omple_fila_des_de_on()
+```
+
+**Esquelet visible per l'alumne:** `omple_fila_des_de_on()` completament implementada com a referència; `omple_fila_des_de_off()` buida (l'alumne descobreix la versió simètrica); les dues funcions de transició donades; programa principal complet mostrant el truc de `pearl_here()`.
+
+**Clau pedagògica:** `pearl_here()` com a «variable» de paritat és l'epifania del repte. L'alumne descobreix que l'estat físic del món pot substituir una variable booleana, sempre que es consulti en el moment precís (just abans de moure's a la nova fila). La simetria `omple_fila_des_de_on ↔ omple_fila_des_de_off` paral·lela a la de `puja_grao ↔ baixa_grao` del repte 7.
+
+**Notes d'implementació:**
+- El `while left_is_clear()` + `break` gestiona tots els casos: nombre parell i senar de files, quadrats i rectangles.
+- `left_is_clear()` comprova el Nord quan Karel mira l'Est; `right_is_clear()` comprova el Nord quan Karel mira l'Oest.
+- La navegació: anterior → `repte-7.html`, següent → `repte-9.html`.
 
 ---
 
@@ -365,4 +445,4 @@ P,P,P,.,P,.
 
 ---
 
-*Última actualització: sessió 6 — Implementat repte-6.html (B2, Construir torres). Stone Mason Karel amb pre/postcondicions. `omple_columna()` + `while` principal sense comptador. Repte-5 i repte-6 afegits a `REPTES_DATA` a `capitols.js`.*
+*Última actualització: sessió 8 — Implementat repte-8.html (C1, El tauler d'escacs). Checkerboard Karel sense variables: `pearl_here()` com a memòria de paritat, serpentí bidireccional amb `canvia_fila_des_d_est()` / `canvia_fila_des_d_oest()`. Repte-8 afegit a `REPTES_DATA` a `capitols.js`.*

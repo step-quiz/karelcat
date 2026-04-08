@@ -53,6 +53,7 @@ const REPTES_DATA = [
   { num: 5, titol: 'El serpentí',       arxiu: 'repte-5.html' },
   { num: 6, titol: 'Construir torres',   arxiu: 'repte-6.html' },
   { num: 7, titol: "L'escala doble",    arxiu: 'repte-7.html' },
+  { num: 8, titol: "El tauler d'escacs", arxiu: 'repte-8.html' },
 ];
 
 function renderReptesSidebar(currentNum) {
