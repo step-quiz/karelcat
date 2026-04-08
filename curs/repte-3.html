@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 3 — L'escala diagonal | Karelcat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+  <style>
+    /* ── Badges de dificultat ── */
+    .dificultat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+    }
+    .dificultat-facil {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .dificultat-intermedi {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .dificultat-dificil {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* ── Caixa de consell pedagògic ── */
+    .consell-box {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1.2rem 0;
+      font-size: 0.93rem;
+      color: #0c4a6e;
+    }
+    .consell-box strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0284c7;
+    }
+
+    /* ── Capçalera del repte amb número i badge ── */
+    .repte-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .repte-numero {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    /* ── Solució de referència (només visible al codi font) ── */
+    /* La solució s'inclou en un comentari HTML per al professor,
+       NO en cap atribut data-code visible a l'alumne. */
+  </style>
+</head>
+<body class="curs-light">
+
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-title">Repte 3 — L'escala diagonal</span>
+</header>
+
+
+<div class="curs-layout">
+
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div class="sidebar-header">
+      <a href="index.html">Capítols</a>
+      <a href="repte-1.html" class="active">Reptes</a>
+      <a href="../index.html">Simulador</a>
+    </div>
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main id="chapter-content" class="curs-content" tabindex="-1">
+    <div class="chapter-content-inner">
+
+      <header class="chapter-header">
+        <h1>Reptes</h1>
+      </header>
+
+
+      <!-- ══════════════════════════════════════════
+           REPTE A3 — L'ESCALA DIAGONAL
+           ══════════════════════════════════════════ -->
+      <section class="chapter-section chapter-exercise">
+
+        <h2>
+          Repte 3 — L'escala diagonal
+          <span class="dificultat-badge dificultat-facil">★ Fàcil</span>
+        </h2>
+
+        <!-- Enunciat -->
+        <div class="exercise-enunciat">
+          En Karel és a la cantonada inferior esquerra d'un món quadrat.
+          Ha de pujar per l'escala diagonal: deixant una perla a cada graó
+          mentre avança cap a la cantonada superior dreta.<br><br>
+          <strong>La teva feina:</strong> escriu un programa perquè en Karel
+          deixi perles formant una diagonal i acabi a la cantonada superior dreta.<br><br>
+          <strong>Restricció important:</strong> usa una funció
+          <code>puja_grao()</code> que faci <em>un sol graó</em> i crida-la
+          des d'un bucle <code>for</code>. El programa principal ha de ser
+          tan clar com això:
+          <pre style="margin:0.7rem 0 0; background:#f1f5f9; padding:0.7rem 1rem; border-radius:6px; font-size:0.9rem;">for i in range(N):
+    puja_grao()</pre>
+          El nombre de graons és <strong>fix i conegut</strong> per a cada món:
+          has d'adaptar el valor de <code>N</code> al <code>range</code> según
+          la mida del món.
+        </div>
+
+        <div class="consell-box">
+          <strong>💡 Pista de la unitat rítmica</strong>
+          Pensa com és un sol graó: en Karel deixa una perla on és, avança
+          una casella cap a l'Est, gira cap al Nord, puja una casella i gira
+          de nou cap a l'Est. Això és exactament el cos de
+          <code>puja_grao()</code>. Si aconsegueixes fer UN graó correctament,
+          el <code>for</code> en farà tants com calgui sense cap canvi addicional.
+          Observa que l'única diferència entre els tres mons és el número del
+          <code>range</code>.
+        </div>
+
+        <!-- Simulador A — món 3×3, N=2 graons -->
+        <p><strong>Món 3×3</strong> — 2 graons</p>
+        <div class="simulador"
+             data-map=".,.,.|.,.,.|K>,.,."
+             data-goal=".,.,K>|.,A,.|A,.,."
+             data-code="def puja_grao():
+    # El teu codi aquí
+
+
+# ── Programa principal ──
+for i in range(2):
+    puja_grao()
+"
+             data-label="3×3"
+             data-title="Món 3×3: en Karel ha de deixar 2 perles en diagonal i acabar a la cantonada superior dreta."
+             data-height="340">
+        </div>
+
+        <!-- Simulador B — món 5×5, N=4 graons -->
+        <p><strong>Món 5×5</strong> — 4 graons</p>
+        <div class="simulador"
+             data-map=".,.,.,.,.|.,.,.,.,.|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,."
+             data-goal=".,.,.,.,K>|.,.,.,A,.|.,.,A,.,.|.,A,.,.,.|A,.,.,.,."
+             data-code="def puja_grao():
+    # El teu codi aquí
+
+
+# ── Programa principal ──
+for i in range(4):
+    puja_grao()
+"
+             data-label="5×5"
+             data-title="Món 5×5: en Karel ha de deixar 4 perles en diagonal i acabar a la cantonada superior dreta."
+             data-height="480">
+        </div>
+
+        <!-- Simulador C — món 8×8, N=7 graons -->
+        <p><strong>Món 8×8</strong> — 7 graons</p>
+        <div class="simulador"
+             data-map=".,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,."
+             data-goal=".,.,.,.,.,.,.,K>|.,.,.,.,.,.,A,.|.,.,.,.,.,A,.,.|.,.,.,.,A,.,.,.|.,.,.,A,.,.,.,.|.,.,A,.,.,.,.,.|.,A,.,.,.,.,.,.|A,.,.,.,.,.,.,."
+             data-code="def puja_grao():
+    # El teu codi aquí
+
+
+# ── Programa principal ──
+for i in range(7):
+    puja_grao()
+"
+             data-label="8×8"
+             data-title="Món 8×8: en Karel ha de deixar 7 perles en diagonal i acabar a la cantonada superior dreta."
+             data-height="680">
+        </div>
+
+      </section>
+
+
+      <!-- ══════════════════════════════════════════
+           NAVEGACIÓ
+           ══════════════════════════════════════════ -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="repte-2.html" class="btn-nav btn-nav--prev">← Repte 2</a>
+        <a href="repte-4.html" class="btn-nav btn-nav--next">Repte 4 →</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  No apareix en cap data-code visible a l'alumne.
+  ════════════════════════════════════════════════════════
+
+def puja_grao():
+    drop()
+    move()
+    turn_left()
+    move()
+    turn_right()
+
+for i in range(4):
+    puja_grao()
+
+  Traça d'execució (coordenades fila, columna des de 0):
+    Inici:  (4,0) → Est
+    Graó 1: drop a (4,0) · move → (4,1) · turn_left → N · move → (3,1) · turn_right → E
+    Graó 2: drop a (3,1) · move → (3,2) · turn_left → N · move → (2,2) · turn_right → E
+    Graó 3: drop a (2,2) · move → (2,3) · turn_left → N · move → (1,3) · turn_right → E
+    Graó 4: drop a (1,3) · move → (1,4) · turn_left → N · move → (0,4) · turn_right → E
+    Final:  (0,4) → Est  ✓
+
+  Perles al món: (4,0) (3,1) (2,2) (1,3) — diagonal perfecta.
+
+  Errors habituals de l'alumne:
+    · Posar drop() DESPRÉS de move() en comptes d'ABANS: la perla queda
+      una casella desplaçada.
+    · Oblidar el turn_right() final: el puja_grao() no restaura
+      l'orientació Est i el segon graó surt en la direcció equivocada.
+    · Escriure move() move() turn_left() move() (sense drop): Karel arriba
+      però no deixa rastre.
+
+  Clau pedagògica: la funció puja_grao() té una precondició (Karel mira
+  a l'Est i el camí és lliure) i una postcondició idèntica (Karel mira a
+  l'Est, una casella i un pis amunt). Gràcies a aquesta simetria, encadenar
+  N crides és trivial. Si la postcondició no es compleix, el segon graó falla.
+  ════════════════════════════════════════════════════════
+-->
+
+<script>const CURRENT_REPTE = 3;</script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(CURRENT_REPTE);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
