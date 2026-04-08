@@ -25,7 +25,7 @@
 | 4 | `repte-4.html` | Distribuir les perles | A | ★ Fàcil | ✅ Implementat |
 | 5 | `repte-5.html` | El serpentí | B | ★★ Intermedi | ✅ Implementat |
 | 6 | `repte-6.html` | Construir torres | B | ★★ Intermedi | ✅ Implementat |
-| 7 | `repte-7.html` | L'escala doble | B | ★★ Intermedi | ⬜ Pendent |
+| 7 | `repte-7.html` | L'escala doble | B | ★★ Intermedi | ✅ Implementat |
 | 8 | `repte-8.html` | El tauler d'escacs | C | ★★★ Avançat | ⬜ Pendent |
 | 9 | `repte-9.html` | El laberint | C | ★★★ Avançat | ⬜ Pendent |
 | 10 | `repte-10.html` | El punt mig | C | ★★★ Avançat | ⬜ Pendent |
@@ -247,13 +247,66 @@ while front_is_clear():
 
 ---
 
-### ⬜ Repte 7 — L'escala doble (B3, ★★ Intermedi)
+### ✅ Repte 7 — L'escala doble (B3, ★★ Intermedi)
 
-**Conceptes:** `def`, `for`, seqüències simètriques, transició pujada/baixada.
+**Fitxer:** `curs/repte-7.html`
+**Conceptes:** `def`, `while not pearl_here()`, `while front_is_clear()`, seqüències simètriques, transició pujada/baixada.
+**Adaptació de:** Double Staircase Karel (variant CS106A).
 
-**Enunciat:** En Karel ha de pujar una escala de N graons, recollir la perla de la cima i baixar l'escala de l'altre costat deixant la perla al peu.
+**Mons de test (3 simuladors):**
+```
+Test A — 5×3, N=2 graons:
+  Inicial: .,.,A,.,.|.,.,.,.,.|K>,.,.,.,. 
+  Goal:    .,.,.,.,.|.,.,.,.,.|.,.,.,.,K>
 
-**Clau pedagògica:** Identificar la simetria: `puja_grao()` i `baixa_grao()` com a funcions inverses l'una de l'altra.
+Test B — 7×4, N=3 graons:
+  Inicial: .,.,.,A,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,.|K>,.,.,.,.,.,. 
+  Goal:    .,.,.,.,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,K>
+
+Test C — 9×5, N=4 graons:
+  Inicial: .,.,.,.,A,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,.,.
+  Goal:    .,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,K>
+```
+
+*(Món completament obert. La perla de la cima és l'únic marcador de posició. La paret dreta del món atura la baixada.)*
+
+**Motxilla inicial:** `data-bag` no s'usa (Karel no porta perles pròpies; recull la perla de la cima).
+
+**Solució de referència:**
+```python
+def puja_grao():
+    move()
+    turn_left()
+    move()
+    turn_right()
+
+def baixa_grao():
+    turn_right()
+    move()
+    turn_left()
+    move()
+
+while not pearl_here():
+    puja_grao()
+
+grab()
+
+while front_is_clear():
+    baixa_grao()
+
+drop()
+```
+
+**Esquelet visible per l'alumne:** `puja_grao()` implementada com a referència; `baixa_grao()` buida (l'alumne ha de descobrir la inversió); bucle de pujada donat (`while not pearl_here()`); bucle de baixada i `drop()` a completar.
+
+**Clau pedagògica:** La simetria `puja_grao ↔ baixa_grao` és el nucli del repte: `baixa_grao()` és exactament l'invers pas a pas de `puja_grao()`. Un cop identificada aquesta simetria, el programa principal resulta trivial. La condició `while not pearl_here()` demostra que es pot aturar un bucle per l'estat del món (presència d'una perla) en comptes d'un comptador; `while front_is_clear()` per a la baixada aprofita la paret del món com a condició de parada natural.
+
+**Notes d'implementació:**
+- Mons completament oberts (sense roques interiors); l'estructura de l'escala la defineix l'algorisme, no la geometria del món.
+- `while not pearl_here(): puja_grao()` és agnòstic de N: funciona per a 2, 3 o 4 graons sense canvis.
+- `while front_is_clear(): baixa_grao()` s'atura automàticament quan Karel arriba a la paret dreta del món (col 2N, fila inferior).
+- Per a cada test, la posició final de Karel coincideix amb la posició on es deixa la perla (extrem inferior dret de l'escala).
+- La navegació: anterior → `repte-6.html`, següent → `repte-8.html`.
 
 ---
 
