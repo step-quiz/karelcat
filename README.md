@@ -4,7 +4,7 @@ Entorn interactiu per aprendre a programar en Python, adreçat a alumnes de secu
 
 ## Què és
 
-Un curs de 10 capítols, accessible des del navegador sense instal·lació, inspirat en el [Stanford Karel Reader](https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html). Cada capítol combina explicació breu, exemples executables incrustats i un exercici final. La interfície és intencionadament minimalista: editor de codi a l'esquerra, món de Karel a la dreta, dos botons.
+Un curs de 10 capítols i 13 reptes, accessible des del navegador sense instal·lació, inspirat en el [Stanford Karel Reader](https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html). Cada capítol combina explicació breu, exemples executables incrustats i navegació cap als reptes finals. La interfície és intencionadament minimalista: editor de codi a l'esquerra, món de Karel a la dreta, dos botons.
 
 ## Estat actual
 
@@ -15,7 +15,15 @@ Un curs de 10 capítols, accessible des del navegador sense instal·lació, insp
 | Infraestructura del curs (sidebar, iframes, deep links) | ✅ Completa |
 | Capítol 1 — Coneix en Karel | ✅ Escrit |
 | Capítol 2 — Agafa i deixa | ✅ Escrit |
-| Capítols 3–10 | ⬜ Pendents |
+| Capítol 3 — Repeteix | ✅ Escrit |
+| Capítol 4 — Procediments | ✅ Escrit |
+| Capítol 5 — Descomposició | ✅ Escrit |
+| Capítol 6 — Condicionals | ✅ Escrit |
+| Capítol 7 — Mentre | ✅ Escrit |
+| Capítol 8 — Combinant condicions | ✅ Escrit |
+| Capítol 9 — El vocabulari complet | ✅ Escrit |
+| Capítol 10 — Del Karel al Python | ✅ Escrit |
+| Reptes 1–13 (capítol 10) | ✅ Tots implementats |
 
 ## Sintaxi del llenguatge
 
@@ -24,7 +32,10 @@ Un curs de 10 capítols, accessible des del navegador sense instal·lació, insp
 move()  turn_left()  turn_right()  turn_around()  grab()  drop()
 
 # Condicions
-front_is_clear()  front_is_blocked()  pearl_here()  bag_is_empty()  bag_is_full()
+front_is_clear()  front_is_blocked()
+left_is_clear()   left_is_blocked()
+right_is_clear()  right_is_blocked()
+pearl_here()      bag_is_empty()      bag_is_full()
 
 # Estructures de control
 for _ in range(N):
@@ -35,6 +46,8 @@ while front_is_clear():
 
 if pearl_here():
     grab()
+elif front_is_blocked():
+    turn_left()
 else:
     drop()
 
@@ -50,22 +63,28 @@ Qualsevol programa Karel vàlid és Python vàlid (amb un shim que defineixi les
 ```
 index.html          — Simulador lliure
 style.css           — Estils del simulador
+edit-mapa.html      — Editor visual de mapes (eina auxiliar)
 js/                 — Motor: constants, i18n, state, tokenizer, parser,
                       interpreter, execution, world, renderer, editor, ui, main, reptes
 curs/
   index.html        — Índex del curs (10 capítols)
   capitol.html      — Plantilla reutilitzable per a capítols
-  capitol-1.html    — Capítol 1
-  capitol-2.html    — Capítol 2
+  capitol-1..10     — Els 10 capítols del curs
+  repte-1..13       — Els 13 reptes del capítol 10
   capitols.js       — Dades + renderSidebar() + renderSimuladors()
   curs.css          — Estils del curs
+  AI_INSTRUCTIONS.md — Format de mapes per a IA (separador |)
+  BRIEFING-REPTES.md — Detall de cada repte (mapes, solucions, notes)
 docs/
-  BRIEFING.md       — Briefing tècnic complet per a IA (llegir abans de tocar res)
-  guio-capitols-3-10.md — Guió detallat per escriure els capítols pendents
+  CURRENT-STATE.md  — Estat actual complet del projecte (llegir aquí primer)
+  auditoria.md      — Arquitectura interna, riscos, checklist tècnic
 ```
 
 ## Com continuar el desenvolupament
 
-Llegeix `docs/BRIEFING.md` abans de fer cap canvi. Conté l'estat complet del projecte, els contractes entre mòduls, els principis de disseny i les tasques pendents.
+Llegeix `docs/CURRENT-STATE.md` abans de fer cap canvi. Conté l'estat complet
+del projecte, els contractes entre mòduls, els principis de disseny i les tasques pendents.
 
-Per escriure un capítol nou: copia `curs/capitol.html`, canvia `CURRENT_CAPITOL`, omple el contingut seguint el guió a `docs/guio-capitols-3-10.md`, i afegeix el nom de l'arxiu al conjunt `DISPONIBLES` a `curs/index.html`.
+Les tasques pendents actuals són millores visuals (D.1–D.4) i funcionalitat futura
+opcional (E.1–E.8): idiomes addicionals, selector d'idioma, editor de mapes integrat.
+El contingut pedagògic del curs és complet.
