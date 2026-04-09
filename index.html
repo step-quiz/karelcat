@@ -15,7 +15,9 @@
   (function() {
     var p = new URLSearchParams(location.search);
     if (p.get('embed') === '1') document.body.classList.add('embed');
-    if (p.get('theme') === 'light') document.body.classList.add('light');
+    // Aplica el tema immediatament per evitar flash. Per defecte: mode clar.
+    var theme = p.get('theme') || localStorage.getItem('karel-theme') || 'light';
+    if (theme !== 'dark') document.body.classList.add('light');
   })();
 </script>
 

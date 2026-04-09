@@ -252,6 +252,14 @@
 (function () {
   'use strict';
 
+  /* Si s'obre directament (no dins l'iframe de index.html), redirigim
+     a la pàgina principal que llençarà el tour correctament.          */
+  if (window.parent === window) {
+    localStorage.removeItem('karel_tour_done_v1');
+    window.location.replace('/');
+    // Stop further script execution while the redirect takes effect.
+  } else {
+
   const root      = document.getElementById('tour-root');
   const spotlight = document.getElementById('tour-spotlight');
   const panel     = document.getElementById('tour-panel');
@@ -441,6 +449,7 @@
     rt = setTimeout(() => { if (steps[current]) positionStep(steps[current]); }, 100);
   });
 
+  } // end else (running inside iframe)
 })();
 </script>
 
