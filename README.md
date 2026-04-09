@@ -73,11 +73,10 @@ curs/
   repte-1..13       — Els 13 reptes del capítol 10
   capitols.js       — Dades + renderSidebar() + renderSimuladors()
   curs.css          — Estils del curs
-  AI_INSTRUCTIONS.md — Format de mapes per a IA (separador |)
   BRIEFING-REPTES.md — Detall de cada repte (mapes, solucions, notes)
 docs/
   CURRENT-STATE.md  — Estat actual complet del projecte (llegir aquí primer)
-  auditoria.md      — Arquitectura interna, riscos, checklist tècnic
+  i18n-spanish-guide.md — Guia per afegir castellà com a idioma d'interfície
 ```
 
 ## Com continuar el desenvolupament

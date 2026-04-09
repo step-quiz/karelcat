@@ -22,7 +22,7 @@
   --ed-pad-x:       14px;
   /* Cel·les del tauler — extret a variables per facilitar el mode clar */
   --cell-empty: #0C1017;
-  --cell-wall:  #0C1017;
+  --cell-rock:  #0C1017;
   --cell-aqua:  #000E1F;
   --cell-karel: #24001A;
 }
@@ -42,7 +42,7 @@ body.light {
   --error:      #dc2626;
   --error-dim:  rgba(220,38,38,0.08);
   --cell-empty: #ffffff;            /* cel·la buida: blanc */
-  --cell-wall:  #ffffff;            /* paret: fons blanc (com bombolla) */
+  --cell-rock:  #ffffff;            /* roca: fons blanc (com bombolla) */
   --cell-aqua:  #dbeafe;            /* cel·la d'aigua: blau pàl·lid */
   --cell-karel: #ffffff;            /* cel·la Karel: blanc */
 }
@@ -427,7 +427,7 @@ body.light .lbg-row.active {
   overflow: hidden;
 }
 .c-e { background: var(--cell-empty); }
-.c-p { background: var(--cell-wall); }
+.c-p { background: var(--cell-rock); }
 .c-a { background: var(--cell-aqua); }
 .c-k { background: var(--cell-karel); }
 .c-ka { background: var(--cell-karel); }
@@ -526,7 +526,7 @@ body.light #log            { background: #f5f5f5 !important; }
 
 /* Cel·les del tauler: fons blanc per a totes */
 body.light .c-e { background: var(--cell-empty) !important; }
-body.light .c-p { background: var(--cell-wall)  !important; }
+body.light .c-p { background: var(--cell-rock)  !important; }
 body.light .c-a { background: var(--cell-empty) !important; }
 body.light .c-k { background: var(--cell-empty) !important; }
 body.light .c-ka { background: var(--cell-empty) !important; }

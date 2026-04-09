@@ -1,6 +1,6 @@
 # BRIEFING-REPTES — Capítol 10 de Karelcat
 
-> **Propòsit d'aquest document:** registrar l'estat de la implementació dels 10 reptes del capítol 10. Cada sessió de treball ha d'actualitzar la taula d'estat i les notes de cada repte implementat abans de tancar. Un BRIEFING obsolet és més perillós que no tenir-ne.
+> **Propòsit d'aquest document:** registrar l'estat de la implementació dels 13 reptes del capítol 10. Cada sessió de treball ha d'actualitzar la taula d'estat i les notes de cada repte implementat abans de tancar. Un BRIEFING obsolet és més perillós que no tenir-ne.
 
 ---
 
@@ -76,7 +76,7 @@ torna_a_casa()
 ```
 
 **Notes d'implementació:**
-- La navegació del repte apunta a `capitol-9.html` (anterior) i `repte-2.html` (següent).
+- La navegació del repte apunta a `capitol-10.html` (anterior) i `repte-2.html` (següent).
 - El badge de dificultat `★ Fàcil` es mostra amb CSS inline al fitxer.
 - La introducció al capítol 10 (filosofia + badges de dificultat) es troba a la secció inicial d'aquest fitxer. Els reptes 2–10 **no han de repetir** aquesta introducció; han de començar directament amb el seu repte i incloure la navegació prev/next adequada.
 
@@ -355,7 +355,7 @@ Test C — 4 files
 
 **Clau pedagògica:** La paritat de la fila (parell/senar) determina la direcció,
 però sense variables numèriques. `pearl_here()` al moment de canvi de fila actua
-com a indicador de paritat implícit, igual que al repte 8 del tauler d'escacs.
+com a indicador de paritat implícit, igual que al repte 11 del tauler d'escacs.
 
 **Notes d'implementació:**
 - La navegació: anterior → `repte-8.html`, següent → `repte-10.html`.
@@ -471,7 +471,7 @@ while left_is_clear():
 
 **Esquelet visible per l'alumne:** `omple_fila_des_de_on()` completament implementada com a referència; `omple_fila_des_de_off()` buida (l'alumne descobreix la versió simètrica); les dues funcions de transició donades; programa principal complet mostrant el truc de `pearl_here()`.
 
-**Clau pedagògica:** `pearl_here()` com a «variable» de paritat és l'epifania del repte. L'alumne descobreix que l'estat físic del món pot substituir una variable booleana, sempre que es consulti en el moment precís (just abans de moure's a la nova fila). La simetria `omple_fila_des_de_on ↔ omple_fila_des_de_off` paral·lela a la de `puja_grao ↔ baixa_grao` del repte 7 i del repte 10.
+**Clau pedagògica:** `pearl_here()` com a «variable» de paritat és l'epifania del repte. L'alumne descobreix que l'estat físic del món pot substituir una variable booleana, sempre que es consulti en el moment precís (just abans de moure's a la nova fila). La simetria `omple_fila_des_de_on ↔ omple_fila_des_de_off` paral·lela a la de `puja_grao ↔ baixa_grao` del repte 7.
 
 **Notes d'implementació:**
 - El `while left_is_clear()` + `break` gestiona tots els casos: nombre parell i senar de files, quadrats i rectangles.
@@ -609,7 +609,7 @@ else:
         turn_around()       # prepara per al proper grab()
 ```
 
-**Clau pedagògica:** L'algorisme dels dos punters és l'epifania final del curs. Sense variables numèriques ni aritmètica, la posició física de les perles substitueix qualsevol comptador. Cada iteració redueix en 2 la distància entre els marcadors, fins que es troben exactament al punt mig. La simetria de l'algorisme (moure dret → moure esquerre → repetir) paral·lela la de `puja_grao ↔ baixa_grao` (repte 7) i `omple_fila_des_de_on ↔ omple_fila_des_de_off` (repte 8): el curs tanca el cercle.
+**Clau pedagògica:** L'algorisme dels dos punters és l'epifania final del curs. Sense variables numèriques ni aritmètica, la posició física de les perles substitueix qualsevol comptador. Cada iteració redueix en 2 la distància entre els marcadors, fins que es troben exactament al punt mig. La simetria de l'algorisme (moure dret → moure esquerre → repetir) paral·lela la de `puja_grao ↔ baixa_grao` (repte 7) i `omple_fila_des_de_on ↔ omple_fila_des_de_off` (repte 11): el curs tanca el cercle.
 
 **Esquelet visible per l'alumne:** `camina_fins_perla()` completament implementada; els dos passos de l'algorisme descrits com a comentaris, sense codi. L'alumne ha de descobrir el bucle `while True`, els `grab()`/`drop()` i les condicions de sortida.
 
@@ -624,7 +624,7 @@ else:
 ## Notes d'arquitectura a tenir en compte
 
 - **Navegació prev/next:** cada fitxer `repte-N.html` ha d'apuntar a `repte-(N-1).html` i `repte-(N+1).html`. El repte 1 apunta a `capitol-9.html` com a anterior. El repte 13 apunta a `index.html` (tornada a l'índex).
-- **CURRENT_CAPITOL:** tots els reptes usen `const CURRENT_CAPITOL = 10;` per marcar el capítol actiu a la sidebar.
+- **CURRENT_REPTE:** tots els reptes usen `const CURRENT_REPTE = N;` (on N és el número del repte) i criden `renderReptesSidebar(CURRENT_REPTE)` per marcar el repte actiu a la sidebar.
 - **La introducció al capítol** (filosofia + badges de dificultat) ja està al repte 1. Els reptes 2–13 comencen directament amb l'enunciat.
 - **Futur (opcional):** afegir entrades 6–18 a `reptes.js` per fer accessibles els reptes via `?repte=N`. Additiu, no trenca res existent.
 

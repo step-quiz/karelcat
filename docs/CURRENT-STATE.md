@@ -70,7 +70,7 @@ El document de referència complet dels reptes (mapes, solucions, notes pedagòg
 
 ## 3. Vocabulari del llenguatge (sintaxi Python-compatible)
 
-### Ordres (8)
+### Ordres (6)
 ```
 move()  turn_left()  turn_right()  turn_around()  grab()  drop()
 ```
@@ -244,9 +244,123 @@ execution.js → reptes.js → main.js
 ### Contractes verificats
 - **K.***: cada símbol `K.X` cridat des de qualsevol fitxer JS és definit en algun altre.
 - **HTML↔JS**: cada `getElementById` al JS apunta a un ID que existeix a `index.html`.
-- **Nomenclatura**: les paraules `wall` i `water` no existeixen en cap fitxer del projecte.
+- **Nomenclatura**: les paraules `wall` i `water` no apareixen en el codi amb significat semàntic. (La variable CSS `--cell-rock` a `style.css` designa l'obstacle; `wall` i `water` no s'usen com a termes del domini.)
 
 ---
+
+### Sidebar: `CURRENT_CAPITOL` i `CURRENT_REPTE`
+
+Cada **capítol** declara `const CURRENT_CAPITOL = N;` i crida `renderSidebar(CURRENT_CAPITOL)`.
+Cada **repte** declara `const CURRENT_REPTE = N;` i crida `renderReptesSidebar(CURRENT_REPTE)`.
+
+---
+
+## 6. Flux de dades complet (codi → acció al món)
+
+Seguir aquest flux és la millor manera d'entendre el sistema:
+
+```
+Alumne escriu codi (textarea #code-editor)
+  │
+  ▼
+K.tokenize(code)          [tokenizer.js]
+  → tokens: [{t:'INDENT',v:0}, {t:'W',v:'move'}, {t:'('}, {t:')'}, {t:'NL'}, ...]
+  │
+  ▼
+new Parser(tokens).parseAll()   [parser.js]
+  → AST: [{type:'command', name:'move', line:1}, {type:'while', cond:{...}, body:[...], ...}]
+  │
+  ▼
+K.runStmts(ast)           [interpreter.js — generador JS]
+  → yield {cmd:'move', line:1}
+  → yield {cmd:'turn_left', line:3}
+  → yield {type:'error', code:'inf_loop', ...}   ← si hi ha bucle infinit
+  │
+  ▼
+execAction(step)          [execution.js]
+  → CMD_TO_ACTION['move'] = 'move'   (via K.lang, configurat per applyCodeLang)
+  → K.isRock(fx, fy) → si roca: errStop('rock')
+  → S.karel.x = fx; S.karel.y = fy
+  → K.renderWorld()   [renderer.js — diferencial]
+  → K.updateStatus()
+```
+
+**Punts clau del flux:**
+- L'intèrpret és un **generador JS**. No executa tot de cop: retorna un valor per `yield` i es queda suspès fins al `tick` següent. Això permet el mode pas a pas i el control de velocitat sense bloquejar el navegador.
+- `CMD_TO_ACTION` és una indirección: el motor no coneix les paraules de l'alumne (`move`, `avança`, etc.), només les accions internes (`'move'`, `'turn-left'`, etc.). Afegir un idioma de codi nou no requereix tocar l'intèrpret ni l'executor.
+- **Invariant de posició** (important per a auditories futures): `S.karel.x/y` **sempre** apunta a una casella que no és `'P'`. `move` comprova `isRock` *abans* d'actualitzar la posició; si xoca, para. Per tant, qualsevol codi que assumeixi "Karel pot estar sobre una pedra" és incorrecte.
+
+---
+
+## 7. Punts forts verificats (no modificar sense raó sòlida)
+
+### 7.1 Generadors JS per a l'intèrpret (`interpreter.js`)
+
+L'intèrpret usa `function*` i `yield*`. Això és elegant i correcte per diverses raons:
+
+- Permet **suspendre l'execució** entre passos sense callbacks ni màquines d'estats manuals.
+- El mode pas a pas (`stepProgram`) i el mode continu (`runProgram`/`tick`) comparteixen exactament el mateix generador; la diferència és només qui el fa avançar.
+- La recursió de procediments de l'alumne es mapeja directament sobre la pila de crida JS (via `yield* runStmts(body)`), cosa que simplifica molt el codi i fa que la detecció de recursió excessiva (`callDepth > 50`) sigui trivial.
+- **No tocar** l'estructura del generador sense entendre bé com interactua amb `tick()` i `doStep()` a `execution.js`.
+
+### 7.2 Sanitització HTML robusta (`constants.js`)
+
+`sanitizeHtml(html)` usa `DOMParser` i reconstrueix el DOM element per element, permetent només una llista blanca de tags (`em, strong, code, br, span, b, i, u, sub, sup`) i atributs (`class, title`). Qualsevol altre tag es desenbolica (es conserven els fills, no el contenidor). Qualsevol altre atribut s'elimina silenciosament.
+
+Complementàriament, `escHtml(s)` escapa els quatre caràcters perillosos (`&`, `<`, `>`, `"`) per a usos on no cal HTML (logs, missatges d'error).
+
+**El curs usa `sanitizeHtml`** per al contingut dels capítols que arriba de fitxers HTML externs. Continuar usant-la sempre que es mostri contingut dinàmic al DOM.
+
+### 7.3 Contracte postMessage entre iframes (`execution.js` + `curs/`)
+
+El simulador incrustat als capítols del curs s'executa dins d'un `<iframe>`. Quan acaba un programa, `execution.js` envia un missatge al pare:
+
+```js
+// Al final de l'execució (tick / doStep):
+notifyGoalResult(compareGoal(K.goalCSV));
+
+// La funció:
+function notifyGoalResult(success) {
+  if (!K.goalCSV || !K.goalId) return;
+  window.parent.postMessage(
+    { type: 'karel-result', goalId: K.goalId, success },
+    K.parentOrigin
+  );
+}
+```
+
+`K.parentOrigin` s'obté de `document.referrer` (no de `'*'`), cosa que evita enviar dades a orígens arbitraris. La pàgina del curs escolta `'message'` i actualitza el feedback visual de l'exercici.
+
+**Missatges possibles:**
+- `{ type: 'karel-result', goalId, success }` — resultat final (✓ o ✗)
+- `{ type: 'karel-clear', goalId }` — l'alumne ha modificat el codi o ha reiniciat; esborrar el feedback
+
+`compareGoal(goalCSV)` compara la posició final de Karel (sense direcció) i el contingut de cada casella. No compara la direcció final: és una decisió de disseny explícita.
+
+### 7.4 Renderitzat diferencial (`renderer.js`)
+
+`renderWorld()` no reconstrueix el DOM complet en cada tick. Manté un `_renderedSnapshot` de la clau de cada cel·la (string que combina contingut + presència de Karel + direcció). Només actualitza les cel·les on la clau ha canviat o la mida de cel·la ha variat.
+
+Reconstrucció completa (`renderWorldFull`) només quan canvien les dimensions del món. Útil per saber-ho si cales al renderer: trucar `renderWorldFull()` força un rebuild; `renderWorld()` és incremental.
+
+---
+
+## 8. Gestió d'errors a l'intèrpret
+
+Hi ha dos tipus d'errors diferenciats:
+
+**Errors de sintaxi** (detectats per `parser.js` / `parseCode`):
+- Llancen `KarelSyntaxError` dins del parser.
+- Capturats pel `try/catch` de `parseCode`, que crida `K.logError` i `K.markErrorLine`.
+- Retornen `null` i el programa no arrenca.
+
+**Errors de runtime** (detectats per `interpreter.js` o `execution.js`):
+- L'intèrpret fa `yield { type: 'error', code, msg, line }` (no llança excepcions).
+- `execAction` detecta `step.type === 'error'` i crida `errStop`.
+- `errStop` crida `K.logError`, `K.markErrorLine`, `K.setStateUI('error')`, `stopProgram()`.
+- Errors de runtime possibles: `'rock'` (xoc), `'no_pearl'` (grab sense perla), `'bag_empty'` (drop sense perles a la motxilla), `'inf_loop'` (while amb guard > 50000), `'deep_rec'` (callDepth > 50), `'proc_undef'` (crida a procediment no definit).
+
+**Important**: els errors de runtime *no llancen excepcions JS*. Si modifiques l'intèrpret o l'executor, usa sempre el mecanisme de `yield { type:'error' }` / `errStop`, no `throw`. Llançar dins d'un generador que és consumit per `tick()` provocaria una excepció no capturada.
 
 ## 6. Interfície (disseny Stanford)
 
@@ -261,16 +375,53 @@ Botó sol/lluna a la topbar. Preferència desada a `localStorage` (clau `'karel-
 
 ---
 
-## 7. Sistema i18n (dos eixos ortogonals)
+---
+
+## 9. Interfície (disseny Stanford)
+
+- **Fila 1 (topbar):** logo medusa + «Karel», badge d'estat (dot + text), motxilla, botó tema.
+- **Fila 2 (toolbar):** botó mutant Executa↔Atura + botó Reinicia + slider velocitat.
+- **Zona principal:** editor de codi (esquerra, 50%) + món de Karel (dreta, 50%).
+- **Log:** sota l'editor, es buida automàticament a cada execució.
+- **Eliminats definitivament:** modals, menú hamburguesa, selectors d'idioma, panells de pistes/referència, editor de mapes integrat, onboarding.
+
+### Mode fosc/clar
+Botó sol/lluna a la topbar. Preferència desada a `localStorage` (clau `'karel-theme'`).
+
+---
+
+## 10. Sistema i18n (dos eixos ortogonals)
 
 - **`K.CODE_LANGS`** — vocabulari del llenguatge de programació. Ara: `en` (únic).
 - **`K.UI_LANGS`** — textos de la interfície. Ara: `ca` (únic).
 - `K.state.codeLang` i `K.state.uiLang` controlen quin idioma s'usa a cada eix.
 - Afegir un idioma nou és **additiu** (afegir una entrada a l'objecte corresponent).
 
+**Regla d'or**: mai barrejar claus de `CODE_LANGS` amb claus de `UI_LANGS`. Si una clau controla una paraula que l'alumne escriu → `CODE_LANGS`. Si controla un text que l'alumne llegeix → `UI_LANGS`.
+
 ---
 
-## 8. Tasques pendents
+## 11. Paràmetres d'URL acceptats per `index.html`
+
+Gestionats per `main.js` a l'IIFE d'inicialització:
+
+| Paràmetre | Valor | Efecte |
+|---|---|---|
+| `embed=1` | qualsevol | Aplica classe `embed` al body → amaga topbar. |
+| `map=BASE64` | CSV codificat en base64 | Mapa inicial en lloc del DEFAULT_CSV. |
+| `code=BASE64` | codi codificat en base64 | Codi inicial en lloc del DEFAULT_CODE. |
+| `readonly=1` | qualsevol | textarea amb atribut `readonly` (exemples no editables). |
+| `repte=N` | 1–5 | Carrega el repte N de `K.REPTES`. Té prioritat sobre `map`/`code`. |
+| `goal=BASE64` | CSV codificat en base64 | Estat final objectiu per a la verificació d'exercicis. |
+| `goalId=STRING` | string | Identificador de l'exercici per al postMessage. |
+| `bag=N` | enter | Motxilla inicial de Karel (usada pels simuladors del curs). |
+| `theme=light` | `light` | Força mode clar (aplicat inline al HTML, sincronitzat per `initTheme`). |
+
+Quan `embed=1` és present, **no es guarda res a localStorage** (`useLocalStorage = false`).
+
+---
+
+## 12. Tasques pendents
 
 ### Categoria D — Millores visuals (prioritat mitjana)
 
@@ -288,7 +439,7 @@ Botó sol/lluna a la topbar. Preferència desada a `localStorage` (clau `'karel-
 | E.1 | Idioma codi català | Afegir `K.CODE_LANGS.ca` amb `mentre`, `si`, `sinó`, `repeteix`, etc. |
 | E.2 | Idioma codi castellà | Afegir `K.CODE_LANGS.es`. |
 | E.3 | Idioma interfície anglès | Afegir `K.UI_LANGS.en`. |
-| E.4 | Idioma interfície castellà | Afegir `K.UI_LANGS.es`. |
+| E.4 | Idioma interfície castellà | Afegir `K.UI_LANGS.es`. Vegeu `docs/i18n-spanish-guide.md`. |
 | E.5 | Selector d'idioma | UI per triar `codeLang` i `uiLang` (ara fixats a `state.js`). |
 | E.6 | Editor de mapes | Recuperar l'editor visual (eliminat a la neteja). `edit-mapa.html` ja existeix com a eina separada. |
 | E.7 | Càrrega CSV extern | Recuperar `?mapa=CSV` a la URL o input file. |
@@ -296,19 +447,33 @@ Botó sol/lluna a la topbar. Preferència desada a `localStorage` (clau `'karel-
 
 ---
 
-## 9. Principis de disseny a respectar
+## 13. Principis de disseny a respectar
 
 1. **Netedat Stanford:** si dubtes entre afegir un element a la interfície o no, no l'afegis.
 2. **Ortogonalitat d'idiomes:** `codeLang` i `uiLang` independents. Mai barrejar tokens del codi amb textos de la interfície.
-3. **Coherència terminològica:** roques i perles. Les paraules `wall` i `water` no han d'aparèixer mai.
+3. **Coherència terminològica:** roques i perles. Les paraules `wall` i `water` no s'han d'usar com a termes del domini (la variable CSS `--cell-rock` és acceptable com a nom tècnic).
 4. **Semàntica canònica:** `grab()` i `drop()` operen sobre la casella actual. `pearl_here()` en referència a la casella on és Karel.
 5. **Escalabilitat additiva:** afegir un idioma, capítol, repte o mode ha de ser additiu (afegir codi), mai invasiu (modificar codi existent).
 6. **L'alumne és un adolescent català de 16 anys** sense experiència, en una classe de 40 minuts.
 7. **Python primer:** qualsevol programa Karel vàlid ha de ser Python vàlid. En cas de dubte sintàctic, el criteri és la compatibilitat amb Python.
 
+### Decisions de disseny a no qüestionar
+
+Algunes decisions poden semblar discutibles però són intencionals:
+
+**`grab()` i `drop()` operen sobre la casella *actual*, no la del davant.** Coherent amb el Karel original de Rich Pattis (1972) i amb `pearl_here()`.
+
+**L'invariant de posició és estructural, no defensiu.** Karel mai pot estar sobre una roca. Qualsevol guard del tipus `if (cell === 'P') return errStop('rock')` dins de `drop()` seria codi mort. No afegir-lo: és confús i indueix a pensar que l'estat podria ser invàlid quan no pot ser-ho.
+
+**`compareGoal` ignora la direcció final de Karel.** Decisió pedagògica: l'exercici es considera resolt si Karel és a la posició correcta i el món té el contingut correcte.
+
+**El tokenitzador detecta automàticament la unitat d'indentació.** `_detectIndentUnit` calcula el mínim sagnat no nul present al codi. Això permet que 2, 3 o 4 espais per nivell funcionin tots sense configuració.
+
+**`not` suporta dues sintaxis.** `not cond()` i `not(cond())` ambdues funcionen. Això és Python-compatible i pedagògicament útil.
+
 ---
 
-## 10. Checklist per a qualsevol modificació
+## 14. Checklist per a qualsevol modificació
 
 Abans de fer qualsevol canvi:
 
@@ -317,23 +482,22 @@ Abans de fer qualsevol canvi:
 - [ ] Si afegeixes un script nou: l'has inclòs a `index.html` en la posició correcta? Has exportat totes les funcions via `K.nomFuncio`?
 - [ ] Si modifiques el parser o tokenitzador: `for _ in range(10): move()` i `for i in range(3):\n    move()` segueixen funcionant tots dos?
 - [ ] Si modifiques `execution.js`: els errors de runtime es comuniquen via `errStop()` o `yield {type:'error'}`, no via `throw`?
+- [ ] Si modifiques el renderer: `renderWorld()` diferencial i `renderWorldFull()` rebuild complet produeixen el mateix resultat visual?
 - [ ] Els mapes dels simuladors usen `|` com a separador de files (no `\n`)?
-- [ ] Les paraules `wall` i `water` no han aparegut en cap fitxer?
+- [ ] Les paraules `wall` i `water` no s'han usat com a termes del domini en cap fitxer nou?
+- [ ] El projecte és **Python-compatible**: qualsevol programa Karel vàlid ha de ser Python vàlid amb un shim adequat?
 - [ ] Has actualitzat aquest document (`CURRENT-STATE.md`) si has canviat l'estat de qualsevol tasca?
 
 ---
 
-## 11. Guia de documents del projecte
+## 15. Guia de documents del projecte
 
 | Document | Propòsit | Estat |
 |----------|----------|-------|
 | `docs/CURRENT-STATE.md` | **Aquest fitxer.** Font única de veritat. | ✅ Actiu |
-| `docs/auditoria.md` | Arquitectura interna detallada, riscos, checklist tècnic. | ✅ Actiu |
-| `curs/AI_INSTRUCTIONS.md` | Format de mapes per a IA (separador `\|`, atributs HTML). | ✅ Actiu |
+| `docs/i18n-spanish-guide.md` | Guia pas a pas per afegir `uiLang: 'es'` (castellà). | ✅ Actiu |
 | `curs/BRIEFING-REPTES.md` | Detall de cada repte: mapes, solucions, notes pedagògiques. | ✅ Actiu |
-| `docs/MIGRATION-PYTHON-SYNTAX.md` | Registre de la migració a sintaxi Python (abril 2026). | 📦 Arxivat |
-| `docs/PROGRES-MIGRACIO.md` | Progrés de la migració (abril 2026). | 📦 Arxivat |
 
 ---
 
-*Última actualització: sessió post-patch — curs complet (10 capítols + 13 reptes), vocabulari ampliat (elif, break, left/right_is_clear, True/False), CURRENT-STATE.md creat com a font única de veritat.*
+*Última actualització: consolidació DRY de la documentació — absorbit `auditoria.md` i `AI_INSTRUCTIONS.md` dins d'aquest document. Eliminat `docs/arxiu/`. El projecte passa de 8 documents a 4 (README + 3 docs actius).*
