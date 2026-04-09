@@ -283,6 +283,7 @@
     .then(r => r.json())
     .then(data => {
       steps = data;
+      localStorage.setItem('karel_tour_done_v1', '1'); // marca ja fet per evitar re-aparició si l'usuari navega
       buildDots();
       render(0, false);
     })
