@@ -15,7 +15,7 @@
 
 ---
 
-## Taula d'estat dels 10 reptes
+## Taula d'estat dels 13 reptes
 
 | # | Fitxer | Títol | Grup | Dificultat | Estat |
 |---|--------|-------|------|------------|-------|
@@ -26,9 +26,12 @@
 | 5 | `repte-5.html` | El serpentí | B | ★★ Intermedi | ✅ Implementat |
 | 6 | `repte-6.html` | Construir torres | B | ★★ Intermedi | ✅ Implementat |
 | 7 | `repte-7.html` | L'escala doble | B | ★★ Intermedi | ✅ Implementat |
-| 8 | `repte-8.html` | El tauler d'escacs | C | ★★★ Avançat | ✅ Implementat |
-| 9 | `repte-9.html` | El laberint | C | ★★★ Avançat | ✅ Implementat |
-| 10 | `repte-10.html` | El punt mig | C | ★★★ Avançat | ✅ Implementat |
+| 8 | `repte-8.html` | El vigilant | B | ★★ Intermedi | ✅ Implementat |
+| 9 | `repte-9.html` | Les files alternes | B | ★★ Intermedi | ✅ Implementat |
+| 10 | `repte-10.html` | El detector | C | ★★★ Avançat | ✅ Implementat |
+| 11 | `repte-11.html` | El tauler d'escacs | C | ★★★ Avançat | ✅ Implementat |
+| 12 | `repte-12.html` | El laberint | C | ★★★ Avançat | ✅ Implementat |
+| 13 | `repte-13.html` | El punt mig | C | ★★★ Avançat | ✅ Implementat |
 
 ---
 
@@ -310,9 +313,83 @@ drop()
 
 ---
 
-### ✅ Repte 8 — El tauler d'escacs (C1, ★★★ Avançat)
+### ✅ Repte 8 — El vigilant (B4, ★★ Intermedi)
 
 **Fitxer:** `curs/repte-8.html`
+**Conceptes:** `while`, `drop()` com a marca, perímetre rectangular, pre/postcondicions.
+**Adaptació de:** Exercici de perímetre (original karelcat).
+
+**Enunciat:** En Karel ha de caminar pel perímetre d'un rectangle buit i deixar
+una perla a cada cantonada.
+
+**Mons de test (3 simuladors DRY):**
+```
+Test A — rectangle 4×3
+Test B — rectangle 6×4
+Test C — rectangle 5×5
+```
+
+**Clau pedagògica:** `drop()` com a marca física en lloc d'una variable comptadora.
+La solució generalitzada funciona per a qualsevol rectangle sense hardcodejar dimensions.
+
+**Notes d'implementació:**
+- La navegació: anterior → `repte-7.html`, següent → `repte-9.html`.
+
+---
+
+### ✅ Repte 9 — Les files alternes (B5, ★★ Intermedi)
+
+**Fitxer:** `curs/repte-9.html`
+**Conceptes:** `while`, `if`, serpentí multifiles, paritat sense variables.
+**Adaptació de:** Variant del serpentí de dues files estès a N files.
+
+**Enunciat:** En Karel ha de recollir totes les perles d'un món de N files
+(amplada i alçada desconegudes) fent un recorregut en ziga-zaga generalitzat.
+
+**Mons de test (3 simuladors DRY):**
+```
+Test A — 2 files
+Test B — 3 files
+Test C — 4 files
+```
+
+**Clau pedagògica:** La paritat de la fila (parell/senar) determina la direcció,
+però sense variables numèriques. `pearl_here()` al moment de canvi de fila actua
+com a indicador de paritat implícit, igual que al repte 8 del tauler d'escacs.
+
+**Notes d'implementació:**
+- La navegació: anterior → `repte-8.html`, següent → `repte-10.html`.
+
+---
+
+### ✅ Repte 10 — El detector (C0, ★★★ Avançat)
+
+**Fitxer:** `curs/repte-10.html`
+**Conceptes:** `while`, `if/elif/else`, `left_is_clear()`, `right_is_clear()`, alcoves laterals, fencepost.
+**Adaptació de:** Original karelcat.
+
+**Enunciat:** En Karel avança per un corredor amb alcoves laterals. Cada cop que
+detecta una alcova (esquerra o dreta lliure), ha de deixar-hi una perla i continuar.
+
+**Mons de test (3 simuladors DRY):**
+```
+Test A — corredor amb alcoves esquerres
+Test B — corredor amb alcoves dretes
+Test C — corredor amb alcoves mixtes
+```
+
+**Clau pedagògica:** `left_is_clear()` i `right_is_clear()` com a detectors
+de geometria lateral. El fencepost és el moment de decidir si la primera i l'última
+casella del corredor compten com a alcova.
+
+**Notes d'implementació:**
+- La navegació: anterior → `repte-9.html`, següent → `repte-11.html`.
+
+---
+
+### ✅ Repte 11 — El tauler d'escacs (C1, ★★★ Avançat)
+
+**Fitxer:** `curs/repte-11.html`
 **Conceptes:** `while`, `if`, `pearl_here()` com a memòria de paritat, serpentí bidireccional, pre/postcondicions.
 **Adaptació de:** Checkerboard Karel (Stanford CS106A — el repte més cèlebre).
 
@@ -394,18 +471,18 @@ while left_is_clear():
 
 **Esquelet visible per l'alumne:** `omple_fila_des_de_on()` completament implementada com a referència; `omple_fila_des_de_off()` buida (l'alumne descobreix la versió simètrica); les dues funcions de transició donades; programa principal complet mostrant el truc de `pearl_here()`.
 
-**Clau pedagògica:** `pearl_here()` com a «variable» de paritat és l'epifania del repte. L'alumne descobreix que l'estat físic del món pot substituir una variable booleana, sempre que es consulti en el moment precís (just abans de moure's a la nova fila). La simetria `omple_fila_des_de_on ↔ omple_fila_des_de_off` paral·lela a la de `puja_grao ↔ baixa_grao` del repte 7.
+**Clau pedagògica:** `pearl_here()` com a «variable» de paritat és l'epifania del repte. L'alumne descobreix que l'estat físic del món pot substituir una variable booleana, sempre que es consulti en el moment precís (just abans de moure's a la nova fila). La simetria `omple_fila_des_de_on ↔ omple_fila_des_de_off` paral·lela a la de `puja_grao ↔ baixa_grao` del repte 7 i del repte 10.
 
 **Notes d'implementació:**
 - El `while left_is_clear()` + `break` gestiona tots els casos: nombre parell i senar de files, quadrats i rectangles.
 - `left_is_clear()` comprova el Nord quan Karel mira l'Est; `right_is_clear()` comprova el Nord quan Karel mira l'Oest.
-- La navegació: anterior → `repte-7.html`, següent → `repte-9.html`.
+- La navegació: anterior → `repte-10.html`, següent → `repte-12.html`.
 
 ---
 
-### ✅ Repte 9 — El laberint (C2, ★★★ Avançat)
+### ✅ Repte 12 — El laberint (C2, ★★★ Avançat)
 
-**Fitxer:** `curs/repte-9.html`
+**Fitxer:** `curs/repte-12.html`
 **Conceptes:** `while`, `if/elif/else`, `right_is_clear()`, `front_is_clear()`, `def`, estratègia de la mà dreta.
 **Adaptació de:** Maze Karel / Repte predefinit 5 del projecte.
 
@@ -463,13 +540,13 @@ grab()
 - Format DRY: un sol `data-code`, tres mons via `data-maps`/`data-goals`/`data-labels`.
 - Test B reutilitza exactament el mapa del repte predefinit 5 de `reptes.js`.
 - `data-bag` no s'usa (Karel no porta perles pròpies; recull una perla existent).
-- La navegació: anterior → `repte-8.html`, següent → `repte-10.html`.
+- La navegació: anterior → `repte-11.html`, següent → `repte-13.html`.
 
 ---
 
-### ✅ Repte 10 — El punt mig (C3, ★★★ Avançat)
+### ✅ Repte 13 — El punt mig (C3, ★★★ Avançat)
 
-**Fitxer:** `curs/repte-10.html`
+**Fitxer:** `curs/repte-13.html`
 **Conceptes:** `while`, `if`, `grab`/`drop` com a marcadors, algorisme dels dos punters.
 **Adaptació de:** Midpoint Karel (l'exercici més citat del CS106A).
 
@@ -540,17 +617,17 @@ else:
 - Format DRY: un sol `data-code`, tres mons via `data-maps`/`data-goals`/`data-labels`.
 - `data-bag="2"` — les dues perles de la motxilla fan de marcadors; no en cal cap de fixa al món.
 - El cas de longitud 1 (front bloquejat) requereix un `if not front_is_clear(): drop()` inicial; si l'alumne l'omet, el test A (longitud 3) segueix funcionant, però un eventual test de longitud 1 fallaria.
-- La navegació: anterior → `repte-9.html`, següent → `index.html` (tornar a l'índex).
+- La navegació: anterior → `repte-12.html`, següent → `index.html` (tornar a l'índex).
 
 ---
 
 ## Notes d'arquitectura a tenir en compte
 
-- **Navegació prev/next:** cada fitxer `repte-N.html` ha d'apuntar a `repte-(N-1).html` i `repte-(N+1).html`. El repte 1 apunta a `capitol-9.html` com a anterior. El repte 10 apunta a una pàgina de felicitació (o de tornada a l'índex).
+- **Navegació prev/next:** cada fitxer `repte-N.html` ha d'apuntar a `repte-(N-1).html` i `repte-(N+1).html`. El repte 1 apunta a `capitol-9.html` com a anterior. El repte 13 apunta a `index.html` (tornada a l'índex).
 - **CURRENT_CAPITOL:** tots els reptes usen `const CURRENT_CAPITOL = 10;` per marcar el capítol actiu a la sidebar.
-- **La introducció al capítol** (filosofia + badges de dificultat) ja està al repte 1. Els reptes 2–10 comencen directament amb l'enunciat.
-- **Futur (opconal):** afegir entrades 6–15 a `reptes.js` per fer accessibles els reptes via `?repte=N`. Additiu, no trenca res existent.
+- **La introducció al capítol** (filosofia + badges de dificultat) ja està al repte 1. Els reptes 2–13 comencen directament amb l'enunciat.
+- **Futur (opcional):** afegir entrades 6–18 a `reptes.js` per fer accessibles els reptes via `?repte=N`. Additiu, no trenca res existent.
 
 ---
 
-*Última actualització: sessió 10 — Implementat repte-10.html (C3, El punt mig). Midpoint Karel DRY: format multi-món (3 passadissos: longitud 3, 7, 8), algorisme dels dos punters amb `grab`/`drop` com a marcadors físics. Repte-10 afegit a `REPTES_DATA` a `capitols.js`. Tots els 10 reptes del capítol 10 implementats.*
+*Última actualització: revisió de documentació — 13 reptes implementats. Numeració actualitzada: reptes 8 (El vigilant), 9 (Les files alternes) i 10 (El detector) afegits; antics reptes 8, 9, 10 renumerats a 11, 12, 13. Taula i fitxes de detall corregides per reflectir l'estat actual del codi.*
