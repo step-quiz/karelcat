@@ -44,7 +44,7 @@
     }
 
     #tour-root.no-target #tour-overlay {
-      background: rgba(0, 0, 0, 0.62);
+      background: rgba(0, 0, 0, 0.55);
       pointer-events: all;
     }
 
@@ -56,7 +56,7 @@
       pointer-events: none;
 
       /* La box-shadow gegant enfosqueix tot el que queda fora */
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.62);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
 
       /* Vora rosa per identificar clarament la zona */
       outline: 3px solid #B9138D;
@@ -313,7 +313,7 @@
       elTitle.textContent          = step.title;
       elBody.innerHTML             = step.text;
       btnPrev.disabled             = (idx === 0);
-      btnNext.textContent          = isLast ? 'Tancar el tour ✓' : 'Següent →';
+      btnNext.textContent          = isLast ? 'Tancar ✓' : 'Següent →';
       btnSkip.style.visibility     = isLast ? 'hidden' : 'visible';
       syncDots(idx);
       positionStep(step);
