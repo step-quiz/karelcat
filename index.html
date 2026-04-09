@@ -159,6 +159,7 @@
 <script>
 (function () {
   if (localStorage.getItem('karel_tour_done_v1')) return;
+  if (new URLSearchParams(location.search).get('embed') === '1') return;
 
   var iframe = document.createElement('iframe');
   iframe.id                    = 'tour-iframe';
