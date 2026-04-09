@@ -46,6 +46,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
   <span class="curs-header-title">Repte 8 — El vigilant</span>
+  <button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button>
 </header>
 
 
@@ -186,5 +187,13 @@ grab()
   initSidebarToggle();
 </script>
 
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
 </body>
 </html>

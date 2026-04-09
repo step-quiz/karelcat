@@ -320,6 +320,18 @@ function _renderMultiMon(div) {
     });
   });
 
+  // Restaura l'estat guardat a localStorage
+  if (typeof CURRENT_REPTE !== 'undefined') {
+    const saved = KProgress.monsRepte(CURRENT_REPTE);
+    saved.forEach((ok, i) => {
+      if (ok && i < monState.length) {
+        monState[i] = 'ok';
+        _updateBtnLabel(btns[i], i, 'ok');
+      }
+    });
+    updateGlobalFeedback();
+  }
+
   div.replaceWith(wrap);
 }
 

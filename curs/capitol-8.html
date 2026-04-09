@@ -38,6 +38,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
   <span class="curs-header-title">Capítol 8 — Combinant condicions</span>
+  <button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button>
 </header>
 
 
@@ -165,5 +166,13 @@ while front_is_clear():
   initSidebarToggle();
 </script>
 
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
 </body>
 </html>

@@ -359,7 +359,7 @@
         <rect x="6" y="3" width="1" height="1" fill="#141414"/><rect x="7" y="3" width="1" height="1" fill="#141414"/><rect x="8" y="3" width="1" height="1" fill="#141414"/><rect x="9" y="3" width="1" height="1" fill="#141414"/>
       </svg>
     </span>
-    <span>Editor</span>
+    <span>Editor de mapes</span>
   </div>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
@@ -369,6 +369,7 @@
       <a href="edit-mapa.html" class="karel-nav-link active">Editor</a>
     </nav>
   <button class="karel-nav-toggle" id="karel-nav-toggle" aria-label="Menú de navegació" aria-expanded="false">☰</button>
+  <button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button>
 </header>
 <div class="karel-nav-drawer" id="karel-nav-drawer">
   <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -837,6 +838,17 @@ document.addEventListener('keydown', e => {
       btn.textContent = '☰';
     }
   });
+})();
+</script>
+<script>
+(function() {
+  var KEY = 'karel_progress';
+  window.karelClearProgress = function() {
+    if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+      try { localStorage.removeItem(KEY); } catch(e) {}
+      location.reload();
+    }
+  };
 })();
 </script>
 </body>

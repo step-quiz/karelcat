@@ -60,5 +60,10 @@ const KProgress = (() => {
     return _load().reptes[repteNum] || [];
   }
 
-  return { saveExercici, exerciciSuperat, saveMon, monsRepte };
+  /** Esborra tot el progrés */
+  function clear() {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+  }
+
+  return { saveExercici, exerciciSuperat, saveMon, monsRepte, clear };
 })();

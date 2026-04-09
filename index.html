@@ -15,9 +15,7 @@
   (function() {
     var p = new URLSearchParams(location.search);
     if (p.get('embed') === '1') document.body.classList.add('embed');
-    // Aplica el tema immediatament per evitar flash. Per defecte: mode clar.
-    var theme = p.get('theme') || localStorage.getItem('karel-theme') || 'light';
-    if (theme !== 'dark') document.body.classList.add('light');
+    if (p.get('theme') === 'light') document.body.classList.add('light');
   })();
 </script>
 
@@ -67,6 +65,7 @@
           onclick="toggleTheme()"
           aria-label="Canvia el tema">
   </button>
+  <button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button>
 </header>
 <div class="karel-nav-drawer" id="karel-nav-drawer">
   <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -152,25 +151,15 @@
   });
 })();
 </script>
-
-<!-- ══════════════════════════════════════════════════════
-     Tour de benvinguda — es carrega només la primera visita
-     ══════════════════════════════════════════════════════ -->
 <script>
-(function () {
-  if (localStorage.getItem('karel_tour_done_v1')) return;
-  if (new URLSearchParams(location.search).get('embed') === '1') return;
-
-  var iframe = document.createElement('iframe');
-  iframe.id                    = 'tour-iframe';
-  iframe.src                   = 'initial-tour.html';
-  iframe.allowTransparency     = true;
-  iframe.setAttribute('allowtransparency', 'true');
-  iframe.setAttribute('title', 'Tour de benvinguda');
-  iframe.style.cssText =
-    'position:fixed;inset:0;width:100%;height:100%;' +
-    'border:none;background:transparent;z-index:9990;';
-  document.body.appendChild(iframe);
+(function() {
+  var KEY = 'karel_progress';
+  window.karelClearProgress = function() {
+    if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+      try { localStorage.removeItem(KEY); } catch(e) {}
+      location.reload();
+    }
+  };
 })();
 </script>
 </body>

@@ -116,3 +116,25 @@
     align-items: center;
   }
 }
+
+/* ── Botó "Netejar històric" ─────────────────────────── */
+.karel-clear-btn {
+  margin-left: auto;
+  font-family: var(--mono, 'Space Mono', monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.karel-clear-btn:hover {
+  color: var(--error, #dc2626);
+  border-color: var(--error, #dc2626);
+}

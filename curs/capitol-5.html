@@ -46,6 +46,7 @@
     </nav>
 
   <span class="curs-header-title">Capítol 5 — Descomposició</span>
+  <button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button>
 </header>
 
 
@@ -297,5 +298,13 @@ s
   initSidebarToggle();
 </script>
 
+<script>
+function karelClearProgress() {
+  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+    KProgress.clear();
+    location.reload();
+  }
+}
+</script>
 </body>
 </html>

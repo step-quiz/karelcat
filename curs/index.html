@@ -28,6 +28,7 @@
     </nav>
 
   <span class="curs-header-title">Curs de programació</span>
+  <button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button>
 </header>
 
 
@@ -90,5 +91,16 @@
   })();
 </script>
 
+<script>
+(function() {
+  var KEY = 'karel_progress';
+  window.karelClearProgress = function() {
+    if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
+      try { localStorage.removeItem(KEY); } catch(e) {}
+      location.reload();
+    }
+  };
+})();
+</script>
 </body>
 </html>
