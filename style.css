@@ -79,6 +79,8 @@ body {
 }
 body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,141,.3)); }
 body.light .logo   { color: var(--text); }
+#state-badge,
+.toolbar-bag { visibility: hidden; }
 body.light #state-badge,
 body.light .toolbar-bag { visibility: hidden; }
 
