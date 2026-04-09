@@ -15,6 +15,7 @@
      (logo centralitzat via injectCursLogo(), sense toggle de tema)
      ══════════════════════════════════════════════════════ -->
 <header class="curs-header">
+  <button class="karel-nav-toggle" id="karel-nav-toggle" aria-label="Menú de navegació" aria-expanded="false">☰</button>
   <span class="curs-header-logo">
     <span class="logo-icon"></span>
     Karel
@@ -30,6 +31,12 @@
   <span class="curs-header-title">Curs de programació</span>
   <button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button>
 </header>
+<div class="karel-nav-drawer" id="karel-nav-drawer">
+  <a href="capitol-1.html" class="karel-nav-link active">Capítols</a>
+  <a href="repte-1.html" class="karel-nav-link">Reptes</a>
+  <a href="../index.html" class="karel-nav-link">Simulador</a>
+  <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+</div>
 
 
 <!-- ══════════════════════════════════════════════════════
@@ -100,6 +107,24 @@
       location.reload();
     }
   };
+})();
+</script>
+
+<script>
+(function() {
+  var btn = document.getElementById('karel-nav-toggle');
+  var drw = document.getElementById('karel-nav-drawer');
+  if (!btn || !drw) return;
+  btn.addEventListener('click', function() {
+    var open = drw.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', function(e) {
+    if (!btn.contains(e.target) && !drw.contains(e.target)) {
+      drw.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
 })();
 </script>
 </body>
