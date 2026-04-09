@@ -2,499 +2,447 @@
 <!--
   initial-tour.html
   ─────────────────
-  Overlay de benvinguda per al simulador Karel.
-  Carregat dinàmicament per index.html quan es detecta la primera visita.
-  El contingut de cada pas es llegeix de initial-tour.json.
+  S'executa dins un <iframe> transparent, full-screen,
+  carregat per index.html en la primera visita.
+  Accedeix al DOM del pare via window.parent.document
+  (same-origin, sense cap problema de seguretat).
+  El contingut de cada pas ve de initial-tour.json.
 -->
-<div id="tour-root" aria-modal="true" role="dialog" aria-label="Tour de benvinguda">
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour</title>
+  <style>
 
-  <!-- ── Spotlight: el "forat" de llum sobre l'element destacat ── -->
+    /* ── Reset: iframe transparent ─────────────────────── */
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Space Mono', 'Courier New', monospace;
+    }
+
+    /* ── Contenidor arrel ───────────────────────────────── */
+    #tour-root {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* ── Capa fosca quan no hi ha target ────────────────── */
+    #tour-overlay {
+      position: fixed;
+      inset: 0;
+      background: transparent;
+      transition: background 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #tour-root.no-target #tour-overlay {
+      background: rgba(0, 0, 0, 0.82);
+      pointer-events: all;
+    }
+
+    /* ── Spotlight ──────────────────────────────────────── */
+    #tour-spotlight {
+      position: fixed;
+      z-index: 2;
+      border-radius: 6px;
+      pointer-events: none;
+
+      /* La box-shadow gegant enfosqueix tot el que queda fora */
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82);
+
+      /* Vora rosa per identificar clarament la zona */
+      outline: 3px solid #B9138D;
+      outline-offset: 2px;
+      animation: tour-pulse 2s ease-in-out infinite;
+
+      opacity: 0;
+      transition:
+        top    0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        left   0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        width  0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease;
+    }
+
+    #tour-root.has-target #tour-spotlight {
+      opacity: 1;
+    }
+
+    @keyframes tour-pulse {
+      0%, 100% { outline-color: rgba(185, 19, 141, 0.55); }
+      50%       { outline-color: rgba(185, 19, 141, 1.0);  }
+    }
+
+    /* ── Panell d'explicació ────────────────────────────── */
+    #tour-panel {
+      position: fixed;
+      z-index: 10;
+      width: clamp(280px, 90vw, 390px);
+      pointer-events: all;
+
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid rgba(185, 19, 141, 0.3);
+      box-shadow:
+        0 0 0 1px rgba(185, 19, 141, 0.07),
+        0 12px 48px rgba(0, 0, 0, 0.28);
+
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #tour-panel.hiding {
+      opacity: 0;
+      transform: scale(0.97);
+      pointer-events: none;
+    }
+
+    #tour-panel.tour-center {
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+    }
+
+    #tour-panel.tour-center.hiding {
+      transform: translate(-50%, -50%) scale(0.97) !important;
+    }
+
+    /* ── Contingut ──────────────────────────────────────── */
+    #tour-inner {
+      padding: 1.5rem 1.6rem 1.25rem;
+    }
+
+    #tour-counter {
+      margin: 0 0 0.55rem;
+      font-size: 0.6rem;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #B9138D;
+    }
+
+    #tour-title {
+      margin: 0 0 0.7rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.3;
+    }
+
+    #tour-body {
+      font-size: 0.77rem;
+      line-height: 1.75;
+      color: #555;
+    }
+
+    #tour-body strong { color: #111; }
+
+    #tour-body code {
+      display: inline-block;
+      background: #f4f4f4;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      padding: 0 5px;
+      font-size: 0.73rem;
+      color: #222;
+    }
+
+    #tour-body a {
+      color: #B9138D;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* ── Footer: punts + botons ─────────────────────────── */
+    #tour-footer {
+      border-top: 1px solid #eee;
+      padding: 0.85rem 1.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    #tour-dots {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ddd;
+      transition: background 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .dot.on {
+      background: #B9138D;
+      transform: scale(1.35);
+    }
+
+    #tour-btns {
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    button {
+      font-family: 'Space Mono', 'Courier New', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.4px;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 0.38rem 0.8rem;
+      border: 1px solid #d0d0d0;
+      background: transparent;
+      color: #777;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+
+    button:hover        { border-color: #555; color: #222; }
+    button:disabled     { opacity: 0.3; cursor: default; pointer-events: none; }
+
+    #btn-next {
+      border-color: rgba(185, 19, 141, 0.5);
+      color: #B9138D;
+      background: rgba(185, 19, 141, 0.06);
+    }
+
+    #btn-next:hover {
+      border-color: #B9138D;
+      background: rgba(185, 19, 141, 0.14);
+      color: #8f0f6a;
+    }
+
+  </style>
+</head>
+<body>
+
+<div id="tour-root">
+  <div id="tour-overlay"></div>
   <div id="tour-spotlight"></div>
 
-  <!-- ── Panell d'explicació ── -->
-  <div id="tour-panel" role="document">
-    <div id="tour-panel-inner">
-      <p id="tour-step-counter"></p>
+  <div id="tour-panel">
+    <div id="tour-inner">
+      <p id="tour-counter"></p>
       <h2 id="tour-title"></h2>
-      <div id="tour-text"></div>
-      <div id="tour-actions">
-        <button id="tour-btn-skip">Saltar el tour</button>
-        <div id="tour-btn-group">
-          <button id="tour-btn-prev" aria-label="Pas anterior">← Anterior</button>
-          <button id="tour-btn-next">Següent →</button>
-        </div>
+      <div id="tour-body"></div>
+    </div>
+    <div id="tour-footer">
+      <div id="tour-dots"></div>
+      <div id="tour-btns">
+        <button id="btn-skip">Saltar</button>
+        <button id="btn-prev" disabled>← Anterior</button>
+        <button id="btn-next">Següent →</button>
       </div>
     </div>
   </div>
-
 </div>
 
-<style>
-/* ══════════════════════════════════════════════════════════
-   initial-tour.css  —  inclòs dins initial-tour.html
-   Usa les mateixes variables CSS que el projecte Karel.
-   Si les variables no estan definides, usa fallbacks foscos.
-══════════════════════════════════════════════════════════ */
-
-#tour-root {
-  position: fixed;
-  inset: 0;
-  z-index: 9990;
-  pointer-events: none; /* els fills sí que en tindran */
-  font-family: var(--mono, 'Space Mono', 'Courier New', monospace);
-}
-
-/* ── Fosc global ──────────────────────────────────────────
-   No és un element de color: és el spotlight de #tour-spotlight
-   el que crea l'efecte d'obscuritat via box-shadow massiva.
-   Cal un backdrop per a la pantalla de benvinguda/final
-   (quan no hi ha target). */
-#tour-root::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0);
-  transition: background 0.35s ease;
-  pointer-events: all;
-  z-index: 9991;
-}
-
-#tour-root.tour-no-target::before {
-  background: rgba(0, 0, 0, 0.88);
-}
-
-/* ── Spotlight ────────────────────────────────────────────
-   Es posiciona sobre l'element destacat.
-   La box-shadow massiva enfosqueix TOT excepte la zona interior. */
-#tour-spotlight {
-  position: fixed;
-  z-index: 9992;
-  border-radius: 6px;
-  pointer-events: none;
-
-  /* El "forat" de llum: la caixa és transparent, l'ombra ho envaeix tot */
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.88);
-
-  /* Ring de focus visible */
-  outline: 2px solid rgba(185, 19, 141, 0.7); /* --accent-hi */
-  outline-offset: 3px;
-
-  transition:
-    top    0.38s cubic-bezier(0.4, 0, 0.2, 1),
-    left   0.38s cubic-bezier(0.4, 0, 0.2, 1),
-    width  0.38s cubic-bezier(0.4, 0, 0.2, 1),
-    height 0.38s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.25s ease;
-
-  opacity: 0;
-}
-
-#tour-root.tour-has-target #tour-spotlight {
-  opacity: 1;
-}
-
-/* ── Panell ───────────────────────────────────────────────*/
-#tour-panel {
-  position: fixed;
-  z-index: 9999;
-  width: clamp(280px, 90vw, 400px);
-  pointer-events: all;
-
-  background: #ffffff;
-  border: 1px solid rgba(185, 19, 141, 0.35);
-  border-radius: 10px;
-  box-shadow:
-    0 0 0 1px rgba(185, 19, 141, 0.1),
-    0 8px 40px rgba(0, 0, 0, 0.18),
-    0 0 60px rgba(185, 19, 141, 0.05);
-
-  transition:
-    top    0.38s cubic-bezier(0.4, 0, 0.2, 1),
-    left   0.38s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.25s ease,
-    transform 0.25s ease;
-}
-
-#tour-panel.tour-panel-hidden {
-  opacity: 0;
-  transform: scale(0.96);
-  pointer-events: none;
-}
-
-#tour-panel-inner {
-  padding: 1.5rem 1.6rem 1.35rem;
-}
-
-#tour-step-counter {
-  margin: 0 0 0.6rem;
-  font-size: 0.62rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: rgba(185, 19, 141, 0.9);
-}
-
-#tour-title {
-  margin: 0 0 0.75rem;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 1.3;
-}
-
-#tour-text {
-  font-size: 0.78rem;
-  line-height: 1.7;
-  color: #555550;
-}
-
-#tour-text strong { color: #1a1a1a; }
-
-#tour-text code {
-  background: #f3f3f3;
-  border: 1px solid #d8d8d8;
-  border-radius: 3px;
-  padding: 0 4px;
-  font-size: 0.75rem;
-  color: #1a1a1a;
-}
-
-#tour-text a {
-  color: rgba(185, 19, 141, 0.9);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-#tour-text a:hover {
-  color: #d4189e;
-}
-
-/* ── Botons d'acció ───────────────────────────────────────*/
-#tour-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1.2rem;
-  gap: 0.5rem;
-}
-
-#tour-btn-group {
-  display: flex;
-  gap: 0.5rem;
-}
-
-#tour-root button {
-  font-family: var(--mono, 'Space Mono', monospace);
-  font-size: 0.67rem;
-  letter-spacing: 0.5px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  border: 1px solid #d0d0d0;
-  background: transparent;
-  color: #777;
-  padding: 0.4rem 0.8rem;
-  white-space: nowrap;
-}
-
-#tour-root button:hover {
-  color: #1a1a1a;
-  border-color: #1a1a1a;
-}
-
-#tour-btn-next {
-  background: rgba(185, 19, 141, 0.15) !important;
-  border-color: rgba(185, 19, 141, 0.5) !important;
-  color: rgba(185, 19, 141, 0.9) !important;
-}
-
-#tour-btn-next:hover {
-  background: rgba(185, 19, 141, 0.28) !important;
-  border-color: rgba(185, 19, 141, 0.85) !important;
-  color: #d4189e !important;
-}
-
-#tour-btn-prev:disabled {
-  opacity: 0.3;
-  cursor: default;
-  pointer-events: none;
-}
-
-/* ── Indicadors de pas (punts) ───────────────────────────*/
-#tour-dots {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid #ebebeb;
-}
-
-.tour-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #d0d0d0;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.tour-dot.active {
-  background: rgba(185, 19, 141, 0.85);
-  transform: scale(1.3);
-}
-
-/* ── Panell centrat (benvinguda / final) ─────────────────*/
-#tour-panel.tour-panel-center {
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-}
-
-#tour-panel.tour-panel-center.tour-panel-hidden {
-  transform: translate(-50%, -50%) scale(0.96) !important;
-}
-</style>
-
 <script>
-/* ══════════════════════════════════════════════════════════
-   initial-tour.js  —  inclòs dins initial-tour.html
-   Lògica del tour: llegeix JSON, gestiona passos, spotlight.
-══════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  const LS_KEY = 'karel_tour_done_v1';
-  const JSON_URL = 'initial-tour.json';
-
-  // ── Elements del DOM ──
   const root      = document.getElementById('tour-root');
   const spotlight = document.getElementById('tour-spotlight');
   const panel     = document.getElementById('tour-panel');
-  const elCounter = document.getElementById('tour-step-counter');
+  const elCounter = document.getElementById('tour-counter');
   const elTitle   = document.getElementById('tour-title');
-  const elText    = document.getElementById('tour-text');
-  const btnSkip   = document.getElementById('tour-btn-skip');
-  const btnPrev   = document.getElementById('tour-btn-prev');
-  const btnNext   = document.getElementById('tour-btn-next');
+  const elBody    = document.getElementById('tour-body');
+  const elDots    = document.getElementById('tour-dots');
+  const btnSkip   = document.getElementById('btn-skip');
+  const btnPrev   = document.getElementById('btn-prev');
+  const btnNext   = document.getElementById('btn-next');
 
-  let steps = [];
+  /* Accés directe al document pare (same-origin) */
+  const parentDoc = window.parent.document;
+
+  let steps   = [];
   let current = 0;
-  let transitioning = false;
+  let busy    = false;
 
-  // ── Carrega el JSON i inicia ──────────────────────────
-  fetch(JSON_URL)
+  /* ── Carrega el JSON ──────────────────────────────────── */
+  fetch('initial-tour.json')
     .then(r => r.json())
     .then(data => {
       steps = data;
       buildDots();
-      showStep(0);
+      render(0, false);
     })
     .catch(err => {
-      console.error('[Tour] No s\'ha pogut carregar initial-tour.json:', err);
-      endTour();
+      console.error('[Tour] initial-tour.json no carregat:', err);
+      closeTour();
     });
 
-  // ── Construeix els punts indicadors ──────────────────
+  /* ── Dots ─────────────────────────────────────────────── */
   function buildDots() {
-    const dotsEl = document.createElement('div');
-    dotsEl.id = 'tour-dots';
-    steps.forEach((_, i) => {
+    elDots.innerHTML = '';
+    steps.forEach(() => {
       const d = document.createElement('span');
-      d.className = 'tour-dot';
-      d.dataset.index = i;
-      dotsEl.appendChild(d);
-    });
-    document.getElementById('tour-panel-inner').appendChild(dotsEl);
-  }
-
-  function updateDots(idx) {
-    document.querySelectorAll('.tour-dot').forEach((d, i) => {
-      d.classList.toggle('active', i === idx);
+      d.className = 'dot';
+      elDots.appendChild(d);
     });
   }
 
-  // ── Mostra un pas ─────────────────────────────────────
-  function showStep(idx, direction) {
-    if (transitioning) return;
-    transitioning = true;
-
-    const step = steps[idx];
-    const isLast = idx === steps.length - 1;
-
-    // Amaga el panell momentàniament per animar l'entrada
-    panel.classList.add('tour-panel-hidden');
-
-    setTimeout(() => {
-      // Actualitza el contingut
-      elCounter.textContent = `Pas ${idx + 1} de ${steps.length}`;
-      elTitle.textContent = step.title;
-      elText.innerHTML = step.text;
-
-      btnPrev.disabled = (idx === 0);
-      btnNext.textContent = isLast ? 'Tancar el tour ✓' : 'Següent →';
-      btnSkip.style.visibility = isLast ? 'hidden' : 'visible';
-
-      updateDots(idx);
-
-      // Posiciona el spotlight i el panell
-      positionForStep(step);
-
-      // Mostra el panell
-      panel.classList.remove('tour-panel-hidden');
-      transitioning = false;
-    }, 220);
-  }
-
-  // ── Posicionament del spotlight i el panell ───────────
-  function positionForStep(step) {
-    if (!step.target) {
-      // Sense target: fosc total + panell centrat
-      root.classList.add('tour-no-target');
-      root.classList.remove('tour-has-target');
-      spotlight.style.cssText = 'top:50%;left:50%;width:0;height:0;';
-      panel.classList.add('tour-panel-center');
-      panel.classList.remove(
-        'tour-panel-above', 'tour-panel-below',
-        'tour-panel-left', 'tour-panel-right'
-      );
-      return;
-    }
-
-    panel.classList.remove('tour-panel-center');
-    root.classList.remove('tour-no-target');
-    root.classList.add('tour-has-target');
-
-    const target = document.querySelector(step.target);
-    if (!target) {
-      // Element no trobat: comportament de center
-      positionForStep({ ...step, target: null });
-      return;
-    }
-
-    const pad = 8; // px de marge extra al voltant de l'element
-    const rect = target.getBoundingClientRect();
-
-    // Spotlight sobre l'element
-    spotlight.style.top    = (rect.top    - pad) + 'px';
-    spotlight.style.left   = (rect.left   - pad) + 'px';
-    spotlight.style.width  = (rect.width  + pad * 2) + 'px';
-    spotlight.style.height = (rect.height + pad * 2) + 'px';
-
-    // Posiciona el panell
-    placePanel(rect, step.panelPosition, pad);
-  }
-
-  function placePanel(rect, preference, pad) {
-    const PANEL_W = 400 + 32; // max-width + marge
-    const PANEL_H = 260;      // altura estimada del panell
-    const MARGIN  = 18;       // distància entre spotlight i panell
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-
-    // Elimina classes de posició anteriors
-    panel.classList.remove(
-      'tour-panel-center', 'tour-panel-above',
-      'tour-panel-below', 'tour-panel-left', 'tour-panel-right'
+  function syncDots(idx) {
+    elDots.querySelectorAll('.dot').forEach((d, i) =>
+      d.classList.toggle('on', i === idx)
     );
+  }
 
-    // Prova la preferència i valida que hi cabi
-    const order = buildOrder(preference);
-    let placed = false;
+  /* ── Renderitza un pas ────────────────────────────────── */
+  function render(idx, animate) {
+    if (busy) return;
+    busy    = true;
+    current = idx;
+
+    const step   = steps[idx];
+    const isLast = (idx === steps.length - 1);
+
+    const apply = () => {
+      elCounter.textContent        = `Pas ${idx + 1} de ${steps.length}`;
+      elTitle.textContent          = step.title;
+      elBody.innerHTML             = step.text;
+      btnPrev.disabled             = (idx === 0);
+      btnNext.textContent          = isLast ? 'Tancar el tour ✓' : 'Següent →';
+      btnSkip.style.visibility     = isLast ? 'hidden' : 'visible';
+      syncDots(idx);
+      positionStep(step);
+      panel.classList.remove('hiding');
+      busy = false;
+    };
+
+    if (animate) {
+      panel.classList.add('hiding');
+      setTimeout(apply, 210);
+    } else {
+      apply();
+    }
+  }
+
+  /* ── Spotlight + panell ───────────────────────────────── */
+  function positionStep(step) {
+    if (!step.target) { showNoTarget(); return; }
+
+    const el = parentDoc.querySelector(step.target);
+    if (!el) {
+      console.warn('[Tour] No s\'ha trobat:', step.target);
+      showNoTarget();
+      return;
+    }
+
+    const rect = el.getBoundingClientRect();
+
+    root.classList.add('has-target');
+    root.classList.remove('no-target');
+
+    const PAD = 8;
+    spotlight.style.top    = (rect.top    - PAD) + 'px';
+    spotlight.style.left   = (rect.left   - PAD) + 'px';
+    spotlight.style.width  = (rect.width  + PAD * 2) + 'px';
+    spotlight.style.height = (rect.height + PAD * 2) + 'px';
+
+    panel.classList.remove('tour-center');
+    placePanel(rect, step.panelPosition || 'right', PAD);
+  }
+
+  function showNoTarget() {
+    root.classList.remove('has-target');
+    root.classList.add('no-target');
+    spotlight.style.width  = '0';
+    spotlight.style.height = '0';
+    panel.classList.add('tour-center');
+  }
+
+  /* ── Posiciona el panell ──────────────────────────────── */
+  function placePanel(rect, pref, pad) {
+    const W    = 390 + 24;
+    const H    = 270;
+    const GAP  = 20;
+    const EDGE = 12;
+    const vw   = window.innerWidth;
+    const vh   = window.innerHeight;
+
+    const order = [pref, ...['right', 'left', 'below', 'above'].filter(p => p !== pref)];
 
     for (const pos of order) {
-      let top, left;
+      let top, left, fits;
 
       if (pos === 'right') {
-        left = rect.right + pad + MARGIN;
-        top  = clamp(rect.top + rect.height / 2 - PANEL_H / 2, 12, vh - PANEL_H - 12);
-        if (left + PANEL_W <= vw) { applyPos(top, left); placed = true; break; }
+        left = rect.right + pad + GAP;
+        top  = clamp(rect.top + rect.height / 2 - H / 2, EDGE, vh - H - EDGE);
+        fits = left + W <= vw - EDGE;
+      } else if (pos === 'left') {
+        left = rect.left - pad - GAP - W;
+        top  = clamp(rect.top + rect.height / 2 - H / 2, EDGE, vh - H - EDGE);
+        fits = left >= EDGE;
+      } else if (pos === 'below') {
+        top  = rect.bottom + pad + GAP;
+        left = clamp(rect.left + rect.width / 2 - W / 2, EDGE, vw - W - EDGE);
+        fits = top + H <= vh - EDGE;
+      } else {
+        top  = rect.top - pad - GAP - H;
+        left = clamp(rect.left + rect.width / 2 - W / 2, EDGE, vw - W - EDGE);
+        fits = top >= EDGE;
       }
-      if (pos === 'left') {
-        left = rect.left - pad - MARGIN - PANEL_W;
-        top  = clamp(rect.top + rect.height / 2 - PANEL_H / 2, 12, vh - PANEL_H - 12);
-        if (left >= 12) { applyPos(top, left); placed = true; break; }
-      }
-      if (pos === 'below') {
-        top  = rect.bottom + pad + MARGIN;
-        left = clamp(rect.left + rect.width / 2 - PANEL_W / 2, 12, vw - PANEL_W - 12);
-        if (top + PANEL_H <= vh) { applyPos(top, left); placed = true; break; }
-      }
-      if (pos === 'above') {
-        top  = rect.top - pad - MARGIN - PANEL_H;
-        left = clamp(rect.left + rect.width / 2 - PANEL_W / 2, 12, vw - PANEL_W - 12);
-        if (top >= 12) { applyPos(top, left); placed = true; break; }
-      }
+
+      if (fits) { panel.style.top = top + 'px'; panel.style.left = left + 'px'; return; }
     }
 
-    // Fallback: cantonada inferior dreta
-    if (!placed) {
-      applyPos(vh - PANEL_H - 20, vw - PANEL_W - 20);
-    }
+    /* Fallback */
+    panel.style.top  = (vh - H - 20) + 'px';
+    panel.style.left = (vw - W - 20) + 'px';
   }
 
-  function buildOrder(preference) {
-    const all = ['right', 'left', 'below', 'above'];
-    return [preference, ...all.filter(p => p !== preference)];
-  }
+  function clamp(v, lo, hi) { return Math.min(Math.max(v, lo), hi); }
 
-  function applyPos(top, left) {
-    panel.style.top  = top + 'px';
-    panel.style.left = left + 'px';
-  }
-
-  function clamp(val, min, max) {
-    return Math.min(Math.max(val, min), max);
-  }
-
-  // ── Accions dels botons ───────────────────────────────
+  /* ── Events ───────────────────────────────────────────── */
   btnNext.addEventListener('click', () => {
-    if (current >= steps.length - 1) {
-      endTour();
-    } else {
-      current++;
-      showStep(current, 'forward');
-    }
+    if (current >= steps.length - 1) closeTour();
+    else render(current + 1, true);
   });
 
   btnPrev.addEventListener('click', () => {
-    if (current > 0) {
-      current--;
-      showStep(current, 'back');
-    }
+    if (current > 0) render(current - 1, true);
   });
 
-  btnSkip.addEventListener('click', endTour);
+  btnSkip.addEventListener('click', closeTour);
 
-  // Teclat: Enter/Espai → endavant, Escape → salta
-  document.addEventListener('keydown', function onKey(e) {
-    if (e.key === 'ArrowRight' || e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      btnNext.click();
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      btnPrev.click();
-    } else if (e.key === 'Escape') {
-      endTour();
-    }
+  document.addEventListener('keydown', e => {
+    if      (e.key === 'ArrowRight' || e.key === 'Enter') { e.preventDefault(); btnNext.click(); }
+    else if (e.key === 'ArrowLeft')                       { e.preventDefault(); btnPrev.click(); }
+    else if (e.key === 'Escape')                           closeTour();
   });
 
-  // ── Tanca i desa a localStorage ───────────────────────
-  function endTour() {
-    localStorage.setItem(LS_KEY, '1');
-    panel.classList.add('tour-panel-hidden');
-    root.style.transition = 'opacity 0.3s ease';
-    root.style.opacity = '0';
-    setTimeout(() => root.remove(), 320);
+  /* ── Tanca el tour ────────────────────────────────────── */
+  function closeTour() {
+    localStorage.setItem('karel_tour_done_v1', '1');
+    const iframe = parentDoc.getElementById('tour-iframe');
+    if (iframe) {
+      iframe.style.transition = 'opacity 0.3s ease';
+      iframe.style.opacity    = '0';
+      setTimeout(() => iframe.remove(), 350);
+    }
   }
 
-  // ── Reposiciona en canviar la mida de la finestra ─────
-  let resizeTimer;
+  /* ── Resize ───────────────────────────────────────────── */
+  let rt;
   window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      if (steps[current]) positionForStep(steps[current]);
-    }, 120);
+    clearTimeout(rt);
+    rt = setTimeout(() => { if (steps[current]) positionStep(steps[current]); }, 100);
   });
 
 })();
 </script>
+
+</body>
+</html>

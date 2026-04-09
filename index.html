@@ -156,36 +156,18 @@
      ══════════════════════════════════════════════════════ -->
 <script>
 (function () {
-  var LS_KEY = 'karel_tour_done_v1';
-  if (localStorage.getItem(LS_KEY)) return; // ja vist
+  if (localStorage.getItem('karel_tour_done_v1')) return;
 
-  fetch('initial-tour.html')
-    .then(function (r) { return r.text(); })
-    .then(function (html) {
-      var parser = new DOMParser();
-      var doc    = parser.parseFromString(html, 'text/html');
-
-      // Injecta els <style> a <head>
-      doc.querySelectorAll('style').forEach(function (s) {
-        var clone = document.createElement('style');
-        clone.textContent = s.textContent;
-        document.head.appendChild(clone);
-      });
-
-      // Injecta el contenidor del tour al <body>
-      var tourRoot = doc.getElementById('tour-root');
-      if (tourRoot) document.body.appendChild(tourRoot);
-
-      // Injecta i executa els <script>
-      doc.querySelectorAll('script').forEach(function (s) {
-        var ns = document.createElement('script');
-        ns.textContent = s.textContent;
-        document.body.appendChild(ns);
-      });
-    })
-    .catch(function (err) {
-      console.warn('[Karel] Tour no disponible:', err);
-    });
+  var iframe = document.createElement('iframe');
+  iframe.id                    = 'tour-iframe';
+  iframe.src                   = 'initial-tour.html';
+  iframe.allowTransparency     = true;
+  iframe.setAttribute('allowtransparency', 'true');
+  iframe.setAttribute('title', 'Tour de benvinguda');
+  iframe.style.cssText =
+    'position:fixed;inset:0;width:100%;height:100%;' +
+    'border:none;background:transparent;z-index:9990;';
+  document.body.appendChild(iframe);
 })();
 </script>
 </body>
