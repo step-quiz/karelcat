@@ -478,7 +478,7 @@ window.addEventListener('message', function(e) {
   if (fb) {
     if (success) {
       fb.className   = 'simulador-feedback fb-ok';
-      fb.textContent = '✓ Correcte! En Karel ha arribat a l'objectiu.';
+      fb.textContent = "✓ Correcte! En Karel ha arribat a l'objectiu.";
     } else {
       fb.className   = 'simulador-feedback fb-error';
       fb.textContent = '✗ Encara no. Comprova el codi i torna-ho a intentar.';
