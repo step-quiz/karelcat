@@ -88,13 +88,21 @@ a.curs-header-logo:hover { text-decoration: none; color: var(--accent-hi); }
 .curs-header-logo .logo-icon { color: var(--accent-hi); }
 
 .curs-header-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 0.8rem;
   color: var(--muted);
   font-family: var(--mono);
-  flex: 1;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  pointer-events: none;
+}
+.curs-header-title::before,
+.curs-header-title::after {
+  content: "|";
+  margin: 0 0.6em;
+  color: var(--border);
+  font-weight: 400;
 }
 
 .curs-header-actions {

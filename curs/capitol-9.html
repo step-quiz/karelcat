@@ -7,6 +7,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
+<style>
+  /* ── Títol centrat al header ── */
+  .curs-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    white-space: nowrap;
+    pointer-events: none;
+    flex: none;
+    overflow: visible;
+    text-overflow: clip;
+  }
+</style>
 </head>
 <body class="curs-light">
 
@@ -21,7 +37,7 @@
       <a href="../index.html" class="karel-nav-link">Simulador</a>
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
-  <span class="curs-header-title">Capítol 9 — El vocabulari complet</span>
+  <span class="curs-header-title">| Capítol 9 — El vocabulari complet |</span>
 </header>
 
 
@@ -30,12 +46,6 @@
   <div id="sidebar-overlay" aria-hidden="true"></div>
 
   <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
-    <div class="sidebar-header">
-      <a href="index.html" class="active">Capítols</a>
-      <a href="repte-1.html">Reptes</a>
-      <a href="../index.html">Simulador</a>
-      <a href="../edit-mapa.html">Editor</a>
-    </div>
     <div id="sidebar-nav"></div>
   </nav>
 
