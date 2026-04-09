@@ -29,7 +29,7 @@
   },
   {
     "id": "nav",
-    "target": ".topbar-actions",
+    "target": "#karel-nav",
     "panelPosition": "below",
     "title": "Diferents maneres d'aprendre",
     "text": "Aquí pots canviar de menú: capítols per aprendre, reptes per practicar, el simulador i un editor de mapes."
