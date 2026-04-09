@@ -6,6 +6,7 @@
   <title>Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=1">
+  <link rel="stylesheet" href="nav.css">
 </head>
 <body>
 
@@ -42,6 +43,14 @@
     </span>
     <span>Karel</span>
   </div>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
+      <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="index.html" class="karel-nav-link active">Simulador</a>
+      <a href="edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
+  <button class="karel-nav-toggle" id="karel-nav-toggle" aria-label="Menú de navegació" aria-expanded="false">☰</button>
 
   <div class="topbar-actions">
     <div id="state-badge" aria-live="polite">
@@ -57,6 +66,12 @@
           aria-label="Canvia el tema">
   </button>
 </header>
+<div class="karel-nav-drawer" id="karel-nav-drawer">
+  <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
+  <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
+  <a href="index.html" class="karel-nav-link active">Simulador</a>
+  <a href="edit-mapa.html" class="karel-nav-link">Editor</a>
+</div>
 
 
 <!-- ══════════════════════════════════════════════════════
@@ -116,5 +131,24 @@
 <script src="js/execution.js"></script>
 <script src="js/reptes.js"></script>
 <script src="js/main.js"></script>
+<script>
+(function() {
+  var btn = document.getElementById('karel-nav-toggle');
+  var drw = document.getElementById('karel-nav-drawer');
+  if (!btn || !drw) return;
+  btn.addEventListener('click', function() {
+    var open = drw.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open);
+    btn.textContent = open ? '✕' : '☰';
+  });
+  document.addEventListener('click', function(e) {
+    if (!btn.contains(e.target) && !drw.contains(e.target)) {
+      drw.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = '☰';
+    }
+  });
+})();
+</script>
 </body>
 </html>

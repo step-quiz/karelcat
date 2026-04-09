@@ -71,6 +71,7 @@
     /* La solució s'inclou en un comentari HTML per al professor,
        NO en cap atribut data-code visible a l'alumne. */
   </style>
+  <link rel="stylesheet" href="../nav.css">
 </head>
 <body class="curs-light">
 
@@ -78,6 +79,13 @@
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
   <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
+      <a href="repte-1.html" class="karel-nav-link active">Reptes</a>
+      <a href="../index.html" class="karel-nav-link">Simulador</a>
+      <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
+    </nav>
   <span class="curs-header-title">Repte 11 — El tauler d'escacs</span>
 </header>
 
@@ -91,6 +99,7 @@
       <a href="index.html">Capítols</a>
       <a href="repte-1.html" class="active">Reptes</a>
       <a href="../index.html">Simulador</a>
+      <a href="../edit-mapa.html">Editor</a>
     </div>
     <div id="sidebar-nav"></div>
   </nav>

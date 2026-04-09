@@ -335,6 +335,7 @@
       .tool-section { flex: 0 0 auto; border-bottom: none; border-right: 1px solid var(--border); padding: 8px 10px; }
     }
   </style>
+  <link rel="stylesheet" href="nav.css">
 </head>
 <body class="edit-page light">
 
@@ -360,7 +361,21 @@
     </span>
     <span>Editor de mapes</span>
   </div>
+  <span class="karel-nav-sep"></span>
+    <nav class="karel-nav" id="karel-nav">
+      <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
+      <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
+      <a href="index.html" class="karel-nav-link">Simulador</a>
+      <a href="edit-mapa.html" class="karel-nav-link active">Editor</a>
+    </nav>
+  <button class="karel-nav-toggle" id="karel-nav-toggle" aria-label="Menú de navegació" aria-expanded="false">☰</button>
 </header>
+<div class="karel-nav-drawer" id="karel-nav-drawer">
+  <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
+  <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
+  <a href="index.html" class="karel-nav-link">Simulador</a>
+  <a href="edit-mapa.html" class="karel-nav-link active">Editor</a>
+</div>
 
 
 <!-- ══ LAYOUT: eines | mapa ══ -->
@@ -804,6 +819,25 @@ document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'z' &&  e.shiftKey) { e.preventDefault(); editRedo(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 'y')                 { e.preventDefault(); editRedo(); }
 });
+</script>
+<script>
+(function() {
+  var btn = document.getElementById('karel-nav-toggle');
+  var drw = document.getElementById('karel-nav-drawer');
+  if (!btn || !drw) return;
+  btn.addEventListener('click', function() {
+    var open = drw.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open);
+    btn.textContent = open ? '✕' : '☰';
+  });
+  document.addEventListener('click', function(e) {
+    if (!btn.contains(e.target) && !drw.contains(e.target)) {
+      drw.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = '☰';
+    }
+  });
+})();
 </script>
 </body>
 </html>
