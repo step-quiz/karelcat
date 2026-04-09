@@ -362,19 +362,6 @@ Hi ha dos tipus d'errors diferenciats:
 
 **Important**: els errors de runtime *no llancen excepcions JS*. Si modifiques l'intèrpret o l'executor, usa sempre el mecanisme de `yield { type:'error' }` / `errStop`, no `throw`. Llançar dins d'un generador que és consumit per `tick()` provocaria una excepció no capturada.
 
-## 6. Interfície (disseny Stanford)
-
-- **Fila 1 (topbar):** logo medusa + «Karel», badge d'estat (dot + text), motxilla, botó tema.
-- **Fila 2 (toolbar):** botó mutant Executa↔Atura + botó Reinicia + slider velocitat.
-- **Zona principal:** editor de codi (esquerra, 50%) + món de Karel (dreta, 50%).
-- **Log:** sota l'editor, es buida automàticament a cada execució.
-- **Eliminats definitivament:** modals, menú hamburguesa, selectors d'idioma, panells de pistes/referència, editor de mapes integrat, onboarding.
-
-### Mode fosc/clar
-Botó sol/lluna a la topbar. Preferència desada a `localStorage` (clau `'karel-theme'`).
-
----
-
 ---
 
 ## 9. Interfície (disseny Stanford)
