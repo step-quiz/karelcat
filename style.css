@@ -33,7 +33,7 @@ html, body { height: 100%; overflow: hidden; }
 /* ── MODE CLAR — Estil Stanford ─────────────────────── */
 body.light {
   --bg:         #ffffff;            /* fons blanc net */
-  --surface:    #f8f9fa;            /* superfície gris molt clar */
+  --surface:    #f5f5f5;            /* superfície gris molt clar */
   --border:     #d0d0d0;            /* vora gris neutre */
   --text:       #1a1a1a;            /* text quasi negre */
   --muted:      #6b7280;            /* gris mitjà neutre */
@@ -78,6 +78,9 @@ body {
   filter: drop-shadow(0 0 3px rgba(185,19,141,.5));
 }
 body.light .logo-icon { color: #B9138D; filter: drop-shadow(0 0 2px rgba(185,19,141,.3)); }
+body.light .logo   { color: var(--text); }
+body.light #state-badge,
+body.light .toolbar-bag { visibility: hidden; }
 
 .logo {
   font-size: 0.9rem;
