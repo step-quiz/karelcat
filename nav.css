@@ -109,9 +109,9 @@
     display: none;
   }
 
-  /* Mostra toggle NOMÉS a les pàgines amb topbar (index, edit-mapa)
-     Les pàgines del curs ja tenen el menú lateral (sidebar). */
-  .topbar .karel-nav-toggle {
+  /* Mostra toggle a topbar i a curs/index (sense sidebar) */
+  .topbar .karel-nav-toggle,
+  .curs-header .karel-nav-toggle {
     display: inline-flex;
     align-items: center;
   }
