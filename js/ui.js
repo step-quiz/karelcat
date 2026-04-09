@@ -104,7 +104,9 @@ function toggleTheme() {
 }
 
 function initTheme() {
-  if (localStorage.getItem(K.LS_KEY_THEME) === 'light') {
+  // Default is light; only switch to dark if the user explicitly chose dark.
+  const saved = localStorage.getItem(K.LS_KEY_THEME);
+  if (saved !== 'dark') {
     document.body.classList.add('light');
   }
   updateThemeBtn();
