@@ -69,11 +69,21 @@ function renderReptesSidebar(currentNum) {
   let html = '<ul class="sidebar-list">';
   for (const r of REPTES_DATA) {
     const isActive = r.num === currentNum;
+    const mons = KProgress.monsRepte(r.num);
+    const nOk  = mons.filter(Boolean).length;
+    const nTot = 3; // sempre 3 mons per repte
+    let badge = '';
+    if (nOk === nTot) {
+      badge = '<span class="prog-badge prog-badge--all" title="Tots els mons superats">✓✓✓</span>';
+    } else if (nOk > 0) {
+      badge = `<span class="prog-badge prog-badge--part" title="${nOk}/${nTot} mons superats">${nOk}/${nTot}</span>`;
+    }
     html += `
       <li class="sidebar-item${isActive ? ' active' : ''}">
         <a href="${r.arxiu}" class="sidebar-link">
           <span class="sidebar-num">${String(r.num).padStart(2, '0')}</span>
           <span class="sidebar-titol">${r.titol}</span>
+          ${badge}
         </a>
       </li>`;
   }
@@ -88,11 +98,16 @@ function renderSidebar(currentNum) {
   let html = '<ul class="sidebar-list">';
   for (const c of CAPITOLS_DATA) {
     const isActive = c.num === currentNum;
+    const done = KProgress.exerciciSuperat(c.num);
+    const badge = done
+      ? '<span class="prog-badge prog-badge--all" title="Exercici superat">✓</span>'
+      : '';
     html += `
       <li class="sidebar-item${isActive ? ' active' : ''}">
         <a href="${c.arxiu}" class="sidebar-link">
           <span class="sidebar-num">${String(c.num).padStart(2, '0')}</span>
           <span class="sidebar-titol">${c.titol}</span>
+          ${badge}
         </a>
       </li>`;
   }
@@ -166,6 +181,9 @@ function _updateBtnLabel(btn, idx, status) {
 
 // ── Registre global goalId → context multi-món (per al listener de postMessage) ──
 const _multiGoalRegistry = new Map();
+
+// ── Registre global goalId → context 1 món (label + pàgina) ──
+const _singleGoalRegistry = new Map();
 
 // ── Renderitza un simulador de N mons (capítol 10) ──
 function _renderMultiMon(div) {
@@ -298,6 +316,7 @@ function _renderMultiMon(div) {
     if (!gid) return;
     _multiGoalRegistry.set(gid, {
       monState, btns, idx: i, total: n, updateGlobalFeedback,
+      repteNum: typeof CURRENT_REPTE !== 'undefined' ? CURRENT_REPTE : null,
     });
   });
 
@@ -343,6 +362,8 @@ function _renderSingleMon(div) {
     fb.className = 'simulador-feedback';
     fb.dataset.goalId = goalId;
     wrap.appendChild(fb);
+    // Registra per al progrés
+    _singleGoalRegistry.set(goalId, { label, pageNum: typeof CURRENT_CAPITOL !== 'undefined' ? CURRENT_CAPITOL : null });
   }
 
   if (title) {
@@ -457,10 +478,16 @@ window.addEventListener('message', function(e) {
   if (fb) {
     if (success) {
       fb.className   = 'simulador-feedback fb-ok';
-      fb.textContent = '✓ Correcte! En Karel ha arribat a l\'objectiu.';
+      fb.textContent = '✓ Correcte! En Karel ha arribat a l'objectiu.';
     } else {
       fb.className   = 'simulador-feedback fb-error';
       fb.textContent = '✗ Encara no. Comprova el codi i torna-ho a intentar.';
+    }
+    // Progrés: només guardem si és un Exercici
+    const sCtx = _singleGoalRegistry.get(goalId);
+    if (sCtx && sCtx.label === 'Exercici' && sCtx.pageNum !== null) {
+      KProgress.saveExercici(sCtx.pageNum, success);
+      if (success) renderSidebar(sCtx.pageNum);
     }
   }
 
@@ -470,5 +497,10 @@ window.addEventListener('message', function(e) {
     ctx.monState[ctx.idx] = success ? 'ok' : 'error';
     _updateBtnLabel(ctx.btns[ctx.idx], ctx.idx, ctx.monState[ctx.idx]);
     ctx.updateGlobalFeedback();
+    // Progrés: guarda l'estat de cada món
+    if (ctx.repteNum !== null) {
+      KProgress.saveMon(ctx.repteNum, ctx.idx, success);
+      if (success) renderReptesSidebar(ctx.repteNum);
+    }
   }
 });

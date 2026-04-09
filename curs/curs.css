@@ -606,6 +606,26 @@ body.curs-light .simulador-feedback.fb-error {
 
 
 
+
+/* ── Badges de progrés al sidebar ───────────────────────── */
+.prog-badge {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.prog-badge--all {
+  color: var(--accent-hi);
+  background: color-mix(in srgb, var(--accent-hi) 12%, transparent);
+}
+.prog-badge--part {
+  color: var(--muted);
+  background: color-mix(in srgb, var(--muted) 12%, transparent);
+}
 /* ── Navegació global dins el sidebar (mòbil only) ──────── */
 .sidebar-global-nav {
   display: none;               /* amagat en desktop */

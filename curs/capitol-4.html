@@ -57,7 +57,13 @@
   <div id="sidebar-overlay" aria-hidden="true"></div>
 
   <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
-    <div id="sidebar-nav"></div>
+        <div class="sidebar-global-nav" aria-label="Navegació global">
+      <a href="capitol-1.html" class="sgn-link sgn-active">Capítols</a>
+      <a href="repte-1.html" class="sgn-link">Reptes</a>
+      <a href="../index.html" class="sgn-link">Simulador</a>
+      <a href="../edit-mapa.html" class="sgn-link">Editor</a>
+    </div>
+<div id="sidebar-nav"></div>
   </nav>
 
   <main id="chapter-content" class="curs-content" tabindex="-1">
@@ -208,7 +214,8 @@ puja_grao()
 
 
 <script>const CURRENT_CAPITOL = 4;</script>
-<script src="capitols.js"></script>
+<script src="progress.js"></script>
+  <script src="capitols.js"></script>
 <script>
   injectCursLogo();
   renderSidebar(CURRENT_CAPITOL);
