@@ -150,5 +150,43 @@
   });
 })();
 </script>
+
+<!-- ══════════════════════════════════════════════════════
+     Tour de benvinguda — es carrega només la primera visita
+     ══════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  var LS_KEY = 'karel_tour_done_v1';
+  if (localStorage.getItem(LS_KEY)) return; // ja vist
+
+  fetch('initial-tour.html')
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      var parser = new DOMParser();
+      var doc    = parser.parseFromString(html, 'text/html');
+
+      // Injecta els <style> a <head>
+      doc.querySelectorAll('style').forEach(function (s) {
+        var clone = document.createElement('style');
+        clone.textContent = s.textContent;
+        document.head.appendChild(clone);
+      });
+
+      // Injecta el contenidor del tour al <body>
+      var tourRoot = doc.getElementById('tour-root');
+      if (tourRoot) document.body.appendChild(tourRoot);
+
+      // Injecta i executa els <script>
+      doc.querySelectorAll('script').forEach(function (s) {
+        var ns = document.createElement('script');
+        ns.textContent = s.textContent;
+        document.body.appendChild(ns);
+      });
+    })
+    .catch(function (err) {
+      console.warn('[Karel] Tour no disponible:', err);
+    });
+})();
+</script>
 </body>
 </html>

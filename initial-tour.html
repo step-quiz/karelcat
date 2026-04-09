@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<!--
+  initial-tour.html
+  ─────────────────
+  Overlay de benvinguda per al simulador Karel.
+  Carregat dinàmicament per index.html quan es detecta la primera visita.
+  El contingut de cada pas es llegeix de initial-tour.json.
+-->
+<div id="tour-root" aria-modal="true" role="dialog" aria-label="Tour de benvinguda">
+
+  <!-- ── Spotlight: el "forat" de llum sobre l'element destacat ── -->
+  <div id="tour-spotlight"></div>
+
+  <!-- ── Panell d'explicació ── -->
+  <div id="tour-panel" role="document">
+    <div id="tour-panel-inner">
+      <p id="tour-step-counter"></p>
+      <h2 id="tour-title"></h2>
+      <div id="tour-text"></div>
+      <div id="tour-actions">
+        <button id="tour-btn-skip">Saltar el tour</button>
+        <div id="tour-btn-group">
+          <button id="tour-btn-prev" aria-label="Pas anterior">← Anterior</button>
+          <button id="tour-btn-next">Següent →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   initial-tour.css  —  inclòs dins initial-tour.html
+   Usa les mateixes variables CSS que el projecte Karel.
+   Si les variables no estan definides, usa fallbacks foscos.
+══════════════════════════════════════════════════════════ */
+
+#tour-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none; /* els fills sí que en tindran */
+  font-family: var(--mono, 'Space Mono', 'Courier New', monospace);
+}
+
+/* ── Fosc global ──────────────────────────────────────────
+   No és un element de color: és el spotlight de #tour-spotlight
+   el que crea l'efecte d'obscuritat via box-shadow massiva.
+   Cal un backdrop per a la pantalla de benvinguda/final
+   (quan no hi ha target). */
+#tour-root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.35s ease;
+  pointer-events: all;
+  z-index: 9991;
+}
+
+#tour-root.tour-no-target::before {
+  background: rgba(0, 0, 0, 0.88);
+}
+
+/* ── Spotlight ────────────────────────────────────────────
+   Es posiciona sobre l'element destacat.
+   La box-shadow massiva enfosqueix TOT excepte la zona interior. */
+#tour-spotlight {
+  position: fixed;
+  z-index: 9992;
+  border-radius: 6px;
+  pointer-events: none;
+
+  /* El "forat" de llum: la caixa és transparent, l'ombra ho envaeix tot */
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.88);
+
+  /* Ring de focus visible */
+  outline: 2px solid rgba(185, 19, 141, 0.7); /* --accent-hi */
+  outline-offset: 3px;
+
+  transition:
+    top    0.38s cubic-bezier(0.4, 0, 0.2, 1),
+    left   0.38s cubic-bezier(0.4, 0, 0.2, 1),
+    width  0.38s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s ease;
+
+  opacity: 0;
+}
+
+#tour-root.tour-has-target #tour-spotlight {
+  opacity: 1;
+}
+
+/* ── Panell ───────────────────────────────────────────────*/
+#tour-panel {
+  position: fixed;
+  z-index: 9999;
+  width: clamp(280px, 90vw, 400px);
+  pointer-events: all;
+
+  background: var(--surface, #141414);
+  border: 1px solid rgba(185, 19, 141, 0.45);
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 1px rgba(185, 19, 141, 0.15),
+    0 8px 40px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(185, 19, 141, 0.08);
+
+  transition:
+    top    0.38s cubic-bezier(0.4, 0, 0.2, 1),
+    left   0.38s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+#tour-panel.tour-panel-hidden {
+  opacity: 0;
+  transform: scale(0.96);
+  pointer-events: none;
+}
+
+#tour-panel-inner {
+  padding: 1.5rem 1.6rem 1.35rem;
+}
+
+#tour-step-counter {
+  margin: 0 0 0.6rem;
+  font-size: 0.62rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(185, 19, 141, 0.9);
+}
+
+#tour-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text, #ddddd8);
+  line-height: 1.3;
+}
+
+#tour-text {
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: var(--muted, #8a8a85);
+}
+
+#tour-text strong { color: var(--text, #ddddd8); }
+
+#tour-text code {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 3px;
+  padding: 0 4px;
+  font-size: 0.75rem;
+  color: var(--text, #ddddd8);
+}
+
+#tour-text a {
+  color: rgba(185, 19, 141, 0.9);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+#tour-text a:hover {
+  color: #d4189e;
+}
+
+/* ── Botons d'acció ───────────────────────────────────────*/
+#tour-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.2rem;
+  gap: 0.5rem;
+}
+
+#tour-btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#tour-root button {
+  font-family: var(--mono, 'Space Mono', monospace);
+  font-size: 0.67rem;
+  letter-spacing: 0.5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid var(--border, #2a2a2a);
+  background: transparent;
+  color: var(--muted, #8a8a85);
+  padding: 0.4rem 0.8rem;
+  white-space: nowrap;
+}
+
+#tour-root button:hover {
+  color: var(--text, #ddddd8);
+  border-color: var(--text, #ddddd8);
+}
+
+#tour-btn-next {
+  background: rgba(185, 19, 141, 0.15) !important;
+  border-color: rgba(185, 19, 141, 0.5) !important;
+  color: rgba(185, 19, 141, 0.9) !important;
+}
+
+#tour-btn-next:hover {
+  background: rgba(185, 19, 141, 0.28) !important;
+  border-color: rgba(185, 19, 141, 0.85) !important;
+  color: #d4189e !important;
+}
+
+#tour-btn-prev:disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ── Indicadors de pas (punts) ───────────────────────────*/
+#tour-dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border, #2a2a2a);
+}
+
+.tour-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border, #2a2a2a);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.tour-dot.active {
+  background: rgba(185, 19, 141, 0.85);
+  transform: scale(1.3);
+}
+
+/* ── Panell centrat (benvinguda / final) ─────────────────*/
+#tour-panel.tour-panel-center {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+#tour-panel.tour-panel-center.tour-panel-hidden {
+  transform: translate(-50%, -50%) scale(0.96) !important;
+}
+</style>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   initial-tour.js  —  inclòs dins initial-tour.html
+   Lògica del tour: llegeix JSON, gestiona passos, spotlight.
+══════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  const LS_KEY = 'karel_tour_done_v1';
+  const JSON_URL = 'initial-tour.json';
+
+  // ── Elements del DOM ──
+  const root      = document.getElementById('tour-root');
+  const spotlight = document.getElementById('tour-spotlight');
+  const panel     = document.getElementById('tour-panel');
+  const elCounter = document.getElementById('tour-step-counter');
+  const elTitle   = document.getElementById('tour-title');
+  const elText    = document.getElementById('tour-text');
+  const btnSkip   = document.getElementById('tour-btn-skip');
+  const btnPrev   = document.getElementById('tour-btn-prev');
+  const btnNext   = document.getElementById('tour-btn-next');
+
+  let steps = [];
+  let current = 0;
+  let transitioning = false;
+
+  // ── Carrega el JSON i inicia ──────────────────────────
+  fetch(JSON_URL)
+    .then(r => r.json())
+    .then(data => {
+      steps = data;
+      buildDots();
+      showStep(0);
+    })
+    .catch(err => {
+      console.error('[Tour] No s\'ha pogut carregar initial-tour.json:', err);
+      endTour();
+    });
+
+  // ── Construeix els punts indicadors ──────────────────
+  function buildDots() {
+    const dotsEl = document.createElement('div');
+    dotsEl.id = 'tour-dots';
+    steps.forEach((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'tour-dot';
+      d.dataset.index = i;
+      dotsEl.appendChild(d);
+    });
+    document.getElementById('tour-panel-inner').appendChild(dotsEl);
+  }
+
+  function updateDots(idx) {
+    document.querySelectorAll('.tour-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+  }
+
+  // ── Mostra un pas ─────────────────────────────────────
+  function showStep(idx, direction) {
+    if (transitioning) return;
+    transitioning = true;
+
+    const step = steps[idx];
+    const isLast = idx === steps.length - 1;
+
+    // Amaga el panell momentàniament per animar l'entrada
+    panel.classList.add('tour-panel-hidden');
+
+    setTimeout(() => {
+      // Actualitza el contingut
+      elCounter.textContent = `Pas ${idx + 1} de ${steps.length}`;
+      elTitle.textContent = step.title;
+      elText.innerHTML = step.text;
+
+      btnPrev.disabled = (idx === 0);
+      btnNext.textContent = isLast ? 'Tancar el tour ✓' : 'Següent →';
+      btnSkip.style.visibility = isLast ? 'hidden' : 'visible';
+
+      updateDots(idx);
+
+      // Posiciona el spotlight i el panell
+      positionForStep(step);
+
+      // Mostra el panell
+      panel.classList.remove('tour-panel-hidden');
+      transitioning = false;
+    }, 220);
+  }
+
+  // ── Posicionament del spotlight i el panell ───────────
+  function positionForStep(step) {
+    if (!step.target) {
+      // Sense target: fosc total + panell centrat
+      root.classList.add('tour-no-target');
+      root.classList.remove('tour-has-target');
+      spotlight.style.cssText = 'top:50%;left:50%;width:0;height:0;';
+      panel.classList.add('tour-panel-center');
+      panel.classList.remove(
+        'tour-panel-above', 'tour-panel-below',
+        'tour-panel-left', 'tour-panel-right'
+      );
+      return;
+    }
+
+    panel.classList.remove('tour-panel-center');
+    root.classList.remove('tour-no-target');
+    root.classList.add('tour-has-target');
+
+    const target = document.querySelector(step.target);
+    if (!target) {
+      // Element no trobat: comportament de center
+      positionForStep({ ...step, target: null });
+      return;
+    }
+
+    const pad = 8; // px de marge extra al voltant de l'element
+    const rect = target.getBoundingClientRect();
+
+    // Spotlight sobre l'element
+    spotlight.style.top    = (rect.top    - pad) + 'px';
+    spotlight.style.left   = (rect.left   - pad) + 'px';
+    spotlight.style.width  = (rect.width  + pad * 2) + 'px';
+    spotlight.style.height = (rect.height + pad * 2) + 'px';
+
+    // Posiciona el panell
+    placePanel(rect, step.panelPosition, pad);
+  }
+
+  function placePanel(rect, preference, pad) {
+    const PANEL_W = 400 + 32; // max-width + marge
+    const PANEL_H = 260;      // altura estimada del panell
+    const MARGIN  = 18;       // distància entre spotlight i panell
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // Elimina classes de posició anteriors
+    panel.classList.remove(
+      'tour-panel-center', 'tour-panel-above',
+      'tour-panel-below', 'tour-panel-left', 'tour-panel-right'
+    );
+
+    // Prova la preferència i valida que hi cabi
+    const order = buildOrder(preference);
+    let placed = false;
+
+    for (const pos of order) {
+      let top, left;
+
+      if (pos === 'right') {
+        left = rect.right + pad + MARGIN;
+        top  = clamp(rect.top + rect.height / 2 - PANEL_H / 2, 12, vh - PANEL_H - 12);
+        if (left + PANEL_W <= vw) { applyPos(top, left); placed = true; break; }
+      }
+      if (pos === 'left') {
+        left = rect.left - pad - MARGIN - PANEL_W;
+        top  = clamp(rect.top + rect.height / 2 - PANEL_H / 2, 12, vh - PANEL_H - 12);
+        if (left >= 12) { applyPos(top, left); placed = true; break; }
+      }
+      if (pos === 'below') {
+        top  = rect.bottom + pad + MARGIN;
+        left = clamp(rect.left + rect.width / 2 - PANEL_W / 2, 12, vw - PANEL_W - 12);
+        if (top + PANEL_H <= vh) { applyPos(top, left); placed = true; break; }
+      }
+      if (pos === 'above') {
+        top  = rect.top - pad - MARGIN - PANEL_H;
+        left = clamp(rect.left + rect.width / 2 - PANEL_W / 2, 12, vw - PANEL_W - 12);
+        if (top >= 12) { applyPos(top, left); placed = true; break; }
+      }
+    }
+
+    // Fallback: cantonada inferior dreta
+    if (!placed) {
+      applyPos(vh - PANEL_H - 20, vw - PANEL_W - 20);
+    }
+  }
+
+  function buildOrder(preference) {
+    const all = ['right', 'left', 'below', 'above'];
+    return [preference, ...all.filter(p => p !== preference)];
+  }
+
+  function applyPos(top, left) {
+    panel.style.top  = top + 'px';
+    panel.style.left = left + 'px';
+  }
+
+  function clamp(val, min, max) {
+    return Math.min(Math.max(val, min), max);
+  }
+
+  // ── Accions dels botons ───────────────────────────────
+  btnNext.addEventListener('click', () => {
+    if (current >= steps.length - 1) {
+      endTour();
+    } else {
+      current++;
+      showStep(current, 'forward');
+    }
+  });
+
+  btnPrev.addEventListener('click', () => {
+    if (current > 0) {
+      current--;
+      showStep(current, 'back');
+    }
+  });
+
+  btnSkip.addEventListener('click', endTour);
+
+  // Teclat: Enter/Espai → endavant, Escape → salta
+  document.addEventListener('keydown', function onKey(e) {
+    if (e.key === 'ArrowRight' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      btnNext.click();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      btnPrev.click();
+    } else if (e.key === 'Escape') {
+      endTour();
+    }
+  });
+
+  // ── Tanca i desa a localStorage ───────────────────────
+  function endTour() {
+    localStorage.setItem(LS_KEY, '1');
+    panel.classList.add('tour-panel-hidden');
+    root.style.transition = 'opacity 0.3s ease';
+    root.style.opacity = '0';
+    setTimeout(() => root.remove(), 320);
+  }
+
+  // ── Reposiciona en canviar la mida de la finestra ─────
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (steps[current]) positionForStep(steps[current]);
+    }, 120);
+  });
+
+})();
+</script>
