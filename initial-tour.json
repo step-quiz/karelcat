@@ -3,42 +3,42 @@
     "id": "welcome",
     "target": null,
     "panelPosition": "center",
-    "title": "Benvingut/da a Karel! 🤖",
-    "text": "Karel és un robot que viu en un món de quadrats. Tu li dónes ordres mitjançant codi, i ell les segueix al peu de la lletra. En pocs passos aprendràs a fer-lo moure, girar i recollir objectes. Aquest tour ràpid et presenta les parts principals de la pantalla."
+    "title": "Et donem la benvinguda a Karel!",
+    "text": "Karel és un robot que viu en una graella. Tu li dónes instruccions mitjançant codi, i ell les segueix totes."
   },
   {
     "id": "editor",
     "target": ".code-col",
     "panelPosition": "right",
     "title": "L'editor de codi",
-    "text": "Aquí és on escrius les instruccions per a Karel. Pots usar ordres com <code>moure()</code>, <code>girarEsquerra()</code> o <code>agafar()</code>. El codi que escrius es desa automàticament mentre treballes."
+    "text": "Aquí és on escrius les instruccions per a Karel. Per exemple: <code>move()</code>=moure, <code>turn_left()</code>=girar_esquerra, <code>grab()</code>=agafar."
   },
   {
     "id": "world",
     "target": ".map-col",
     "panelPosition": "left",
     "title": "El món de Karel",
-    "text": "Aquí veus el món on viu Karel. El robot apareix com una figura orientada en una direcció. Les boletes de colors són objectes que Karel pot agafar o deixar. Les línies gruixudes són parets que impedeixen el pas."
+    "text": "Aquí veus la graella on viu Karel. Les perles són objectes que Karel pot agafar o deixar. També veuràs roques i paret, que impedeixen el pas."
   },
   {
     "id": "toolbar",
     "target": ".toolbar",
     "panelPosition": "below",
     "title": "Controls d'execució",
-    "text": "Amb el botó <strong>Executa</strong> poses el codi en marxa. <strong>Reinicia</strong> torna Karel al punt de partida. El control de velocitat et permet veure l'execució a càmera lenta o a màxima velocitat."
+    "text": "Amb el botó <strong>Executa</strong> poses el codi en marxa. El botó <strong>Reinicia</strong> torna Karel al punt de partida. El control de <strong>velocitat</strong> et permet veure l'execució a càmera lenta o a màxima velocitat."
   },
   {
     "id": "nav",
     "target": ".topbar-actions",
     "panelPosition": "below",
     "title": "Estat i motxilla",
-    "text": "Aquí veus si Karel està en marxa o aturat, i quants objectes porta a la motxilla. Quan executis el codi, aquests indicadors s'actualitzen en temps real."
+    "text": "Aquí pots canviar de menú: capítols per aprendre, reptes per practicar, el simulador i un editor de mapes."
   },
   {
     "id": "done",
     "target": null,
     "panelPosition": "center",
-    "title": "Ja estàs llest/a! 🎉",
-    "text": "Ara ja coneixes les parts bàsiques del simulador. Et recomanem començar pels <a href=\"curs/capitol-1.html\"><strong>Capítols</strong></a> per aprendre les instruccions pas a pas, o llançar-te directament als <a href=\"curs/repte-1.html\"><strong>Reptes</strong></a> si ja en saps una mica. Bona sort!"
+    "title": "Ja està!",
+    "text": "Ara ja coneixes les parts bàsiques del simulador. Et recomanem començar pel <a href=\"curs/capitol-1.html\"><strong>Capítol 1</strong></a>."
   }
 ]
