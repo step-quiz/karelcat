@@ -111,9 +111,7 @@ move()
 move()
 move()</code></pre>
 
-        <p>El resultat és exactament el mateix. Però ara, si vols canviar el nombre de passos, només canvies el <code>5</code>.</p>
-
-        <p>Observa com en Karel fa cinc <code>move()</code> amb una sola instrucció <code>for</code>:</p>
+        <p>El resultat és exactament el mateix. A més a més, si ara volem augmentar el nombre de passos a 8, només cal canviar un nombre: <code>for i in range(8):</code>.</p>
 
         <div class="simulador"
              data-map=".,.,.,.,.,.|K>,.,.,.,.,.|.,.,.,.,.,."
@@ -123,10 +121,8 @@ move()</code></pre>
              data-readonly="true"
              data-label="Exemple"
              data-title="Cinc passos, dues línies de codi. Si el món hagués tingut quinze columnes, hauríem escrit range(15)."
-             data-height="440">
+             data-height="340">
         </div>
-
-        <p>Cinc passos, dues línies de codi. Si el món hagués tingut quinze columnes, hauríem escrit <code>range(15)</code>.</p>
       </section>
 
 
@@ -134,7 +130,7 @@ move()</code></pre>
            SECCIÓ 3 — La indentació és el bloc
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>La indentació marca el que es repeteix</h2>
+        <h2>La indentació</h2>
 
         <p>La indentació (els espais del davant) no és decoració: és la manera com el programa sap quines ordres formen part del bucle i quines no. Tot el que va indentat sota el <code>for</code> es repeteix. El que torna a l'esquerra ja queda fora.</p>
 
@@ -145,7 +141,7 @@ move()          # ← s'executa UNA SOLA VEGADA, després del bucle</code></pre>
 
         <p>Si la indentació no és consistent, el programa no funcionarà com esperes.</p>
 
-        <p>En aquest exemple, en Karel fa tres passos cap a l'Est, gira a l'esquerra i fa tres passos cap al Nord. El <code>turn_left()</code> queda fora del bucle, entre els dos <code>for</code>:</p>
+        <p>En aquest exemple, en Karel fa tres passos cap a l'Est, gira a l'esquerra i fa tres passos cap al Nord. El <code>turn_left()</code> queda fora de qualsevol de les dues repeticions, perquè no està identat.</p>
 
         <div class="simulador"
              data-map=".,.,.,.|.,.,.,.|.,.,.,.|K>,.,.,"
