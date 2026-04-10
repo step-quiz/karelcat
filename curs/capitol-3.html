@@ -78,7 +78,7 @@
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 3</span>
         <h1>Repeteix</h1>
-        <p class="chapter-lead">Escriure la mateixa ordre deu vegades és tediós i propens a errors. En aquest capítol descobrirem <code>for i in range(N):</code>, la instrucció que permet dir-li a en Karel «fes això N vegades» amb una sola línia.</p>
+        <p class="chapter-lead">Escriure la mateixa ordre deu vegades és poc recomanable, perquè és tediós i propens a errors. En aquest capítol descobrirem <code>for i in range(N):</code>, que és una instrucció que diu a en Karel: «fes això N vegades», i només escrivim una línia de codi.</p>
       </header>
 
 
@@ -86,11 +86,11 @@
            SECCIÓ 1 — El problema de la repetició
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Repetir és avorrit (per als humans)</h2>
+        <h2>Repetir pot ser molt avorrit</h2>
 
-        <p>Fins ara hem escrit una ordre per línia. Funciona, però imagina que en Karel ha de moure's dotze caselles: hauries d'escriure <code>move()</code> dotze vegades seguides. Si després t'adones que eren onze i no dotze, has de comptar i esborrar.</p>
+        <p>Fins ara hem escrit una ordre per línia. Tot bé, però ara imagina que en Karel ha d'avançar dotze caselles: hauries d'escriure <code>move()</code> dotze vegades.</p>
 
-        <p>Els ordinadors no s'avorreixen de repetir. Som nosaltres qui hem de trobar una manera d'expressar la repetició de forma clara i curta.</p>
+        <p>Les màquina no s'avorreixen, tampoc quan repeteixen. Existeix una sintaxi per expressar la repetició de forma clara i concisa.</p>
       </section>
 
 
@@ -100,7 +100,7 @@
       <section class="chapter-section">
         <h2>Repetir N vegades: <code>for i in range(N):</code></h2>
 
-        <p><code>for i in range(N):</code> li diu a en Karel que executi les ordres del bloc de sota exactament <strong>N</strong> vegades. Les ordres del bloc han d'anar <strong>indentades</strong> (desplaçades quatre espais cap a la dreta). Això és com li dius a en Karel on comença i on acaba el que s'ha de repetir.</p>
+        <p><code>for i in range(N):</code> li diu a en Karel que executi les ordres del bloc de sota exactament <strong>N</strong> vegades. Les ordres del bloc han d'anar <strong>indentades</strong>. «Identar» vol dir desplaçar espais cap a la dreta. D'aquesta manera, indiquem a Karel on comença i on acaba el que s'ha de repetir. Sempre hem de deixar la mateixa quantitat d'espais. Usualment, deixaràs dos espais, o bé quatre espais.</p>
 
         <p>Compara les dues maneres de fer el mateix:</p>
 
