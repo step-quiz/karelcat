@@ -141,7 +141,7 @@ move()          # ← s'executa UNA SOLA VEGADA, després del bucle</code></pre>
 
         <p>Si la indentació no és consistent, el programa no funcionarà com esperes.</p>
 
-        <p>En aquest exemple, en Karel fa tres passos cap a l'Est, gira a l'esquerra i fa tres passos cap al Nord. El <code>turn_left()</code> queda fora de qualsevol de les dues repeticions, perquè no està identat.</p>
+        <p>Observa aquest exemple.</p>
 
         <div class="simulador"
              data-map=".,.,.,.|.,.,.,.|.,.,.,.|K>,.,.,"
@@ -157,7 +157,7 @@ for i in range(3):
              data-height="480">
         </div>
 
-        <p>Dos bucles <code>for</code> separats per un <code>turn_left()</code>. En Karel ha fet una cantonada. Compte: el <code>turn_left()</code> no va indentat, per tant no forma part de cap <code>for</code>.</p>
+        <p>Dos bucles <code>for</code> separats per un <code>turn_left()</code>. En Karel fa tres passos cap a l'Est, gira a l'esquerra i fa tres passos cap al Nord. El <code>turn_left()</code> queda fora de qualsevol de les dues repeticions, perquè no està identat.</p>
       </section>
 
 
