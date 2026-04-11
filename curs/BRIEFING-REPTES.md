@@ -486,7 +486,7 @@ while left_is_clear():
 **Conceptes:** `while`, `if/elif/else`, `right_is_clear()`, `front_is_clear()`, `def`, estratègia de la mà dreta.
 **Adaptació de:** Maze Karel / Repte predefinit 5 del projecte.
 
-**Mons de test (3 simuladors DRY — un sol editor):**
+**Mons de test (5 simuladors DRY — un sol editor):**
 ```
 Test A — 3×5 (Simple):
   Inicial: K>,.,.,.,P|P,P,P,.,P|.,.,.,.,A
@@ -499,7 +499,18 @@ Test B — 5×6 (Clàssic — laberint del repte predefinit 5):
 Test C — 5×7 (Complex):
   Inicial: K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,A
   Goal:    K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,K>
+
+Test D — 5×7 (Cul-de-sac):
+  Inicial: K>,.,.,.,P,P,P|P,P,P,.,P,P,P|.,.,.,.,.,.,.|P,P,.,P,P,P,P|.,.,.,.,.,.,A
+  Goal:    .,.,.,.,P,P,P|P,P,P,.,P,P,P|.,.,.,.,.,.,.|P,P,.,P,P,P,P|.,.,.,.,.,.,K>
+
+Test E — 9×9 (El gran laberint — dos culs-de-sac):
+  Inicial: K>,.,P,P,P,P,P,P,P|P,.,P,P,P,P,P,P,P|P,.,.,.,.,.,.,.,P|P,P,P,P,P,P,P,.,P|P,.,.,.,.,.,.,.,P|P,P,.,P,P,P,P,P,P|.,.,.,.,P,P,P,P,P|P,P,P,.,P,P,P,P,P|P,P,P,.,.,.,.,.,A
+  Goal:    .,.,P,P,P,P,P,P,P|P,.,P,P,P,P,P,P,P|P,.,.,.,.,.,.,.,P|P,P,P,P,P,P,P,.,P|P,.,.,.,.,.,.,.,P|P,P,.,P,P,P,P,P,P|.,.,.,.,P,P,P,P,P|P,P,P,.,P,P,P,P,P|P,P,P,.,.,.,.,.,K>
 ```
+
+*(Test D: Karel entra al cul-de-sac de la fila 2 (cols 2→0), xoca, torna enrere i troba la sortida.
+Test E: Karel explora les 30 caselles del laberint, entrant en dos culs-de-sac: (4,1) i (6,0).)*
 
 **Esquelet visible per l'alumne:**
 ```python
@@ -534,10 +545,10 @@ while not pearl_here():
 grab()
 ```
 
-**Clau pedagògica:** La regla de la mà dreta demostra que un algorisme senzill i genèric pot resoldre problemes aparentment complexos. La descomposició en una sola funció `pas()` dins d'un `while not pearl_here()` és l'exemple més net del curs de «algorisme = bucle + condició de parada». El test C detecta qui ha confós `turn_left()` amb `turn_right()` (la mà esquerra funciona en molts laberints però no en tots).
+**Clau pedagògica:** La regla de la mà dreta demostra que un algorisme senzill i genèric pot resoldre problemes aparentment complexos. La descomposició en una sola funció `pas()` dins d'un `while not pearl_here()` és l'exemple més net del curs de «algorisme = bucle + condició de parada». El test C detecta qui ha confós `turn_left()` amb `turn_right()` (la mà esquerra funciona en molts laberints però no en tots). Els tests D i E demostren que el mateix codi funciona amb culs-de-sac: Karel hi entra, xoca, gira, en surt sol, i continua cap a la perla sense canviar ni una línia.
 
 **Notes d'implementació:**
-- Format DRY: un sol `data-code`, tres mons via `data-maps`/`data-goals`/`data-labels`.
+- Format DRY: un sol `data-code`, cinc mons via `data-maps`/`data-goals`/`data-labels`.
 - Test B reutilitza exactament el mapa del repte predefinit 5 de `reptes.js`.
 - `data-bag` no s'usa (Karel no porta perles pròpies; recull una perla existent).
 - La navegació: anterior → `repte-11.html`, següent → `repte-13.html`.
