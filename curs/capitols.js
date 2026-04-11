@@ -521,3 +521,98 @@ window.addEventListener('message', function(e) {
     }
   }
 });
+
+
+// ── Glossari — injectat dinàmicament a capítols i reptes ──────────
+
+function initGlossariCurs() {
+  const header = document.querySelector('.curs-header');
+  if (!header) return;
+
+  // Botó a la capçalera
+  const btn = document.createElement('button');
+  btn.className = 'glossari-curs-btn';
+  btn.id = 'btn-glossari-curs';
+  btn.textContent = '📖 Glossari';
+  btn.type = 'button';
+  header.appendChild(btn);
+
+  // Modal
+  const overlay = document.createElement('div');
+  overlay.className = 'glossari-overlay';
+  overlay.id = 'glossari-overlay';
+  overlay.innerHTML = `
+    <div class="glossari-modal" id="glossari-modal">
+      <div class="glossari-header">
+        <span class="glossari-title">📖 Glossari</span>
+        <button class="glossari-close" id="glossari-close" aria-label="Tanca" type="button">✕</button>
+      </div>
+      <div class="glossari-body">
+
+        <div class="glossari-section">
+          <h3>Instruccions</h3>
+          <p class="glossari-hint">Sempre amb parèntesis <code>()</code> al final</p>
+          <div class="glossari-grid">
+            <code>move()</code><span>Avança una casella</span>
+            <code>turn_left()</code><span>Gira 90° a l'esquerra</span>
+            <code>turn_right()</code><span>Gira 90° a la dreta</span>
+            <code>turn_around()</code><span>Mitja volta (180°)</span>
+            <code>grab()</code><span>Agafa la perla de la casella</span>
+            <code>drop()</code><span>Deixa una perla a la casella</span>
+          </div>
+        </div>
+
+        <div class="glossari-section">
+          <h3>Condicions</h3>
+          <p class="glossari-hint">Sempre amb parèntesis <code>()</code> — s'usen dins de <code>if</code> i <code>while</code></p>
+          <div class="glossari-grid">
+            <code>front_is_clear()</code><span>El camí del davant és lliure</span>
+            <code>front_is_blocked()</code><span>Hi ha una roca al davant</span>
+            <code>left_is_clear()</code><span>L'esquerra és lliure</span>
+            <code>left_is_blocked()</code><span>Hi ha una roca a l'esquerra</span>
+            <code>right_is_clear()</code><span>La dreta és lliure</span>
+            <code>right_is_blocked()</code><span>Hi ha una roca a la dreta</span>
+            <code>pearl_here()</code><span>Hi ha una perla aquí</span>
+            <code>bag_is_empty()</code><span>La motxilla és buida</span>
+            <code>bag_is_full()</code><span>La motxilla té perles</span>
+          </div>
+        </div>
+
+        <div class="glossari-section">
+          <h3>Estructures</h3>
+          <p class="glossari-hint">Acaben amb dos punts <code>:</code> i el bloc interior va <strong>indentat</strong></p>
+          <pre class="glossari-example">if front_is_clear():
+    move()
+elif pearl_here():
+    grab()
+else:
+    turn_left()</pre>
+          <pre class="glossari-example">while front_is_clear():
+    move()</pre>
+          <pre class="glossari-example">for i in range(4):
+    move()</pre>
+          <pre class="glossari-example">def nom_funcio():
+    move()
+    turn_left()</pre>
+        </div>
+
+        <div class="glossari-section glossari-rules">
+          <h3>Recorda</h3>
+          <div class="glossari-rule">① Les instruccions i condicions porten <code>()</code> sempre</div>
+          <div class="glossari-rule">② Després de <code>if</code>, <code>while</code>, <code>for</code>, <code>def</code> cal posar <code>:</code></div>
+          <div class="glossari-rule">③ El codi dins d'un bloc s'ha d'indentar (4 espais)</div>
+        </div>
+
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  // Events
+  btn.addEventListener('click', () => overlay.classList.toggle('is-open'));
+  overlay.querySelector('#glossari-close').addEventListener('click', () => overlay.classList.remove('is-open'));
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('is-open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') overlay.classList.remove('is-open'); });
+}
+
+// Auto-init (capitols.js es carrega després del DOM)
+initGlossariCurs();

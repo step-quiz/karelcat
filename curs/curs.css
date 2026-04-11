@@ -697,3 +697,163 @@ body.curs-light .simulador-feedback.fb-error {
   .btn-nav--next { margin-left: 0; width: 100%; justify-content: center; }
   .btn-nav--prev { width: 100%; justify-content: center; }
 }
+
+/* ════════════════════════════════════════════════════════
+   GLOSSARI — Modal de referència ràpida (capítols i reptes)
+   ════════════════════════════════════════════════════════ */
+
+.glossari-curs-btn {
+  margin-left: auto;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.8px;
+  color: #6b7280;
+  background: none;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.glossari-curs-btn:hover { color: #1a1a1a; border-color: #1a1a1a; }
+
+/* Overlay */
+.glossari-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+}
+.glossari-overlay.is-open { display: flex; }
+
+/* Modal */
+.glossari-modal {
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  width: min(540px, 92vw);
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.glossari-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid #e5e5e5;
+  flex-shrink: 0;
+}
+
+.glossari-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 0.5px;
+}
+
+.glossari-close {
+  background: none;
+  border: 1px solid #d0d0d0;
+  color: #6b7280;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s;
+}
+.glossari-close:hover { color: #1a1a1a; border-color: #1a1a1a; }
+
+.glossari-body {
+  padding: 16px 18px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.glossari-section { margin-bottom: 18px; }
+.glossari-section:last-child { margin-bottom: 0; }
+
+.glossari-section h3 {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+}
+
+.glossari-hint {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: #6b7280;
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.glossari-hint code {
+  color: #059669;
+  font-weight: 700;
+}
+
+.glossari-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  line-height: 1.7;
+}
+.glossari-grid code {
+  color: #059669;
+  white-space: nowrap;
+}
+.glossari-grid span { color: #6b7280; }
+
+.glossari-example {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  overflow-x: auto;
+}
+
+.glossari-rules .glossari-rule {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.66rem;
+  color: #1a1a1a;
+  line-height: 1.8;
+}
+.glossari-rules .glossari-rule code {
+  color: #059669;
+  font-weight: 700;
+}
+
+/* ── Mobile: fullscreen ── */
+@media (max-width: 640px) {
+  .glossari-modal {
+    width: 100vw;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+  .glossari-overlay { align-items: stretch; }
+  .glossari-body { padding: 14px 16px 24px; }
+  .glossari-grid { font-size: 0.63rem; gap: 2px 10px; }
+  .glossari-example { font-size: 0.62rem; padding: 6px 10px; }
+}
