@@ -63,23 +63,23 @@ K.UI_LANGS = {
       reset:      '↺ Reiniciat',
       map_loaded: 'Mapa carregat ✓',
       line:       'línia',
-      inf_loop:   '⚠ Bucle infinit detectat',
+      inf_loop:   '⚠ S\'ha detectat una iteració indefinida que no acabarà mai',
       deep_rec:   '⚠ Recursió massa profunda',
     },
 
     err: {
-      rock:       'Karel ha xocat contra una roca',
+      rock:       'En Karel ha xocat',
       no_pearl:   'No hi ha cap perla en aquesta casella',
-      bag_empty:  'La motxilla és buida',
-      proc_undef: 'Procediment no definit',
+      bag_empty:  'En Karel no té cap perla a la motxilla i no en pot deixar cap',
+      proc_undef: 'Aquesta funció no existeix, no l\'has definida prèviament',
       syntax:     'Error de sintaxi',
     },
 
     parse: {
-      expected:      "Línia {n}: he llegit '{got}' però esperava '{want}'",
+      expected:      "Línia {n}: he llegit '{got}' però jo esperava llegir '{want}'",
       unexpected:    "Línia {n}: no esperava '{tok}'",
       unknown_cond:  "Línia {n}: condició desconeguda '{tok}'",
-      expected_proc: "Línia {n}: falta el nom del procediment",
+      expected_proc: "Línia {n}: falta el nom de la funció",
     },
   },
 };
