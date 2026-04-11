@@ -72,6 +72,7 @@
 
   // 2) Inicialitza la UI mínima
   K.initSpeedSlider();
+  K.initGlossari();
 
   // 3) Carrega el mapa
   K.loadMapFromCSV(initMap);

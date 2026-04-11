@@ -129,3 +129,23 @@ K.toggleTheme    = toggleTheme;
 K.initTheme      = initTheme;
 
 window.toggleTheme = toggleTheme;        // per a onclick="toggleTheme()" al HTML
+
+// ── Glossari ──
+
+function toggleGlossari() {
+  const ov = document.getElementById('glossari-overlay');
+  if (!ov) return;
+  ov.classList.toggle('is-open');
+}
+
+function initGlossari() {
+  const ov = document.getElementById('glossari-overlay');
+  const close = document.getElementById('glossari-close');
+  if (!ov) return;
+  if (close) close.addEventListener('click', () => ov.classList.remove('is-open'));
+  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('is-open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') ov.classList.remove('is-open'); });
+}
+
+K.initGlossari = initGlossari;
+window.toggleGlossari = toggleGlossari;
