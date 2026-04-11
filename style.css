@@ -698,3 +698,158 @@ body.embed #speed-lbl { display: none; }
 
 /* Log més petit en embed */
 body.embed #log-wrap { max-height: 80px; }
+
+/* ════════════════════════════════════════════════════════
+   GLOSSARI — Modal de referència ràpida
+   ════════════════════════════════════════════════════════ */
+
+.btn-glossari {
+  margin-left: auto;
+  font-size: 0.68rem;
+  color: var(--muted);
+  border-color: var(--border);
+  white-space: nowrap;
+}
+.btn-glossari:hover { color: var(--text); border-color: var(--text); }
+
+/* Overlay */
+.glossari-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0,0,0,0.55);
+  justify-content: center;
+  align-items: center;
+}
+.glossari-overlay.is-open { display: flex; }
+
+/* Modal */
+.glossari-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: min(540px, 92vw);
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.glossari-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.glossari-title {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.glossari-close {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s;
+}
+.glossari-close:hover { color: var(--text); border-color: var(--text); }
+
+.glossari-body {
+  padding: 16px 18px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.glossari-section { margin-bottom: 18px; }
+.glossari-section:last-child { margin-bottom: 0; }
+
+.glossari-section h3 {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.glossari-hint {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.glossari-hint code {
+  color: var(--accent, #4ade80);
+  font-weight: 700;
+}
+
+/* Grid: command | description */
+.glossari-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 14px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.7;
+}
+.glossari-grid code {
+  color: var(--accent, #4ade80);
+  white-space: nowrap;
+}
+.glossari-grid span { color: var(--muted); }
+
+/* Code examples */
+.glossari-example {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  overflow-x: auto;
+}
+
+/* Rules */
+.glossari-rules .glossari-rule {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--text);
+  line-height: 1.8;
+}
+.glossari-rules .glossari-rule code {
+  color: var(--accent, #4ade80);
+  font-weight: 700;
+}
+
+/* ── Mobile: fullscreen glossary ────────────────────── */
+@media (max-width: 640px) {
+  .glossari-modal {
+    width: 100vw;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+  .glossari-overlay { align-items: stretch; }
+  .glossari-body { padding: 14px 16px 24px; }
+  .glossari-grid { font-size: 0.63rem; gap: 2px 10px; }
+  .glossari-example { font-size: 0.62rem; padding: 6px 10px; }
+}
