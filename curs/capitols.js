@@ -300,7 +300,12 @@ function _renderMultiMon(div) {
     const nErr = monState.filter(s => s === 'error').length;
     if (nOk === n) {
       fbGlobal.className   = 'simulador-feedback fb-ok';
-      fbGlobal.textContent = `✓ Tots els mons superats (${nOk}/${n}). Ben fet!`;
+      const lastRepteNum = REPTES_DATA[REPTES_DATA.length - 1].num;
+      const isLastRepte = typeof CURRENT_REPTE !== 'undefined' && CURRENT_REPTE === lastRepteNum;
+      const nextHint = isLastRepte
+        ? 'Ja pots practicar amb el simulador.'
+        : 'Ja pots passar al repte següent.';
+      fbGlobal.textContent = `✓ Tots els mons han estat superats. Bona feina! ${nextHint}`;
     } else if (nErr > 0 || nOk > 0) {
       fbGlobal.className   = 'simulador-feedback fb-error';
       fbGlobal.textContent = `${nOk}/${n} mons superats. Comprova els mons marcats amb ✗.`;
@@ -490,10 +495,10 @@ window.addEventListener('message', function(e) {
   if (fb) {
     if (success) {
       fb.className   = 'simulador-feedback fb-ok';
-      fb.textContent = "✓ Correcte! En Karel ha arribat a l'objectiu.";
+      fb.textContent = "✓ Correcte! En Karel ha complert tots els objectius.";
     } else {
       fb.className   = 'simulador-feedback fb-error';
-      fb.textContent = '✗ Encara no. Comprova el codi i torna-ho a intentar.';
+      fb.textContent = '✗ El codi és correcte, però en Karel no ha complert l\'objectiu. Modifica el codi i torna-ho a intentar.';
     }
     // Progrés: només guardem si és un Exercici
     const sCtx = _singleGoalRegistry.get(goalId);
