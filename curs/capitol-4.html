@@ -152,9 +152,9 @@ puja_grao()
       <section class="chapter-section">
         <h2>Les funcions es poden combinar</h2>
 
-        <p>Una funció pot cridar altres funcions. Pots construir accions complexes a partir d'accions més simples, com passa a l'Arquitectura, on es construeix a partir d'estructures cada cop més complexes que es van combinant.</p>
+        <p>Una funció pot cridar altres funcions dins seu. Pots construir accions complexes a partir d'accions més simples, com en un joc de construccions.</p>
 
-        <p>Per exemple, si vols que en Karel faci dues vegades la seqüència «puja un graó i recull una perla», pots definir:</p>
+        <p>Per exemple, si vols que en Karel faci «puja un graó i recull una perla», pots definir una nova funció:</p>
 
         <pre><code>def puja_i_recull():
     puja_grao()
@@ -162,7 +162,7 @@ puja_grao()
 
         <p>Això funciona sempre que <code>puja_grao()</code> ja estigui definit <strong>abans</strong> de ser cridat.</p>
 
-        <p><strong>Regla important:</strong> les definicions <code>def</code> han d'anar <strong>sempre al principi del programa</strong>, abans de les instruccions que les usen.</p>
+        <p><strong>Regla important:</strong> les definicions <code>def</code> han d'anar <strong>sempre al principi del programa</strong>, abans del nostre programa principal.</p>
       </section>
 
 
