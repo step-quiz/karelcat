@@ -14,6 +14,7 @@
       --bg:           #000000;
       --surface:      #0e0e0e;
       --surface-hi:   #161616;
+      --surface-hover:#1c1c1c;
       --border:       #242424;
       --border-hi:    #3a3a3a;
       --text:         #e8e8e3;
@@ -29,6 +30,7 @@
         --bg:          #ffffff;
         --surface:     #fafafa;
         --surface-hi:  #ffffff;
+        --surface-hover:#eeeeee;
         --border:      #e5e5e5;
         --border-hi:   #cfcfcf;
         --text:        #111111;
@@ -152,11 +154,17 @@
       transform: translateX(-6px);
       transition: opacity .25s ease, transform .25s ease, color .25s ease;
     }
-    .card:hover {
-      transform: translateY(-2px);
-      border-color: var(--border-hi);
-      background: var(--surface-hi);
+    .card {
+      border-width: 1px;
     }
+    .card:hover {
+      transform: translateY(-3px);
+      border-width: 2px;
+      border-color: var(--text);
+      background: var(--surface-hover);
+      padding: calc(1.6rem - 1px) calc(1.5rem - 1px) calc(1.4rem - 1px);
+    }
+    .card:hover .card-eyebrow { color: var(--text); }
     .card:hover::after {
       opacity: 1;
       transform: translateX(0);
@@ -188,33 +196,6 @@
       line-height: 1.5;
       margin-top: 0.15rem;
     }
-
-    /* Targeta destacada: el curs */
-    .card.is-primary {
-      border-color: var(--accent);
-      background: linear-gradient(180deg, var(--accent-soft), transparent 60%), var(--surface);
-    }
-    .card.is-primary::before {
-      content: "Recomanat per començar";
-      position: absolute;
-      top: -1px;
-      left: 1.4rem;
-      transform: translateY(-50%);
-      background: var(--accent);
-      color: #fff;
-      font-family: var(--mono);
-      font-size: 0.66rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.55rem;
-      border-radius: 3px;
-    }
-    .card.is-primary:hover {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-soft);
-    }
-    .card.is-primary .card-eyebrow { color: var(--accent); }
 
     /* ── PEU ──────────────────────────────────────── */
     footer {
@@ -257,35 +238,35 @@
         <span class="brand-dot" aria-hidden="true"></span>
         <span>Karel</span>
       </div>
-      <h1>Aprèn a programar movent <em>un robot</em>.</h1>
-      <p>Un món de quadres, sis ordres bàsiques i una sintaxi que ja és Python real. Comença des de zero o salta directament a fer servir el simulador.</p>
+      <h1>Aprèn a programar</h1>
+      <p>Comença des de zero i finalitza sabent com és el codi Python professional.</p>
     </section>
 
     <!-- ── 4 OPCIONS ────────────────────────────── -->
     <nav class="grid" aria-label="Què vols fer?">
 
-      <a href="curs/capitol-1.html" class="card is-primary">
+      <a href="curs/capitol-1.html" class="card">
         <span class="card-eyebrow">Curs · 10 capítols</span>
         <span class="card-title">Aprendre des de zero</span>
-        <span class="card-desc">Una introducció guiada a la programació, sense cap experiència prèvia. Del primer <code>move()</code> a escriure funcions netes.</span>
+        <span class="card-desc">Aprèn des de zero: un curs de programació, sense experiència prèvia, en 10 capítols.</span>
       </a>
 
       <a href="curs/repte-1.html" class="card">
         <span class="card-eyebrow">Reptes · 13 exercicis</span>
         <span class="card-title">Posar-ho a prova</span>
-        <span class="card-desc">Problemes amb tres nivells de dificultat per practicar el que ja saps. Cada repte té diversos mons de test.</span>
+        <span class="card-desc">Posa't a prova. Tens reptes per practicar allò que has après al curs.</span>
       </a>
 
       <a href="simulador.html" class="card">
         <span class="card-eyebrow">Simulador</span>
         <span class="card-title">Provar codi lliurement</span>
-        <span class="card-desc">L'entorn complet amb editor, consola i tauler. Escriu, executa i depura sense restriccions.</span>
+        <span class="card-desc">Prova codi lliurement. Tens un entorn complet on poder escriure codi, executar-lo i corregir els errors que hi pugui haver, sense cap restricció.</span>
       </a>
 
       <a href="edit-mapa.html" class="card">
         <span class="card-eyebrow">Editor</span>
         <span class="card-title">Crear mons propis</span>
-        <span class="card-desc">Dissenya els teus tableros: posa parets, perles i decideix on comença en Karel. Després els pots provar al simulador.</span>
+        <span class="card-desc">Crea els teus mons propis: dissenya la graella, inclou roques i perles i decideix on situes en Karel. A continuació, pots provar el teu propi mon en el simulador.</span>
       </a>
 
     </nav>
