@@ -914,3 +914,13 @@ body.embed { --ed-font-size: 0.8rem; }
   -webkit-tap-highlight-color: rgba(0,0,0,0.06);
 }
 .kbd-accessory__btn:active { background: #f0f0f3; }
+
+/* Quan el teclat nadiu està obert, limitem l'alçada del textarea perquè
+   el navegador no hagi de fer un scrollIntoView agressiu que amaga el
+   mapa. ~30dvh és prou per a unes línies de codi; la resta es fa scroll
+   dins el propi textarea. */
+@media (pointer: coarse) {
+  body.kbd-open #code-editor {
+    max-height: 30dvh;
+  }
+}
