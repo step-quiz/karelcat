@@ -63,7 +63,7 @@
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 9</span>
         <h1>Resum dels capítols</h1>
-        <p class="chapter-lead">Has arribat al final del curs. Has passat de no haver escrit mai una línia de codi a fer que en Karel exploti laberints, reculli perles i prengui decisions. Aquest capítol és una mirada enrere: tot el vocabulari que ja domines, ordenat en una sola pàgina, i un parell d'idees que separen «codi que funciona» de «codi ben escrit».</p>
+        <p class="chapter-lead">Has arribat al final del curs. Aquest capítol fa un repàs del vocabulari que has après i et dona un parell d'idees per tal que puguis escriure un codi informàtic que, a banda de funcionar, sigui un «codi ben escrit».</p>
       </header>
 
 
@@ -71,9 +71,9 @@
            SECCIÓ 1 — Glossari complet
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Tot el que ja saps</h2>
+        <h2>Glossari</h2>
 
-        <p>Aquest és el vocabulari complet d'en Karel. Si entens cada línia d'aquesta llista, ja saps programar.</p>
+        <p>Aquest és el vocabulari complet d'en Karel.</p>
 
         <h3>Accions: el que en Karel <em>fa</em></h3>
         <pre><code>move()           # avança una casella en la direcció que mira
@@ -121,7 +121,6 @@ def anar_al_final():     # crear una instrucció pròpia
 if pearl_here() or bag_is_empty():
     grab()</code></pre>
 
-        <p>Això és tot. Sis accions, sis preguntes, cinc estructures, tres connectors. Amb aquest vocabulari pots resoldre qualsevol problema d'en Karel — i, com descobriràs al pròxim capítol, molt més que això.</p>
       </section>
 
 
@@ -131,11 +130,11 @@ if pearl_here() or bag_is_empty():
       <section class="chapter-section">
         <h2>Pensar abans d'escriure: precondició i postcondició</h2>
 
-        <p>Quan crees una funció amb <code>def</code>, li estàs ensenyant a en Karel una paraula nova. Però una paraula nova només és útil si <strong>tu mateix</strong> saps exactament què espera i què deixa fet. Aquí entren dues idees senzilles que els bons programadors tenen sempre al cap:</p>
+        <p>Quan decideixes crear una funció pròpia fent servir <code>def</code>, li estàs ensenyant a en Karel una paraula nova. Aquí entren dues idees que les persones que programen <strong>a nivell professional</strong> sempre tenen al cap:</p>
 
         <ul>
-          <li><strong>Precondició:</strong> què ha de ser cert <em>abans</em> de cridar la funció perquè funcioni bé. On és en Karel? Cap a on mira? Què hi ha al voltant?</li>
-          <li><strong>Postcondició:</strong> què serà cert <em>després</em> que la funció s'hagi executat. On haurà acabat? Mirant cap a on? Què haurà canviat al món?</li>
+          <li>Precondició. Quina és la situació just <em>abans</em> que comenci la meva funció. On és en Karel? Cap a on mira? Què hi ha al voltant?</li>
+          <li>Postcondició. Quina situació deixo <em>després</em> que la funció s'hagi executat. On haurà acabat, en Karel? Cap a on estarà mirant? Ha canviat alguna condició del món, com per exemple el nombre de perles que hi ha?</li>
         </ul>
 
         <p>Mira aquest exemple. Volem una funció <code>girar_cantonada_dreta()</code> perquè en Karel giri a la dreta i avanci una casella:</p>
@@ -148,7 +147,7 @@ if pearl_here() or bag_is_empty():
 
         <p>Si crides aquesta funció amb una paret a la dreta, en Karel s'estavellarà. La culpa no és de la funció: és de qui l'ha cridat sense respectar la precondició. Per això abans d'usar-la sempre comprovaràs <code>if right_is_clear():</code>.</p>
 
-        <p>Aquest hàbit — escriure mentalment (o en un comentari) <em>què espero</em> i <em>què deixo</em> — és una de les diferències més grans entre algú que fa que el codi funcioni un cop i algú que escriu codi en què es pot confiar. T'estalviarà hores de buscar errors i és, de debò, una de les bones pràctiques que més et farà créixer com a programadora o programador.</p>
+        <p>Aquest hàbit — escriure mentalment (o en un comentari) <em>què espero</em> i <em>què deixo</em> — és una de les diferències més grans que trobem quan es programa a nivell professional. T'estalviarà hores de buscar errors i és, de debò, una de les bones pràctiques que més et farà créixer com a programadora o programador.</p>
       </section>
 
 
@@ -156,9 +155,9 @@ if pearl_here() or bag_is_empty():
            SECCIÓ 3 — Codi net vs codi no net
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Codi net contra codi que «ja funciona»</h2>
+        <h2>Codi net comparat amb codi que «simplement, funciona»</h2>
 
-        <p>Que un programa funcioni no vol dir que estigui ben escrit. Els dos codis següents fan <strong>exactament el mateix</strong>: en Karel travessa un corredor recollint totes les perles que troba pel camí. Llegeix-los i fixa't en com et fan sentir.</p>
+        <p>Que un programa funcioni no vol dir que estigui ben escrit. Els dos codis que veuràs a continuació fan exactament el mateix: en Karel travessa un corredor recollint totes les perles que troba pel camí. Llegeix-los.</p>
 
         <h3>Versió no neta</h3>
         <pre><code>move()
@@ -177,7 +176,7 @@ move()
 if pearl_here():
     grab()</code></pre>
 
-        <p>Funciona. Però hi ha problemes evidents: si el corredor canvia de mida, has de retallar o copiar línies a mà. Si vols canviar la lògica (per exemple, deixar una perla en lloc de recollir-la), has de modificar el codi en cinc llocs diferents. I en llegir-lo, ningú no entén <em>què</em> fa: només veu una llista de gestos repetits.</p>
+        <p>Funciona. Però hi ha diversos problemes: si el corredor canvia de mida, has de retallar o copiar línies a mà; si vols canviar la lògica (per exemple, deixar una perla en lloc de recollir-la), has de modificar el codi en cinc llocs diferents; finalment, a l'hora de llegir-lo, es complicat entendre <em>què</em> fa aquest codi, perquè només veiem una sèrie de passos repetits.</p>
 
         <h3>Versió neta</h3>
         <pre><code>def avançar_i_recollir():
@@ -191,15 +190,17 @@ if pearl_here():
 while front_is_clear():
     avançar_i_recollir()</code></pre>
 
-        <p>Aquesta versió diu el que fa: «mentre puguis avançar, avança i recull». Funciona amb un corredor de 5 caselles, de 50 o de 500 sense tocar res. Si demà vols canviar la lògica, ho fas en un sol lloc. I qualsevol persona que llegeixi <code>while front_is_clear(): avançar_i_recollir()</code> entén el programa abans i tot d'arribar als detalls.</p>
+        <p>Aquesta versió diu el que fa: «mentre puguis avançar, avança i recull». Funciona amb un corredor de 5 caselles, de 50 o de 500 sense modificar res. Si demà vols canviar la lògica, ho fas en un sol lloc. I qualsevol persona que llegeixi <code>while front_is_clear(): avançar_i_recollir()</code> entén el programa fins i tot abans d'entrar en detalls.</p>
 
-        <p>Aquesta és la diferència entre <strong>codi que funciona</strong> i <strong>codi net</strong>: el primer resol el problema d'avui, el segon resol també el de demà. Tres senyals de codi net que ja pots aplicar a partir d'ara:</p>
+        <p>Aquesta és la diferència entre «codi que funciona» i «codi net i que funciona»: el primer et pot resoldre un problema avui, però crear dificultats en el futur. El segon, el codi net, és un codi estable i el pots compartir amb altra gent que programa amb la seguretat que l'entendran. Recorda:</p>
 
         <ul>
-          <li><strong>Cap repetició innecessària.</strong> Si veus el mateix bloc dues o tres vegades, segurament hi ha un bucle o una funció esperant a néixer.</li>
-          <li><strong>Noms que expliquen.</strong> <code>avançar_i_recollir()</code> és millor que <code>fer_cosa()</code>. El nom d'una funció és un petit regal al teu jo del futur.</li>
-          <li><strong>Cada funció, una idea.</strong> Si en explicar el que fa una funció has de dir «i també», potser l'hauries de partir en dues.</li>
+          <li><strong>No dupliquis codi innecessàriament.</strong> Si veus el mateix bloc dues o tres vegades, segurament pots incloure una repetició, o bé crear una funció nova.</li>
+          <li><strong>Noms que expliquen.</strong> <code>avançar_i_recollir()</code> és millor que <code>fer_cosa()</code>. El nom que li atorgues a una funció nova és important per poder descriure el que fa.</li>
+          <li><strong>Cada funció, una idea.</strong> Si quan expliques què fa una funció, dius «..., i també fa...», potser l'hauries de partir en dues funcions independents.</li>
         </ul>
+        <p>Al pròxim capítol descobriràs un secret que potser ja sospites: tot el que has escrit aquests nou capítols ja era Python real. No una imitació. No una versió per a principiants. Python autèntic, exactament igual al que es fa servir en qualsevol grau d'Enginyeria.</p>
+        <p>Enhorabona per haver arribat fins aquí. Ara ja saps programar.</p>        
       </section>
 
 
@@ -213,9 +214,7 @@ while front_is_clear():
 
         <p>Però el més important no és el vocabulari. És l'hàbit mental que has anat construint: <strong>descompondre un problema gros en problemes petits</strong>, comprovar les condicions abans d'actuar, donar nom a les coses, i tornar enrere quan veus que el codi es complica massa. Això és programar. La resta són detalls de cada llenguatge.</p>
 
-        <p>Al pròxim capítol descobriràs un secret que potser ja sospites: tot el que has escrit aquests nou capítols ja era Python real. No una imitació. No una versió per a principiants. Python autèntic, exactament igual al que fan servir els enginyers que entrenen models d'intel·ligència artificial o construeixen pàgines web.</p>
-
-        <p>Enhorabona per haver arribat fins aquí. Ara ja saps programar.</p>
+        
       </section>
 
 
