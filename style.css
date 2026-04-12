@@ -909,15 +909,27 @@ body.embed { --ed-font-size: 0.8rem; }
   background: transparent;
   padding: 2px;
 }
-.vkbd-host .hg-row { margin-bottom: 3px; }
+.vkbd-host .hg-row { margin-bottom: 4px; }
 .vkbd-host .hg-row:last-child { margin-bottom: 0; }
 .vkbd-host .hg-button {
-  min-width: 0;                   /* per defecte és 20-40px → desborda en pantalles estretes */
-  height: 36px;
-  font-size: 15px;
-  border-radius: 6px;
+  min-width: 0;                   /* per defecte 20-40px → desborda en pantalles estretes */
+  height: 46px;
+  font-size: 22px;                /* ≈ 60% de l'alçada, millor llegibilitat i tap */
+  font-weight: 500;
+  border-radius: 7px;
   margin: 0 2px;
   box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+/* Les tecles de funció ({num}, {abc}, ⌫, ⏎) amb text més petit perquè el
+   label pot ser més llarg ("?123", "ABC") i no cal que ocupi tant. */
+.vkbd-host .hg-button-num,
+.vkbd-host .hg-button-abc,
+.vkbd-host .hg-button-bksp,
+.vkbd-host .hg-button-enter {
+  font-size: 15px;
+  font-weight: 600;
+  color: #444;
+  background: #e8e8ec;
 }
 .vkbd-host .hg-button-space { max-width: 40%; }
 
