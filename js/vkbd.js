@@ -25,28 +25,29 @@
   host.innerHTML = '<div class="simple-keyboard"></div>';
   document.body.appendChild(host);
 
-  // Layout pensat per a Karel/Python: parèntesis, guió baix i # accessibles.
+  // Layout pensat per a Karel/Python. Sense fila de nombres per defecte:
+  // el codi gairebé no els fa servir. Sense Shift (snake_case minúscula).
+  // El botó {num} commuta a la capa numèrica/símbols; {abc} torna enrere.
   const layout = {
     default: [
-      '1 2 3 4 5 6 7 8 9 0',
       'q w e r t y u i o p',
       'a s d f g h j k l _',
-      '{shift} z x c v b n m {bksp}',
+      '{num} z x c v b n m {bksp}',
       '# ( ) {space} {enter}'
     ],
-    shift: [
-      '! @ # $ % & * + - =',
-      'Q W E R T Y U I O P',
-      'A S D F G H J K L _',
-      '{shift} Z X C V B N M {bksp}',
-      '" ( ) {space} {enter}'
+    num: [
+      '1 2 3 4 5 6 7 8 9 0',
+      '! = + - * / < > : ;',
+      '{abc} " \' . , _ {bksp}',
+      '# ( ) {space} {enter}'
     ]
   };
 
   const display = {
     '{bksp}':  '⌫',
     '{enter}': '⏎',
-    '{shift}': '⇧',
+    '{num}':   '?123',
+    '{abc}':   'ABC',
     '{space}': ' '
   };
 
@@ -91,9 +92,12 @@
       const end   = ta.selectionEnd;
       const val   = ta.value;
 
-      if (btn === '{shift}') {
-        shifted = !shifted;
-        kb.setOptions({ layoutName: shifted ? 'shift' : 'default' });
+      if (btn === '{num}') {
+        kb.setOptions({ layoutName: 'num' });
+        return;
+      }
+      if (btn === '{abc}') {
+        kb.setOptions({ layoutName: 'default' });
         return;
       }
 
@@ -123,12 +127,6 @@
 
       ta.selectionStart = ta.selectionEnd = caret;
       ta.dispatchEvent(new Event('input', { bubbles: true }));
-
-      // Auto-unshift després d'una lletra (com els mòbils)
-      if (shifted && btn !== '{shift}' && btn !== '{bksp}') {
-        shifted = false;
-        kb.setOptions({ layoutName: 'default' });
-      }
     }
 
     // Mostrar en tocar el textarea (encara que ja tingui focus)
