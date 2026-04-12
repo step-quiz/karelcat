@@ -529,13 +529,14 @@ function initGlossariCurs() {
   const header = document.querySelector('.curs-header');
   if (!header) return;
 
-  // Botó a la capçalera
+  // Botó a la capçalera — dins del contenidor d'accions
   const btn = document.createElement('button');
   btn.className = 'glossari-curs-btn';
   btn.id = 'btn-glossari-curs';
   btn.textContent = '📖 Glossari';
   btn.type = 'button';
-  header.appendChild(btn);
+  const actions = header.querySelector('.curs-header-actions');
+  (actions || header).appendChild(btn);
 
   // Modal
   const overlay = document.createElement('div');

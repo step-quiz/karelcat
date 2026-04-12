@@ -119,7 +119,6 @@
 
 /* ── Botó "Netejar històric" ─────────────────────────── */
 .karel-clear-btn {
-  margin-left: auto;
   font-family: var(--mono, 'Space Mono', monospace);
   font-size: 0.65rem;
   letter-spacing: 0.8px;
