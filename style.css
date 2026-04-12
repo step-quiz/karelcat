@@ -702,6 +702,12 @@ body.embed #speed-lbl { display: none; }
 /* Log més petit en embed */
 body.embed #log-wrap { max-height: 80px; }
 
+/* En embed, cancel·lem el 16px mòbil (pensat per evitar l'auto-zoom d'iOS
+   al textarea de la pàgina gran) i tornem a la mida compacta per defecte.
+   Dins dels iframes del curs els exemples són majoritàriament readonly,
+   així que no hi ha focus del textarea que dispari el zoom. */
+body.embed { --ed-font-size: 0.8rem; }
+
 /* ════════════════════════════════════════════════════════
    GLOSSARI — Modal de referència ràpida
    ════════════════════════════════════════════════════════ */
