@@ -21,7 +21,7 @@ Un curs de 10 capítols i 13 reptes, accessible des del navegador sense instal·
 | Capítol 6 — Condicionals | ✅ Escrit |
 | Capítol 7 — Mentre | ✅ Escrit |
 | Capítol 8 — Combinant condicions | ✅ Escrit |
-| Capítol 9 — El vocabulari complet | ✅ Escrit |
+| Capítol 9 — Resum | ✅ Escrit |
 | Capítol 10 — Del Karel al Python | ✅ Escrit |
 | Reptes 1–13 (capítol 10) | ✅ Tots implementats |
 
