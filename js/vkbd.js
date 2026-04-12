@@ -131,14 +131,26 @@
       }
     }
 
-    // Mostrar/amagar segons focus
-    ta.addEventListener('focus', () => host.classList.remove('vkbd-hidden'));
-    // No amaguem en blur: els taps als botons trauen momentàniament el focus.
-    // En comptes d'això, amaguem si l'usuari toca fora de l'editor i del teclat.
-    document.addEventListener('pointerdown', (e) => {
-      if (host.contains(e.target)) return;
-      if (e.target === ta || ta.contains(e.target)) return;
-      host.classList.add('vkbd-hidden');
+    // Mostrar en tocar el textarea (encara que ja tingui focus)
+    const showKbd = () => host.classList.remove('vkbd-hidden');
+    ta.addEventListener('focus', showKbd);
+    ta.addEventListener('pointerdown', showKbd);
+    ta.addEventListener('click', showKbd);
+
+    // Amagar NOMÉS quan el focus marxa a un altre element interactiu
+    // (un altre input, botó…) — no pas en scrollejar o tocar el mapa.
+    ta.addEventListener('blur', () => {
+      // Espera al cicle següent per veure cap a on ha anat el focus
+      setTimeout(() => {
+        const a = document.activeElement;
+        if (!a || a === document.body) return;            // scroll/tap passiu
+        if (a === ta || host.contains(a)) return;         // dins teclat o textarea
+        // Només amaguem si el nou focus és un control que probablement
+        // necessita el seu propi teclat o és un botó d'acció.
+        if (a.matches('input, textarea, [contenteditable]')) {
+          host.classList.add('vkbd-hidden');
+        }
+      }, 0);
     });
   }
 
