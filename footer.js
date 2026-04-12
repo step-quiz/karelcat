@@ -6,6 +6,12 @@
   // Estils del footer
   var style = document.createElement('style');
   style.textContent = [
+    // style.css posa "html, body { height:100%; overflow:hidden }" globalment.
+    // Sobreescrivim perquè la pàgina pugui fer scroll fins al footer sense espai en blanc.
+    'html { height: auto !important; overflow-y: auto !important; }',
+    'body { height: auto !important; min-height: 100vh; overflow: visible !important; }',
+    // L'editor i el simulador necessiten alçada mínima sense height:100% al body
+    '.edit-layout, #sim-layout { min-height: 60vh; }',
     '.karel-footer {',
     '  display: flex;',
     '  align-items: center;',
