@@ -178,33 +178,6 @@ torna_al_inici()
         <p>Les tres últimes línies del programa es llegeixen quasi com un pla escrit en llengua natural. Aquesta és la força de la descomposició: el codi explica <em>el que fa</em> sense que hagis d'anar línia per línia.</p>
       </section>
 
-
-      <!-- ─────────────────────────────────────────────
-           SECCIÓ 3 — Precondicions i postcondicions
-           ───────────────────────────────────────────── -->
-      <section class="chapter-section">
-        <h2>El que s'espera en entrar i en sortir</h2>
-
-        <p>Quan defineixes una funció nova, és útil pensar en dos moments clau:</p>
-        
-        <p><strong>1) on és en Karel quan la funció comença?</strong> (precondició)</p>
-        <p><strong>2) on és quan acaba?</strong> (postcondició).</p>
-
-        <p>Escriure un comentari breu que indiqui la precondició i postcondició d'una funció és una bona pràctica quan escrivim codi informàtic:</p>
-
-        <pre><code># Precondició:  Karel mira Est, perla a 2 caselles del davant
-# Postcondició: Karel és sobre la perla (motxilla +1), mirant Est
-def recull_perla_est():
-    move()
-    move()
-    grab()</code></pre>
-
-        <p>No és obligatori, però t'ajudarà molt quan el programa comenci a créixer. Quan una funció acaba sempre a la mateixa posició i orientació, és molt més fàcil encadenar-lo amb la següent.</p>
-
-        <p><strong>Consell pràctic:</strong> dissenya cadascuna de les funcions perquè en Karel quedi en una posició ben definida quan acabi. Això s'anomena <em>deixar-lo net</em>: la funció recull i deixa en Karel com el va trobar (o en l'estat que la següent funció necessita).</p>
-      </section>
-
-
       <!-- ─────────────────────────────────────────────
            EXEMPLE 2 (view-only) — Descomposició amb for
            ───────────────────────────────────────────── -->
@@ -213,27 +186,27 @@ def recull_perla_est():
 
         <p>La descomposició no exclou els bucles <code>for</code>: pots combinar les dues tècniques. Una funció pot contenir un <code>for</code> al seu interior, i el programa principal pot cridar aquella funció tantes vegades com calgui.</p>
 
-        <p>En l'exemple de sota, en Karel ha de col·locar dues perles en dos llocs separats. Cada fase és una funió independent, que internament usa <code>move()</code> i <code>drop()</code>:</p>
+        <p>En l'exemple de sota, en Karel ha de col·locar dues perles en dos llocs separats. Cada fase és una funció independent, que internament usa <code>move()</code> i <code>drop()</code>:</p>
 
         <div class="simulador"
              data-map=".,.,.,.,.,.|K>,.,.,.,.,.|.,.,.,.,.,."
              data-bag="2"
-             data-code="def deixa_perla_a_col2():
+             data-code="def deixa_perla_a_columna_2():
     move()
     move()
     drop()
 
-def deixa_perla_a_col5():
+def deixa_perla_a_columna_5():
     move()
     move()
     move()
     drop()
 
 # Fase 1
-deixa_perla_a_col2()
+deixa_perla_a_columna_2()
 
-# Fase 2 (Karel ja és a col 2, mira Est)
-deixa_perla_a_col5()
+# Fase 2 (Karel ja és a columna 2, mira Est)
+deixa_perla_a_columna_5()
 "
              data-readonly="true"
              data-label="Exemple"
