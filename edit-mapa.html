@@ -744,7 +744,23 @@ function _updateUndoButtons() {
 // ── 6. Inicialització ────────────────────────────────────────────────────────
 K.initTheme();
 K.applyCodeLang(K.state.codeLang);
-K.loadMapFromCSV(K.DEFAULT_CSV);
+
+// Llegeix ?map=BASE64 si ve del simulador (o d'una URL compartida)
+(function() {
+  const params = new URLSearchParams(location.search);
+  const b64    = params.get('map');
+  if (b64) {
+    try {
+      const csv = decodeURIComponent(escape(atob(b64)));
+      K.loadMapFromCSV(csv);
+    } catch (e) {
+      console.warn('⚠ Paràmetre ?map no vàlid, es carrega el mapa per defecte.', e);
+      K.loadMapFromCSV(K.DEFAULT_CSV);
+    }
+  } else {
+    K.loadMapFromCSV(K.DEFAULT_CSV);
+  }
+})();
 setBrush('.');
 updateSizeIndicators();
 _updateUndoButtons();
