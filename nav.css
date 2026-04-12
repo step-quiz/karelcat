@@ -137,3 +137,18 @@
   color: var(--error, #dc2626);
   border-color: var(--error, #dc2626);
 }
+
+/* En pantalles estretes, el botó "Netejar històric" desborda la topbar
+   (té white-space:nowrap + flex-shrink:0). El compactem a una icona. */
+@media (max-width: 480px) {
+  .karel-clear-btn {
+    font-size: 0;           /* amaga el text */
+    padding: 3px 6px;
+    line-height: 1;
+  }
+  .karel-clear-btn::before {
+    content: "✕";
+    font-size: 0.9rem;
+    letter-spacing: 0;
+  }
+}
