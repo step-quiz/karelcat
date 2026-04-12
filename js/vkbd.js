@@ -132,7 +132,17 @@
     }
 
     // Mostrar en tocar el textarea (encara que ja tingui focus)
-    const showKbd = () => host.classList.remove('vkbd-hidden');
+    const showKbd = () => {
+      host.classList.remove('vkbd-hidden');
+      // Porta el textarea a dalt del viewport perquè el teclat no el tapi.
+      // Fem servir scrollIntoView al proper frame perquè el navegador
+      // hagi calculat ja la visual viewport amb el teclat visible.
+      requestAnimationFrame(() => {
+        try {
+          ta.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        } catch (e) { /* navegadors antics */ }
+      });
+    };
     ta.addEventListener('focus', showKbd);
     ta.addEventListener('pointerdown', showKbd);
     ta.addEventListener('click', showKbd);
