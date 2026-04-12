@@ -51,13 +51,28 @@
   };
 
   // Espera que simple-keyboard estigui carregat (script al final del body)
+  let tries = 0;
   function init() {
-    if (!window.SimpleKeyboard) { setTimeout(init, 50); return; }
+    // UMD: window.SimpleKeyboard és la classe directament.
+    // ESM:  hi ha un .default. Acceptem tots dos.
+    const SK = window.SimpleKeyboard
+      && (window.SimpleKeyboard.default || window.SimpleKeyboard);
 
-    const Keyboard = window.SimpleKeyboard.default;
+    if (typeof SK !== 'function') {
+      if (++tries > 60) {
+        // Fallback: no hem pogut carregar simple-keyboard (CDN? xarxa?).
+        // Restaurem el teclat nadiu perquè l'usuari pugui escriure.
+        console.warn('[vkbd] simple-keyboard no s\'ha carregat; torno al teclat nadiu.');
+        ta.removeAttribute('inputmode');
+        host.remove();
+        return;
+      }
+      setTimeout(init, 50);
+      return;
+    }
+
     let shifted = false;
-
-    const kb = new Keyboard('.simple-keyboard', {
+    const kb = new SK('.simple-keyboard', {
       layout,
       display,
       layoutName: 'default',
