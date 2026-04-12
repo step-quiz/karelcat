@@ -126,16 +126,19 @@ function initEditor() {
   ta.addEventListener('input', () => {
     updateEditor();
     localStorage.setItem(K.LS_KEY_CODE, ta.value);
-    // Re-sync scroll after browser auto-scrolls caret into view
+    // FIX BUG 2: doble-RAF per sobreviure als reflows asíncrons
+    // del teclat virtual en mòbil (un sol RAF pot caure entre reflows)
     requestAnimationFrame(() => {
-      const st = ta.scrollTop;
-      const sl = ta.scrollLeft;
-      const hl = document.getElementById('code-highlight');
-      const bg = document.getElementById('line-bg');
-      const ln = document.getElementById('line-numbers');
-      if (hl) { hl.scrollTop = st; hl.scrollLeft = sl; }
-      if (ln) ln.scrollTop = st;
-      if (bg) { bg.scrollTop = st; bg.scrollLeft = sl; }
+      requestAnimationFrame(() => {
+        const st = ta.scrollTop;
+        const sl = ta.scrollLeft;
+        const hl = document.getElementById('code-highlight');
+        const bg = document.getElementById('line-bg');
+        const ln = document.getElementById('line-numbers');
+        if (hl) { hl.scrollTop = st; hl.scrollLeft = sl; }
+        if (ln) ln.scrollTop = st;
+        if (bg) { bg.scrollTop = st; bg.scrollLeft = sl; }
+      });
     });
   });
 
@@ -148,6 +151,27 @@ function initEditor() {
     const bg = document.getElementById('line-bg');
     if (bg) { bg.scrollTop = st; bg.scrollLeft = sl; }
   });
+
+  // FIX BUG 2: quan el teclat virtual s'obre/tanca, el viewport canvia
+  // i el navegador pot fer scroll del caret. Re-sincronitzem les capes.
+  if (window.visualViewport) {
+    const syncLayersOnResize = () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const st = ta.scrollTop;
+          const sl = ta.scrollLeft;
+          const hl = document.getElementById('code-highlight');
+          const bg = document.getElementById('line-bg');
+          const ln = document.getElementById('line-numbers');
+          if (hl) { hl.scrollTop = st; hl.scrollLeft = sl; }
+          if (ln) ln.scrollTop = st;
+          if (bg) { bg.scrollTop = st; bg.scrollLeft = sl; }
+        });
+      });
+    };
+    window.visualViewport.addEventListener('resize', syncLayersOnResize);
+    window.visualViewport.addEventListener('scroll', syncLayersOnResize);
+  }
 
   ta.addEventListener('keydown', e => {
     if (e.key === 'Tab') {

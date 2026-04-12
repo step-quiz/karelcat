@@ -647,11 +647,14 @@ body.light .ac-item[data-kind="kw"]   { color: #0000ff; }
   .main { grid-template-columns: 1fr; }
   /* En mòbil: mapa a dalt, codi a sota */
   .map-col  { order: -1; border-bottom: 1px solid var(--border); }
-  .code-col { min-height: 60vh; border-right: none; }
+  /* FIX BUG 3: svh estabilitza l'alçada quan el teclat virtual s'obre/tanca */
+  .code-col { min-height: 60vh; min-height: 60svh; border-right: none; }
   .world-area { min-height: 40vw; }
   .toolbar { flex-wrap: wrap; gap: 4px; }
   .toolbar .btn { padding: 4px 8px; font-size: 0.62rem; }
   .speed-row input[type=range] { width: 50px; }
+  /* FIX BUG 1: font ≥ 16px evita l'auto-zoom d'iOS al textarea */
+  :root { --ed-font-size: 16px; }
 }
 
 @media (max-width: 820px) and (orientation: portrait) {
