@@ -39,7 +39,7 @@ const CAPITOLS_DATA = [
   { num: 6,  titol: 'Condicionals',              arxiu: 'capitol-6.html'  },
   { num: 7,  titol: 'Mentre',                    arxiu: 'capitol-7.html'  },
   { num: 8,  titol: 'Combinant condicions',      arxiu: 'capitol-8.html'  },
-  { num: 9,  titol: 'El vocabulari complet',     arxiu: 'capitol-9.html'  },
+  { num: 9,  titol: 'Resum',                     arxiu: 'capitol-9.html'  },
   { num: 10, titol: 'Del Karel al Python',       arxiu: 'capitol-10.html' },
 ];
 
