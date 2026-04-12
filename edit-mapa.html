@@ -366,7 +366,7 @@
     <nav class="karel-nav" id="karel-nav">
       <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
       <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
-      <a href="index.html" class="karel-nav-link">Simulador</a>
+      <a href="simulador.html" class="karel-nav-link">Simulador</a>
       <a href="edit-mapa.html" class="karel-nav-link active">Editor</a>
     </nav>
   <button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button>
@@ -374,7 +374,7 @@
 <div class="karel-nav-drawer" id="karel-nav-drawer">
   <a href="curs/capitol-1.html" class="karel-nav-link">Capítols</a>
   <a href="curs/repte-1.html" class="karel-nav-link">Reptes</a>
-  <a href="index.html" class="karel-nav-link">Simulador</a>
+  <a href="simulador.html" class="karel-nav-link">Simulador</a>
   <a href="edit-mapa.html" class="karel-nav-link active">Editor</a>
 </div>
 
@@ -439,7 +439,7 @@
         <button class="btn full"   onclick="saveCSV()">💾 Desa mapa CSV</button>
         <button class="btn full g" onclick="copyMapURL()">🔗 Copia URL del mapa</button>
         <button class="btn full g" onclick="openInKarel()">▶ Obre a Karel</button>
-        <a class="btn full" href="index.html">← Torna a Karel</a>
+        <a class="btn full" href="simulador.html">← Torna a Karel</a>
       </div>
     </div>
 
@@ -676,12 +676,12 @@ function _mapToBase64() {
 }
 function copyMapURL() {
   const url = location.origin
-            + location.pathname.replace('edit-mapa.html', 'index.html')
+            + location.pathname.replace('edit-mapa.html', 'simulador.html')
             + '?map=' + _mapToBase64();
   navigator.clipboard.writeText(url).then(() => alert('URL copiada!'));
 }
 function openInKarel() {
-  window.location.href = 'index.html?map=' + _mapToBase64();
+  window.location.href = 'simulador.html?map=' + _mapToBase64();
 }
 
 // ── 5. Undo / Redo ───────────────────────────────────────────────────────────
