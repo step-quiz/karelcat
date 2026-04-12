@@ -652,10 +652,11 @@ body.light .ac-item[data-kind="kw"]   { color: #0000ff; }
   .world-area { min-height: 40vw; }
   .toolbar { flex-wrap: wrap; gap: 4px; }
   .toolbar .btn { padding: 4px 8px; font-size: 0.62rem; }
-  .speed-row input[type=range] { width: 50px; }
+  .speed-row input[type=range] { width: 140px; }
   /* En mòbil + embed, els capítols (un sol món) tenen més espai a la
-     toolbar que els reptes (que porten tabs Món 1/2/3). Eixamplem el
-     slider només quan NO és multi-món. */
+     toolbar que els reptes (que porten tabs Món 1/2/3). Mantenim el
+     slider compacte només quan és multi-món. */
+  body.embed.multi .speed-row input[type=range] { width: 50px; }
   body.embed:not(.multi) .speed-row input[type=range] { width: 110px; }
   /* FIX BUG 1: font ≥ 16px evita l'auto-zoom d'iOS al textarea */
   :root { --ed-font-size: 16px; }
