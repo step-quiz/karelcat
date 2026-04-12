@@ -68,15 +68,100 @@
 
     /* ── HERO ──────────────────────────────────────── */
     .hero {
-      text-align: center;
-      max-width: 40rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2.5rem;
+      max-width: 52rem;
+      width: 100%;
       animation: fadeUp 0.7s cubic-bezier(.2,.7,.3,1) both;
+    }
+
+    /* ── MINI MÓN (animació SVG) ────────────────────── */
+    .hero-world {
+      flex-shrink: 0;
+    }
+    .mini-world {
+      --cs: 52px; /* cell size */
+      display: grid;
+      grid-template-columns: repeat(3, var(--cs));
+      grid-template-rows: repeat(3, var(--cs));
+      gap: 3px;
+      padding: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow-md);
+    }
+    .mini-cell {
+      width: var(--cs);
+      height: var(--cs);
+      background: var(--cell);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .mini-cell svg {
+      width: 78%;
+      height: 78%;
+    }
+    /* Karel (medusa) direction via data-dir */
+    .mini-cell .karel-entity {
+      color: #E684CC;
+      filter: drop-shadow(0 0 5px rgba(230,132,204,.6));
+      transition: transform 0.35s ease;
+      transform-origin: center center;
+      animation: medusa-pulse 2s ease-in-out infinite;
+    }
+    .mini-cell .karel-entity[data-dir="top"]    { transform: rotate(0deg); }
+    .mini-cell .karel-entity[data-dir="right"]  { transform: rotate(90deg); }
+    .mini-cell .karel-entity[data-dir="bottom"] { transform: rotate(180deg); }
+    .mini-cell .karel-entity[data-dir="left"]   { transform: rotate(270deg); }
+
+    @keyframes medusa-pulse {
+      0%,100% { filter: drop-shadow(0 0 3px rgba(230,132,204,.4)); }
+      50%     { filter: drop-shadow(0 0 9px rgba(230,132,204,.9)); }
+    }
+
+    /* Quan Karel és a la mateixa cel·la que la perla: perla com a badge */
+    .mini-cell {
+      position: relative;
+    }
+    .mini-cell .pearl-badge {
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+      width: 36%;
+      height: 36%;
+      pointer-events: none;
+    }
+    .mini-cell .pearl-badge svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Pearl pop-in animation when it reappears */
+    .mini-cell.pearl-pop svg {
+      animation: pearl-pop 0.4s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes pearl-pop {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    /* ── HERO TEXT ──────────────────────────────────── */
+    .hero-text {
+      flex: 1;
+      text-align: left;
     }
     .brand {
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.2rem;
       font-family: var(--display);
       font-weight: 800;
       font-size: 1.15rem;
@@ -86,106 +171,18 @@
       color: var(--accent);
       filter: drop-shadow(0 0 4px rgba(185,19,141,0.35));
     }
-    .hero h1 {
-      font-family: var(--display);
-      font-weight: 800;
-      font-size: clamp(2.6rem, 6.5vw, 4.2rem);
-      line-height: 1.02;
-      letter-spacing: -0.025em;
-      margin-bottom: 1.2rem;
+    .hero-text h1 {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
     }
-    .hero p {
+    .hero-text p {
       color: var(--text-soft);
-      font-size: clamp(0.98rem, 1.4vw, 1.12rem);
-      max-width: 34rem;
-      margin: 0 auto;
-    }
-
-    /* ── ANIMACIÓ DEL MÓN ──────────────────────────── */
-    .world {
-      --s: 44px;
-      width: calc(var(--s) * 4);
-      height: calc(var(--s) * 3);
-      position: relative;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px;
-      box-shadow: var(--shadow-md);
-      animation: fadeUp 0.8s cubic-bezier(.2,.7,.3,1) 0.1s both;
-    }
-    .world-grid {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 2px;
-    }
-    .world-grid .cell {
-      background: var(--cell);
-      border-radius: 3px;
-    }
-    .world-grid .rock {
-      background: var(--rock);
-      background-image:
-        linear-gradient(135deg, transparent 45%, rgba(0,0,0,0.08) 50%, transparent 55%);
-    }
-    .pearl {
-      position: absolute;
-      width: calc(var(--s) * 0.42);
-      height: calc(var(--s) * 0.42);
-      left: calc(var(--s) * 3 + var(--s) * 0.29);
-      top: calc(var(--s) * 0.29);
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #ffffff 0%, var(--accent) 55%, #7a0a5e 100%);
-      box-shadow: 0 0 8px var(--accent-soft);
-      animation: pearlCycle 7s ease-in-out infinite;
-    }
-    .karel {
-      position: absolute;
-      width: calc(var(--s) * 0.68);
-      height: calc(var(--s) * 0.68);
-      left: calc(var(--s) * 0.16);
-      top: calc(var(--s) * 2 + var(--s) * 0.16);
-      background: var(--accent);
-      border-radius: 4px;
-      box-shadow: 0 0 10px var(--accent-soft);
-      animation: karelCycle 7s steps(1, end) infinite;
-    }
-    .karel::after {
-      /* triangle showing direction */
-      content: "";
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 0; height: 0;
-      border: 5px solid transparent;
-      border-left-color: #ffffff;
-      transform: translate(-3px, -50%);
-    }
-    /* 12-step cycle, steps of 7s/14 ≈ 0.5s each */
-    @keyframes karelCycle {
-      0%   { transform: translate(0, 0) rotate(0deg); }         /* start: col 0, row 2, east */
-      7%   { transform: translate(44px, 0) rotate(0deg); }      /* east to col 1 */
-      14%  { transform: translate(88px, 0) rotate(0deg); }      /* east to col 2 */
-      21%  { transform: translate(132px, 0) rotate(0deg); }     /* east to col 3 */
-      28%  { transform: translate(132px, 0) rotate(-90deg); }   /* turn north */
-      35%  { transform: translate(132px, -44px) rotate(-90deg); }/* north to row 1 */
-      42%  { transform: translate(132px, -88px) rotate(-90deg); }/* north to row 0 — pearl grabbed */
-      50%  { transform: translate(132px, -88px) rotate(-270deg); }/* turn around (south) */
-      57%  { transform: translate(132px, -44px) rotate(-270deg); }/* south */
-      64%  { transform: translate(132px, 0) rotate(-270deg); }   /* south to row 2 */
-      71%  { transform: translate(132px, 0) rotate(-180deg); }   /* turn west */
-      78%  { transform: translate(88px, 0) rotate(-180deg); }    /* west */
-      85%  { transform: translate(44px, 0) rotate(-180deg); }    /* west */
-      92%  { transform: translate(0, 0) rotate(-180deg); }       /* back to start */
-      100% { transform: translate(0, 0) rotate(-360deg); }       /* face east again */
-    }
-    @keyframes pearlCycle {
-      0%, 41%  { opacity: 1; transform: scale(1); }
-      42%      { opacity: 1; transform: scale(1.4); }
-      44%, 100%{ opacity: 0; transform: scale(0.3); }
+      font-size: clamp(0.88rem, 1.2vw, 1rem);
+      max-width: 30rem;
     }
 
     /* ── GRID DE TARGETES ─────────────────────────── */
@@ -260,30 +257,20 @@
     }
 
     @media (max-width: 640px) {
-      .grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 2.4rem; }
-      .world { --s: 38px; }
-      @keyframes karelCycle {
-        0%   { transform: translate(0, 0) rotate(0deg); }
-        7%   { transform: translate(38px, 0) rotate(0deg); }
-        14%  { transform: translate(76px, 0) rotate(0deg); }
-        21%  { transform: translate(114px, 0) rotate(0deg); }
-        28%  { transform: translate(114px, 0) rotate(-90deg); }
-        35%  { transform: translate(114px, -38px) rotate(-90deg); }
-        42%  { transform: translate(114px, -76px) rotate(-90deg); }
-        50%  { transform: translate(114px, -76px) rotate(-270deg); }
-        57%  { transform: translate(114px, -38px) rotate(-270deg); }
-        64%  { transform: translate(114px, 0) rotate(-270deg); }
-        71%  { transform: translate(114px, 0) rotate(-180deg); }
-        78%  { transform: translate(76px, 0) rotate(-180deg); }
-        85%  { transform: translate(38px, 0) rotate(-180deg); }
-        92%  { transform: translate(0, 0) rotate(-180deg); }
-        100% { transform: translate(0, 0) rotate(-360deg); }
+      .hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
       }
+      .hero-text { text-align: left; }
+      .grid { grid-template-columns: 1fr; }
+      .hero-text h1 { font-size: 1.9rem; }
+      .mini-world { --cs: 44px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .hero, .grid, .world { animation: none; }
-      .karel, .pearl { animation: none; }
+      .hero, .grid { animation: none; }
+      .mini-cell .karel-entity,
+      .mini-cell .karel-entity[data-dir] { transition: none; animation: none; }
       .card, .card::after { transition: none; }
     }
     @keyframes fadeUp {
@@ -296,52 +283,39 @@
 
   <main>
 
-    <!-- ── HERO ─────────────────────────────────── -->
-    <section class="hero">
-      <div class="brand">
-        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" shape-rendering="crispEdges" width="22" height="22" aria-hidden="true">
-          <rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/>
-          <rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/>
-          <rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/>
-          <rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/>
-          <rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/>
-          <rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/>
-          <rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/>
-          <rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/>
-          <rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/>
-          <rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/>
-          <rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/>
-          <rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/>
-          <rect x="6" y="3" width="1" height="1" fill="#141414"/><rect x="7" y="3" width="1" height="1" fill="#141414"/><rect x="8" y="3" width="1" height="1" fill="#141414"/><rect x="9" y="3" width="1" height="1" fill="#141414"/>
-        </svg>
-        <span>Karel</span>
-      </div>
-      <h1>Aprèn a programar</h1>
-      <p>Comença des de zero i finalitza sabent com és el codi Python professional.</p>
-    </section>
+    <!-- ── HERO: món a l'esquerra, text a la dreta ── -->
+    <section class="hero" aria-label="Karel: aprèn a programar">
 
-    <!-- ── ANIMACIÓ ─────────────────────────────── -->
-    <div class="world" role="img" aria-label="Animació: en Karel es mou per un món de 3×4, esquiva dues roques, recull una perla i torna al punt de partida.">
-      <div class="world-grid">
-        <!-- row 0 -->
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <!-- row 1 -->
-        <div class="cell rock"></div>
-        <div class="cell rock"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <!-- row 2 -->
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
+      <!-- Mini món animat (top-left) -->
+      <div class="hero-world" role="img" aria-label="Animació: en Karel recorre un món 3×3, recull una perla i torna al punt de partida.">
+        <div class="mini-world" id="miniWorld"></div>
       </div>
-      <div class="pearl"></div>
-      <div class="karel"></div>
-    </div>
+
+      <!-- Text del hero -->
+      <div class="hero-text">
+        <div class="brand">
+          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" shape-rendering="crispEdges" width="22" height="22" aria-hidden="true">
+            <rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/>
+            <rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/>
+            <rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/>
+            <rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/>
+            <rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/>
+            <rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/>
+            <rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/>
+            <rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/>
+            <rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/>
+            <rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/>
+            <rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/>
+            <rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/>
+            <rect x="6" y="3" width="1" height="1" fill="#141414"/><rect x="7" y="3" width="1" height="1" fill="#141414"/><rect x="8" y="3" width="1" height="1" fill="#141414"/><rect x="9" y="3" width="1" height="1" fill="#141414"/>
+          </svg>
+          <span>Karel</span>
+        </div>
+        <h1>Aprèn a programar</h1>
+        <p>Comença des de zero i finalitza sabent com és el codi Python professional.</p>
+      </div>
+
+    </section>
 
     <!-- ── 4 OPCIONS ────────────────────────────── -->
     <nav class="grid" aria-label="Què vols fer?">
@@ -373,6 +347,97 @@
     </nav>
 
   </main>
+
+  <script>
+    // ── SVG assets (idèntics als de js/constants.js) ──────────────────────────
+    const SVG_MEDUSA = `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="karel-entity" fill="currentColor" shape-rendering="crispEdges"><g class="karel-outline" fill="#6B0D4F"><rect x="5" y="1" width="1" height="1"/><rect x="6" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="10" y="1" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="13" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="3" y="10" width="1" height="1"/><rect x="5" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="3" y="11" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="6" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="12" y="11" width="1" height="1"/><rect x="2" y="12" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="9" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="13" y="12" width="1" height="1"/><rect x="2" y="13" width="1" height="1"/><rect x="4" y="13" width="1" height="1"/><rect x="6" y="13" width="1" height="1"/><rect x="9" y="13" width="1" height="1"/><rect x="11" y="13" width="1" height="1"/><rect x="13" y="13" width="1" height="1"/><rect x="3" y="14" width="1" height="1"/><rect x="7" y="14" width="1" height="1"/><rect x="8" y="14" width="1" height="1"/><rect x="12" y="14" width="1" height="1"/></g><rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/><rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/><rect x="6" y="3" width="1" height="1" fill="var(--bg)"/><rect x="7" y="3" width="1" height="1" fill="var(--bg)"/><rect x="8" y="3" width="1" height="1" fill="var(--bg)"/><rect x="9" y="3" width="1" height="1" fill="var(--bg)"/></svg>`;
+
+    const SVG_ROCK = `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" shape-rendering="crispEdges"><g fill="#6B5040"><rect x="6" y="2" width="5" height="1"/><rect x="5" y="3" width="7" height="1"/><rect x="4" y="4" width="8" height="1"/><rect x="3" y="5" width="10" height="1"/><rect x="3" y="6" width="10" height="1"/><rect x="2" y="7" width="12" height="1"/><rect x="2" y="8" width="12" height="1"/><rect x="1" y="9" width="13" height="1"/><rect x="1" y="10" width="14" height="1"/><rect x="1" y="11" width="14" height="1"/><rect x="1" y="12" width="14" height="1"/><rect x="1" y="13" width="14" height="1"/><rect x="1" y="14" width="14" height="1"/></g><g fill="#8A6848"><rect x="6" y="2" width="5" height="1"/><rect x="5" y="3" width="6" height="1"/></g><g fill="#4A3728"><rect x="1" y="11" width="14" height="4"/><rect x="7" y="4" width="1" height="2"/><rect x="6" y="6" width="2" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/></g><g fill="#506B38"><rect x="2" y="12" width="3" height="1"/><rect x="2" y="13" width="4" height="1"/><rect x="3" y="14" width="3" height="1"/><rect x="12" y="13" width="2" height="1"/><rect x="12" y="14" width="1" height="1"/></g><g fill="#6A8A48"><rect x="5" y="12" width="1" height="1"/><rect x="6" y="13" width="1" height="1"/><rect x="6" y="14" width="1" height="1"/><rect x="14" y="13" width="1" height="1"/><rect x="13" y="14" width="1" height="1"/></g></svg>`;
+
+    const SVG_PEARL = `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" shape-rendering="crispEdges"><g fill="#7E8A96"><rect x="6" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="13" y="7" width="1" height="1"/><rect x="2" y="8" width="1" height="1"/><rect x="13" y="8" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="3" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="9" y="12" width="1" height="1"/></g><g fill="#FFFFFF"><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/></g><g fill="#E8ECF2"><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/></g><g fill="#C8D4E4"><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/></g><g fill="#B8C4D0"><rect x="4" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="4" y="10" width="1" height="1"/><rect x="5" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="6" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/></g></svg>`;
+
+    // ── Món 3×3 ──────────────────────────────────────────────────────────────
+    // Roques fixes: (fila=0, col=1)
+    // Perla inicial: (fila=0, col=2)
+    // Karel inicial: (fila=2, col=0), mirant a la dreta (est)
+
+    const ROCKS = new Set(['0,1']); // files×columnes amb roca (no canvien)
+
+    // Seqüència d'estats: {kr=fila karel, kc=col karel, kd=direcció, pearl=visible}
+    // Karel fa un recorregut en L: est per la fila 2, nord per la col 2,
+    // recull la perla, torna, i la deixa de nou.
+    const STEPS = [
+      { kr:2, kc:0, kd:'right',  pearl:true,  onPearl:false }, // 0  inici
+      { kr:2, kc:1, kd:'right',  pearl:true,  onPearl:false }, // 1  → est
+      { kr:2, kc:2, kd:'right',  pearl:true,  onPearl:false }, // 2  → est
+      { kr:2, kc:2, kd:'top',    pearl:true,  onPearl:false }, // 3  gira nord
+      { kr:1, kc:2, kd:'top',    pearl:true,  onPearl:false }, // 4  ↑ nord
+      { kr:0, kc:2, kd:'top',    pearl:true,  onPearl:true  }, // 5  ↑ arriba: medusa + perla
+      { kr:0, kc:2, kd:'top',    pearl:false, onPearl:false }, // 6  GRAB: perla desapareix
+      { kr:0, kc:2, kd:'bottom', pearl:false, onPearl:false }, // 7  gira sud
+      { kr:1, kc:2, kd:'bottom', pearl:false, onPearl:false }, // 8  ↓ sud
+      { kr:2, kc:2, kd:'bottom', pearl:false, onPearl:false }, // 9  ↓ sud
+      { kr:2, kc:2, kd:'left',   pearl:false, onPearl:false }, // 10 gira oest
+      { kr:2, kc:1, kd:'left',   pearl:false, onPearl:false }, // 11 ← oest
+      { kr:2, kc:0, kd:'left',   pearl:false, onPearl:false }, // 12 ← oest
+      { kr:2, kc:0, kd:'right',  pearl:true,  onPearl:false }, // 13 DEIXA perla + gira est → loop
+    ];
+
+    // Pearl home position
+    const PEARL_ROW = 0, PEARL_COL = 2;
+
+    function renderWorld(stepIdx) {
+      const s     = STEPS[stepIdx];
+      const prevS = STEPS[(stepIdx - 1 + STEPS.length) % STEPS.length];
+      const pearlJustReturned = s.pearl && !prevS.pearl;
+
+      const grid = document.getElementById('miniWorld');
+      grid.innerHTML = '';
+
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'mini-cell';
+
+          const isKarel   = (r === s.kr && c === s.kc);
+          const isRock    = ROCKS.has(`${r},${c}`);
+          const isPearl   = s.pearl && r === PEARL_ROW && c === PEARL_COL;
+          const isOverlap = isKarel && s.onPearl && r === PEARL_ROW && c === PEARL_COL;
+
+          if (isRock) {
+            cell.innerHTML = SVG_ROCK;
+          } else if (isOverlap) {
+            // Karel dempeus sobre la perla: medusa a mida completa + perla com a badge
+            cell.innerHTML = SVG_MEDUSA;
+            const svg = cell.querySelector('.karel-entity');
+            if (svg) svg.setAttribute('data-dir', s.kd);
+            const badge = document.createElement('span');
+            badge.className = 'pearl-badge';
+            badge.innerHTML = SVG_PEARL;
+            cell.appendChild(badge);
+          } else if (isKarel) {
+            cell.innerHTML = SVG_MEDUSA;
+            const svg = cell.querySelector('.karel-entity');
+            if (svg) svg.setAttribute('data-dir', s.kd);
+          } else if (isPearl) {
+            if (pearlJustReturned) cell.classList.add('pearl-pop');
+            cell.innerHTML = SVG_PEARL;
+          }
+
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    // Arrenca l'animació
+    let step = 0;
+    renderWorld(step);
+
+    setInterval(() => {
+      step = (step + 1) % STEPS.length;
+      renderWorld(step);
+    }, 750);
+  </script>
 
 </body>
 </html>
