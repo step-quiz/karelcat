@@ -319,5 +319,24 @@ function openMapInEditor() {
 </script>
 <script src="./footer.js"></script>
 <script src="./js/kbd-accessory.js"></script>
+<!-- Tour inicial: només la primera vegada que aquest dispositiu obre
+     el simulador directament (no en mode embed dins els capítols).
+     El propi initial-tour.html posa 'karel_tour_done_v1' i s'autodestrueix. -->
+<script>
+  (function () {
+    // No el disparem mai dins iframes del curs (?embed=1): allà el
+    // simulador és una peça incrustada, el tour no té sentit.
+    if (new URLSearchParams(location.search).get('embed') === '1') return;
+    if (localStorage.getItem('karel_tour_done_v1')) return;
+    const f = document.createElement('iframe');
+    f.id = 'tour-iframe';   // el tour s'autodestrueix buscant aquest id
+    f.src = 'initial-tour.html';
+    f.title = 'Tour inicial';
+    f.style.cssText =
+      'position:fixed;inset:0;width:100%;height:100%;' +
+      'border:0;background:transparent;z-index:10000;';
+    document.body.appendChild(f);
+  })();
+</script>
 </body>
 </html>
