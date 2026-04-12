@@ -152,15 +152,16 @@ let _goalUid = 0;
 function nextGoalId() { return 'goal-' + (++_goalUid); }
 
 // ── Construeix la URL de l'iframe a partir de les dades en clar ──
-function _iframeSrc(map, code, goalCSV, goalId, readonly, bag) {
+function _iframeSrc(map, code, goalCSV, goalId, readonly, bag, multi) {
   const theme    = document.body.classList.contains('curs-light') ? '&theme=light' : '';
   const roParam  = readonly ? '&readonly=1' : '';
   const bagParam = bag > 0  ? `&bag=${bag}` : '';
+  const multiP   = multi    ? '&multi=1'   : '';
   const enc      = s => btoa(unescape(encodeURIComponent(s)));
   const goalP    = goalCSV
     ? `&goal=${encodeURIComponent(enc(goalCSV))}&goalId=${goalId}`
     : '';
-  return `../simulador.html?embed=1&map=${encodeURIComponent(enc(map))}&code=${encodeURIComponent(enc(code))}${roParam}${theme}${goalP}${bagParam}`;
+  return `../simulador.html?embed=1&map=${encodeURIComponent(enc(map))}&code=${encodeURIComponent(enc(code))}${roParam}${theme}${goalP}${bagParam}${multiP}`;
 }
 
 // ── Llegeix el codi de l'editor dins l'iframe (same-origin) ──
@@ -252,7 +253,7 @@ function _renderMultiMon(div) {
   iframe.title        = title || 'Simulador Karel';
   iframe.setAttribute('loading', 'lazy');
   iframe.setAttribute('allowfullscreen', '');
-  iframe.src = _iframeSrc(maps[0], code, goals[0] || '', goalIds[0], readonly, getBag(0));
+  iframe.src = _iframeSrc(maps[0], code, goals[0] || '', goalIds[0], readonly, getBag(0), true);
   iframeWrap.appendChild(iframe);
   wrap.appendChild(iframeWrap);
 
@@ -284,7 +285,8 @@ function _renderMultiMon(div) {
       goals[newIdx] || '',
       goalIds[newIdx],
       readonly,
-      getBag(newIdx)
+      getBag(newIdx),
+      true
     );
   }
 
