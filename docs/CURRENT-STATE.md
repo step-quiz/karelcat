@@ -38,7 +38,7 @@ funcions de Karel).
 | 6 | `curs/capitol-6.html` | Condicionals | `if cond():` / `else:`. |
 | 7 | `curs/capitol-7.html` | Mentre | `while cond():`. Fencepost error. |
 | 8 | `curs/capitol-8.html` | Combinant condicions | `not`, `and`, `or`. |
-| 9 | `curs/capitol-9.html` | El vocabulari complet | `turn_around()`, `left_is_clear()`, `right_is_clear()`, `elif`, `break`, `True`/`False`. |
+| 9 | `curs/capitol-9.html` | Resum | `turn_around()`, `left_is_clear()`, `right_is_clear()`, `elif`, `break`, `True`/`False`. |
 | 10 | `curs/capitol-10.html` | Del Karel al Python | Epíleg. Pont al món real. Cap simulador. |
 
 Tots els capítols estan llistats a `DISPONIBLES` a `curs/index.html`.
