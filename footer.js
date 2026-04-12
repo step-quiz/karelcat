@@ -1,4 +1,9 @@
 (function () {
+  // Mode embed (iframes del curs): no mostrem el footer per no saturar l'UI.
+  try {
+    if (new URLSearchParams(window.location.search).get('embed') === '1') return;
+  } catch (e) { /* ignore */ }
+
   // Detecta si estem dins de la carpeta curs/ o a l'arrel
   var isCurs = window.location.pathname.includes('/curs/');
   var imgPath = isCurs ? '../img/cc-by-nc-nd.png' : 'img/cc-by-nc-nd.png';
