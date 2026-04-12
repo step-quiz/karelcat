@@ -921,9 +921,7 @@ body.embed { --ed-font-size: 0.8rem; }
 }
 .vkbd-host .hg-button-space { max-width: 40%; }
 
-/* Reservem espai al final del textarea perquè el teclat no tapi el codi,
-   i evitem el scroll horitzontal del document que desquadra el teclat fix. */
+/* Reservem espai al final del textarea perquè el teclat no tapi el codi. */
 @media (pointer: coarse) {
-  html, body { overflow-x: hidden; max-width: 100vw; }
   body:not(.embed) #code-editor { padding-bottom: 240px; }
 }
