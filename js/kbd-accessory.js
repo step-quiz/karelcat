@@ -53,12 +53,26 @@
   // cau a position:fixed bottom:0 — el teclat la taparà parcialment
   // però el navegador sol fer scroll al focus i tot funciona.
   const vv = window.visualViewport;
+
+  // Detecta si el teclat nadiu està obert: visualViewport.height
+  // baixa significativament respecte de window.innerHeight.
+  // Quan és així, marquem el body amb .kbd-open perquè el CSS pugui
+  // limitar l'alçada de l'editor i el navegador no hagi de fer un scroll
+  // agressiu del textarea cap amunt (que amaga el mapa).
+  function syncKbdState() {
+    if (!vv) return;
+    const keyboardPx = window.innerHeight - vv.height;
+    const open = keyboardPx > 150;   // llindar: teclat > 150px
+    document.body.classList.toggle('kbd-open', open);
+  }
+
   function reposition() {
     if (!vv) return;
     // offsetTop + height = coordenada Y del fons de la part visible.
     // window.innerHeight - (offsetTop + height) = quant espai ocupa el teclat.
     const bottomOffset = window.innerHeight - (vv.offsetTop + vv.height);
     bar.style.bottom = bottomOffset + 'px';
+    syncKbdState();
   }
   if (vv) {
     vv.addEventListener('resize', reposition);
@@ -75,6 +89,7 @@
     setTimeout(() => {
       if (document.activeElement !== ta) {
         bar.classList.add('kbd-accessory--hidden');
+        document.body.classList.remove('kbd-open');
       }
     }, 100);
   });
