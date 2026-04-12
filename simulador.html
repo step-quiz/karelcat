@@ -48,6 +48,7 @@
   (function() {
     var p = new URLSearchParams(location.search);
     if (p.get('embed') === '1') document.body.classList.add('embed');
+    if (p.get('multi') === '1') document.body.classList.add('multi');
     if (p.get('theme') === 'light') document.body.classList.add('light');
   })();
 </script>
