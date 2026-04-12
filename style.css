@@ -745,6 +745,7 @@ body.embed { --ed-font-size: 0.8rem; }
   border-radius: 8px;
   width: min(540px, 92vw);
   max-height: 82vh;
+  max-height: 82dvh;   /* mòbil: descompta la barra d'adreces del navegador */
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
@@ -861,8 +862,8 @@ body.embed { --ed-font-size: 0.8rem; }
   }
   .glossari-modal {
     width: 100vw;
-    max-height: 100dvh;
-    max-height: 100vh;
+    max-height: 100vh;   /* fallback per navegadors antics */
+    max-height: 100dvh;  /* mòbil modern: alçada visible real */
     height: 100%;
     border-radius: 0;
     border: none;
