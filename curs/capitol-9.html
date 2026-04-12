@@ -180,9 +180,8 @@ if pearl_here():
 
         <h3>Versió neta</h3>
         <pre><code>def avançar_i_recollir():
-    # Precondició:  el davant és lliure
-    # Postcondició: en Karel ha avançat 1 casella i,
-    #               si hi havia perla, l'ha recollida
+    # Precondició.  La casella davant d'en Karel ha d'estar lliure
+    # Postcondició. En Karel ha avançat una casella i si allà hi havia una perla, l'ha recollida.
     move()
     if pearl_here():
         grab()
@@ -190,7 +189,7 @@ if pearl_here():
 while front_is_clear():
     avançar_i_recollir()</code></pre>
 
-        <p>Aquesta versió diu el que fa: «mentre puguis avançar, avança i recull». Funciona amb un corredor de 5 caselles, de 50 o de 500 sense modificar res. Si demà vols canviar la lògica, ho fas en un sol lloc. I qualsevol persona que llegeixi <code>while front_is_clear(): avançar_i_recollir()</code> entén el programa fins i tot abans d'entrar en detalls.</p>
+        <p>Aquesta versió diu el que fa: «mentre puguis avançar, avança i recull». Funciona amb un corredor de 5 caselles, de 50 o de 500 sense modificar res. A més, qualsevol persona que llegeixi <code>while front_is_clear(): avançar_i_recollir()</code> entén el programa fins i tot abans d'entrar en detalls.</p>
 
         <p>Aquesta és la diferència entre «codi que funciona» i «codi net i que funciona»: el primer et pot resoldre un problema avui, però crear dificultats en el futur. El segon, el codi net, és un codi estable i el pots compartir amb altra gent que programa amb la seguretat que l'entendran. Recorda:</p>
 
