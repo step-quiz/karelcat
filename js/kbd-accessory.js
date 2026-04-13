@@ -12,6 +12,14 @@
   const ta = document.getElementById('code-editor');
   if (!ta) return;
 
+  // Si estem dins d'un iframe, avisa el document pare quan el
+  // textarea rep/perd focus, perquè pugui ancorar aquest iframe
+  // al fons del viewport (vegeu curs/capitols.js i curs/curs.css).
+  if (window.self !== window.top) {
+    ta.addEventListener('focus', () => window.parent.postMessage('karel-editing', '*'));
+    ta.addEventListener('blur',  () => window.parent.postMessage('karel-idle',    '*'));
+  }
+
   // Tecles: etiqueta → text a inserir
   const KEYS = [
     { label: '(',   text: '(' },
