@@ -100,12 +100,40 @@
   .frame-counter{
     position:absolute;
     top:1rem;
-    right:1.25rem;
+    right:3.25rem;  /* deixa espai a la creu */
     font-family:var(--mono);
     font-size:.72rem;
     color:var(--muted);
     letter-spacing:.08em;
     z-index:4;
+  }
+
+  /* Botó de tancar (creu) ─────────────────────────────── */
+  .close-btn{
+    position:absolute;
+    top:.7rem;
+    right:.75rem;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--frame-bg);
+    color:var(--muted);
+    font-size:1.1rem;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all .2s ease;
+    z-index:6;
+    text-decoration:none;
+    font-family:var(--sans);
+  }
+  .close-btn:hover{
+    border-color:var(--accent);
+    color:var(--accent);
+    transform:rotate(90deg);
   }
 
   .frame-hint{
@@ -419,14 +447,20 @@
       justify-content:space-between;
       align-items:center;
       gap:.75rem;
-      padding:.75rem 1rem;
+      padding:.8rem 1rem;
       border-top:1px solid var(--border-soft);
       background:var(--surface);
     }
-    .mobile-nav .arrow-btn{width:44px;height:44px;font-size:1.2rem}
+    .mobile-nav .arrow-btn{
+      width:52px;
+      height:52px;
+      font-size:1.5rem;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+    }
     .grid-2,.grid-3,.compare{grid-template-columns:1fr}
-    .slide{padding:2.5rem 1.25rem 2rem}
+    .slide{padding:2.8rem 1.25rem 1.5rem}
     .frame-hint{display:none}
+    .close-btn{width:36px;height:36px;font-size:1.2rem}
   }
 </style>
 </head>
@@ -438,7 +472,8 @@
 
   <div class="frame">
     <div class="progress-bar" id="progress"></div>
-    <div class="frame-counter" id="counter">1 / 15</div>
+    <div class="frame-counter" id="counter">1 / 13</div>
+    <a href="index.html" class="close-btn" aria-label="Tanca la presentació" title="Tanca la presentació">✕</a>
 
     <div class="slides-area">
 
@@ -526,8 +561,8 @@
 
       <!-- 7 MEDUSA -->
       <section class="slide">
-        <h2>Perquè el <span style="color:var(--accent)">món</span> ha de ser senzill,<br>perquè tu puguis pensar en <span style="color:var(--accent)">les idees</span>.</h2>
-        <p class="lead">Si t'ensenyéssim a programar amb un món real — gravetat, pantalles, internet, usuaris, bases de dades — et passaries 3 mesos lluitant amb detalls tècnics <strong>sense haver après encara a pensar com un programador</strong>.</p>
+        <h2>Aprendràs a programar en un <span style="color:var(--accent)">entorn simplificat</span>.</h2>
+        <p class="lead">Si haguessis d'aprendre a programar directament en un entorn real, et passaries 3 mesos lluitant amb detalls tècnics <strong>sense haver après encara a pensar com un programador</strong>.</p>
         <div class="grid-3" style="margin-top:1.25rem">
           <div class="card">
             <h3>El món</h3>
@@ -542,13 +577,12 @@
             <p>Perles <span style="color:#d4a017">●</span> i roques <span style="color:#808080">■</span>. Prou.</p>
           </div>
         </div>
-        <p class="muted" style="margin-top:1rem">Un món-joguina on res et distreu. Tota la dificultat que trobaràs és <strong style="color:var(--text)">dificultat de pensament</strong>, no de tecnologia.</p>
       </section>
 
       <!-- 8 CAPES -->
       <section class="slide">
         <h2>Les idees de programació són<br>sempre <span style="color:var(--accent)">les mateixes</span>.</h2>
-        <p>Les que aprendràs amb la Karel són <strong>exactament</strong> les que fan servir els enginyers d'Instagram. Només canvia la mida del problema.</p>
+        <p>Les instruccions que aprendràs amb Karel són <strong>exactament</strong> les que es fan servir per programar el funcionament d'Instagram. L'únic que canvia és la llargada del text d'instruccions.</p>
         <div class="stack" style="margin-top:1.25rem">
           <div class="layer hl">
             <span>🪼 Karel — 50 línies</span>
@@ -560,10 +594,6 @@
           </div>
           <div class="layer">
             <span>📱 TikTok — milions de línies</span>
-            <span class="tag">Mateixes idees</span>
-          </div>
-          <div class="layer">
-            <span>🚀 Un coet de SpaceX — desenes de milions</span>
             <span class="tag">Mateixes idees</span>
           </div>
         </div>
@@ -604,7 +634,6 @@
             <p style="font-size:.88rem;margin-top:.5rem">"Si el vídeo l'interessa, aprèn-ho."</p>
           </div>
         </div>
-        <p class="muted" style="margin-top:1rem">L'algoritme de TikTok és, essencialment, <strong style="color:var(--text)">milions de <code>if</code></strong> encadenats. Tu ja n'estaràs escrivint al capítol 6.</p>
       </section>
 
       <!-- 11 while -->
@@ -624,52 +653,11 @@
             <p style="font-size:.88rem;margin-top:.5rem">"Mentre quedin stories, mostra-les."</p>
           </div>
         </div>
-        <p class="muted" style="margin-top:1rem">Els <strong style="color:var(--text)">bucles</strong> són el motor de l'scroll infinit, dels feeds, de tot el que "va passant sol" dins una app.</p>
       </section>
 
-      <!-- 12 def -->
+      <!-- 12 CAMÍ -->
       <section class="slide">
-        <h2><code>def</code> = <span style="color:var(--accent)">fabricar</span> la teva pròpia ordre</h2>
-        <div class="grid-2">
-          <div>
-            <p class="muted" style="font-family:var(--mono);font-size:.75rem;letter-spacing:.1em">AMB KAREL</p>
-<pre><span class="kw">def</span> <span class="fn">gir_dreta</span>():
-    <span class="fn">turn_left</span>()
-    <span class="fn">turn_left</span>()
-    <span class="fn">turn_left</span>()</pre>
-          </div>
-          <div>
-            <p class="muted" style="font-family:var(--mono);font-size:.75rem;letter-spacing:.1em">A QUALSEVOL APP</p>
-<pre><span class="kw">def</span> <span class="fn">fer_doble_tap</span>():
-    <span class="fn">detecta_toc</span>()
-    <span class="fn">espera</span>(0.3)
-    <span class="fn">detecta_toc</span>()
-    <span class="fn">dona_like</span>()</pre>
-          </div>
-        </div>
-        <p style="margin-top:1.25rem">Quan una cosa és complicada, li poses nom i passa a ser <strong>una sola ordre</strong>. Així es construeix <em>tot</em> el software del món: ordres dins d'ordres dins d'ordres.</p>
-      </section>
-
-      <!-- 13 TAULA -->
-      <section class="slide">
-        <h2>El mateix diccionari,<br>dos mons.</h2>
-        <table class="mapping">
-          <thead>
-            <tr><th>Món de Karel</th><th></th><th>Món real (app)</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="karel">move()</td><td class="arrow">→</td><td class="real">fer una acció concreta (enviar missatge, carregar vídeo...)</td></tr>
-            <tr><td class="karel">grab() / drop()</td><td class="arrow">→</td><td class="real">desar dades / esborrar dades</td></tr>
-            <tr><td class="karel">if pearl_here()</td><td class="arrow">→</td><td class="real">prendre una decisió: if usuari_ha_donat_like()</td></tr>
-            <tr><td class="karel">while front_is_clear()</td><td class="arrow">→</td><td class="real">repetir fins a una condició: while té_videos_per_veure()</td></tr>
-            <tr><td class="karel">def recollir_perles()</td><td class="arrow">→</td><td class="real">crear la teva funció: def enviar_notificació()</td></tr>
-          </tbody>
-        </table>
-      </section>
-
-      <!-- 14 CAMÍ -->
-      <section class="slide">
-        <h2>On vas a arribar.</h2>
+        <h2>Quins són els objectius, al futur?</h2>
         <div class="stack">
           <div class="layer hl">
             <span>🪼 Capítols 1–9 · aprens a pensar amb Karel</span>
@@ -688,10 +676,9 @@
             <span class="tag">A partir d'aquí</span>
           </div>
         </div>
-        <p class="muted" style="margin-top:1rem">El <strong style="color:var(--text)">salt gran</strong> és el del capítol 1, no el de fer una app. I el faràs avui.</p>
       </section>
 
-      <!-- 15 TANCAMENT -->
+      <!-- 13 TANCAMENT -->
       <section class="slide">
         <div class="quote">Si aprens a moure una medusa amb codi,<br>aprens a moure <span style="color:var(--accent)">qualsevol cosa</span> amb codi.</div>
         <ul class="checklist">
@@ -712,7 +699,7 @@
     <!-- Navegació només visible en mòbil -->
     <div class="mobile-nav">
       <button class="arrow-btn" id="prev-mobile" aria-label="Anterior">‹</button>
-      <span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)" id="counter-mobile">1 / 15</span>
+      <span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)" id="counter-mobile">1 / 13</span>
       <button class="arrow-btn" id="next-mobile" aria-label="Següent">›</button>
     </div>
 
