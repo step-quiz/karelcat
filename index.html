@@ -3,6 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════════════════
+       Primera visita en aquest dispositiu → presentació
+       (s'executa ABANS de res perquè no es vegi cap flash
+        d'index.html si hem de redirigir)
+       ══════════════════════════════════════════════════════ -->
+  <script>
+    (function () {
+      try {
+        if (!localStorage.getItem('karel_visited')) {
+          localStorage.setItem('karel_visited', '1');
+          location.replace('presentacio-karel.html');
+        }
+      } catch (e) {
+        /* localStorage bloquejat (p.ex. mode privat): continuem normal */
+      }
+    })();
+  </script>
+
   <title>Karel — aprèn a programar</title>
   <meta name="description" content="Karel: un robot, un món de quadres, i el primer pas per aprendre a programar.">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
