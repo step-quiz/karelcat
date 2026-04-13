@@ -123,12 +123,12 @@ while pearl_here() and front_is_clear():
         <h2>Exercici: El Cercador Intel·ligent</h2>
 
         <div class="exercise-enunciat">
-          En Karel ha d'avançar pel passadís per buscar una perla amagada. Volem que camini <strong>mentre NO hi hagi una perla</strong> sota seu <strong>I</strong> el seu <strong>davant estigui lliure</strong>.
+          En Karel ha d'avançar pel passadís per buscar una perla amagada. Volem que camini mentre no hi hagi una perla sota seu <strong>i</strong> davant seu hi hagi camí lliure.
           <br><br>
-          Un cop el bucle s'aturi (ja sigui perquè ha trobat la perla o perquè ha topat amb la roca), fes servir un <code>if</code> per agafar la perla (només si n'hi ha una, és clar!).
+          Un cop la iteració acabi (ja sigui perquè ha trobat la perla sota seu, o perquè té una roca davant), fes servir un <code>if</code> per agafar la perla (només si n'hi ha una, és clar!).
         </div>
 
-        <p><strong>Pista:</strong> Al bucle <code>while</code> hauràs de combinar <code>not pearl_here()</code> amb <code>and front_is_clear()</code>.</p>
+        <p><strong>Pista:</strong> A la iteració <code>while</code> apareixen les instruccions <code>pearl_here()</code>, <code>front_is_clear()</code>. Però hauràs de pensar també si et convé fer servir <code>and</code>, <code>or</code>, <code>not</code></p>
 
         <div class="simulador"
              data-map="K>,.,.,A,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
