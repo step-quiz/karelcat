@@ -432,6 +432,52 @@
   }
   .cta-link span{font-size:1.2em}
 
+  /* ── Capçalera del curs (visible a totes les diapositives) ── */
+  .course-header{
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+    padding:0 1rem;
+    padding-right:8rem; /* deixa espai al comptador i la creu */
+    height:2.5rem;
+    flex-shrink:0;
+    border-bottom:1px solid var(--border-soft);
+    background:var(--frame-bg);
+    position:relative;
+    z-index:3;
+  }
+  .course-header .ch-icon{
+    font-size:1.05rem;
+    line-height:1;
+    filter:drop-shadow(0 1px 4px var(--accent-glow));
+  }
+  .course-header .ch-text{
+    font-family:var(--mono);
+    font-size:.68rem;
+    letter-spacing:.07em;
+    color:var(--muted);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .course-header .ch-text strong{
+    color:var(--accent);
+    font-weight:700;
+    font-style:normal;
+  }
+
+  /* ── Highlight de la fletxa dreta (diapositiva 1) ──────── */
+  @keyframes arrowPulse{
+    0%  { box-shadow:0 0 0 0 var(--accent-glow); transform:scale(1)   }
+    40% { box-shadow:0 0 0 10px rgba(185,19,141,0); transform:scale(1.12) }
+    100%{ box-shadow:0 0 0 0 rgba(185,19,141,0); transform:scale(1)   }
+  }
+  .arrow-btn.hint-highlight{
+    border-color:var(--accent) !important;
+    color:var(--accent) !important;
+    animation:arrowPulse .9s ease-out infinite;
+  }
+
   .mobile-nav{display:none}
 
   @media (max-width:820px){
@@ -485,6 +531,11 @@
     <div class="progress-bar" id="progress"></div>
     <div class="frame-counter" id="counter">1 / 13</div>
     <a href="index.html" class="close-btn" id="close-btn" aria-label="Tanca la presentació" title="Tanca la presentació">✕</a>
+
+    <div class="course-header" aria-hidden="true">
+      <span class="ch-icon">🪼</span>
+      <span class="ch-text">Presentació del curs <strong>«Aprèn a programar amb la medusa Karel»</strong></span>
+    </div>
 
     <div class="slides-area">
 
@@ -727,6 +778,27 @@ G        </div>
   const nextMobile = document.getElementById('next-mobile');
   let current = 0;
 
+  /* ── Highlight fletxa dreta a la diapositiva 1 ── */
+  let hintTimer = null;
+  let hintEndTimer = null;
+
+  function clearHint(){
+    clearTimeout(hintTimer);
+    clearTimeout(hintEndTimer);
+    [nextDesktop, nextMobile].forEach(b => b.classList.remove('hint-highlight'));
+  }
+
+  function scheduleHint(){
+    clearHint();
+    if(current !== 0) return;
+    hintTimer = setTimeout(()=>{
+      [nextDesktop, nextMobile].forEach(b => b.classList.add('hint-highlight'));
+      hintEndTimer = setTimeout(()=>{
+        [nextDesktop, nextMobile].forEach(b => b.classList.remove('hint-highlight'));
+      }, 3000);
+    }, 5000);
+  }
+
   function show(i){
     current = Math.max(0, Math.min(total-1, i));
     slides.forEach((s,idx)=>s.classList.toggle('active', idx===current));
@@ -738,6 +810,7 @@ G        </div>
     [nextDesktop, nextMobile].forEach(b=>b.disabled = current === total-1);
     slides[current].scrollTop = 0;
     location.hash = `s${current+1}`;
+    scheduleHint();
   }
 
   [prevDesktop, prevMobile].forEach(b=>b.onclick = ()=>show(current-1));
