@@ -146,9 +146,9 @@
 else:
     turn_left()</code></pre>
 
-        <p>En Karel comprova si té la via lliure davant seu. Si la té, avança. Si no la té (hi ha un obstacle o la paret del món), gira a l'esquerra. Amb <code>else</code>, sempre passa alguna cosa: mai no hi ha un camí sense sortida.</p>
+        <p>En Karel comprova si té la via lliure davant seu. Si això es compleix, avança. Si no es compleix (per exemple, hi ha una roca o bé hi ha paret), llavors gira a l'esquerra.</p>
 
-        <p><strong>Regla important:</strong> el bloc de l'<code>if</code> i el bloc de l'<code>else</code> mai no s'executen tots dos alhora. O s'executa l'un, o s'executa l'altre.</p>
+        <p><strong>Regla d'or:</strong> el bloc de l'<code>if</code> i el bloc de l'<code>else</code> mai s'executen tots dos alhora. O s'executa l'un, o s'executa l'altre. I sempre n'hi haurà un d'ells que serà el que s'executarà.</p>
       </section>
 
 
@@ -163,7 +163,7 @@ else:
         <p><strong>Atenció:</strong> en aquest exemple no pots modificar el codi. Prem ▶ <strong>Executa</strong> i observa com funciona:</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.,.|K>,.,.P,.,.|.,.,.,.,.,.|.,.,.,.,.,."
+             data-map=".,.,.,.,.,.|K>,.,G,.,.|.,.,.,.,.,.|.,.,.,.,.,."
              data-code="for i in range(6):
     if front_is_clear():
         move()
@@ -173,7 +173,7 @@ else:
              data-readonly="true"
              data-label="Exemple"
              data-title="Quan el front_is_clear() és fals, el bloc del else s'executa: turn_right(). Quan és cert, el bloc de l'if s'executa: move(). Mai tots dos alhora."
-             data-height="420">
+             data-height="320">
         </div>
 
         <p>En Karel avança dues caselles cap a l'Est, troba la roca i gira al Nord. Tot seguit, amb les iteracions que queden, avança cap amunt. El programa no s'atura ni dona error: l'<code>else</code> gestiona el cas inesperat de manera elegant.</p>
