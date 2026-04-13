@@ -431,15 +431,15 @@ body.curs-light .chapter-section h2 { color: #1a1a1a; }
 
 /* ───────────────────────────────────────────────────────────
    Mòbil: quan l'usuari edita dins d'un simulador incrustat,
-   l'iframe rep :focus al document pare. Aprofitem aquest
-   estat per ancorar l'iframe al fons del viewport, de manera
-   que la barra d'accessoris del teclat que viu dins de
-   l'iframe quedi sempre visible sobre el teclat nadiu (i no
-   surti del viewport en fer scroll de la pàgina).
+   el seu JS ens envia un postMessage i capitols.js posa la
+   classe .is-editing a l'iframe. Aquí l'ancorem al fons del
+   viewport del document pare, perquè la barra d'accessoris
+   del teclat (que viu dins de l'iframe) quedi sempre
+   visible sobre el teclat nadiu i no surti del viewport en
+   fer scroll de la pàgina.
    ─────────────────────────────────────────────────────── */
 @media (pointer: coarse) {
-  .simulador-frame:focus,
-  .simulador-frame:focus-within {
+  .simulador-frame.is-editing {
     position: fixed;
     left: 0;
     right: 0;

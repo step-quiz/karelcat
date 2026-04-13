@@ -619,3 +619,23 @@ else:
 
 // Auto-init (capitols.js es carrega després del DOM)
 initGlossariCurs();
+
+
+/* Escolta els iframes dels simuladors: quan un textarea hi rep
+   focus, marca l'iframe amb .is-editing perquè el CSS l'ancori
+   al fons del viewport en mòbil (vegeu curs/curs.css). */
+window.addEventListener('message', (e) => {
+  if (e.data === 'karel-editing') {
+    document.querySelectorAll('iframe.simulador-frame.is-editing')
+      .forEach(f => f.classList.remove('is-editing'));
+    const frames = document.querySelectorAll('iframe.simulador-frame');
+    for (const f of frames) {
+      if (f.contentWindow === e.source) { f.classList.add('is-editing'); break; }
+    }
+  } else if (e.data === 'karel-idle') {
+    setTimeout(() => {
+      document.querySelectorAll('iframe.simulador-frame.is-editing')
+        .forEach(f => f.classList.remove('is-editing'));
+    }, 150);
+  }
+});
