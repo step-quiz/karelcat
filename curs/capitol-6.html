@@ -107,29 +107,28 @@
 
 
       <!-- ─────────────────────────────────────────
-           EXEMPLE 1 (view-only) — if pearl_here():
+           EXEMPLE 1 (view-only) — if front_is_clear():
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Una fila amb perles pel camí</h2>
+        <h2>En Karel avança si pot</h2>
 
-        <p>En l'exemple següent, en Karel ha de recorrer cinc caselles. Algunes tenen perles i d'altres, no. A cada casella, en Karel comprova si n'hi ha i, si és així, la recull. Si la casella és buida, simplement no fa res.</p>
+        <p>En l'exemple següent, en Karel intenta avançar cinc vegades. Però hi ha una roca que li bloca el pas. Sense cap comprovació, en Karel xocaria i el programa donaria un error. Gràcies a l'<code>if</code>, en Karel comprova primer si té la via lliure: si és així, avança; si no, simplement no fa res i el <code>for</code> continua amb la iteració següent.</p>
 
         <p><strong>Atenció:</strong> en aquest exemple no pots modificar el codi. Prem ▶ <strong>Executa</strong> i observa com funciona:</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.,.|K>,.,A,.,A,.|.,.,.,.,.,."
+             data-map=".,.,.,.,.,.|K>,.,.,P,.,.|.,.,.,.,.,."
              data-code="for i in range(5):
-    move()
-    if pearl_here():
-        grab()
+    if front_is_clear():
+        move()
 "
              data-readonly="true"
              data-label="Exemple"
-             data-title="El for repeteix cinc vegades. L'if comprova cada casella: quan és buida, grab() no s'executa i no hi ha cap error."
+             data-title="El for intenta avançar cinc vegades. L'if comprova cada cop si hi ha obstacle: quan troba la roca, move() no s'executa i no hi ha cap error."
              data-height="310">
         </div>
 
-        <p>La instrucció <code>for</code> repeteix cinc vegades l'acció. Per cada repetició, trobem la condició <code>if</code>, que comprova si hi ha una perla. El codi informàtic que hem escrit funciona encara que les perles estiguin disposades d'una altra manera.</p>
+        <p>La instrucció <code>for</code> intenta avançar cinc vegades, però la condició <code>if front_is_clear()</code> actua com un guardià: si hi ha un obstacle davant, el bloc s'ignora i en Karel es queda quiet aquella iteració. El codi no dona cap error gràcies a la comprovació prèvia.</p>
       </section>
 
 
