@@ -85,6 +85,8 @@
         <div class="simulador"
              data-map="K>,A,A,A,P,.|.,.,.,.,.,.|.,.,.,.,.,."
              data-code="# Caminem fins que trobem perles. Després, les agafem, però sense xocar!
+if front_is_clear():
+    move()
 while pearl_here() and front_is_clear():
     move()
 "
