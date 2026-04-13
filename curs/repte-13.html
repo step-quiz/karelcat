@@ -94,7 +94,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -144,8 +144,8 @@
           El món és un passadís buit de longitud desconeguda (sempre ≥ 1).
           En Karel porta <strong>2 perles</strong> a la motxilla i ha de deixar
           exactament <strong>una perla al punt mig</strong> del passadís.<br><br>
-          Si la longitud és <em>imparella</em>, la perla ha de quedar al centre
-          exacte. Si és <em>parella</em>, s'accepta qualsevol de les dues caselles
+          Si la longitud és <em>senar</em>, la perla ha de quedar al centre
+          exacte. Si és <em>parell</em>, s'accepta qualsevol de les dues caselles
           centrals.<br><br>
           <strong>La restricció clau:</strong> el teu codi no pot saber d'entrada
           quantes caselles té el passadís. Ha de funcionar per a
@@ -167,7 +167,7 @@
           <strong>💡 Pista — la funció auxiliar</strong>
           Et donem una funció que pot ser molt útil per moure't fins a un
           marcador: <code>camina_fins_perla()</code> avança pas a pas fins que
-          En Karel sigui damunt d'una perla. Pensa com pots usar-la per tornar
+          en Karel sigui damunt d'una perla. Pensa com pots usar-la per tornar
           al marcador esquerre o al marcador dret en cada iteració.
         </div>
 
@@ -175,7 +175,7 @@
         <div class="simulador"
              data-maps='["K>,.,.","K>,.,.,.,.,.,.","K>,.,.,.,.,.,.,."]'
              data-goals='[".,K>,.",".,.,.,K>,.,.,.",".,.,.,K<,.,.,.,."]'
-             data-labels='["Longitud 3 — imparella","Longitud 7 — imparella","Longitud 8 — parella"]'
+             data-labels='["Longitud 3 — senar","Longitud 7 — senar","Longitud 8 — parell"]'
              data-bag="2"
              data-code="def camina_fins_perla():
     while not pearl_here():
@@ -311,16 +311,16 @@ else:
   Iter 4: grab R(4), move→3. pearl_here? Sí (L=3). Break!
 
   Resultat: en Karel a 3, Oest. Perla a 3. currentStateToCSV() → ".,.,.,K<,.,.,.,.". ✓
-  (Per a longitud parella, casella 3 és una de les dues centrals vàlides.)
+  (Per a longitud parell, casella 3 és una de les dues centrals vàlides.)
 
 
   ── Per què funciona l'algorisme dels dos punters ──
 
   · Cada iteració, el marcador dret avança 1 cap al centre i el marcador
     esquerre avança 1 cap al centre: distància total entre ells es redueix 2.
-  · Per N imparella (N=2k+1): al final els dos marcadors es troben exactament
+  · Per N senar (N=2k+1): al final els dos marcadors es troben exactament
     a la casella k (el centre geomètric).
-  · Per N parella (N=2k): quan el marcador dret es desplaça fins a la casella
+  · Per N parell (N=2k): quan el marcador dret es desplaça fins a la casella
     on és el marcador esquerre, els dos marcadors queden a caselles adjacents
     (k-1 i k); el punt mig cau entre ells. La casella k-1 queda com a resultat
     (acceptable, ja que l'enunciat permet qualsevol de les dues caselles centrals).
