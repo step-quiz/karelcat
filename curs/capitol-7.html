@@ -197,27 +197,6 @@ while front_is_clear():
         <p>El <code>while</code> assegura que en Karel avança fins a la paret, sigui on sigui. L'<code>if</code> de dins s'ocupa de les perles sense que el programa s'aturi si una casella és buida. Els dos junts fan quelcom que cap dels dos podria fer sol.</p>
       </section>
 
-
-      <!-- ─────────────────────────────────────────
-           SECCIÓ 5 — El bucle infinit
-           ───────────────────────────────────────── -->
-      <section class="chapter-section">
-        <h2>Compte amb el bucle infinit</h2>
-
-        <p>Si la condició d'un <code>while</code> mai no es torna falsa, el bucle no s'atura mai. Això s'anomena un <strong>bucle infinit</strong> i és un error habitual.</p>
-
-        <p>Per exemple:</p>
-
-        <pre><code># ❌ Bucle infinit: la condició sempre és certa
-while front_is_clear():
-    turn_left()   # gira però no avança → el camí segueix lliure per sempre</code></pre>
-
-        <p>En Karel girarà a l'esquerra indefinidament perquè mai no avança cap al mur. La condició <code>front_is_clear()</code> seguirà sent certa eternament.</p>
-
-        <p>La regla per evitar-ho: <strong>el cos del <code>while</code> ha de fer alguna cosa que pugui canviar la condició</strong>. Si el <code>while</code> comprova <code>front_is_clear()</code>, el cos ha d'incloure algun <code>move()</code> o una acció que pugui apropar en Karel a un obstacle.</p>
-      </section>
-
-
       <!-- ─────────────────────────────────────────
            EXERCICI
            ───────────────────────────────────────── -->
