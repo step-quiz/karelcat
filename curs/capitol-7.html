@@ -164,11 +164,8 @@ while front_is_clear():
 "
              data-readonly="true"
              data-label="Exemple"
-             data-title="En Karel deixa una perla a cada casella mentre tingui perles a la motxilla. Quan la motxilla és buida, el while s'atura."
              data-height="310">
         </div>
-
-        <p>Quan la motxilla s'ha buidat, la condició <code>not bag_is_empty()</code> s'ha tornat falsa i el bucle s'ha aturat. El codi no necessitava saber que eren tres perles.</p>
       </section>
 
 
@@ -185,7 +182,7 @@ while front_is_clear():
         <p><strong>Atenció:</strong> en aquest exemple no pots modificar el codi. Prem ▶ <strong>Executa</strong> i observa com funciona:</p>
 
         <div class="simulador"
-             data-map="K>,.,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,.,.,."
+             data-map="K>,.,A,A,.,A,.,.|.,.,.,.,.,.,.,.,."
              data-code="while front_is_clear():
     move()
     if pearl_here():
