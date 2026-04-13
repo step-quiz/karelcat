@@ -12,14 +12,6 @@
   const ta = document.getElementById('code-editor');
   if (!ta) return;
 
-  // Si estem dins d'un iframe, avisa el document pare quan el
-  // textarea rep/perd focus, perquè pugui ancorar aquest iframe
-  // al fons del viewport (vegeu curs/capitols.js i curs/curs.css).
-  if (window.self !== window.top) {
-    ta.addEventListener('focus', () => window.parent.postMessage('karel-editing', '*'));
-    ta.addEventListener('blur',  () => window.parent.postMessage('karel-idle',    '*'));
-  }
-
   // Tecles: etiqueta → text a inserir
   const KEYS = [
     { label: '(',   text: '(' },
@@ -30,7 +22,33 @@
     { label: '↹',   text: '    ' }  // Tab = 4 espais
   ];
 
-  // Bar DOM
+  function insert(text) {
+    const start = ta.selectionStart;
+    const end   = ta.selectionEnd;
+    const val   = ta.value;
+    ta.value = val.slice(0, start) + text + val.slice(end);
+    ta.selectionStart = ta.selectionEnd = start + text.length;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  // ── Mode embed (dins d'un iframe del curs): NO creem barra local.
+  //    Avisem el pare via postMessage quan l'editor té focus, i
+  //    inserim els caràcters que el pare ens envia. La barra real
+  //    viu al document pare (vegeu curs/capitols.js). ──
+  if (window.self !== window.top) {
+    ta.addEventListener('focus', () => window.parent.postMessage('karel-editing', '*'));
+    ta.addEventListener('blur',  () => window.parent.postMessage('karel-idle',    '*'));
+    window.addEventListener('message', (e) => {
+      const d = e.data;
+      if (d && d.type === 'karel-insert' && typeof d.text === 'string') {
+        if (document.activeElement !== ta) ta.focus();
+        insert(d.text);
+      }
+    });
+    return;
+  }
+
+  // ── Mode pantalla completa (simulador.html obert directe): barra local. ──
   const bar = document.createElement('div');
   bar.id = 'kbd-accessory';
   bar.className = 'kbd-accessory kbd-accessory--hidden';
@@ -46,15 +64,6 @@
     bar.appendChild(b);
   });
   document.body.appendChild(bar);
-
-  function insert(text) {
-    const start = ta.selectionStart;
-    const end   = ta.selectionEnd;
-    const val   = ta.value;
-    ta.value = val.slice(0, start) + text + val.slice(end);
-    ta.selectionStart = ta.selectionEnd = start + text.length;
-    ta.dispatchEvent(new Event('input', { bubbles: true }));
-  }
 
   // Posiciona la barra just sobre el teclat nadiu fent servir
   // la Visual Viewport API (Chrome/Safari modern). Si no existeix,
