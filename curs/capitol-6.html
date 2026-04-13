@@ -164,18 +164,18 @@ else:
 
         <div class="simulador"
              data-map=".,.,.,.,.,.|K>,.,P,.,.|.,.,.,.,.,.|.,.,.,.,.,."
-             data-code="for i in range(6):
+             data-code="for i in range(4):
     if front_is_clear():
         move()
     else:
-        turn_right()
+        turn_left()
 "
              data-readonly="true"
              data-label="Exemple"
              data-height="320">
         </div>
 
-        <p>En Karel avança dues caselles cap a l'Est, troba la roca i gira al Nord. Tot seguit, amb les iteracions que queden, avança cap amunt. El programa no s'atura ni dona error: l'<code>else</code> gestiona el cas inesperat de manera elegant.</p>
+        <p>En Karel avança dues caselles, perquè la condició <code>front_is_clear</code> és certa. Llavors, com que troba una roca, la condició és falsa, i per tant salta al pas <code>else</code>, és a dir, gira en sentit antihorari. Tot seguit, amb les iteracions que queden, avança perquè la condició <code>front_is_clear</code> és certa. El programa no dona error perquè en Karel no ha xocat contra la roca: la instrucció <code>else</code> gestiona el cas inesperat de manera elegant.</p>
         
       <section class="chapter-section">
         <h2>Resum</h2>
