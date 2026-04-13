@@ -94,7 +94,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -161,15 +161,15 @@
           la funció <code>omple_columna()</code> ha de tenir la mateixa
           precondició i postcondició: <em>en Karel és a la base de la columna,
           mirant cap a l'Est</em>. Si la postcondició no es compleix (per
-          exemple, si en Karel queda mirant al Nord), el bucle principal es
+          exemple, si en Karel queda mirant al Nord), la iteració principal es
           desorientarà a la primera iteració. Dissenya el gir final de
           <code>omple_columna()</code> amb cura.
         </div>
 
         <div class="consell-box">
           <strong>💡 Pista — el <code>while</code> imbricat i l'error de pal de paller</strong>
-          Dins de <code>omple_columna()</code> hi ha dos bucles: un per
-          pujar fins al sostre i un per tornar al terra. El bucle de pujada
+          Dins de <code>omple_columna()</code> hi ha dues iteracions: una per
+          pujar fins al sostre i una per tornar al terra. La iteració de pujada
           s'atura <em>abans</em> d'arribar a l'última casella, igual que al
           repte del passadís. Afegeix un <code>if not pearl_here(): drop()</code>
           fora del <code>while</code> per no perdre la casella del sostre.
@@ -259,19 +259,19 @@ while front_is_clear():
       (0,2): pearl_here()=True (marca de base) → no drop; move → (0,1)
       (0,1): pearl_here()=False → drop; move → (0,0)
       front_is_clear() a (0,0) Nord = False (sostre) → surt del while
-      (0,0): pearl_here()=False → drop   [fencepost]
+      (0,0): pearl_here()=False → drop   [error de límit]
       turn_around() → Sud
       move → (0,1); move → (0,2); front_is_clear()=False → surt
       turn_left()  →  Est ✓
-      Karel a (0,2) Est.
+      En Karel a (0,2) Est.
 
     front_is_clear() a (0,2) Est = True → entra al while principal
     avança_a_seguent(): (0,2)→(1,2)→(2,2)→(3,2)
-    omple_columna() iteració 2: idem, omple columna 3. Karel a (3,2) Est.
+    omple_columna() iteració 2: idem, omple columna 3. En Karel a (3,2) Est.
 
     front_is_clear() a (3,2) Est = True → continua
     avança_a_seguent(): (3,2)→(4,2)→(5,2)→(6,2)
-    omple_columna() iteració 3: idem, omple columna 6. Karel a (6,2) Est.
+    omple_columna() iteració 3: idem, omple columna 6. En Karel a (6,2) Est.
 
     front_is_clear() a (6,2) Est = False (paret del món) → surt ✓
 
@@ -280,16 +280,16 @@ while front_is_clear():
     · La pre/postcondició de omple_columna() és sempre (base, Est):
       la simetria permet encadenar N crides amb un sol while.
     · if not pearl_here() evita sobreescriure perles ja existents.
-    · El fencepost de la darrera casella (sostre) s'atén fora del while.
+    · L'error de límit de la darrera casella (sostre) s'atén fora del while.
     · turn_left() al final: Sud(1) → Est(0) en el sistema de dirs del motor.
 
   Errors habituals de l'alumne:
     · Acabar omple_columna() amb turn_right() en lloc de turn_left()
-      → Karel queda mirant a l'Oest; avança_a_seguent() va cap enrere.
-    · Oblidar el fencepost del sostre → la casella de dalt queda buida.
-    · Oblidar el fencepost de la base → si la marca no té perla, queda buida.
+      → en Karel queda mirant a l'Oest; avança_a_seguent() va cap enrere.
+    · Oblidar l'error de límit del sostre → la casella de dalt queda buida.
+    · Oblidar l'error de límit de la base → si la marca no té perla, queda buida.
     · Usar turn_around() en lloc de turn_left() al final
-      → Karel queda mirant al Nord; el while del programa principal
+      → en Karel queda mirant al Nord; el while del programa principal
          intenta pujar en lloc d'avançar al costat.
     · Oblidar el `if not pearl_here(): drop()` dins el while de pujada
       → si la casella de la base ja tenia perla, torna a deixar-n'hi una

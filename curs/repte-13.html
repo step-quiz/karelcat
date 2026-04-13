@@ -94,7 +94,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -167,7 +167,7 @@
           <strong>💡 Pista — la funció auxiliar</strong>
           Et donem una funció que pot ser molt útil per moure't fins a un
           marcador: <code>camina_fins_perla()</code> avança pas a pas fins que
-          en Karel sigui damunt d'una perla. Pensa com pots usar-la per tornar
+          En Karel sigui damunt d'una perla. Pensa com pots usar-la per tornar
           al marcador esquerre o al marcador dret en cada iteració.
         </div>
 
@@ -226,7 +226,7 @@ def camina_fins_perla():
 
 # Cas especial: passadís d'1 casella (front bloquejat des de l'inici)
 if not front_is_clear():
-    drop()  # Karel ja és al punt mig
+    drop()  # en Karel ja és al punt mig
 
 # Cas general: passadís de 2 o més caselles
 else:
@@ -265,25 +265,25 @@ else:
   Món: K>,.,. → cel·les 0,1,2
 
   Setup:
-    drop() a 0 → L=0. bag=1. Karel a 0 E.
+    drop() a 0 → L=0. bag=1. En Karel a 0 E.
     move() → 1; move() → 2. front_is_clear? No.
-    drop() a 2 → R=2. bag=0. Karel a 2 E.
-    turn_around() → Karel a 2, W.
+    drop() a 2 → R=2. bag=0. En Karel a 2 E.
+    turn_around() → en Karel a 2, W.
 
   Iteració 1:
-    grab() R(2). bag=1. Karel a 2 W.
-    move() → Karel a 1 W.
+    grab() R(2). bag=1. En Karel a 2 W.
+    move() → en Karel a 1 W.
     pearl_here()? grid[0][1]='.' → No.
-    drop() R a 1. bag=0. Karel a 1 W.
+    drop() R a 1. bag=0. En Karel a 1 W.
 
-    while not pearl_here(): move() → Karel a 0 W. pearl_here()? Sí (L=0).
-    grab() L(0). bag=1. Karel a 0 W.
+    while not pearl_here(): move() → en Karel a 0 W. pearl_here()? Sí (L=0).
+    grab() L(0). bag=1. En Karel a 0 W.
     turn_around() → E.
-    move() → Karel a 1 E.
+    move() → en Karel a 1 E.
     pearl_here()? grid[0][1]='A' (R=1) → Sí. Break!
 
-  Resultat: Karel a 1, orientació Est. Perla al terra a 1 (R marker).
-  currentStateToCSV() → ".,K>,." ✓ (perla al punt mig, solapada per Karel)
+  Resultat: en Karel a 1, orientació Est. Perla al terra a 1 (R marker).
+  currentStateToCSV() → ".,K>,." ✓ (perla al punt mig, solapada per en Karel)
 
 
   ── Traça d'execució (Test B — longitud 7, inici cel·la 0, Est) ──
@@ -296,7 +296,7 @@ else:
   Iter 2: grab R(5), move→4, drop R(4). Walk W→1 (L). Grab L(1), turn E, move→2, drop L(2). Walk E→4 (R). Turn W.
   Iter 3: grab R(4), move→3. drop R(3). Walk W→2 (L). Grab L(2), turn E, move→3. pearl_here? Sí (R=3). Break!
 
-  Resultat: Karel a 3, Est. Perla a 3. currentStateToCSV() → ".,.,.,K>,.,.,.". ✓
+  Resultat: en Karel a 3, Est. Perla a 3. currentStateToCSV() → ".,.,.,K>,.,.,.". ✓
 
 
   ── Traça d'execució (Test C — longitud 8, inici cel·la 0, Est) ──
@@ -310,7 +310,7 @@ else:
   Iter 3: grab R(5), move→4, drop R(4). Walk W→2 (L). Grab L(2), turn E, move→3. pearl_here? No (R=4). drop L(3). Walk E→4 (R). Turn W.
   Iter 4: grab R(4), move→3. pearl_here? Sí (L=3). Break!
 
-  Resultat: Karel a 3, Oest. Perla a 3. currentStateToCSV() → ".,.,.,K<,.,.,.,.". ✓
+  Resultat: en Karel a 3, Oest. Perla a 3. currentStateToCSV() → ".,.,.,K<,.,.,.,.". ✓
   (Per a longitud parella, casella 3 és una de les dues centrals vàlides.)
 
 
@@ -333,7 +333,7 @@ else:
   ── Errors habituals de l'alumne ──
 
   · Oblidar turn_around() per tornar cap al centre després de grab() L.
-    → Karel avança cap a la paret en comptes d'anar cap a R: error d'execució.
+    → en Karel avança cap a la paret en comptes d'anar cap a R: error d'execució.
   · No usar camina_fins_perla() per trobar L des de la posició actual.
     → L'alumne usa un move() fix, que trenca per a passadissos de longituds
     variades.

@@ -94,7 +94,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -153,7 +153,7 @@
         </div>
 
         <div class="consell-box">
-          <strong>💡 Pista del fencepost</strong>
+          <strong>💡 Pista de l'error de límit</strong>
           Si escrius <code>while front_is_clear(): move()</code>, en Karel
           s'atura just <em>abans</em> de l'última casella. Pot quedar-hi una perla
           que mai no recull. Pensa: quan acaba el <code>while</code>, on és en
@@ -208,10 +208,10 @@ while front_is_clear():
 if pearl_here():
     grab()
 
-  Nota: el bucle while comprova front_is_clear() ABANS de moure's.
+  Nota: la iteració while comprova front_is_clear() ABANS de moure's.
   Quan la condició és falsa, en Karel és a l'última casella però
   encara no l'ha comprovat per perles. El if final fora del while
-  és el "fencepost fix": gestiona exactament aquesta última casella.
+  és el "error de límit fix": gestiona exactament aquesta última casella.
 
   Error habitual de l'alumne: posar el grab() dins del move(), o
   comprovar pearl_here() DESPRÉS de move() (que ja ha avançat).

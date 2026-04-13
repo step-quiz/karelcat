@@ -6,7 +6,7 @@
 
 ## Context ràpid
 
-- **Projecte:** karelcat — curs interactiu de Karel en català, temàtica marina.
+- **Projecte:** karelcat — curs interactiu de en Karel en català, temàtica marina.
 - **Capítol 10:** no introdueix sintaxi nova. L'alumne combina tot el que sap. Inspirat en els exercicis de Stanford CS106A / Code in Place.
 - **Document de disseny de referència:** `docs/reptes.docx` (conté enunciats, mapes, principis pedagògics i ordre recomanat d'implementació).
 - **Plantilla HTML:** `curs/capitol.html` (cada repte segueix la mateixa estructura que els capítols anteriors).
@@ -41,7 +41,7 @@
 
 **Fitxer:** `curs/repte-1.html`
 **Conceptes:** descomposició procedimental, `while front_is_clear()`, pre/postcondicions.
-**Adaptació de:** Collect Newspaper Karel (Stanford CS106A).
+**Adaptació de:** Collect Newspaper en Karel (Stanford CS106A).
 
 **Mons de test (3 simuladors):**
 ```
@@ -51,7 +51,7 @@ Test C — cova llarga (4 passos): P,P,P,P,P,P|K>,.,.,.,A,P|P,P,P,P,P,P
 ```
 *(Cova tancada per la dreta amb una roca. La paret dreta és la condició de parada per a `surt_de_la_cova()`; la frontera esquerra del món per a `torna_a_casa()`.)*
 
-**Mapa final (data-goal):** Karel de tornada a la posició inicial, cap perla al món.
+**Mapa final (data-goal):** en Karel de tornada a la posició inicial, cap perla al món.
 
 **Clau pedagògica:** Un alumne que hardcodi `move()×N` passa el test B però falla els tests A i C. La solució correcta usa `while front_is_clear(): move()` dins de cada funció. La descomposició en tres funcions amb noms clars continua sent obligatòria.
 
@@ -85,8 +85,8 @@ torna_a_casa()
 ### ✅ Repte 2 — El passadís (A2, ★ Fàcil)
 
 **Fitxer:** `curs/repte-2.html`
-**Conceptes:** `while` + `if`, error de pal de paller (fencepost).
-**Adaptació de:** Cleanup Karel.
+**Conceptes:** `while` + `if`, error de límit.
+**Adaptació de:** Cleanup en Karel.
 
 **Mapa inicial (test A — 8 caselles):**
 ```
@@ -103,9 +103,9 @@ K>,.,A,.,A,.,.,A,.
 K>,A,A,.,.,A,.,A,.,.,A,.
 ```
 
-**Mapa final (data-goal):** Karel a l'extrem dret, cap perla al món. Ex.: `.,.,.,.,.,.,.,K>` (8 caselles).
+**Mapa final (data-goal):** en Karel a l'extrem dret, cap perla al món. Ex.: `.,.,.,.,.,.,.,K>` (8 caselles).
 
-**Clau pedagògica:** El bucle `while front_is_clear()` s'atura quan el camí és bloquejat, però en aquell moment en Karel és a l'última casella i encara no l'ha comprovat. L'alumne ha de detectar el fencepost i afegir `if pearl_here(): grab()` fora del `while`.
+**Clau pedagògica:** La iteració `while front_is_clear()` s'atura quan el camí és bloquejat, però en aquell moment en Karel és a l'última casella i encara no l'ha comprovat. L'alumne ha de detectar l'error de límit i afegir `if pearl_here(): grab()` fora del `while`.
 
 **Solució de referència (professor):**
 ```python
@@ -119,8 +119,8 @@ if pearl_here():
 
 **Notes d'implementació:**
 - S'han implementat 3 mons de test (longituds 8, 9 i 12) com a simuladors separats en el mateix fitxer.
-- El `data-goal` usa Karel a l'extrem dret sense perles.
-- El `data-code` inicial inclou l'esquelet amb el `while` per guiar l'alumne cap al fencepost error.
+- El `data-goal` usa en Karel a l'extrem dret sense perles.
+- El `data-code` inicial inclou l'esquelet amb el `while` per guiar l'alumne cap al error de límit.
 - La navegació: anterior → `repte-1.html`, següent → `repte-3.html`.
 
 ---
@@ -128,8 +128,8 @@ if pearl_here():
 ### ✅ Repte 3 — L'escala diagonal (A3, ★ Fàcil)
 
 **Fitxer:** `curs/repte-3.html`
-**Conceptes:** `for`, seqüències compostes dins el bucle, pre/postcondicions de funció.
-**Adaptació de:** Ramp Climbing Karel (Stanford CS106A).
+**Conceptes:** `for`, seqüències compostes dins la iteració, pre/postcondicions de funció.
+**Adaptació de:** Ramp Climbing en Karel (Stanford CS106A).
 
 **Mons de test (3 simuladors):**
 - Test A — 3×3, N=2 graons
@@ -140,7 +140,7 @@ if pearl_here():
 
 **Funció principal:** `construeix_grao()` = `drop()` + `move()` + `turn_left()` + `move()` + `turn_right()`
 
-**Clau pedagògica:** La funció `construeix_grao()` té una precondició i postcondició idèntiques (Karel mira a l'Est). Gràcies a aquesta simetria, encadenar N crides amb `for` és trivial. Si la postcondició no es compleix (p. ex. s'oblida el `turn_right()` final), el segon graó surt en la direcció equivocada.
+**Clau pedagògica:** La funció `construeix_grao()` té una precondició i postcondició idèntiques (en Karel mira a l'Est). Gràcies a aquesta simetria, encadenar N crides amb `for` és trivial. Si la postcondició no es compleix (p. ex. s'oblida el `turn_right()` final), el segon graó surt en la direcció equivocada.
 
 **Notes d'implementació:**
 - Nom de funció: `construeix_grao` (en lloc de `puja_grao`) — emfatitza l'acció de construir, no només de pujar.
@@ -178,7 +178,7 @@ while not bag_is_empty():
 ### ✅ Repte 5 — El serpentí (B1, ★★ Intermedi)
 
 **Conceptes:** `while`, `if`, girs condicionals, navegació multi-fila.
-**Adaptació de:** Cleanup Karel (variant dues files).
+**Adaptació de:** Cleanup en Karel (variant dues files).
 
 **Enunciat:** En Karel ha de recollir totes les perles d'un món de dues files (amplada desconeguda). Ha de fer el recorregut en ziga-zaga: fila inferior cap a l'Est, puja, fila superior cap a l'Oest.
 
@@ -244,7 +244,7 @@ while front_is_clear():
 **Clau pedagògica:** La pre/postcondició de `omple_columna()` és sempre *(base de la columna, orientació Est)*. Aquesta simetria permet encadenar N crides amb un sol `while` sense cap comptador. El gir final és `turn_left()` (Sud→Est), no `turn_right()` (que donaria Oest). Un alumne que confon el gir final passa el Test A però la columna 2 es construeix en la direcció equivocada.
 
 **Notes d'implementació:**
-- Les bases (perles marcadores) es compten com a part de la torre: `if not pearl_here(): drop()` dins el bucle les preserva i no gasta motxilla de més.
+- Les bases (perles marcadores) es compten com a part de la torre: `if not pearl_here(): drop()` dins la iteració les preserva i no gasta motxilla de més.
 - El `while front_is_clear()` principal s'atura sol perquè els tres mons estan dissenyats sense caselles buides a la dreta de l'última torre.
 - La navegació: anterior → `repte-5.html`, següent → `repte-7.html`.
 
@@ -254,7 +254,7 @@ while front_is_clear():
 
 **Fitxer:** `curs/repte-7.html`
 **Conceptes:** `def`, `while not pearl_here()`, `while front_is_clear()`, seqüències simètriques, transició pujada/baixada.
-**Adaptació de:** Double Staircase Karel (variant CS106A).
+**Adaptació de:** Double Staircase en Karel (variant CS106A).
 
 **Mons de test (3 simuladors):**
 ```
@@ -273,7 +273,7 @@ Test C — 9×5, N=4 graons:
 
 *(Món completament obert. La perla de la cima és l'únic marcador de posició. La paret dreta del món atura la baixada.)*
 
-**Motxilla inicial:** `data-bag` no s'usa (Karel no porta perles pròpies; recull la perla de la cima).
+**Motxilla inicial:** `data-bag` no s'usa (en Karel no porta perles pròpies; recull la perla de la cima).
 
 **Solució de referència:**
 ```python
@@ -300,15 +300,15 @@ while front_is_clear():
 drop()
 ```
 
-**Esquelet visible per l'alumne:** `puja_grao()` implementada com a referència; `baixa_grao()` buida (l'alumne ha de descobrir la inversió); bucle de pujada donat (`while not pearl_here()`); bucle de baixada i `drop()` a completar.
+**Esquelet visible per l'alumne:** `puja_grao()` implementada com a referència; `baixa_grao()` buida (l'alumne ha de descobrir la inversió); iteració de pujada donada (`while not pearl_here()`); iteració de baixada i `drop()` a completar.
 
-**Clau pedagògica:** La simetria `puja_grao ↔ baixa_grao` és el nucli del repte: `baixa_grao()` és exactament l'invers pas a pas de `puja_grao()`. Un cop identificada aquesta simetria, el programa principal resulta trivial. La condició `while not pearl_here()` demostra que es pot aturar un bucle per l'estat del món (presència d'una perla) en comptes d'un comptador; `while front_is_clear()` per a la baixada aprofita la paret del món com a condició de parada natural.
+**Clau pedagògica:** La simetria `puja_grao ↔ baixa_grao` és el nucli del repte: `baixa_grao()` és exactament l'invers pas a pas de `puja_grao()`. Un cop identificada aquesta simetria, el programa principal resulta trivial. La condició `while not pearl_here()` demostra que es pot aturar una iteració per l'estat del món (presència d'una perla) en comptes d'un comptador; `while front_is_clear()` per a la baixada aprofita la paret del món com a condició de parada natural.
 
 **Notes d'implementació:**
 - Mons completament oberts (sense roques interiors); l'estructura de l'escala la defineix l'algorisme, no la geometria del món.
 - `while not pearl_here(): puja_grao()` és agnòstic de N: funciona per a 2, 3 o 4 graons sense canvis.
-- `while front_is_clear(): baixa_grao()` s'atura automàticament quan Karel arriba a la paret dreta del món (col 2N, fila inferior).
-- Per a cada test, la posició final de Karel coincideix amb la posició on es deixa la perla (extrem inferior dret de l'escala).
+- `while front_is_clear(): baixa_grao()` s'atura automàticament quan en Karel arriba a la paret dreta del món (col 2N, fila inferior).
+- Per a cada test, la posició final de en Karel coincideix amb la posició on es deixa la perla (extrem inferior dret de l'escala).
 - La navegació: anterior → `repte-6.html`, següent → `repte-8.html`.
 
 ---
@@ -365,7 +365,7 @@ com a indicador de paritat implícit, igual que al repte 11 del tauler d'escacs.
 ### ✅ Repte 10 — El detector (C0, ★★★ Avançat)
 
 **Fitxer:** `curs/repte-10.html`
-**Conceptes:** `while`, `if/elif/else`, `left_is_clear()`, `right_is_clear()`, alcoves laterals, fencepost.
+**Conceptes:** `while`, `if/elif/else`, `left_is_clear()`, `right_is_clear()`, alcoves laterals, error de límit.
 **Adaptació de:** Original karelcat.
 
 **Enunciat:** En Karel avança per un corredor amb alcoves laterals. Cada cop que
@@ -379,7 +379,7 @@ Test C — corredor amb alcoves mixtes
 ```
 
 **Clau pedagògica:** `left_is_clear()` i `right_is_clear()` com a detectors
-de geometria lateral. El fencepost és el moment de decidir si la primera i l'última
+de geometria lateral. L'error de límit és el moment de decidir si la primera i l'última
 casella del corredor compten com a alcova.
 
 **Notes d'implementació:**
@@ -391,7 +391,7 @@ casella del corredor compten com a alcova.
 
 **Fitxer:** `curs/repte-11.html`
 **Conceptes:** `while`, `if`, `pearl_here()` com a memòria de paritat, serpentí bidireccional, pre/postcondicions.
-**Adaptació de:** Checkerboard Karel (Stanford CS106A — el repte més cèlebre).
+**Adaptació de:** Checkerboard en Karel (Stanford CS106A — el repte més cèlebre).
 
 **Mons de test (3 simuladors):**
 ```
@@ -475,7 +475,7 @@ while left_is_clear():
 
 **Notes d'implementació:**
 - El `while left_is_clear()` + `break` gestiona tots els casos: nombre parell i senar de files, quadrats i rectangles.
-- `left_is_clear()` comprova el Nord quan Karel mira l'Est; `right_is_clear()` comprova el Nord quan Karel mira l'Oest.
+- `left_is_clear()` comprova el Nord quan en Karel mira l'Est; `right_is_clear()` comprova el Nord quan en Karel mira l'Oest.
 - La navegació: anterior → `repte-10.html`, següent → `repte-12.html`.
 
 ---
@@ -484,7 +484,7 @@ while left_is_clear():
 
 **Fitxer:** `curs/repte-12.html`
 **Conceptes:** `while`, `if/elif/else`, `right_is_clear()`, `front_is_clear()`, `def`, estratègia de la mà dreta.
-**Adaptació de:** Maze Karel / Repte predefinit 5 del projecte.
+**Adaptació de:** Maze en Karel / Repte predefinit 5 del projecte.
 
 **Mons de test (5 simuladors DRY — un sol editor):**
 ```
@@ -509,8 +509,8 @@ Test E — 9×9 (El gran laberint — dos culs-de-sac):
   Goal:    .,.,P,P,P,P,P,P,P|P,.,P,P,P,P,P,P,P|P,.,.,.,.,.,.,.,P|P,P,P,P,P,P,P,.,P|P,.,.,.,.,.,.,.,P|P,P,.,P,P,P,P,P,P|.,.,.,.,P,P,P,P,P|P,P,P,.,P,P,P,P,P|P,P,P,.,.,.,.,.,K>
 ```
 
-*(Test D: Karel entra al cul-de-sac de la fila 2 (cols 2→0), xoca, torna enrere i troba la sortida.
-Test E: Karel explora les 30 caselles del laberint, entrant en dos culs-de-sac: (4,1) i (6,0).)*
+*(Test D: en Karel entra al cul-de-sac de la fila 2 (cols 2→0), xoca, torna enrere i troba la sortida.
+Test E: en Karel explora les 30 caselles del laberint, entrant en dos culs-de-sac: (4,1) i (6,0).)*
 
 **Esquelet visible per l'alumne:**
 ```python
@@ -545,12 +545,12 @@ while not pearl_here():
 grab()
 ```
 
-**Clau pedagògica:** La regla de la mà dreta demostra que un algorisme senzill i genèric pot resoldre problemes aparentment complexos. La descomposició en una sola funció `pas()` dins d'un `while not pearl_here()` és l'exemple més net del curs de «algorisme = bucle + condició de parada». El test C detecta qui ha confós `turn_left()` amb `turn_right()` (la mà esquerra funciona en molts laberints però no en tots). Els tests D i E demostren que el mateix codi funciona amb culs-de-sac: Karel hi entra, xoca, gira, en surt sol, i continua cap a la perla sense canviar ni una línia.
+**Clau pedagògica:** La regla de la mà dreta demostra que un algorisme senzill i genèric pot resoldre problemes aparentment complexos. La descomposició en una sola funció `pas()` dins d'un `while not pearl_here()` és l'exemple més net del curs de «algorisme = iteració + condició de parada». El test C detecta qui ha confós `turn_left()` amb `turn_right()` (la mà esquerra funciona en molts laberints però no en tots). Els tests D i E demostren que el mateix codi funciona amb culs-de-sac: en Karel hi entra, xoca, gira, en surt sol, i continua cap a la perla sense canviar ni una línia.
 
 **Notes d'implementació:**
 - Format DRY: un sol `data-code`, cinc mons via `data-maps`/`data-goals`/`data-labels`.
 - Test B reutilitza exactament el mapa del repte predefinit 5 de `reptes.js`.
-- `data-bag` no s'usa (Karel no porta perles pròpies; recull una perla existent).
+- `data-bag` no s'usa (en Karel no porta perles pròpies; recull una perla existent).
 - La navegació: anterior → `repte-11.html`, següent → `repte-13.html`.
 
 ---
@@ -559,7 +559,7 @@ grab()
 
 **Fitxer:** `curs/repte-13.html`
 **Conceptes:** `while`, `if`, `grab`/`drop` com a marcadors, algorisme dels dos punters.
-**Adaptació de:** Midpoint Karel (l'exercici més citat del CS106A).
+**Adaptació de:** Midpoint en Karel (l'exercici més citat del CS106A).
 
 **Enunciat:** El món és un passadís buit de longitud desconeguda (sempre ≥ 1). En Karel porta 2 perles a la motxilla i ha de deixar exactament una perla al punt mig. Si la longitud és imparella, al centre exacte; si és parella, s'accepta qualsevol de les dues caselles centrals.
 
@@ -580,9 +580,9 @@ Test C — longitud 8 (parella, centre a casella 3 o 4):
 
 **Motxilla inicial:** `data-bag="2"` (les dues perles fan de marcadors).
 
-**Nota sobre els goals:** al final de l'algorisme, Karel es queda damunt de la perla del punt mig (un dels dos marcadors). `currentStateToCSV()` mostra `K{dir}` en aquella casella (la perla queda amagada sota Karel). El goal reflecteix la posició i orientació final de Karel:
-- Longitud imparella: Karel acaba orientat **Est** (`K>`) sobre la casella central.
-- Longitud parella: Karel acaba orientat **Oest** (`K<`) sobre la casella central esquerra.
+**Nota sobre els goals:** al final de l'algorisme, en Karel es queda damunt de la perla del punt mig (un dels dos marcadors). `currentStateToCSV()` mostra `K{dir}` en aquella casella (la perla queda amagada sota en Karel). El goal reflecteix la posició i orientació final de en Karel:
+- Longitud imparella: en Karel acaba orientat **Est** (`K>`) sobre la casella central.
+- Longitud parella: en Karel acaba orientat **Oest** (`K<`) sobre la casella central esquerra.
 
 **Solució de referència:**
 ```python
@@ -622,7 +622,7 @@ else:
 
 **Clau pedagògica:** L'algorisme dels dos punters és l'epifania final del curs. Sense variables numèriques ni aritmètica, la posició física de les perles substitueix qualsevol comptador. Cada iteració redueix en 2 la distància entre els marcadors, fins que es troben exactament al punt mig. La simetria de l'algorisme (moure dret → moure esquerre → repetir) paral·lela la de `puja_grao ↔ baixa_grao` (repte 7) i `omple_fila_des_de_on ↔ omple_fila_des_de_off` (repte 11): el curs tanca el cercle.
 
-**Esquelet visible per l'alumne:** `camina_fins_perla()` completament implementada; els dos passos de l'algorisme descrits com a comentaris, sense codi. L'alumne ha de descobrir el bucle `while True`, els `grab()`/`drop()` i les condicions de sortida.
+**Esquelet visible per l'alumne:** `camina_fins_perla()` completament implementada; els dos passos de l'algorisme descrits com a comentaris, sense codi. L'alumne ha de descobrir la iteració `while True`, els `grab()`/`drop()` i les condicions de sortida.
 
 **Notes d'implementació:**
 - Format DRY: un sol `data-code`, tres mons via `data-maps`/`data-goals`/`data-labels`.

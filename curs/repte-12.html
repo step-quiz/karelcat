@@ -94,7 +94,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -167,7 +167,7 @@
           <strong>💡 Pista — un sol pas, repetit moltes vegades</strong>
           La clau és definir una funció <code>pas()</code> que implementi
           exactament un pas de la regla de la mà dreta, i repetir-la mentre
-          en Karel no sigui a la sortida:
+          En Karel no sigui a la sortida:
           <br><br>
           <code>while not pearl_here():</code><br>
           <code>&nbsp;&nbsp;&nbsp;&nbsp;pas()</code><br><br>
@@ -258,7 +258,7 @@ grab()
   11.(2,1)E: right=S=edge → front=E=(2,2)=. → move → (2,2)E
   12.(2,2)E: right=S=edge → front=E=(2,3)=. → move → (2,3)E
   13.(2,3)E: right=S=edge → front=E=(2,4)=A → move → (2,4)E
-  pearl_here()=True → surt while. grab(). Karel a (2,4) Est. ✓
+  pearl_here()=True → surt while. grab(). En Karel a (2,4) Est. ✓
 
 
   Traça d'execució (Test B — 5×6, inici (0,0) Est):
@@ -284,7 +284,7 @@ grab()
   12.(4,0)W: right=N=(3,0)=P → front=W=edge → turn_left → (4,0)S
   13.(4,0)S: right=E=(4,1)=. (edge? no, S=edge) → front=S=edge → turn_left → (4,0)E
   14.(4,0)E: right=S=edge → front=E=(4,1)=. → move → ... → (4,5)=A
-  pearl_here()=True → grab(). Karel a (4,5) Est. ✓
+  pearl_here()=True → grab(). En Karel a (4,5) Est. ✓
 
 
   Traça d'execució (Test C — 5×7, inici (0,0) Est):
@@ -299,7 +299,7 @@ grab()
   La mà dreta porta en Karel per: la columna esquerra avall, la fila 2
   cap a l'Est fins a (2,3), el pas (3,3)↓(4,3), la fila 4 retrocedint
   cap a l'Oest fins al mur, la volta i finalment la fila 4 cap a l'Est
-  fins a (4,6)=A. Karel acaba a (4,6) Est. ✓
+  fins a (4,6)=A. En Karel acaba a (4,6) Est. ✓
 
 
   Per què funciona la regla de la mà dreta:
@@ -316,11 +316,11 @@ grab()
   Errors habituals de l'alumne:
     · Girar a la dreta I avançar tot dins d'un elif → l'alumne omet
       el move() en el primer cas o el duplica al segon.
-    · Fer move() en el cas «turn_left» → Karel entra a la paret.
+    · Fer move() en el cas «turn_left» → en Karel entra a la paret.
     · Usar turn_left() quan toca girar a la dreta i viceversa →
       el programa segueix la mà esquerra (funciona en molts laberints
       però no en tots; el test C normalment ho detecta).
-    · Oblidar el grab() final → Karel troba la perla però no la recull.
+    · Oblidar el grab() final → en Karel troba la perla però no la recull.
 
   Clau pedagògica:
     La regla de la mà dreta demostra que un algorisme senzill i genèric
@@ -329,7 +329,7 @@ grab()
     dins d'una estructura if/elif/else, i introdueix turn_right() com a
     operació primitiva simètrica a turn_left(). La descomposició en una
     sola funció pas() que s'invoca dins d'un while not pearl_here() és
-    l'exemple més net del curs de «algorisme = bucle + condició de parada».
+    l'exemple més net del curs de «algorisme = iteració + condició de parada».
   ════════════════════════════════════════════════════════
 -->
 

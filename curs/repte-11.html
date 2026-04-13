@@ -94,7 +94,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -330,22 +330,22 @@ while left_is_clear():
 
   omple_fila_des_de_on() des de (2,0) Est:
     drop (2,0)A · move(2,1) · move(2,2) · drop(2,2)A · move(2,3) NO rock
-    Karel a (2,2) Est. pearl_here()=True.
+    En Karel a (2,2) Est. pearl_here()=True.
 
   left_is_clear() Nord de (2,2)=True → entra al while.
     pearl_here()=True → canvia_fila_des_d_est(): (2,2)→Nord→(1,2)→Oest.
     omple_fila_des_de_off() des de (1,2) Oest:
       move(1,1) · drop(1,1)A · move(1,0) · no front → exit.
-    Karel a (1,0) Oest. pearl_here()=False.
+    En Karel a (1,0) Oest. pearl_here()=False.
 
   right_is_clear() Nord de (1,0)=True → no break.
     pearl_here()=False → canvia_fila_des_d_oest(): (1,0)→Nord→(0,0)→Est.
     omple_fila_des_de_on() des de (0,0) Est:
       drop(0,0)A · move(0,1) · move(0,2) · drop(0,2)A · no front → exit.
-    Karel a (0,2) Est.
+    En Karel a (0,2) Est.
 
   left_is_clear() Nord de (0,2)=False → surt del while.
-  Final: perles a (2,0)(2,2)(1,1)(0,0)(0,2). Karel a (0,2) Est. ✓
+  Final: perles a (2,0)(2,2)(1,1)(0,0)(0,2). En Karel a (0,2) Est. ✓
 
 
   Traça d'execució (Test B — 4×4, inici (3,0) Est):
@@ -354,28 +354,28 @@ while left_is_clear():
 
   omple_fila_des_de_on() des de (3,0) Est:
     drop(3,0) · move(3,1) · move(3,2) · drop(3,2) · move(3,3) · no inner front → exit.
-    Karel a (3,3) Est. pearl_here()=False.
+    En Karel a (3,3) Est. pearl_here()=False.
 
   while left_is_clear() Nord(3,3)=True:
     pearl_here()=False → canvia_fila_des_d_est() → (2,3) Oest.
     omple_fila_des_de_on() des de (2,3) Oest:
       drop(2,3)A · move(2,2) · move(2,1) · drop(2,1)A · move(2,0) · no front.
-      Karel a (2,0) Oest. pearl_here()=False.
+      En Karel a (2,0) Oest. pearl_here()=False.
 
   right_is_clear() Nord(2,0)=True → no break.
     pearl_here()=False → canvia_fila_des_d_oest() → (1,0) Est.
     omple_fila_des_de_on() des de (1,0) Est:
       drop(1,0)A · move(1,1) · move(1,2) · drop(1,2)A · move(1,3) · no front.
-      Karel a (1,3) Est. pearl_here()=False.
+      En Karel a (1,3) Est. pearl_here()=False.
 
   left_is_clear() Nord(1,3)=True → continua.
     pearl_here()=False → canvia_fila_des_d_est() → (0,3) Oest.
     omple_fila_des_de_on() des de (0,3) Oest:
       drop(0,3)A · move(0,2) · move(0,1) · drop(0,1)A · move(0,0) · no front.
-      Karel a (0,0) Oest. pearl_here()=False.
+      En Karel a (0,0) Oest. pearl_here()=False.
 
   right_is_clear() Nord(0,0)=False → BREAK.
-  Final: perles als 8 ON cells de la 4×4. Karel a (0,0) Oest. ✓
+  Final: perles als 8 ON cells de la 4×4. En Karel a (0,0) Oest. ✓
 
 
   Per què funciona:
@@ -391,7 +391,7 @@ while left_is_clear():
   Errors habituals de l'alumne:
     · Comprovar pearl_here() DESPRÉS de canvia_fila(): la informació ja s'ha perdut.
     · Usar sempre canvia_fila_des_d_est() → après d'una fila cap a l'Oest,
-      Karel baixa una fila en lloc de pujar.
+      En Karel baixa una fila en lloc de pujar.
     · Oblidar el `break` → el programa es queda aturat a la darrera fila
       buscant files per sobre que no existeixen (left/right_is_clear() infinit).
     · Implementar omple_fila_des_de_off() com una còpia exacta d'omple_fila_des_de_on()

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Capítol 5 — Descomposició | Karel</title>
+  <title>Capítol 5 — Descomposició | en Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -35,7 +35,7 @@
 
   <span class="curs-header-logo">
     <span class="logo-icon"></span>
-    Karel
+    En Karel
   </span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
@@ -131,7 +131,7 @@ torna_al_inici()</code></pre>
         
         <p>Si vols saber com es resol una de les tres situacions, llegeix la definició de la funció. Si vols entendre el pla general, llegeixes les tres últimes instruccions.</p>
 
-        <p>Nota: la instrucció <code>turn_around()</code> fa que Karel giri 180°, és a dir, dona mitja volta però sense desplaçar-se.</p>
+        <p>Nota: la instrucció <code>turn_around()</code> fa que en Karel giri 180°, és a dir, dona mitja volta però sense desplaçar-se.</p>
       </section>
 
 
@@ -184,7 +184,7 @@ torna_al_inici()
       <section class="chapter-section">
         <h2>Descomposició i repetició juntes</h2>
 
-        <p>La descomposició no exclou els bucles <code>for</code>: pots combinar les dues tècniques. Una funció pot contenir un <code>for</code> al seu interior, i el programa principal pot cridar aquella funció tantes vegades com calgui.</p>
+        <p>La descomposició no exclou les iteracions <code>for</code>: pots combinar les dues tècniques. Una funció pot contenir un <code>for</code> al seu interior, i el programa principal pot cridar aquella funció tantes vegades com calgui.</p>
 
         <p>En l'exemple de sota, en Karel ha de col·locar dues perles en dos llocs separats. Cada fase és una funció independent, que internament usa <code>move()</code> i <code>drop()</code>:</p>
 
@@ -205,7 +205,7 @@ def deixa_perla_a_columna_5():
 # Fase 1
 deixa_perla_a_columna_2()
 
-# Fase 2 (Karel ja és a columna 2, mira Est)
+# Fase 2 (en Karel ja és a columna 2, mira Est)
 deixa_perla_a_columna_5()
 "
              data-readonly="true"

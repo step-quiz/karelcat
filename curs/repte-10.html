@@ -37,7 +37,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -101,7 +101,7 @@
           <strong>💡 Pista — explora_nord() i explora_sud()</strong>
           Defineix dues funcions que entrin a l'alcova, recullin la perla si n'hi ha,
           i retornin en Karel al corredor mirant Est. La postcondició ha de ser exactament
-          la mateixa que la precondició: Karel al corredor, mirant Est, a punt per continuar.
+          la mateixa que la precondició: en Karel al corredor, mirant Est, a punt per continuar.
         </div>
 
         <div class="consell-box">
@@ -137,13 +137,13 @@ while front_is_clear():
         explora_sud()
     move()
 
-# Fencepost: comprova l'última casella
+# Error de límit: comprova l'última casella
 if left_is_clear():
     explora_nord()
 if right_is_clear():
     explora_sud()
 "
-             data-title="El mateix codi ha de funcionar per als tres corredors. Atenció al fencepost!"
+             data-title="El mateix codi ha de funcionar per als tres corredors. Atenció a l'error de límit!"
              data-height="420">
         </div>
 
@@ -197,8 +197,8 @@ if right_is_clear():
 
   Clau pedagògica:
   1. Pre/postcondicions estrictes: les funcions explora_* deixen
-     Karel on el van trobar.
-  2. Fencepost: l'última casella no es comprova dins el while.
+     En Karel on el van trobar.
+  2. Error de límit: l'última casella no es comprova dins el while.
   3. if separats vs elif: les alcoves nord i sud són independents.
   ════════════════════════════════════════════════════════
 -->

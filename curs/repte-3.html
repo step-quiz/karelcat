@@ -94,7 +94,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -148,13 +148,13 @@
           deixi perles formant una diagonal i acabi a la cantonada superior dreta.<br><br>
           <strong>Restricció important:</strong> usa una funció
           <code>puja_grao()</code> que mogui en Karel <em>un sol graó</em> i
-          crida-la des d'un bucle <code>while</code>. El programa principal
+          crida-la des d'una iteració <code>while</code>. El programa principal
           ha de ser tan clar com això:
           <pre style="margin:0.7rem 0 0; background:#f1f5f9; padding:0.7rem 1rem; border-radius:6px; font-size:0.9rem;">while front_is_clear():
     drop()
     puja_grao()</pre>
           Fixa't que <strong>no cal saber quants graons té el món</strong>:
-          en Karel s'atura sol quan arriba a la paret.
+          En Karel s'atura sol quan arriba a la paret.
         </div>
 
         <div class="consell-box">
@@ -162,7 +162,7 @@
           Pensa com és un sol graó: en Karel avança una casella cap a l'Est,
           gira cap al Nord, puja una casella i gira de nou cap a l'Est.
           Això és exactament el cos de <code>puja_grao()</code>: només moviment,
-          sense <code>drop()</code>. El <code>drop()</code> es fa al bucle principal,
+          sense <code>drop()</code>. El <code>drop()</code> es fa a la iteració principal,
           just <em>abans</em> de moure's. Si aconsegueixes fer UN graó correctament,
           el <code>while</code> en farà tants com calgui i s'aturarà sol
           quan en Karel toqui la paret dreta.
@@ -231,15 +231,15 @@ while front_is_clear():
   Perles al món: (4,0) (3,1) (2,2) (1,3) — diagonal perfecta.
 
   Errors habituals de l'alumne:
-    · Posar drop() dins de puja_grao() en comptes del bucle principal:
+    · Posar drop() dins de puja_grao() en comptes de la iteració principal:
       la perla es deixa a la casella equivocada (un pas massa tard).
     · Oblidar el turn_right() final: el puja_grao() no restaura
       l'orientació Est i el segon graó surt en la direcció equivocada.
     · Usar for i in range(N) amb N hardcoded: funciona, però trenca
       la filosofia DRY — el mateix codi no serveix per a tots els mons.
 
-  Clau pedagògica: la funció puja_grao() té una precondició (Karel mira
-  a l'Est i el camí és lliure) i una postcondició idèntica (Karel mira a
+  Clau pedagògica: la funció puja_grao() té una precondició (en Karel mira
+  a l'Est i el camí és lliure) i una postcondició idèntica (en Karel mira a
   l'Est, una casella i un pis amunt). Gràcies a aquesta simetria, el while
   pot encadenar-ne tantes com calgui sense saber el nombre a priori.
   Si la postcondició no es compleix, el segon graó falla.

@@ -132,12 +132,12 @@ move()</code></pre>
       <section class="chapter-section">
         <h2>La indentació</h2>
 
-        <p>La indentació (els espais del davant) no és decoració: és la manera com el programa sap quines ordres formen part del bucle i quines no. Tot el que va indentat sota el <code>for</code> es repeteix. El que torna a l'esquerra ja queda fora.</p>
+        <p>La indentació (els espais del davant) no és decoració: és la manera com el programa sap quines ordres formen part de la iteració i quines no. Tot el que va indentat sota el <code>for</code> es repeteix. El que torna a l'esquerra ja queda fora.</p>
 
         <pre><code>for i in range(3):
     move()      # ← es repeteix 3 vegades
     turn_left() # ← també es repeteix 3 vegades
-move()          # ← s'executa UNA SOLA VEGADA, després del bucle</code></pre>
+move()          # ← s'executa UNA SOLA VEGADA, després de la iteració</code></pre>
 
         <p>Si la indentació no és consistent, el programa no funcionarà com esperes.</p>
 

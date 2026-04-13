@@ -94,7 +94,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -258,33 +258,33 @@ while front_is_clear():
 drop()
 
   Traça d'execució (Test A — 5×3, N=2 graons)
-    Inici: Karel a (col=0, fil=2) mirant Est.  Pearl a (col=2, fil=0).
+    Inici: en Karel a (col=0, fil=2) mirant Est.  Pearl a (col=2, fil=0).
     [fil=0 = cim; fil=2 = peu]
 
     Pujada:
       pearl_here() a (0,2) = False → puja_grao:
-        move→(1,2), turn_left→N, move→(1,1), turn_right→E.  Karel a (1,1).
+        move→(1,2), turn_left→N, move→(1,1), turn_right→E.  en Karel a (1,1).
       pearl_here() a (1,1) = False → puja_grao:
-        move→(2,1), turn_left→N, move→(2,0), turn_right→E.  Karel a (2,0).
+        move→(2,1), turn_left→N, move→(2,0), turn_right→E.  en Karel a (2,0).
       pearl_here() a (2,0) = True → surt del while.
 
-    grab()  →  la casella (2,0) queda buida; Karel porta 1 perla.
+    grab()  →  la casella (2,0) queda buida; en Karel porta 1 perla.
 
     Baixada:
       front_is_clear() a (2,0) Est = True (col 3, fil 0 és .)
         → baixa_grao: turn_right→S, move→(2,1), turn_left→E, move→(3,1).
-          Karel a (3,1) Est.
+          En Karel a (3,1) Est.
       front_is_clear() a (3,1) Est = True (col 4, fil 1 és .)
         → baixa_grao: turn_right→S, move→(3,2), turn_left→E, move→(4,2).
-          Karel a (4,2) Est.
+          En Karel a (4,2) Est.
       front_is_clear() a (4,2) Est = False (paret del món, amplada=5) → surt.
 
-    drop()  →  perla a (4,2).  Karel queda a (4,2) Est.  ✓
+    drop()  →  perla a (4,2).  en Karel queda a (4,2) Est.  ✓
 
   Perquè funciona per a N=3 (Test B, 7×4) i N=4 (Test C, 9×5):
-    · while not pearl_here() s'atura exactament quan Karel arriba al cim,
+    · while not pearl_here() s'atura exactament quan en Karel arriba al cim,
       independentment de quants graons hi hagi.
-    · while front_is_clear() s'atura quan Karel ha acabat de baixar
+    · while front_is_clear() s'atura quan en Karel ha acabat de baixar
       (la paret dreta del món tanca el recorregut).
     · puja_grao() i baixa_grao() comparteixen la mateixa
       pre/postcondició (peu d'un graó, mirant Est), de manera que
@@ -292,13 +292,13 @@ drop()
 
   Errors habituals de l'alumne:
     · Implementar baixa_grao() com una còpia de puja_grao() (sense invertir).
-      → Karel torna a pujar en comptes de baixar.
+      → en Karel torna a pujar en comptes de baixar.
     · Oblidar turn_right() al principi de baixa_grao().
-      → Karel intenta moure's Est quan hauria d'anar al Sud i xoca.
+      → en Karel intenta moure's Est quan hauria d'anar al Sud i xoca.
     · Usar while front_is_clear(): puja_grao() en comptes de
       while not pearl_here().
       → En un món obert (sense parets internes), front_is_clear() és
-         sempre True fins a la paret del món; Karel surt del món.
+         sempre True fins a la paret del món; en Karel surt del món.
     · Oblidar drop() al final.
       → El simulador accepta el recorregut però la perla no apareix al peu.
 

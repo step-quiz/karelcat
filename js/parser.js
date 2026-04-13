@@ -138,7 +138,7 @@ class Parser {
           this.eat(':');
           this.eatNL();
           const elifThen = this.parseBlock(myIndent);
-          // Construim un if anidat; el bucle continuarà per encadenar més elif/else
+          // Construim un if anidat; la iteració continuarà per encadenar més elif/else
           const elifNode = { type: 'if', cond: elifCond, then: elifThen, else: [], line: nextW.line };
           elseB = [elifNode];
           // Continuar el while: el pròxim elif/else s'enganxarà a AQUEST elifNode
@@ -191,7 +191,7 @@ class Parser {
 
     // ── for <var> in range(N): ──
     // La variable pot ser qualsevol identificador (convencionalment 'i' o '_').
-    // El seu valor s'ignora durant l'execució (bucle comptat pur).
+    // El seu valor s'ignora durant l'execució (iteració comptada pura).
     if (w === L.KW_FOR) {
       this.next();                      // consumeix 'for'
       this.eat('W');                    // variable (qualsevol identificador)

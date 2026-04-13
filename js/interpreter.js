@@ -2,7 +2,7 @@
 // interpreter.js — Intèrpret (generadors JS)
 //
 // Yield objectes { cmd, line } per a cada acció.
-// Els errors de runtime (bucle infinit, recursió) es senyalen
+// Els errors de runtime (iteració infinita, recursió) es senyalen
 // amb yield { type:'error', code, msg, line }.
 // La capa d'execució (execution.js) consumeix els yields.
 // ════════════════════════════════════════════════════════

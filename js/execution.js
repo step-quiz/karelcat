@@ -39,7 +39,7 @@ function notifyGoalResult(success) {
 function execAction(step) {
   const S = K.state;
 
-  // Error de l'intèrpret (bucle infinit, recursió, proc desconegut)
+  // Error de l'intèrpret (iteració infinita, recursió, proc desconegut)
   if (step.type === 'error') {
     K.logError(`❌ ${step.msg}`, step.code, step.line);
     K.markErrorLine(step.line);

@@ -94,7 +94,7 @@
 
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <span class="curs-header-logo"><span class="logo-icon"></span>Karel</span>
+  <span class="curs-header-logo"><span class="logo-icon"></span>en Karel</span>
   <span class="karel-nav-sep"></span>
     <nav class="karel-nav" id="karel-nav">
       <a href="capitol-1.html" class="karel-nav-link">Capítols</a>
@@ -142,14 +142,16 @@
         <!-- Enunciat -->
         <div class="exercise-enunciat">
           El fons marí té dues files de caselles (la de baix i la de dalt) i un
-          nombre de perles escampades per les dues files. En Karel comença a la
+          nombre de perles escampades per les dues files.<br><br>
+          En Karel comença a la
           cantonada inferior esquerra mirant cap a l'Est.<br><br>
           La seva missió: <strong>recollir totes les perles fent un recorregut
           en ziga-zaga</strong> — primer la fila inferior d'Est a Oest (d'esquerra
           a dreta), llavors pujar a la fila superior, i finalment la fila
           superior de l'Est a l'Oest (de dreta a esquerra).<br><br>
           <strong>La teva feina:</strong> escriu un programa que funcioni sigui
-          quina sigui l'amplada del món. L'amplada és
+          quina sigui l'amplada del món.<br><br>
+          L'amplada és
           <em>desconeguda</em>: el teu codi no pot dependre del nombre de
           caselles.
         </div>
@@ -157,19 +159,22 @@
         <div class="consell-box">
           <strong>💡 Pista — el gir entre files</strong>
           Quan en Karel arriba a l'extrem dret de la fila inferior, ha de pujar
-          a la fila de dalt i orientar-se cap a l'Oest. Quants <code>turn_left()</code>
+          a la fila de dalt i orientar-se cap a l'Oest.<br><br>
+          Quants <code>turn_left()</code>
           necessita per passar de mirar l'Est a mirar l'Oest passant pel Nord?
           Recorda que un <code>turn_left()</code> gira 90° i
-          <code>turn_around()</code> gira 180°. Dissenya el gir amb cura:
+          <code>turn_around()</code> gira 180°.<br><br>
+          Dissenya el gir amb cura:
           si en Karel no queda orientat exactament cap a l'Oest quan comença la
           fila superior, el segon <code>while</code> no avançarà ni un pas.
         </div>
 
         <div class="consell-box">
-          <strong>💡 Pista — l'error de pal de paller (fencepost)</strong>
-          El bucle <code>while front_is_clear()</code> s'atura <em>abans</em>
-          de moure's a l'última casella. Quan el <code>while</code> acabi, en
-          Karel és a l'última posició però encara no l'ha comprovat.
+          <strong>💡 Pista — l'error de límit</strong>
+          La iteració <code>while front_is_clear()</code> s'atura <em>abans</em>
+          de moure's a l'última casella.<br><br>
+          Quan el <code>while</code> acabi, en
+          Karel és a l'última posició però encara no l'ha comprovat.<br><br>
           Afegeix un <code>if pearl_here(): grab()</code> fora del <code>while</code>
           per no perdre cap perla de l'extrem.
         </div>
@@ -250,23 +255,23 @@ recull_fila()
     recull_fila() → recull perles fila 1, acaba a (0,1) Oest ✓
 
   Perquè funciona:
-    · front_is_clear() + fencepost → cap dependència de la longitud.
+    · front_is_clear() + error de límit → cap dependència de la longitud.
     · Dos turn_left() cobreixen la transició Est → Nord → Oest en dues passes.
     · La postcondició de puja_i_gira() és (col_final, 1) Oest, que és
       exactament la precondició de la segona crida a recull_fila().
 
   Errors habituals de l'alumne:
-    · Fer un sol turn_left() a la transició → Karel queda mirant al Nord
+    · Fer un sol turn_left() a la transició → en Karel queda mirant al Nord
       i el segon while no avança (front_is_clear() fals de seguida).
-    · Oblidar el move() del puja_i_gira() → Karel gira però no puja
+    · Oblidar el move() del puja_i_gira() → en Karel gira però no puja
       de fila; la segona recull_fila() recorre la mateixa fila inferior.
-    · Oblidar el fencepost → l'última perla de cada fila no es recull.
+    · Oblidar l'error de límit → l'última perla de cada fila no es recull.
     · Usar front_is_clear() a la condició del gir en lloc de fer-lo
-      incondicionalment → el gir pot no executar-se si Karel és a la paret.
+      incondicionalment → el gir pot no executar-se si en Karel és a la paret.
 
   Clau pedagògica:
     La descomposició en recull_fila() i puja_i_gira() il·lustra que
-    una postcondició ben definida (Karel a l'extrem, orientació exacta)
+    una postcondició ben definida (en Karel a l'extrem, orientació exacta)
     permet encadenar fases sense sorpreses. La simetria és el regal:
     el MATEIX recull_fila() funciona cap a l'Est i cap a l'Oest perquè
     front_is_clear() és agnòstic de la direcció.

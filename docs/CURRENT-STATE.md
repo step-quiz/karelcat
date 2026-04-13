@@ -18,7 +18,7 @@ a alumnes de secundària (16 anys, sense experiència prèvia). L'alumne control
 Inspirat en el [Stanford Karel Reader](https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html).
 El dialecte Karel és un **subconjunt vàlid de Python**: qualsevol programa Karel
 vàlid es pot executar en un intèrpret Python real (amb un shim que defineixi les
-funcions de Karel).
+funcions d'en Karel).
 
 **Configuració d'idiomes:** codi en anglès (Python-compatible), interfície en català.
 
@@ -36,10 +36,10 @@ funcions de Karel).
 | 4 | `curs/capitol-4.html` | Procediments | `def nom():`. Crear ordres noves. |
 | 5 | `curs/capitol-5.html` | Descomposició | Cap sintaxi nova. Mètode top-down. Pre/postcondicions. |
 | 6 | `curs/capitol-6.html` | Condicionals | `if cond():` / `else:`. |
-| 7 | `curs/capitol-7.html` | Mentre | `while cond():`. Fencepost error. |
+| 7 | `curs/capitol-7.html` | Mentre | `while cond():`. Error de límit. |
 | 8 | `curs/capitol-8.html` | Combinant condicions | `not`, `and`, `or`. |
 | 9 | `curs/capitol-9.html` | Resum | `turn_around()`, `left_is_clear()`, `right_is_clear()`, `elif`, `break`, `True`/`False`. |
-| 10 | `curs/capitol-10.html` | Del Karel al Python | Epíleg. Pont al món real. Cap simulador. |
+| 10 | `curs/capitol-10.html` | D'en Karel al Python | Epíleg. Pont al món real. Cap simulador. |
 
 Tots els capítols estan llistats a `DISPONIBLES` a `curs/index.html`.
 
@@ -104,11 +104,11 @@ elif pearl_here():
 else:
     turn_left()
 
-# Bucle comptat
+# Iteració comptada
 for _ in range(N):
     move()
 
-# Bucle condicional
+# Iteració condicional
 while front_is_clear():
     move()
 
@@ -274,7 +274,7 @@ new Parser(tokens).parseAll()   [parser.js]
 K.runStmts(ast)           [interpreter.js — generador JS]
   → yield {cmd:'move', line:1}
   → yield {cmd:'turn_left', line:3}
-  → yield {type:'error', code:'inf_loop', ...}   ← si hi ha bucle infinit
+  → yield {type:'error', code:'inf_loop', ...}   ← si hi ha iteració infinita
   │
   ▼
 execAction(step)          [execution.js]
