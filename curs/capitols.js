@@ -621,21 +621,102 @@ else:
 initGlossariCurs();
 
 
-/* Escolta els iframes dels simuladors: quan un textarea hi rep
-   focus, marca l'iframe amb .is-editing perquè el CSS l'ancori
-   al fons del viewport en mòbil (vegeu curs/curs.css). */
-window.addEventListener('message', (e) => {
-  if (e.data === 'karel-editing') {
-    document.querySelectorAll('iframe.simulador-frame.is-editing')
-      .forEach(f => f.classList.remove('is-editing'));
-    const frames = document.querySelectorAll('iframe.simulador-frame');
-    for (const f of frames) {
-      if (f.contentWindow === e.source) { f.classList.add('is-editing'); break; }
-    }
-  } else if (e.data === 'karel-idle') {
-    setTimeout(() => {
-      document.querySelectorAll('iframe.simulador-frame.is-editing')
-        .forEach(f => f.classList.remove('is-editing'));
-    }, 150);
+/* ──────────────────────────────────────────────────────────────
+   Barra d'accessos directes per al teclat nadiu — costat PARE.
+
+   Els simuladors del curs s'incrusten via iframe. Una barra
+   position:fixed dins d'un iframe queda confinada al viewport
+   de l'iframe i pot quedar fora de pantalla o trepitjar el codi.
+   Per això la barra real viu AQUÍ, al document pare: és un
+   element fixat al viewport del pare i posicionat sobre el
+   teclat nadiu amb la Visual Viewport API.
+
+   Protocol postMessage:
+     iframe → pare:  'karel-editing'   (textarea ha rebut focus)
+     iframe → pare:  'karel-idle'      (textarea ha perdut focus)
+     pare → iframe:  { type:'karel-insert', text:'...' }
+   ─────────────────────────────────────────────────────────── */
+(function initParentKbdBar() {
+  if (!window.matchMedia('(pointer: coarse)').matches) return;
+  if (window.self !== window.top) return;
+
+  const KEYS = [
+    { label: '(',   text: '(' },
+    { label: ')',   text: ')' },
+    { label: '_',   text: '_' },
+    { label: '#',   text: '#' },
+    { label: ':',   text: ':' },
+    { label: '↹',   text: '    ' }
+  ];
+
+  // Estils inline (els documents del curs no carreguen style.css).
+  const css = document.createElement('style');
+  css.textContent = [
+    '.karel-kbd-bar{position:fixed;left:0;right:0;bottom:0;z-index:9999;',
+    'display:none;gap:4px;padding:4px 6px;background:#e4e6eb;',
+    'border-top:1px solid #c8ccd2;box-sizing:border-box;',
+    'box-shadow:0 -1px 3px rgba(0,0,0,0.08);}',
+    '.karel-kbd-bar.is-visible{display:flex;}',
+    '.karel-kbd-bar button{flex:1 1 0;min-width:0;height:38px;',
+    "font-family:var(--mono,'Space Mono',monospace);font-size:18px;",
+    'font-weight:600;color:#222;background:#fff;border:1px solid #c8ccd2;',
+    'border-radius:6px;padding:0;-webkit-tap-highlight-color:rgba(0,0,0,0.06);}',
+    '.karel-kbd-bar button:active{background:#f0f0f3;}'
+  ].join('');
+  document.head.appendChild(css);
+
+  const bar = document.createElement('div');
+  bar.className = 'karel-kbd-bar';
+  let activeIframe = null;
+
+  KEYS.forEach(k => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = k.label;
+    const press = (e) => {
+      e.preventDefault();  // no robar focus a l'iframe
+      if (activeIframe && activeIframe.contentWindow) {
+        activeIframe.contentWindow.postMessage(
+          { type: 'karel-insert', text: k.text }, '*'
+        );
+      }
+    };
+    b.addEventListener('mousedown', press);
+    b.addEventListener('touchstart', press, { passive: false });
+    bar.appendChild(b);
+  });
+
+  function attach() { (document.body || document.documentElement).appendChild(bar); }
+  if (document.body) attach(); else document.addEventListener('DOMContentLoaded', attach);
+
+  // Posiciona la barra just sobre el teclat nadiu.
+  const vv = window.visualViewport;
+  function reposition() {
+    if (!vv) return;
+    bar.style.bottom = (window.innerHeight - vv.offsetTop - vv.height) + 'px';
   }
-});
+  if (vv) {
+    vv.addEventListener('resize', reposition);
+    vv.addEventListener('scroll', reposition);
+  }
+
+  let hideTimer = null;
+  window.addEventListener('message', (e) => {
+    if (e.data === 'karel-editing') {
+      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+      const frames = document.querySelectorAll('iframe.simulador-frame');
+      for (const f of frames) {
+        if (f.contentWindow === e.source) { activeIframe = f; break; }
+      }
+      bar.classList.add('is-visible');
+      reposition();
+    } else if (e.data === 'karel-idle') {
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        bar.classList.remove('is-visible');
+        activeIframe = null;
+        hideTimer = null;
+      }, 200);
+    }
+  });
+})();

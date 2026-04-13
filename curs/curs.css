@@ -54,6 +54,7 @@ code, pre {
 }
 code { padding: 1px 5px; font-size: 0.88em; }
 pre  { padding: 1rem; overflow-x: auto; border: 1px solid var(--border); }
+pre code { padding: 0; background: none; }
 
 
 /* ════════════════════════════════════════════════════════
@@ -427,28 +428,6 @@ body.curs-light .chapter-section h2 { color: #1a1a1a; }
   width: 100%;
   border: none;
   background: var(--bg);
-}
-
-/* ───────────────────────────────────────────────────────────
-   Mòbil: quan l'usuari edita dins d'un simulador incrustat,
-   el seu JS ens envia un postMessage i capitols.js posa la
-   classe .is-editing a l'iframe. Aquí l'ancorem al fons del
-   viewport del document pare, perquè la barra d'accessoris
-   del teclat (que viu dins de l'iframe) quedi sempre
-   visible sobre el teclat nadiu i no surti del viewport en
-   fer scroll de la pàgina.
-   ─────────────────────────────────────────────────────── */
-@media (pointer: coarse) {
-  .simulador-frame.is-editing {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 60vh;
-    z-index: 9999;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
-  }
 }
 
 .simulador-badge {
