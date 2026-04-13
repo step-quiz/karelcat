@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Per què aprenem amb Karel? — Presentació</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --surface:#141414;
+    --surface-2:#1c1c1c;
+    --border:#2a2a2a;
+    --text:#ededeb;
+    --muted:#8a8a85;
+    --accent:#B9138D;          /* rosa medusa */
+    --accent-soft:#ff4dbd;
+    --accent-glow:rgba(185,19,141,.25);
+    --ok:#4ade80;
+    --mono:'Space Mono','Courier New',monospace;
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ── Escenari ───────────────────────────────────────── */
+  .stage{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+  }
+
+  /* fons: lleuger gradient per donar "profunditat submarina" */
+  .stage::before{
+    content:"";
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(185,19,141,.08), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0,200,255,.04), transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ── Diapositiva ────────────────────────────────────── */
+  .slide{
+    position:absolute;
+    inset:0;
+    display:none;
+    padding:clamp(2rem, 6vh, 5rem) clamp(1.5rem, 6vw, 6rem);
+    overflow-y:auto;
+    z-index:1;
+    animation:fade .35s ease;
+  }
+  .slide.active{display:flex;flex-direction:column;justify-content:center}
+
+  @keyframes fade{
+    from{opacity:0;transform:translateY(8px)}
+    to  {opacity:1;transform:translateY(0)}
+  }
+
+  /* ── Tipografia ─────────────────────────────────────── */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:1.5rem;
+  }
+  .eyebrow .dot{color:var(--accent)}
+
+  h1{
+    font-family:var(--sans);
+    font-weight:800;
+    font-size:clamp(2rem, 5.5vw, 4.5rem);
+    line-height:1.05;
+    letter-spacing:-.02em;
+    margin-bottom:1.5rem;
+    max-width:18ch;
+  }
+  h1 .hl{color:var(--accent)}
+  h1 .mono{font-family:var(--mono);font-weight:700}
+
+  h2{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:clamp(1.5rem, 3.2vw, 2.6rem);
+    line-height:1.15;
+    letter-spacing:-.015em;
+    margin-bottom:1.25rem;
+    max-width:24ch;
+  }
+
+  p{
+    font-size:clamp(1rem, 1.5vw, 1.25rem);
+    color:var(--text);
+    max-width:62ch;
+    margin-bottom:1rem;
+  }
+  p.lead{
+    font-size:clamp(1.15rem, 1.9vw, 1.55rem);
+    color:#cfcfca;
+    max-width:56ch;
+  }
+  .muted{color:var(--muted)}
+
+  code, .mono{font-family:var(--mono)}
+  :not(pre) > code{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    padding:2px 7px;
+    border-radius:4px;
+    font-size:.9em;
+    color:var(--accent-soft);
+  }
+
+  pre{
+    font-family:var(--mono);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:3px solid var(--accent);
+    padding:1.1rem 1.3rem;
+    border-radius:6px;
+    font-size:clamp(.85rem, 1.1vw, 1rem);
+    overflow:auto;
+    color:#e8e8e4;
+  }
+  pre .kw{color:var(--accent-soft)}
+  pre .cm{color:var(--muted);font-style:italic}
+  pre .fn{color:#7dd3fc}
+
+  /* ── Portada ────────────────────────────────────────── */
+  .cover{
+    align-items:flex-start;
+  }
+  .cover .jelly{
+    font-size:clamp(3rem,8vw,6rem);
+    margin-bottom:1.5rem;
+    filter:drop-shadow(0 0 30px var(--accent-glow));
+  }
+  .cover h1{font-size:clamp(2.5rem,7vw,6rem);max-width:20ch}
+  .cover .subtitle{
+    font-family:var(--mono);
+    color:var(--muted);
+    font-size:clamp(.95rem,1.3vw,1.15rem);
+    margin-top:.5rem;
+  }
+
+  /* ── Graelles i targetes ────────────────────────────── */
+  .grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:2rem;
+    align-items:start;
+  }
+  .grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.25rem;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:1.4rem 1.6rem;
+  }
+  .card h3{
+    font-family:var(--mono);
+    font-size:.95rem;
+    color:var(--accent);
+    margin-bottom:.6rem;
+    letter-spacing:.02em;
+  }
+  .card p{font-size:1rem;margin:0;color:#d4d4d0}
+
+  /* ── Taula de correspondència ───────────────────────── */
+  .mapping{
+    width:100%;
+    max-width:900px;
+    border-collapse:collapse;
+    font-size:clamp(.9rem,1.15vw,1.05rem);
+  }
+  .mapping th, .mapping td{
+    text-align:left;
+    padding:.85rem 1rem;
+    border-bottom:1px solid var(--border);
+  }
+  .mapping th{
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:400;
+  }
+  .mapping td.karel{font-family:var(--mono);color:var(--accent-soft)}
+  .mapping td.arrow{color:var(--muted);text-align:center;width:40px}
+  .mapping td.real{color:#e8e8e4}
+
+  /* ── Seqüència de capes (stack) ─────────────────────── */
+  .stack{
+    display:flex;
+    flex-direction:column;
+    gap:.8rem;
+    max-width:560px;
+    margin-top:1rem;
+  }
+  .layer{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:.9rem 1.1rem;
+    font-family:var(--mono);
+    font-size:.95rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .layer .tag{
+    color:var(--muted);
+    font-size:.75rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+  }
+  .layer.hl{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .layer.hl .tag{color:var(--accent)}
+
+  /* ── Comparativa piano / Karel ──────────────────────── */
+  .compare{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1.25rem;
+    margin-top:1rem;
+  }
+  .compare .col{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:1.4rem;
+  }
+  .compare .col .icon{
+    font-size:2rem;margin-bottom:.6rem;display:block;
+  }
+  .compare .col h3{
+    font-family:var(--mono);
+    font-size:.95rem;
+    margin-bottom:.6rem;
+    color:var(--text);
+  }
+  .compare .col ul{list-style:none;font-size:.95rem;color:#cfcfca}
+  .compare .col li{padding:.2rem 0;padding-left:1rem;position:relative}
+  .compare .col li::before{
+    content:"—";
+    position:absolute;left:0;color:var(--muted);
+  }
+
+  /* ── Citació ────────────────────────────────────────── */
+  .quote{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:clamp(1.4rem,2.6vw,2.2rem);
+    line-height:1.3;
+    letter-spacing:-.01em;
+    max-width:22ch;
+    border-left:3px solid var(--accent);
+    padding-left:1.5rem;
+    color:#f2f2f0;
+  }
+
+  /* ── Big number ─────────────────────────────────────── */
+  .big-num{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:clamp(3.5rem,10vw,7rem);
+    line-height:1;
+    color:var(--accent);
+    letter-spacing:-.03em;
+  }
+  .big-num + p{margin-top:.8rem}
+
+  /* ── Checklist final ────────────────────────────────── */
+  .checklist{
+    list-style:none;
+    margin-top:1.5rem;
+    font-size:clamp(1.05rem,1.4vw,1.2rem);
+  }
+  .checklist li{
+    padding:.5rem 0;
+    padding-left:2rem;
+    position:relative;
+    color:#e8e8e4;
+  }
+  .checklist li::before{
+    content:"✓";
+    position:absolute;left:0;top:.5rem;
+    color:var(--accent);
+    font-weight:700;
+  }
+
+  /* ── Navegació ──────────────────────────────────────── */
+  .nav{
+    position:fixed;
+    bottom:1.25rem;
+    right:1.5rem;
+    display:flex;
+    gap:.6rem;
+    z-index:10;
+    align-items:center;
+  }
+  .nav button{
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text);
+    width:40px;height:40px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:1.1rem;
+    transition:all .2s;
+    font-family:var(--mono);
+  }
+  .nav button:hover{
+    border-color:var(--accent);
+    color:var(--accent);
+  }
+  .nav button:disabled{opacity:.3;cursor:not-allowed}
+  .counter{
+    font-family:var(--mono);
+    font-size:.8rem;
+    color:var(--muted);
+    padding:0 .8rem;
+  }
+
+  .progress{
+    position:fixed;
+    top:0;left:0;
+    height:2px;
+    background:var(--accent);
+    z-index:20;
+    transition:width .3s ease;
+  }
+
+  .hint{
+    position:fixed;
+    bottom:1.5rem;
+    left:1.5rem;
+    font-family:var(--mono);
+    font-size:.72rem;
+    color:var(--muted);
+    letter-spacing:.08em;
+    z-index:10;
+  }
+  .hint kbd{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-bottom-width:2px;
+    padding:1px 6px;
+    border-radius:3px;
+    font-family:var(--mono);
+    color:var(--text);
+    font-size:.7rem;
+  }
+
+  /* ── Diagrames específics ───────────────────────────── */
+  .tap-demo{
+    display:flex;
+    align-items:center;
+    gap:1.5rem;
+    margin:1rem 0;
+    flex-wrap:wrap;
+  }
+  .tap-demo .finger{font-size:2.5rem}
+  .tap-demo .arrow-right{color:var(--muted);font-size:1.5rem;font-family:var(--mono)}
+  .tap-demo .heart{
+    font-size:2.5rem;
+    filter:drop-shadow(0 0 12px var(--accent-glow));
+  }
+
+  .mini-grid{
+    display:inline-grid;
+    grid-template-columns:repeat(4,22px);
+    grid-template-rows:repeat(3,22px);
+    gap:2px;
+    background:var(--border);
+    padding:2px;
+    border-radius:3px;
+    vertical-align:middle;
+    margin:0 .4rem;
+  }
+  .mini-grid span{
+    background:var(--surface);
+    border-radius:2px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.85rem;
+  }
+
+  /* ── Responsive ─────────────────────────────────────── */
+  @media (max-width: 780px){
+    .grid-2, .grid-3, .compare{grid-template-columns:1fr}
+    .slide{padding:2rem 1.25rem 5rem}
+    .nav{bottom:.75rem;right:.75rem}
+    .hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="stage">
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 1 — PORTADA
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide cover active">
+    <div class="jelly">🪼</div>
+    <div class="eyebrow"><span class="dot">●</span> Abans de començar</div>
+    <h1>Per què aprens a programar<br>amb una <span class="hl">medusa</span>?</h1>
+    <p class="subtitle">// I què té a veure això amb Instagram, TikTok<br>o qualsevol app que obris cada dia.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 2 — HOOK: QUÈ PASSA QUAN TOQUES EL COR
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">01 · Una pregunta tonta</div>
+    <h2>Obres Instagram. Toques el cor d'una foto.<br>Es torna vermell.</h2>
+    <div class="tap-demo">
+      <span class="finger">👆</span>
+      <span class="arrow-right">→</span>
+      <span style="font-size:2.5rem;opacity:.5">🤍</span>
+      <span class="arrow-right">→</span>
+      <span class="heart">❤️</span>
+    </div>
+    <p class="lead">Qui li ha dit al telèfon que ho faci?</p>
+    <p class="muted">El telèfon no sap res per ell mateix. <strong style="color:var(--text)">Algú li va haver de dir, abans, exactament què havia de passar quan un dit tocés aquesta zona de la pantalla.</strong></p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 3 — REVELACIÓ: TOT ÉS CODI
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">02 · La revelació</div>
+    <h2>Aquesta ordre existeix.<br>Està <span style="color:var(--accent)">escrita</span>. En algun lloc.</h2>
+    <p class="lead">Darrere de cada app que obres, hi ha <strong>text</strong>. Literalment, text. Moltes pàgines de text escrit per persones com tu.</p>
+    <pre><span class="cm"># alguna cosa així, simplificant molt:</span>
+<span class="kw">if</span> usuari_toca(cor):
+    cor.color = <span style="color:#fca5a5">"vermell"</span>
+    <span class="fn">guardar_like</span>(foto, usuari)
+    <span class="fn">avisar</span>(autor_foto)</pre>
+    <p class="muted" style="margin-top:1rem">Això és <strong style="color:var(--text)">codi</strong>. I aquesta cosa — escriure text que diu a una màquina què ha de fer — és <strong style="color:var(--text)">programar</strong>.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 4 — QUÈ ÉS EL CODI, EN REALITAT
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">03 · La màquina, per dins</div>
+    <h2>L'ordinador és <span style="color:var(--accent)">molt potent</span>,<br>però també <span style="color:var(--accent)">molt idiota</span>.</h2>
+    <div class="grid-2" style="margin-top:1rem">
+      <div>
+        <p>No endevina el que vols. No improvisa. No té sentit comú.</p>
+        <p>Però fa <strong>milers de milions</strong> d'operacions per segon, sense queixar-se ni equivocar-se, si li dius exactament què ha de fer.</p>
+      </div>
+      <div>
+        <p><strong style="color:var(--accent)">Programar</strong> = escriure una llista d'instruccions tan precisa que fins i tot una màquina idiota la pugui seguir sense fallar.</p>
+        <p class="muted">Com una recepta de cuina, però per a algú que no sap ni què és un ou.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 5 — EL PROBLEMA: INSTAGRAM TÉ MILIONS DE LÍNIES
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">04 · El problema</div>
+    <div class="big-num">~20.000.000</div>
+    <p class="lead">Línies de codi aproximades dins d'Instagram.</p>
+    <p>No pots obrir un editor, escriure <code>fes_instagram()</code> i ja està. <strong>Ningú</strong> no comença així. Ni tu, ni els enginyers de Meta, ni ningú de la història.</p>
+    <p class="muted">Per arribar a entendre una cosa gegant, primer has d'entendre <strong style="color:var(--text)">les peces petites</strong> de què està feta.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 6 — ANALOGIA PIANO
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">05 · Analogia</div>
+    <h2>Ningú comença el piano<br>tocant Chopin.</h2>
+    <div class="compare">
+      <div class="col">
+        <span class="icon">🎹</span>
+        <h3>Piano — primer dia</h3>
+        <ul>
+          <li>DO RE MI FA SOL</li>
+          <li>Una mà sola</li>
+          <li>Una nota cada vegada</li>
+          <li>Cançons avorrides a propòsit</li>
+        </ul>
+      </div>
+      <div class="col" style="border-color:var(--accent)">
+        <span class="icon">🪼</span>
+        <h3>Programar — primer dia</h3>
+        <ul>
+          <li><code style="color:var(--accent-soft)">move()</code>, <code style="color:var(--accent-soft)">turn_left()</code></li>
+          <li>Un sol personatge</li>
+          <li>Una instrucció cada vegada</li>
+          <li>Exercicis senzills a propòsit</li>
+        </ul>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:1.5rem">El que sembla "massa bàsic per ser útil" és <strong style="color:var(--text)">exactament</strong> el que et dona la tècnica per a les coses grans.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 7 — PER QUÈ UNA MEDUSA?
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">06 · Per què una medusa</div>
+    <h2>Perquè el <span style="color:var(--accent)">món</span> ha de ser senzill,<br>perquè tu puguis pensar en <span style="color:var(--accent)">les idees</span>.</h2>
+    <p class="lead">Si t'ensenyéssim a programar amb un món real — gravetat, pantalles, internet, usuaris, bases de dades — et passaries 3 mesos lluitant amb detalls tècnics <strong>sense haver après encara a pensar com un programador</strong>.</p>
+
+    <div class="grid-3" style="margin-top:1.5rem">
+      <div class="card">
+        <h3>El món</h3>
+        <p>Una graella. Caselles. 4 direccions. Prou.</p>
+      </div>
+      <div class="card">
+        <h3>El personatge</h3>
+        <p>Una medusa. Avança, gira, agafa, deixa. Prou.</p>
+      </div>
+      <div class="card">
+        <h3>Les coses</h3>
+        <p>Perles <span style="color:#fcd34d">●</span> i roques <span style="color:#a0a0a0">■</span>. Prou.</p>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:1.25rem">Un món-joguina on res et distreu. Tota la dificultat que trobaràs és <strong style="color:var(--text)">dificultat de pensament</strong>, no de tecnologia.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 8 — LES CAPES DEL SOFTWARE
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">07 · Mateixes idees, escales diferents</div>
+    <h2>Les idees de programació són<br>sempre <span style="color:var(--accent)">les mateixes</span>.</h2>
+    <p>Les que aprendràs amb la Karel són <strong>exactament</strong> les que fan servir els enginyers d'Instagram. Només canvia la mida del problema.</p>
+    <div class="stack" style="margin-top:1.5rem">
+      <div class="layer hl">
+        <span>🪼 Karel — 50 línies</span>
+        <span class="tag">On ets tu ara</span>
+      </div>
+      <div class="layer">
+        <span>🎮 Un joc mòbil senzill — 5.000 línies</span>
+        <span class="tag">Mateixes idees</span>
+      </div>
+      <div class="layer">
+        <span>📱 TikTok — milions de línies</span>
+        <span class="tag">Mateixes idees</span>
+      </div>
+      <div class="layer">
+        <span>🚀 Un coet de SpaceX — desenes de milions</span>
+        <span class="tag">Mateixes idees</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 9 — TRADUCCIÓ DIRECTA: move()
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">08 · Traducció · 1 de 4</div>
+    <h2><code>move()</code> = <span style="color:var(--accent)">fer una acció</span></h2>
+    <div class="grid-2">
+      <div>
+        <p class="muted" style="font-family:var(--mono);font-size:.8rem;letter-spacing:.1em">AMB KAREL</p>
+<pre><span class="cm"># la medusa avança una casella</span>
+<span class="fn">move</span>()</pre>
+      </div>
+      <div>
+        <p class="muted" style="font-family:var(--mono);font-size:.8rem;letter-spacing:.1em">A INSTAGRAM</p>
+<pre><span class="cm"># mostra la següent foto</span>
+<span class="fn">carrega_seguent_foto</span>()</pre>
+      </div>
+    </div>
+    <p style="margin-top:1.5rem">Una ordre = una acció concreta. El nom canvia. La idea és la mateixa: <strong>demanar a la màquina que faci una cosa</strong>.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 10 — TRADUCCIÓ: if
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">09 · Traducció · 2 de 4</div>
+    <h2><code>if</code> = <span style="color:var(--accent)">decidir</span> segons una condició</h2>
+    <div class="grid-2">
+      <div>
+        <p class="muted" style="font-family:var(--mono);font-size:.8rem;letter-spacing:.1em">AMB KAREL</p>
+<pre><span class="kw">if</span> <span class="fn">pearl_here</span>():
+    <span class="fn">grab</span>()</pre>
+        <p style="font-size:.9rem;margin-top:.6rem">“Si hi ha una perla aquí, agafa-la.”</p>
+      </div>
+      <div>
+        <p class="muted" style="font-family:var(--mono);font-size:.8rem;letter-spacing:.1em">A TIKTOK</p>
+<pre><span class="kw">if</span> <span class="fn">usuari_mira_video</span>(&gt;3s):
+    <span class="fn">marca_com_interes</span>()</pre>
+        <p style="font-size:.9rem;margin-top:.6rem">"Si el video l'interessa, aprèn-ho."</p>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:1.25rem">L'algoritme de TikTok és, essencialment, <strong style="color:var(--text)">milions de <code>if</code></strong> encadenats. Tu ja estaràs escrivint-ne al capítol 6.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 11 — TRADUCCIÓ: while / for
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">10 · Traducció · 3 de 4</div>
+    <h2><code>while</code> / <code>for</code> = <span style="color:var(--accent)">repetir</span></h2>
+    <div class="grid-2">
+      <div>
+        <p class="muted" style="font-family:var(--mono);font-size:.8rem;letter-spacing:.1em">AMB KAREL</p>
+<pre><span class="kw">while</span> <span class="fn">front_is_clear</span>():
+    <span class="fn">move</span>()</pre>
+        <p style="font-size:.9rem;margin-top:.6rem">"Mentre puguis avançar, avança."</p>
+      </div>
+      <div>
+        <p class="muted" style="font-family:var(--mono);font-size:.8rem;letter-spacing:.1em">A INSTAGRAM</p>
+<pre><span class="kw">while</span> <span class="fn">hi_ha_mes_stories</span>():
+    <span class="fn">mostra_seguent</span>()</pre>
+        <p style="font-size:.9rem;margin-top:.6rem">"Mentre quedin stories, mostra-les."</p>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:1.25rem">Els <strong style="color:var(--text)">bucles</strong> són el motor de l'scroll infinit, dels feeds, de tot el que "va passant sol" dins una app.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 12 — TRADUCCIÓ: def
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">11 · Traducció · 4 de 4</div>
+    <h2><code>def</code> = <span style="color:var(--accent)">fabricar</span> la teva pròpia ordre</h2>
+    <div class="grid-2">
+      <div>
+        <p class="muted" style="font-family:var(--mono);font-size:.8rem;letter-spacing:.1em">AMB KAREL</p>
+<pre><span class="kw">def</span> <span class="fn">gir_dreta</span>():
+    <span class="fn">turn_left</span>()
+    <span class="fn">turn_left</span>()
+    <span class="fn">turn_left</span>()</pre>
+      </div>
+      <div>
+        <p class="muted" style="font-family:var(--mono);font-size:.8rem;letter-spacing:.1em">A QUALSEVOL APP</p>
+<pre><span class="kw">def</span> <span class="fn">fer_doble_tap</span>():
+    <span class="fn">detecta_toc</span>()
+    <span class="fn">espera</span>(0.3)
+    <span class="fn">detecta_toc</span>()
+    <span class="fn">dona_like</span>()</pre>
+      </div>
+    </div>
+    <p style="margin-top:1.25rem">Quan una cosa és complicada, li poses nom i passa a ser <strong>una sola ordre</strong>. Així es construeix <em>tot</em> el software del món: ordres dins d'ordres dins d'ordres.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 13 — TAULA RESUM
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">12 · Resum</div>
+    <h2>El mateix diccionari,<br>dos mons.</h2>
+    <table class="mapping">
+      <thead>
+        <tr><th>Món de Karel</th><th></th><th>Món real (app)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="karel">move()</td>
+          <td class="arrow">→</td>
+          <td class="real">fer una acció concreta (enviar missatge, carregar vídeo...)</td>
+        </tr>
+        <tr>
+          <td class="karel">grab() / drop()</td>
+          <td class="arrow">→</td>
+          <td class="real">desar dades / esborrar dades</td>
+        </tr>
+        <tr>
+          <td class="karel">if pearl_here()</td>
+          <td class="arrow">→</td>
+          <td class="real">prendre una decisió: if usuari_ha_donat_like()</td>
+        </tr>
+        <tr>
+          <td class="karel">while front_is_clear()</td>
+          <td class="arrow">→</td>
+          <td class="real">repetir fins a una condició: while té_videos_per_veure()</td>
+        </tr>
+        <tr>
+          <td class="karel">def recollir_perles()</td>
+          <td class="arrow">→</td>
+          <td class="real">crear la teva funció: def enviar_notificació()</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 14 — EL CAMÍ
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">13 · El camí</div>
+    <h2>On vas a arribar.</h2>
+    <div class="stack">
+      <div class="layer hl">
+        <span>🪼 Capítols 1–9 · aprens a pensar amb Karel</span>
+        <span class="tag">Ara</span>
+      </div>
+      <div class="layer">
+        <span>🐍 Capítol 10 · descobreixes que <strong>ja saps Python</strong></span>
+        <span class="tag">Final del curs</span>
+      </div>
+      <div class="layer">
+        <span>⚙️ Reptes · apliques tot el que saps a problemes reals</span>
+        <span class="tag">Just després</span>
+      </div>
+      <div class="layer">
+        <span>🌍 Qualsevol cosa · webs, jocs, IA, apps...</span>
+        <span class="tag">A partir d'aquí</span>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:1.25rem">El <strong style="color:var(--text)">salt gran</strong> és el del capítol 1, no el de fer una app. I el faràs avui.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SLIDE 15 — TANCAMENT
+       ══════════════════════════════════════════════════════ -->
+  <section class="slide">
+    <div class="eyebrow">14 · Tanquem</div>
+    <div class="quote">Si aprens a moure una medusa amb codi,<br>aprens a moure <span style="color:var(--accent)">qualsevol cosa</span> amb codi.</div>
+    <ul class="checklist">
+      <li>Saps què és el codi: <strong>text que diu a una màquina què ha de fer</strong>.</li>
+      <li>Saps per què Karel: el món és simple perquè <strong>les idees no ho són</strong>.</li>
+      <li>Saps que <code>move</code>, <code>if</code>, <code>while</code> i <code>def</code> són el que hi ha dins de TikTok.</li>
+      <li>Saps on vas: Karel → Python → el que vulguis.</li>
+    </ul>
+    <p style="margin-top:2rem;font-family:var(--mono);color:var(--accent);font-size:1.1rem">Ara sí: obre el Capítol 1. 🪼</p>
+  </section>
+
+</div>
+
+<div class="hint">
+  <kbd>←</kbd> <kbd>→</kbd> navega &nbsp;·&nbsp; <kbd>espai</kbd> següent &nbsp;·&nbsp; <kbd>F</kbd> pantalla completa
+</div>
+
+<div class="nav">
+  <span class="counter" id="counter">1 / 15</span>
+  <button id="prev" aria-label="Anterior">‹</button>
+  <button id="next" aria-label="Següent">›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const counter = document.getElementById('counter');
+  const progress = document.getElementById('progress');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  let current = 0;
+
+  function show(i){
+    current = Math.max(0, Math.min(total-1, i));
+    slides.forEach((s,idx)=>s.classList.toggle('active', idx===current));
+    counter.textContent = `${current+1} / ${total}`;
+    progress.style.width = `${((current+1)/total)*100}%`;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total-1;
+    // scroll to top of the slide content
+    slides[current].scrollTop = 0;
+    location.hash = `s${current+1}`;
+  }
+
+  prevBtn.onclick = ()=>show(current-1);
+  nextBtn.onclick = ()=>show(current+1);
+
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(current+1); }
+    else if(e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(current-1); }
+    else if(e.key === 'Home') show(0);
+    else if(e.key === 'End') show(total-1);
+    else if(e.key === 'f' || e.key === 'F'){
+      if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  // deep link via hash
+  const m = location.hash.match(/^#s(\d+)$/);
+  if(m) show(parseInt(m[1],10)-1);
+  else show(0);
+
+  // touch swipe
+  let touchX = null;
+  document.addEventListener('touchstart', e=>{ touchX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e=>{
+    if(touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if(Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+    touchX = null;
+  });
+</script>
+
+</body>
+</html>
