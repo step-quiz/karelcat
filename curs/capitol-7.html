@@ -149,10 +149,8 @@ while front_is_clear():
         <ul>
           <li><code>while front_is_clear():</code> — avança mentre el camí estigui lliure.</li>
           <li><code>while pearl_here():</code> — continua mentre hi hagi perles a la casella.</li>
-          <li><code>while not bag_is_empty():</code> — continua mentre la motxilla tingui perles.</li>
+          <li><code>while not bag_is_empty():</code> — continua mentre la motxilla tingui, com a mínim, una perla.</li>
         </ul>
-
-        <p>La paraula clau <code>not</code> inverteix la condició: <code>not bag_is_empty()</code> és cert quan la motxilla <em>no</em> és buida, és a dir, quan en Karel porta alguna cosa.</p>
 
         <p>En l'exemple de sota, en Karel té tres perles a la motxilla i les ha de deixar caure una per una mentre camina cap a l'Est:</p>
 
@@ -161,7 +159,8 @@ while front_is_clear():
              data-bag="3"
              data-code="while not bag_is_empty():
     drop()
-    move()
+    if front_is_clear():
+        move()
 "
              data-readonly="true"
              data-label="Exemple"
