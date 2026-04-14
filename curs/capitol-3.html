@@ -192,13 +192,13 @@ move()
           <tbody>
             <tr>
               <th>Quan es detecta</th>
-              <td>Abans d'executar, quan el sistema llegeix el codi.</td>
-              <td>Durant l'execució, en el moment exacte de l'acció impossible.</td>
+              <td>Abans d'executar cap línia  de codi.</td>
+              <td>Durant l'execució del codi, i en el moment on en Karel realitza una acció no permesa.</td>
             </tr>
             <tr>
               <th>Què fa en Karel</th>
-              <td>No es mou gens. El programa ni comença.</td>
-              <td>Es mou normalment fins al moment del problema, i llavors s'atura.</td>
+              <td>No fa cap acció, perquè el programa no executa ni la primera línia de codi.</td>
+              <td>Es mou i fa accions, fins al moment on hi ha una cosa no permesa. Llavors, s'atura.</td>
             </tr>
             <tr>
               <th>Com es corregeix</th>
@@ -207,8 +207,6 @@ move()
             </tr>
           </tbody>
         </table>
-
-        <p>Una frase curta per recordar-ho: <strong>l'error de sintaxi és un problema d'escriptura</strong>; <strong>l'error d'execució és un problema de planificació</strong>.</p>
       </section>
 
 
