@@ -49,7 +49,14 @@
     var p = new URLSearchParams(location.search);
     if (p.get('embed') === '1') document.body.classList.add('embed');
     if (p.get('multi') === '1') document.body.classList.add('multi');
-    if (p.get('theme') === 'light') document.body.classList.add('light');
+    // Aplica el tema immediatament (abans que res es pinti) per evitar el blink fosc→clar.
+    // Prioritat: paràmetre URL > localStorage > fosc per defecte.
+    var themeParm = p.get('theme');
+    var saved = '';
+    try { saved = localStorage.getItem('karel-theme') || ''; } catch(_) {}
+    if (themeParm === 'light' || (!themeParm && saved !== 'dark')) {
+      document.body.classList.add('light');
+    }
   })();
 </script>
 
