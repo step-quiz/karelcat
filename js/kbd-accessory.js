@@ -36,7 +36,10 @@
   //    inserim els caràcters que el pare ens envia. La barra real
   //    viu al document pare (vegeu curs/capitols.js). ──
   if (window.self !== window.top) {
-    ta.addEventListener('focus', () => window.parent.postMessage('karel-editing', '*'));
+    ta.addEventListener('focus', () => {
+      if (ta.readOnly || ta.disabled) return;
+      window.parent.postMessage('karel-editing', '*');
+    });
     ta.addEventListener('blur',  () => window.parent.postMessage('karel-idle',    '*'));
     window.addEventListener('message', (e) => {
       const d = e.data;
