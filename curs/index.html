@@ -75,18 +75,19 @@
     const list = document.getElementById('capitols-list');
     if (!list) return;
 
-    const DISPONIBLES = new Set([1,2,3,4,5,6,7,8,9,10]);
+    const DISPONIBLES = new Set([1,2,4,5,6,7,8,9,10,'futur']);
 
     let html = '';
     for (const c of CAPITOLS_DATA) {
       const disponible = DISPONIBLES.has(c.num);
       const cardClass  = disponible ? 'capitol-card' : 'capitol-card capitol-card--pendent';
       const href       = disponible ? c.arxiu : '#';
+      const numLabel   = (typeof c.num === 'number') ? c.num : '—';
 
       html += `
         <li class="${cardClass}">
           <a href="${href}" ${!disponible ? 'aria-disabled="true" tabindex="-1"' : ''}>
-            <span class="capitol-card-num">${c.num}</span>
+            <span class="capitol-card-num">${numLabel}</span>
             <span class="capitol-card-info">
               <span class="capitol-card-titol">${c.titol}</span>
             </span>

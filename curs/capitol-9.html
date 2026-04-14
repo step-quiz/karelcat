@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Capítol 9 — Resum dels capítols | Karel</title>
+  <title>Capítol 9 — Combinant condicions | Karel</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
   <link rel="stylesheet" href="../nav.css">
@@ -37,7 +37,7 @@
       <a href="../simulador.html" class="karel-nav-link">Simulador</a>
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
-  <span class="curs-header-title">Capítol 9 — Resum dels capítols</span>
+  <span class="curs-header-title">Capítol 9 — Combinant condicions</span>
   <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
 </header>
 
@@ -59,180 +59,99 @@
   <main id="chapter-content" class="curs-content" tabindex="-1">
     <div class="chapter-content-inner">
 
-
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 9</span>
-        <h1>Resum dels capítols</h1>
-        <p class="chapter-lead">Has arribat al final del curs. Aquest capítol fa un repàs del vocabulari que has après i et dona un parell d'idees per tal que puguis escriure un codi informàtic que, a banda de funcionar, sigui un «codi ben escrit».</p>
+        <h1>Combinant condicions</h1>
       </header>
 
 
-      <!-- ─────────────────────────────────────────────
-           SECCIÓ 1 — Glossari complet
-           ───────────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Glossari</h2>
-
-        <p>Aquest és el vocabulari complet d'en Karel.</p>
-
-        <h3>Accions: el que en Karel <em>fa</em></h3>
-        <pre><code>move()           # avança una casella en la direcció que mira
-turn_left()      # gira 90° a l'esquerra (no es mou)
-turn_right()     # gira 90° a la dreta (no es mou)
-turn_around()    # fa mitja volta (180°), no es mou
-grab()           # recull la perla de la casella actual
-drop()           # deixa una perla a la casella actual</code></pre>
-
-        <h3>Condicions: el que en Karel <em>pot preguntar</em></h3>
-        <pre><code>front_is_clear()      # el davant és lliure?
-front_is_blocked()    # el davant té obstacle?
-left_is_clear()       # l'esquerra és lliure?
-right_is_clear()      # la dreta és lliure?
-pearl_here()          # hi ha una perla en aquesta casella?
-bag_is_empty()        # la motxilla és buida?</code></pre>
-
-        <h3>Estructures: la <em>forma</em> del programa</h3>
-        <pre><code>for i in range(5):       # repetir un nombre exacte de vegades
-    move()
-
-while front_is_clear():  # repetir mentre es compleixi una condició
-    move()
-
-if pearl_here():         # decidir entre dues opcions
-    grab()
-else:
-    move()
-
-if right_is_clear():     # decidir entre tres o més opcions
-    turn_right()
-elif front_is_clear():
-    move()
-else:
-    turn_left()
-
-def anar_al_final():     # crear una instrucció pròpia
-    while front_is_clear():
-        move()</code></pre>
-
-        <h3>Operadors lògics: combinar condicions</h3>
-        <pre><code>if front_is_clear() and not pearl_here():
-    move()
-
-if pearl_here() or bag_is_empty():
-    grab()</code></pre>
-
-      </section>
-
-
-      <!-- ─────────────────────────────────────────────
-           SECCIÓ 2 — Precondició i postcondició
-           ───────────────────────────────────────────── -->
-      <section class="chapter-section">
-        <h2>Pensar abans d'escriure: precondició i postcondició</h2>
-
-        <p>Quan decideixes crear una funció pròpia fent servir <code>def</code>, li estàs ensenyant a en Karel una paraula nova. Aquí entren dues idees que les persones que programen <strong>en l'àmbit professional</strong> sempre tenen al cap:</p>
-
+        <h2>Més d'una condició alhora</h2>
+        <p>Fins ara sabem fer actuar en Karel segons una única condició. Tanmateix, de vegades necessitem que en Karel comprovi dues o més coses alhora, abans de moure's o actuar.</p>
+       <p>Per fer-ho, podem combinar condicions utilitzant aquests tres connectors: <strong><code>and</code></strong>, <strong><code>or</code></strong>, <strong><code>not</code></strong>.</p>
         <ul>
-          <li>Precondició. Quina és la situació just <em>abans</em> que comenci la meva funció. On és en Karel? Cap a on mira? Què hi ha al voltant?</li>
-          <li>Postcondició. Quina situació deixo <em>després</em> que la funció s'hagi executat. On haurà acabat, en Karel? Cap a on estarà mirant? Ha canviat alguna condició del món, com per exemple el nombre de perles que hi ha?</li>
+          <li><strong><code>and</code></strong>: Es compleix només si <em>totes dues</em> condicions són certes alhora. Actua com la conjunció «i».</li>
+          <li><strong><code>or</code></strong>: Es compleix si <em>almenys una</em> de les condicions és certa. Actua com la conjunció «o»</li>
+          <li><strong><code>not</code></strong>: Serveix per comprovar el contrari (per exemple, <code>not front_is_clear()</code> vol dir que tens un obstacle al davant). Actua com la negació «no»</li>
         </ul>
-
-        <p>Mira aquest exemple. Volem una funció <code>girar_cantonada_dreta()</code> perquè en Karel giri a la dreta i avanci una casella:</p>
-
-        <pre><code>def girar_cantonada_dreta():
-    # Precondició:  en Karel té la dreta lliure
-    # Postcondició: en Karel ha girat 90° a la dreta i ha avançat 1 casella
-    turn_right()
-    move()</code></pre>
-
-        <p>Si crides aquesta funció amb una paret a la dreta, en Karel s'estavellarà. La culpa no és de la funció: és de qui l'ha cridat sense respectar la precondició. Per això abans d'usar-la sempre comprovaràs <code>if right_is_clear():</code>.</p>
-
-        <p>Aquest hàbit — escriure mentalment (o en un comentari) <em>què espero</em> i <em>què deixo</em> — és una de les diferències més grans que trobem quan es programa en l'àmbit professional. T'estalviarà hores de cercar errors i és, de debò, una de les bones pràctiques que més et farà créixer com a programadora o programador.</p>
-      </section>
-
-      <!-- ─────────────────────────────────────────
-           SECCIÓ 5 — La iteració infinita
-           ───────────────────────────────────────── -->
-      <section class="chapter-section">
-        <h2>Compte amb la iteració infinita</h2>
-
-        <p>Si la condició d'un <code>while</code> mai no es torna falsa, la iteració no s'atura mai. Això s'anomena una <strong>iteració infinita</strong> i és un error habitual perquè no sempre és evident detectar-lo.</p>
-
-        <p>Per exemple:</p>
-
-        <pre><code># ❌ Iteració infinita: la condició sempre és certa
-while front_is_clear():
-    turn_left()   # gira però no avança → el camí segueix lliure per sempre</code></pre>
-
-        <p>En Karel girarà a l'esquerra indefinidament perquè mai no avança cap al mur. La condició <code>front_is_clear()</code> seguirà sent certa eternament.</p>
-
-        <p>La regla per evitar-ho: <strong>el cos del <code>while</code> ha de fer alguna cosa que pugui canviar la condició</strong>. Si el <code>while</code> comprova <code>front_is_clear()</code>, el cos ha d'incloure algun <code>move()</code> o una acció que pugui apropar en Karel a un obstacle.</p>
       </section>
 
 
-
-      <!-- ─────────────────────────────────────────────
-           SECCIÓ 3 — Codi net vs codi no net
-           ───────────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Codi net comparat amb codi que «simplement, funciona»</h2>
+        <h2>Exemple 1: L'operador "and"</h2>
+        <p>Imagina que volem que en Karel avanci <strong>només sobre una estora de perles</strong>. S'ha d'aturar en sec quan les perles s'acabin. Si fem servir <code>while pearl_here(): move()</code>, en Karel avançarà molt bé, però... i si la catifa arriba just on hi ha una roca? En Karel farà un últim <code>move()</code> que provocarà un xoc amb la roca, i això és un error de programació!</p>
+        <p>Per evitar-ho, li hem d'exigir dues coses alhora: "Mentre tinguis una perla sota teu <strong>i</strong> el teu davant estigui lliure, avança". D'aquesta manera, no xocarà mai.</p>
 
-        <p>Que un programa funcioni no vol dir que estigui ben escrit. Els dos codis que veuràs a continuació fan exactament el mateix: en Karel travessa un corredor recollint totes les perles que troba pel camí. Llegeix-los.</p>
-
-        <h3>Versió no neta</h3>
-        <pre><code>move()
-if pearl_here():
-    grab()
-move()
-if pearl_here():
-    grab()
-move()
-if pearl_here():
-    grab()
-move()
-if pearl_here():
-    grab()</code></pre>
-
-        <p>Funciona. Però hi ha diversos problemes: si el corredor canvia de mida, has de retallar o copiar línies a mà; si vols canviar la lògica (per exemple, deixar una perla en lloc de recollir-la), has de modificar el codi en cinc llocs diferents; finalment, a l'hora de llegir-lo, és complicat d'entendre <em>què</em> fa aquest codi, perquè només veiem una sèrie de passos repetits.</p>
-
-        <h3>Versió neta</h3>
-        <pre><code>def avançar_i_recollir():
-    # Precondició.  La casella davant d'en Karel ha d'estar lliure
-    # Postcondició. En Karel ha avançat una casella i si allà hi havia una perla, l'ha recollida.
+        <div class="simulador"
+             data-map="K>,A,A,A,P,.|.,.,.,.,.,.|.,.,.,.,.,."
+             data-code="# Caminem fins que trobem perles. Després, les agafem, però sense xocar!
+if front_is_clear():
     move()
-    if pearl_here():
-        grab()
-
-while front_is_clear():
-    avançar_i_recollir()</code></pre>
-
-        <p>Aquesta versió diu el que fa: «mentre puguis avançar, avança i recull». Funciona amb un corredor de 5 caselles, de 50 o de 500 sense modificar res. A més, qualsevol persona que llegeixi <code>while front_is_clear(): avançar_i_recollir()</code> entén el programa fins i tot abans d'entrar en detalls.</p>
-
-        <p>Aquesta és la diferència entre «codi que funciona» i «codi net i que funciona»: el primer et pot resoldre un problema avui, però crear dificultats en el futur. El segon, el codi net, és un codi estable i el pots compartir amb altra gent que programa amb la seguretat que l'entendran. Recorda:</p>
-
-        <ul>
-          <li><strong>No dupliquis codi innecessàriament.</strong> Si veus el mateix bloc dues o tres vegades, segurament pots incloure una repetició, o bé crear una funció nova.</li>
-          <li><strong>Noms que expliquen.</strong> <code>avançar_i_recollir()</code> és millor que <code>fer_cosa()</code>. El nom que li atorgues a una funció nova és important per poder descriure el que fa.</li>
-          <li><strong>Cada funció, una idea.</strong> Si quan expliques què fa una funció, dius «..., i també fa...», potser l'hauries de partir en dues funcions independents.</li>
-        </ul>
-        <p>Al pròxim capítol descobriràs un secret que potser ja sospites: tot el que has escrit aquests nou capítols ja era Python real. No una imitació. No una versió per a principiants. Python autèntic, exactament igual al que es fa servir en qualsevol grau d'Enginyeria.</p>
-        <p>Enhorabona per haver arribat fins aquí. Ara ja saps programar.</p>        
+while pearl_here() and front_is_clear():
+    move()
+"
+             data-readonly="true"
+             data-label="Exemple 1"
+             data-height="300">
+        </div>
       </section>
 
-      <!-- ─────────────────────────────────────────────
-           NAVEGACIÓ
-           ───────────────────────────────────────────── -->
+
+      <section class="chapter-section">
+        <h2>Exemple 2: L'operador "or"</h2>
+        <p>L'operador <code>or</code> serveix per reaccionar quan passa una cosa <strong>o</strong> en passa una altra. En aquest exemple, en Karel està patrullant el passadís. Li direm: "En cas que trepitgis una perla <strong>o bé</strong> si tens davant un obstacle, has d'enviar un senyal d'alerta, que serà girar sobre tu mateix."</p>
+        <div class="simulador"
+             data-map="K>,.,.,A,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
+             data-code="while front_is_clear():
+    move()
+    
+    # Comprovem si ha trobat una perla, o bé si s'ha acabat el camí lliure
+    if pearl_here() or not front_is_clear():
+        # Fem una tombarella
+        for i in range(4):
+          turn_left()
+"
+             data-readonly="true"
+             data-label="Exemple 2"
+             data-title="La pirueta s'activarà en dues situacions completament diferents gràcies a l''or'."
+             data-height="380">
+        </div>
+      </section>
+
+
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici: El Cercador Intel·ligent</h2>
+
+        <div class="exercise-enunciat">
+          En Karel ha d'avançar pel passadís per buscar una perla amagada. Volem que camini mentre no hi hagi una perla sota seu <strong>i</strong> davant seu hi hagi camí lliure.
+          <br><br>
+          Un cop la iteració acabi (ja sigui perquè ha trobat la perla sota seu, o perquè té una roca davant), fes servir un <code>if</code> per agafar la perla (només si n'hi ha una, és clar!).
+        </div>
+
+        <p><strong>Pista:</strong> A la iteració <code>while</code> apareixen les instruccions <code>pearl_here()</code>, <code>front_is_clear()</code>. Però hauràs de pensar també si et convé fer servir <code>and</code>, <code>or</code>, <code>not</code></p>
+
+        <div class="simulador"
+             data-map="K>,.,.,A,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
+             data-goal=".,.,.,K>,.,.,P|.,.,.,.,.,.,.|.,.,.,.,.,.,."
+             data-code="# Escriu el teu codi aquí:
+
+"
+             data-label="Exercici"
+             data-title="Busca la perla amb seguretat sense xocar amb la roca del final."
+             data-height="350">
+        </div>
+      </section>
+
+
       <nav class="chapter-nav" aria-label="Navegació entre capítols">
         <a href="capitol-8.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
         <a href="capitol-10.html" class="btn-nav btn-nav--next">Capítol següent →</a>
       </nav>
 
-
     </div>
   </main>
 
 </div>
-
 
 <script>const CURRENT_CAPITOL = 9;</script>
 <script src="progress.js"></script>
