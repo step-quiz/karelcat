@@ -170,9 +170,6 @@ move()
 
         <p>Veus la diferència? En el cas anterior (error de sintaxi) en Karel no es movia gens. Ara en Karel ha fet part del camí abans d'aturar-se. El codi estava ben escrit; el problema és que la <em>lògica</em> no encaixa amb el món.</p>
 
-        <p>Un altre exemple d'error d'execució és el <code>grab()</code> en una casella buida, que ja vas veure al capítol anterior. En tots dos casos, en Karel prova de fer una cosa que, en aquell moment concret, no pot.</p>
-
-        <p>Per corregir un error d'execució, no busquis un problema tipogràfic: el codi està ben escrit. El que has de fer és <strong>repensar el pla</strong>. On era en Karel quan s'ha aturat? Què hi havia al voltant? Potser li estàs demanant avançar quan hauria de girar, o recollir una perla que no hi és.</p>
       </section>
 
 
@@ -212,35 +209,6 @@ move()
         </table>
 
         <p>Una frase curta per recordar-ho: <strong>l'error de sintaxi és un problema d'escriptura</strong>; <strong>l'error d'execució és un problema de planificació</strong>.</p>
-      </section>
-
-
-      <!-- ─────────────────────────────────────────
-           SECCIÓ 5 — Quiz
-           ───────────────────────────────────────── -->
-      <section class="chapter-section">
-        <h2>Posa't a prova</h2>
-
-        <p>Llegeix cadascun d'aquests fragments de codi i pensa: <em>de quin tipus és aquest error?</em> Quan tinguis la resposta, clica el triangle per comprovar-la.</p>
-
-        <p><strong>Fragment 1:</strong></p>
-        <pre><code>mov()
-move()
-move()</code></pre>
-        <details>
-          <summary>Quin tipus d'error és?</summary>
-          <p><strong>Error de sintaxi.</strong> L'ordre <code>mov()</code> no existeix; el sistema no entén aquesta paraula. En Karel no es mourà gens.</p>
-        </details>
-
-        <p><strong>Fragment 2:</strong></p>
-        <pre><code>move()
-move()
-grab()</code></pre>
-        <p>(Imagina que el món és un passadís de tres caselles, sense cap perla enlloc.)</p>
-        <details>
-          <summary>Quin tipus d'error és?</summary>
-          <p><strong>Error d'execució.</strong> El codi està ben escrit; totes les ordres són correctes. Però quan en Karel arribi a la tercera casella i provi de fer <code>grab()</code>, no hi trobarà cap perla i el programa s'aturarà. En Karel haurà avançat dues caselles abans de fallar.</p>
-        </details>
       </section>
 
 
