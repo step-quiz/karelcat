@@ -29,7 +29,6 @@
 
 <!-- ══════════════════════════════════════════════════════
      CAPÇALERA
-     (logo via injectCursLogo(), sense toggle de tema)
      ══════════════════════════════════════════════════════ -->
 <header class="curs-header">
   <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
@@ -73,19 +72,203 @@
 
 
       <!-- ─────────────────────────────────────────
-           CAPÇALERA
+           CAPÇALERA DEL CAPÍTOL
            ───────────────────────────────────────── -->
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 3</span>
         <h1>Gestió d'errors en un codi</h1>
+        <p class="chapter-lead">Quan un programa falla, no tots els errors són iguals. N'hi ha que apareixen abans que en Karel faci cap moviment, i n'hi ha que apareixen a mig camí. Aprendre a distingir-los t'ajudarà a trobar la solució molt més de pressa.</p>
       </header>
 
 
       <!-- ─────────────────────────────────────────
-           CONTINGUT PENDENT
+           SECCIÓ 1 — Dos moments, dos errors
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <p><em>Capítol en preparació.</em></p>
+        <h2>Dos moments en què un programa pot fallar</h2>
+
+        <p>Al capítol anterior vas veure que els errors no són fracassos: són pistes. Ara hi afegim una idea important: els errors es divideixen en <strong>dos tipus</strong> molt diferents, segons en quin moment apareixen.</p>
+
+        <p>Quan prems ▶ <strong>Executa</strong>, el sistema fa dues coses, en aquest ordre:</p>
+
+        <ol>
+          <li>Primer <strong>llegeix tot el codi sencer</strong> per entendre'l. És com quan un actor repassa el guió abans de pujar a l'escenari.</li>
+          <li>Després <strong>executa les instruccions una per una</strong>, i en Karel les va fent al món.</li>
+        </ol>
+
+        <p>Un error pot aparèixer a la primera fase o a la segona. Els que apareixen a la primera fase s'anomenen <strong>errors de sintaxi</strong>. Els que apareixen a la segona, <strong>errors d'execució</strong>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — Error de sintaxi
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Error de sintaxi: el codi està mal escrit</h2>
+
+        <p>Un <strong>error de sintaxi</strong> vol dir que el codi té algun problema d'escriptura que el sistema no entén. És com si en un guió hi hagués una paraula inventada: l'actor no podria ni començar l'escena.</p>
+
+        <p>Exemples típics d'errors de sintaxi:</p>
+        <ul>
+          <li>Oblidar els parèntesis: <code>move</code> en lloc de <code>move()</code>.</li>
+          <li>Escriure malament una ordre: <code>mov()</code> o <code>turnleft()</code> en lloc de <code>turn_left()</code>.</li>
+          <li>Oblidar els dos punts: <code>for i in range(3)</code> en lloc de <code>for i in range(3):</code>.</li>
+          <li>Indentar malament les línies d'un bloc.</li>
+        </ul>
+
+        <p>La característica clau és aquesta: <strong>aquest error es detecta abans que en Karel faci cap moviment</strong>. El sistema llegeix el codi, troba que no l'entén, i s'atura immediatament. En Karel ni arriba a sortir de la seva casella.</p>
+
+        <p>En l'exemple següent, el codi té dues línies correctes i una tercera amb un error de sintaxi (falta els parèntesis a <code>move</code>). Executa'l i observa què passa:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|.,.,.,.,.|K>,.,.,.,.|.,.,.,.,."
+             data-code="move()
+move()
+move
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-height="320">
+        </div>
+
+        <p>En Karel no s'ha mogut gens, tot i que les dues primeres línies eren correctes. Per què? Perquè el sistema llegeix el codi <em>sencer</em> abans d'executar-lo. Com que la tercera línia no s'entén, rebutja tot el programa sense executar-ne cap part.</p>
+
+        <p>Per corregir un error de sintaxi, llegeix el missatge d'error al log (la finestra inferior): t'indicarà en quina línia és el problema. Després revisa aquella línia amb atenció, busca el detall tipogràfic (un parèntesi, un caràcter oblidat, una paraula mal escrita) i corregeix-lo.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Error d'execució
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Error d'execució: en Karel fa una cosa impossible</h2>
+
+        <p>Un <strong>error d'execució</strong> vol dir que el codi està ben escrit (el sistema l'entén), però a mig camí en Karel intenta fer una cosa impossible en aquell món. El programa comença bé, es va executant, i en un moment concret s'atura amb un error.</p>
+
+        <p>Exemples típics d'errors d'execució:</p>
+        <ul>
+          <li>Intentar avançar quan tens una paret al davant (xoc).</li>
+          <li>Intentar avançar quan tens una roca al davant (xoc).</li>
+          <li>Fer <code>grab()</code> en una casella on no hi ha cap perla.</li>
+          <li>Fer <code>drop()</code> quan la motxilla és buida.</li>
+        </ul>
+
+        <p>La característica clau és aquesta: <strong>aquest error es detecta durant l'execució</strong>. En Karel comença a moure's, pot fer diverses accions correctament, i només s'atura quan arriba al moment concret en què l'acció és impossible.</p>
+
+        <p>En l'exemple següent, el codi té cinc ordres <code>move()</code>. Però el món només té cinc columnes i en Karel comença a la primera. Executa'l i observa que en Karel avança unes quantes caselles abans que el programa s'aturi:</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|K>,.,.,.,.|.,.,.,.,."
+             data-code="move()
+move()
+move()
+move()
+move()
+"
+             data-readonly="true"
+             data-label="Exemple"
+             data-height="260">
+        </div>
+
+        <p>Veus la diferència? En el cas anterior (error de sintaxi) en Karel no es movia gens. Ara en Karel ha fet part del camí abans d'aturar-se. El codi estava ben escrit; el problema és que la <em>lògica</em> no encaixa amb el món.</p>
+
+        <p>Un altre exemple d'error d'execució és el <code>grab()</code> en una casella buida, que ja vas veure al capítol anterior. En tots dos casos, en Karel prova de fer una cosa que, en aquell moment concret, no pot.</p>
+
+        <p>Per corregir un error d'execució, no busquis un problema tipogràfic: el codi està ben escrit. El que has de fer és <strong>repensar el pla</strong>. On era en Karel quan s'ha aturat? Què hi havia al voltant? Potser li estàs demanant avançar quan hauria de girar, o recollir una perla que no hi és.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Comparativa
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comparativa dels dos tipus</h2>
+
+        <p>Aquesta taula resumeix la diferència:</p>
+
+        <table class="errors-compare">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Error de sintaxi</th>
+              <th>Error d'execució</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Quan es detecta</th>
+              <td>Abans d'executar, quan el sistema llegeix el codi.</td>
+              <td>Durant l'execució, en el moment exacte de l'acció impossible.</td>
+            </tr>
+            <tr>
+              <th>Què fa en Karel</th>
+              <td>No es mou gens. El programa ni comença.</td>
+              <td>Es mou normalment fins al moment del problema, i llavors s'atura.</td>
+            </tr>
+            <tr>
+              <th>Com es corregeix</th>
+              <td>Busca el detall tipogràfic (parèntesis, dos punts, nom mal escrit) a la línia que indica el log.</td>
+              <td>Repensa la lògica del programa per aquell món: canvia l'ordre de les accions, afegeix o treu passos.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Una frase curta per recordar-ho: <strong>l'error de sintaxi és un problema d'escriptura</strong>; <strong>l'error d'execució és un problema de planificació</strong>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Quiz
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Posa't a prova</h2>
+
+        <p>Llegeix cadascun d'aquests fragments de codi i pensa: <em>de quin tipus és aquest error?</em> Quan tinguis la resposta, clica el triangle per comprovar-la.</p>
+
+        <p><strong>Fragment 1:</strong></p>
+        <pre><code>mov()
+move()
+move()</code></pre>
+        <details>
+          <summary>Quin tipus d'error és?</summary>
+          <p><strong>Error de sintaxi.</strong> L'ordre <code>mov()</code> no existeix; el sistema no entén aquesta paraula. En Karel no es mourà gens.</p>
+        </details>
+
+        <p><strong>Fragment 2:</strong></p>
+        <pre><code>move()
+move()
+grab()</code></pre>
+        <p>(Imagina que el món és un passadís de tres caselles, sense cap perla enlloc.)</p>
+        <details>
+          <summary>Quin tipus d'error és?</summary>
+          <p><strong>Error d'execució.</strong> El codi està ben escrit; totes les ordres són correctes. Però quan en Karel arribi a la tercera casella i provi de fer <code>grab()</code>, no hi trobarà cap perla i el programa s'aturarà. En Karel haurà avançat dues caselles abans de fallar.</p>
+        </details>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          El codi següent té un error. En Karel hauria d'avançar tres caselles i recollir la perla que hi ha al final, però tal com està escrit no funciona. Llegeix el missatge d'error, identifica de quin tipus és, i corregeix el codi fins que en Karel arribi a la perla i la reculli.
+        </div>
+
+        <p>Pista: executa primer el codi sense canviar res. Observa el missatge d'error al log. Després corregeix la línia que el provoca.</p>
+
+        <div class="simulador"
+             data-map=".,.,.,.,.|K>,.,.,A,.|.,.,.,.,."
+             data-goal=".,.,.,.,.|.,.,.,K>,.|.,.,.,.,."
+             data-code="move()
+move()
+move
+grab()
+"
+             data-label="Exercici"
+             data-height="320">
+        </div>
       </section>
 
 
