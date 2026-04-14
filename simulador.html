@@ -330,7 +330,7 @@ function openMapInEditor() {
     if (localStorage.getItem('karel_tour_done_v1')) return;
     const f = document.createElement('iframe');
     f.id = 'tour-iframe';   // el tour s'autodestrueix buscant aquest id
-    f.src = 'initial-tour.html';
+    f.src = 'presentacio-karel.html';
     f.title = 'Tour inicial';
     f.style.cssText =
       'position:fixed;inset:0;width:100%;height:100%;' +
