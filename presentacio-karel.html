@@ -899,9 +899,23 @@
 
   // Confirmació en tancar la presentació
   document.getElementById('close-btn').addEventListener('click', e=>{
-    if (!confirm('Confirmes que vols tancar aquesta presentació?')) {
-      e.preventDefault();
-    }
+    e.preventDefault();
+    if (!confirm('Confirmes que vols tancar aquesta presentació?')) return;
+
+    // Marca que el tour ja s'ha vist en aquest dispositiu
+    try { localStorage.setItem('karel_tour_done_v1', '1'); } catch(_) {}
+
+    // Si estem dins l'iframe del simulador, eliminem l'iframe i deixem
+    // el simulador visible. Si estem en mode standalone, anem al simulador.
+    try {
+      const iframe = window.parent.document.getElementById('tour-iframe');
+      if (iframe) {
+        iframe.remove();
+        return;
+      }
+    } catch(_) {}
+    // Fallback: mode standalone (visita directa a presentacio-karel.html)
+    window.location.href = 'simulador.html';
   });
 
   document.addEventListener('keydown', e=>{
