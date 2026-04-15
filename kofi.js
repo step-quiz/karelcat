@@ -7,9 +7,11 @@
   // ── Estils ────────────────────────────────────────────────────────────────
   var style = document.createElement('style');
   style.textContent = [
+    /* Botó Ko-fi */
     '.kofi-wrap {',
-    '  position: fixed; top: 16px; left: 16px; z-index: 300;',
-    '  opacity: 0; pointer-events: none; transition: opacity 0.35s;',
+    '  position: fixed; top: 16px; left: 16px; z-index: 301;',
+    '  opacity: 0; pointer-events: none;',
+    '  transition: opacity 0.5s ease;',
     '}',
     '.kofi-wrap.kofi-show { opacity: 1; pointer-events: auto; }',
 
@@ -56,10 +58,29 @@
     '.sp6 { --a: 225deg; background: #f59e0b; animation-delay: 3.25s; }',
     '.sp7 { --a: 270deg; background: #ec4899; animation-delay: 3.30s; }',
     '.sp8 { --a: 315deg; background: #14b8a6; animation-delay: 3.35s; }',
+
+    /* Spotlight overlay */
+    '.kofi-spotlight {',
+    '  position: fixed; inset: 0; z-index: 300;',
+    '  opacity: 0; pointer-events: none;',
+    '  transition: opacity 0.5s ease;',
+    '  /* El gradient es fixa per JS en el moment de l\'activació */',
+    '}',
+    '.kofi-spotlight.kofi-show {',
+    '  opacity: 1;',
+    '  /* Clicable fora del botó per tancar */',
+    '  pointer-events: auto;',
+    '}',
   ].join('\n');
   document.head.appendChild(style);
 
   // ── Markup ────────────────────────────────────────────────────────────────
+  // Overlay de spotlight (s'insereix ABANS del wrap perquè quedi per sota)
+  var spotlight = document.createElement('div');
+  spotlight.className = 'kofi-spotlight';
+  spotlight.id = 'kofiSpotlight';
+  document.body.appendChild(spotlight);
+
   var wrap = document.createElement('div');
   wrap.className = 'kofi-wrap';
   wrap.id = 'kofiWrap';
@@ -74,8 +95,34 @@
     '   aria-label="Invita\'m a un cafè a Ko-fi">☕ Ko-fi</a>';
   document.body.appendChild(wrap);
 
+  // ── Tancar l'efecte ────────────────────────────────────────────────────────
+  function hideKofi() {
+    spotlight.classList.remove('kofi-show');
+    wrap.classList.remove('kofi-show');
+  }
+
+  // Clic fora (sobre l'overlay fosc) → tanca
+  spotlight.addEventListener('click', hideKofi);
+
   // ── Activació (5 s de retard) ──────────────────────────────────────────────
   setTimeout(function () {
-    document.getElementById('kofiWrap').classList.add('kofi-show');
+    // Calcula el centre del botó en coordenades de viewport
+    var btn   = wrap.querySelector('.kofi-btn');
+    var rect  = btn.getBoundingClientRect();
+    var cx    = rect.left + rect.width  / 2;
+    var cy    = rect.top  + rect.height / 2;
+
+    // Radi interior: zona completament il·luminada (just envolta el botó)
+    var rInner = Math.max(rect.width, rect.height) * 0.85;
+    // Radi exterior: on el dim arriba al 40% (transició suau)
+    var rOuter = rInner * 2.4;
+
+    spotlight.style.background =
+      'radial-gradient(circle at ' + cx + 'px ' + cy + 'px, ' +
+        'transparent '              + rInner + 'px, ' +
+        'rgba(0,0,0,0.4) '          + rOuter + 'px)';
+
+    spotlight.classList.add('kofi-show');
+    wrap.classList.add('kofi-show');
   }, 5000);
 })();
