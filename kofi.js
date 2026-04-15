@@ -25,7 +25,7 @@
     '  font-family: var(--mono, "Space Mono", "Courier New", monospace);',
     '}',
 
-    '.kofi-wrap.kofi-show .kofi-btn { animation: kofi-shake-blink 4s ease-out forwards; }',
+    '.kofi-wrap.kofi-show .kofi-btn { animation: kofi-shake-blink 2.5s ease-out forwards; }',
     '@keyframes kofi-shake-blink {',
     '  0%   { transform: translateX(0);    background: #fbbf24; }',
     '  8%   { transform: translateX(-7px); background: #94a3b8; }',
@@ -44,20 +44,20 @@
 
     '.sparks-container { position: absolute; top: 50%; left: 50%; width: 0; height: 0; pointer-events: none; }',
     '.spark { position: absolute; width: 7px; height: 7px; border-radius: 50%; opacity: 0; transform-origin: center; }',
-    '.kofi-wrap.kofi-show .spark { animation: spark-fly 1.8s ease-out forwards; }',
+    '.kofi-wrap.kofi-show .spark { animation: spark-fly 1.1s ease-out forwards; }',
     '@keyframes spark-fly {',
     '  0%   { opacity: 1; transform: rotate(var(--a)) translateY(0)      scale(1); }',
     '  60%  { opacity: 0.9; }',
     '  100% { opacity: 0;   transform: rotate(var(--a)) translateY(-72px) scale(0.3); }',
     '}',
-    '.sp1 { --a:   0deg; background: #f59e0b; animation-delay: 3.00s; }',
-    '.sp2 { --a:  45deg; background: #ef4444; animation-delay: 3.05s; }',
-    '.sp3 { --a:  90deg; background: #a855f7; animation-delay: 3.10s; }',
-    '.sp4 { --a: 135deg; background: #10b981; animation-delay: 3.15s; }',
-    '.sp5 { --a: 180deg; background: #3b82f6; animation-delay: 3.20s; }',
-    '.sp6 { --a: 225deg; background: #f59e0b; animation-delay: 3.25s; }',
-    '.sp7 { --a: 270deg; background: #ec4899; animation-delay: 3.30s; }',
-    '.sp8 { --a: 315deg; background: #14b8a6; animation-delay: 3.35s; }',
+    '.sp1 { --a:   0deg; background: #f59e0b; animation-delay: 1.75s; }',
+    '.sp2 { --a:  45deg; background: #ef4444; animation-delay: 1.80s; }',
+    '.sp3 { --a:  90deg; background: #a855f7; animation-delay: 1.85s; }',
+    '.sp4 { --a: 135deg; background: #10b981; animation-delay: 1.90s; }',
+    '.sp5 { --a: 180deg; background: #3b82f6; animation-delay: 1.95s; }',
+    '.sp6 { --a: 225deg; background: #f59e0b; animation-delay: 2.00s; }',
+    '.sp7 { --a: 270deg; background: #ec4899; animation-delay: 2.05s; }',
+    '.sp8 { --a: 315deg; background: #14b8a6; animation-delay: 2.10s; }',
 
     /* Spotlight overlay */
     '.kofi-spotlight {',
@@ -107,7 +107,7 @@
   // ── Comptador de visites ───────────────────────────────────────────────────
   // Incrementem el comptador a cada càrrega. Quan arriba a 10 es dispara
   // l'efecte i el comptador es torna a 0.
-  var KOFI_THRESHOLD = 3;
+  var KOFI_THRESHOLD = 10;
   var visits = parseInt(localStorage.getItem('kofiVisits') || '0', 10) + 1;
   if (visits >= KOFI_THRESHOLD) {
     localStorage.setItem('kofiVisits', '0');
@@ -137,10 +137,10 @@
     spotlight.classList.add('kofi-show');
     wrap.classList.add('kofi-show');
 
-    // Un cop acabades totes les animacions (la més llarga: última espurna a 3.35 s + 1.8 s = 5.15 s),
+    // Un cop acabades totes les animacions (la més llarga: última espurna a 2.10 s + 1.1 s = 3.20 s),
     // apaguem el focus de teatre i tornem la pantalla a plena lluminositat.
     setTimeout(function () {
       spotlight.classList.remove('kofi-show');
-    }, 5200);
-  }, 5000);
+    }, 3300);
+  }, 3000);
 })();
