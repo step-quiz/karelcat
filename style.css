@@ -166,7 +166,7 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr;
   overflow: hidden;
 }
 
@@ -680,7 +680,7 @@ body.embed .topbar { display: none; }
    dins d'iframes incrustats al curs — aquí ja no hi ha "mòbil", només un
    espai contenidor que el curs controla. */
 body.embed .main {
-  grid-template-columns: 1fr 1fr !important;
+  grid-template-columns: 3fr 2fr !important;
 }
 body.embed .map-col {
   order: 0 !important;
