@@ -1,0 +1,81 @@
+(function () {
+  // Mode embed (iframes del curs): no mostrem el ko-fi per no saturar l'UI.
+  try {
+    if (new URLSearchParams(window.location.search).get('embed') === '1') return;
+  } catch (e) { /* ignore */ }
+
+  // ── Estils ────────────────────────────────────────────────────────────────
+  var style = document.createElement('style');
+  style.textContent = [
+    '.kofi-wrap {',
+    '  position: fixed; top: 16px; left: 16px; z-index: 300;',
+    '  opacity: 0; pointer-events: none; transition: opacity 0.35s;',
+    '}',
+    '.kofi-wrap.kofi-show { opacity: 1; pointer-events: auto; }',
+
+    '.kofi-btn {',
+    '  position: relative; white-space: nowrap;',
+    '  padding: 8px 16px; border-radius: 24px; font-weight: 700; font-size: 14px;',
+    '  color: #fff; border: none; background: #ff5e5b;',
+    '  box-shadow: 0 4px 14px rgba(0,0,0,0.18); cursor: pointer;',
+    '  text-decoration: none; display: inline-block;',
+    '  -webkit-tap-highlight-color: transparent;',
+    '  font-family: var(--mono, "Space Mono", "Courier New", monospace);',
+    '}',
+
+    '.kofi-wrap.kofi-show .kofi-btn { animation: kofi-shake-blink 4s ease-out forwards; }',
+    '@keyframes kofi-shake-blink {',
+    '  0%   { transform: translateX(0);    background: #fbbf24; }',
+    '  8%   { transform: translateX(-7px); background: #94a3b8; }',
+    '  16%  { transform: translateX( 7px); background: #fbbf24; }',
+    '  24%  { transform: translateX(-6px); background: #94a3b8; }',
+    '  32%  { transform: translateX( 6px); background: #fbbf24; }',
+    '  40%  { transform: translateX(-5px); background: #94a3b8; }',
+    '  48%  { transform: translateX( 5px); background: #fbbf24; }',
+    '  56%  { transform: translateX(-4px); background: #94a3b8; }',
+    '  64%  { transform: translateX( 4px); background: #fbbf24; }',
+    '  72%  { transform: translateX(-3px); background: #94a3b8; }',
+    '  80%  { transform: translateX( 3px); background: #fbbf24; }',
+    '  90%  { transform: translateX(-1px); background: #94a3b8; }',
+    '  100% { transform: translateX(0);    background: #ff5e5b; }',
+    '}',
+
+    '.sparks-container { position: absolute; top: 50%; left: 50%; width: 0; height: 0; pointer-events: none; }',
+    '.spark { position: absolute; width: 7px; height: 7px; border-radius: 50%; opacity: 0; transform-origin: center; }',
+    '.kofi-wrap.kofi-show .spark { animation: spark-fly 1.8s ease-out forwards; }',
+    '@keyframes spark-fly {',
+    '  0%   { opacity: 1; transform: rotate(var(--a)) translateY(0)      scale(1); }',
+    '  60%  { opacity: 0.9; }',
+    '  100% { opacity: 0;   transform: rotate(var(--a)) translateY(-72px) scale(0.3); }',
+    '}',
+    '.sp1 { --a:   0deg; background: #f59e0b; animation-delay: 3.00s; }',
+    '.sp2 { --a:  45deg; background: #ef4444; animation-delay: 3.05s; }',
+    '.sp3 { --a:  90deg; background: #a855f7; animation-delay: 3.10s; }',
+    '.sp4 { --a: 135deg; background: #10b981; animation-delay: 3.15s; }',
+    '.sp5 { --a: 180deg; background: #3b82f6; animation-delay: 3.20s; }',
+    '.sp6 { --a: 225deg; background: #f59e0b; animation-delay: 3.25s; }',
+    '.sp7 { --a: 270deg; background: #ec4899; animation-delay: 3.30s; }',
+    '.sp8 { --a: 315deg; background: #14b8a6; animation-delay: 3.35s; }',
+  ].join('\n');
+  document.head.appendChild(style);
+
+  // ── Markup ────────────────────────────────────────────────────────────────
+  var wrap = document.createElement('div');
+  wrap.className = 'kofi-wrap';
+  wrap.id = 'kofiWrap';
+  wrap.innerHTML =
+    '<div class="sparks-container">' +
+      '<div class="spark sp1"></div><div class="spark sp2"></div>' +
+      '<div class="spark sp3"></div><div class="spark sp4"></div>' +
+      '<div class="spark sp5"></div><div class="spark sp6"></div>' +
+      '<div class="spark sp7"></div><div class="spark sp8"></div>' +
+    '</div>' +
+    '<a class="kofi-btn" href="https://ko-fi.com/davidarsocivil" target="_blank" rel="noopener"' +
+    '   aria-label="Invita\'m a un cafè a Ko-fi">☕ Ko-fi</a>';
+  document.body.appendChild(wrap);
+
+  // ── Activació (5 s de retard) ──────────────────────────────────────────────
+  setTimeout(function () {
+    document.getElementById('kofiWrap').classList.add('kofi-show');
+  }, 5000);
+})();
