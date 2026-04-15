@@ -120,9 +120,15 @@
     spotlight.style.background =
       'radial-gradient(circle at ' + cx + 'px ' + cy + 'px, ' +
         'transparent '              + rInner + 'px, ' +
-        'rgba(0,0,0,0.4) '          + rOuter + 'px)';
+        'rgba(0,0,0,0.6) '          + rOuter + 'px)';
 
     spotlight.classList.add('kofi-show');
     wrap.classList.add('kofi-show');
+
+    // Un cop acabades totes les animacions (la més llarga: última espurna a 3.35 s + 1.8 s = 5.15 s),
+    // apaguem el focus de teatre i tornem la pantalla a plena lluminositat.
+    setTimeout(function () {
+      spotlight.classList.remove('kofi-show');
+    }, 5200);
   }, 5000);
 })();
