@@ -104,6 +104,18 @@
   // Clic fora (sobre l'overlay fosc) → tanca
   spotlight.addEventListener('click', hideKofi);
 
+  // ── Comptador de visites ───────────────────────────────────────────────────
+  // Incrementem el comptador a cada càrrega. Quan arriba a 10 es dispara
+  // l'efecte i el comptador es torna a 0.
+  var KOFI_THRESHOLD = 10;
+  var visits = parseInt(localStorage.getItem('kofiVisits') || '0', 10) + 1;
+  if (visits >= KOFI_THRESHOLD) {
+    localStorage.setItem('kofiVisits', '0');
+  } else {
+    localStorage.setItem('kofiVisits', String(visits));
+    return; // Encara no toca → sortim sense muntar res
+  }
+
   // ── Activació (5 s de retard) ──────────────────────────────────────────────
   setTimeout(function () {
     // Calcula el centre del botó en coordenades de viewport
