@@ -162,17 +162,14 @@
         <!-- Enunciat -->
         <div class="exercise-enunciat">
           El fons marí té dues files de caselles (la de baix i la de dalt) i un
-          nombre de perles escampades per les dues files.<br><br>
+          nombre de perles escampades per les dues files.<br>
           En Karel comença a la
-          cantonada inferior esquerra mirant cap a l'Est.<br><br>
-          La seva missió: <strong>recollir totes les perles fent un recorregut
+          cantonada inferior esquerra i mirant cap a l'Est.<br>
+          La seva missió és <strong>recollir totes les perles fent un recorregut
           en ziga-zaga</strong> — primer la fila inferior d'Est a Oest (d'esquerra
           a dreta), llavors pujar a la fila superior, i finalment la fila
-          superior de l'Est a l'Oest (de dreta a esquerra).<br><br>
-          <strong>La teva feina:</strong> escriu un programa que funcioni sigui
-          quina sigui l'amplada del món.<br><br>
-          L'amplada és
-          <em>desconeguda</em>: el teu codi no pot dependre del nombre de
+          superior de l'Est a l'Oest (de dreta a esquerra).<br>
+          L'amplada és <em>desconeguda</em>: el teu codi no pot dependre del nombre de
           caselles.
         </div>
 
@@ -204,25 +201,10 @@
              data-maps='[".,.,A,.|K>,A,.,A", "A,.,.,A,.,.|K>,.,A,.,A,.", ".,.,A,.,A,.,.,A|K>,A,.,A,.,.,A,."]'
              data-goals='["K<,.,.,.|.,.,.,.", "K<,.,.,.,.,.|.,.,.,.,.,.", "K<,.,.,.,.,.,.,.|.,.,.,.,.,.,.,."]'
              data-labels='["4 caselles d'\''amplada", "6 caselles d'\''amplada", "8 caselles d'\''amplada"]'
-             data-code="# Fase 1: recull les perles de la fila inferior cap a l'Est
-while front_is_clear():
-    if pearl_here():
-        grab()
-    move()
-if pearl_here():
-    grab()
-
+             data-code="
+# Fase 1: recull les perles de la fila inferior cap a l'Est
 # Gir: puja a la fila superior i orienta't cap a l'Oest
-# (escriu aquí els girs i el move() per pujar)
-
-
 # Fase 2: recull les perles de la fila superior cap a l'Oest
-while front_is_clear():
-    if pearl_here():
-        grab()
-    move()
-if pearl_here():
-    grab()
 "
              data-title="El mateix codi ha de funcionar per als tres mons. L'amplada és desconeguda."
              data-height="360">
