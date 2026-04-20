@@ -234,7 +234,12 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
   overflow: hidden;
   pointer-events: none;
 }
-#line-numbers div { height: calc(var(--ed-font-size) * var(--ed-line-height)); }
+/* FIX CURSOR: els números de línia viuen dins d'un wrapper .ln-inner
+   perquè `editor.js > syncLayers()` pugui aplicar-li un transform:translateY()
+   sense moure el padding ni el background de #line-numbers.
+   La regla d'alçada només aplica als <div> dels números, no al wrapper. */
+#line-numbers .ln-inner { will-change: transform; }
+#line-numbers .ln-inner > div { height: calc(var(--ed-font-size) * var(--ed-line-height)); }
 
 /* Contenidor de les tres capes (line-bg + highlight + textarea) */
 .editor-inner {
@@ -247,20 +252,21 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
    CAPA 1: #line-bg
    Conté una fila per línia de codi.
    Les files active/error reben un color de fons.
-   Es desplaça en sincronia amb el textarea.
-   IMPORTANT: overflow-y:scroll (scrollbar ocult)
-   permet establir scrollTop des de JS.
+   FIX CURSOR: ara es desplaça via `transform: translateY()`
+   aplicat des de JS (editor.js > syncLayers). El transform
+   NO està subjecte al clamp de scrollHeight/clientHeight, a
+   diferència de `scrollTop`, així que no pot derivar respecte
+   del textarea. El clipping el fa `.editor-inner` (overflow:hidden).
 ══════════════════════════════════════════════ */
 #line-bg {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  overflow-x: hidden;
-  overflow-y: scroll;        /* cal per poder establir scrollTop */
-  scrollbar-width: none;     /* Firefox: amaga el scrollbar */
+  overflow: visible;         /* clipping: el fa .editor-inner */
   padding-top: var(--ed-pad-top);  /* alineat amb el padding del textarea */
+  will-change: transform;
+  transform-origin: 0 0;
 }
-#line-bg::-webkit-scrollbar { display: none; }  /* Chrome/Safari */
 
 .lbg-row {
   display: block;
@@ -299,6 +305,20 @@ body.light .lbg-row.active {
    - pointer-events: none (no intercepta clics)
    - No té display:block als spans interns →
      els spans .code-line són inline per defecte.
+
+   FIX CURSOR (definitiu): el desplaçament de scroll s'aplica
+   mitjançant `transform: translate(-scrollLeft, -scrollTop)` des
+   de `editor.js > syncLayers()`, NO via `scrollLeft/scrollTop`.
+
+   Raó: `scrollLeft` es limita al rang [0, scrollWidth - clientWidth].
+   Com que el contingut ressaltat té <span>s que poden donar un
+   `scrollWidth` lleugerament diferent del del textarea (sub-píxel),
+   després d'un delete el navegador feia clamp asíncron a valors
+   diferents a cada capa, i el caret quedava desalineat respecte
+   del text. Amb transform no hi ha clamp: el desplaçament és
+   IDÈNTICAMENT el que llegim del textarea.
+
+   El clipping visual el fa `.editor-inner` (overflow:hidden).
 ══════════════════════════════════════════════ */
 #code-highlight {
   position: absolute;
@@ -308,11 +328,13 @@ body.light .lbg-row.active {
   font-size: var(--ed-font-size);
   line-height: var(--ed-line-height);
   white-space: pre;            /* ← FIX CURSOR: pre, no pre-wrap */
-  overflow: hidden;
+  overflow: visible;           /* clipping: el fa .editor-inner */
   pointer-events: none;
   color: var(--text);
   margin: 0;
   tab-size: 2;
+  will-change: transform;
+  transform-origin: 0 0;
 }
 
 /* .code-line: NO display:block, NO padding-left, NO border-left.
