@@ -938,6 +938,38 @@ body.embed { --ed-font-size: 0.8rem; }
 }
 .kbd-accessory__btn:active { background: #f0f0f3; }
 
+/* ── Mode readonly: fons gris + toast "No editable" ── */
+body.is-readonly .code-col {
+  border-left: 3px solid transparent;
+}
+
+body.is-readonly #code-highlight {
+  background: var(--surface);
+}
+
+body.is-readonly #line-numbers {
+  background: var(--surface);
+}
+
+.readonly-toast {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  background: var(--border);
+  color: var(--muted);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.readonly-toast.visible {
+  opacity: 1;
+}
+
 /* Quan el teclat nadiu està obert, limitem l'alçada del textarea perquè
    el navegador no hagi de fer un scrollIntoView agressiu que amaga el
    mapa. ~30dvh és prou per a unes línies de codi; la resta es fa scroll
