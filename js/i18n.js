@@ -45,6 +45,7 @@ K.UI_LANGS = {
       reset:     '↺ Reinicia',
       speed:     'Velocitat:',
       bag:       'Motxilla:',
+      readonly:  'No editable',
     },
 
     state: {
