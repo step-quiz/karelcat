@@ -142,30 +142,21 @@
         <!-- Enunciat -->
         <div class="exercise-enunciat">
           En Karel és a la cantonada inferior esquerra d'un món quadrat.
-          Ha de pujar per l'escala diagonal: deixant una perla a cada graó
-          mentre avança cap a la cantonada superior dreta.<br><br>
-          <strong>La teva feina:</strong> escriu un programa perquè en Karel
-          deixi perles formant una diagonal i acabi a la cantonada superior dreta.<br><br>
-          <strong>Restricció important:</strong> usa una funció
-          <code>puja_grao()</code> que mogui en Karel <em>un sol graó</em> i
-          crida-la des d'una iteració <code>while</code>. El programa principal
-          ha de ser tan clar com això:
-          <pre style="margin:0.7rem 0 0; background:#f1f5f9; padding:0.7rem 1rem; border-radius:6px; font-size:0.9rem;">while front_is_clear():
-    drop()
-    puja_grao()</pre>
-          Fixa't que <strong>no cal saber quants graons té el món</strong>:
-          En Karel s'atura sol quan arriba a la paret.
+                Ha de pujar per l'escala diagonal i, a més, ha de deixar una perla a cada graó. S'ha d'aturar a la cantonada superior dreta.<br><br>
+                <strong>La teva feina:</strong> escriu un programa perquè en Karel
+                deixi perles formant una diagonal i acabi a la cantonada superior dreta.<br><br>
+                <strong>Restricció important:</strong> usa una funció
+                <code>puja_grao()</code> que mogui en Karel <em>un sol graó</em> i
+                fes servir una iteració <code>while front_is_clear():</code>. 
+
+          Fixa't que <strong>no cal saber quants graons té el món</strong>. En Karel s'atura sol quan arriba a la paret.
         </div>
 
         <div class="consell-box">
-          <strong>💡 Pista de la unitat rítmica</strong>
-          Pensa com és un sol graó: en Karel avança una casella cap a l'Est,
-          gira cap al Nord, puja una casella i gira de nou cap a l'Est.
-          Això és exactament el cos de <code>puja_grao()</code>: només moviment,
-          sense <code>drop()</code>. El <code>drop()</code> es fa a la iteració principal,
-          just <em>abans</em> de moure's. Si aconsegueixes fer UN graó correctament,
-          el <code>while</code> en farà tants com calgui i s'aturarà sol
-          quan en Karel toqui la paret dreta.
+          <strong>💡 Pista </strong>
+          Pensa com s'ho fa en Karel per pujar un sol graó: avança una casella cap a l'Est,
+          gira cap al Nord, avança una casella, gira cap a l'Est i torna a avançar una casella.
+          Això és exactament el que ha de fer la funció <code>puja_grao()</code>
         </div>
 
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
@@ -174,14 +165,13 @@
              data-maps='[".,.,.|.,.,.|K>,.,.",".,.,.,.,.|.,.,.,.,.|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,.", ".,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,."]'
              data-goals='[".,.,K>|.,A,.|A,.,.",".,.,.,.,K>|.,.,.,A,.|.,.,A,.,.|.,A,.,.,.|A,.,.,.,.", ".,.,.,.,.,.,.,K>|.,.,.,.,.,.,A,.|.,.,.,.,.,A,.,.|.,.,.,.,A,.,.,.|.,.,.,A,.,.,.,.|.,.,A,.,.,.,.,.|.,A,.,.,.,.,.,.|A,.,.,.,.,.,.,."]'
              data-labels='["3×3 (2 graons)", "5×5 (4 graons)", "8×8 (7 graons)"]'
-             data-code="def puja_grao():
-    # El teu codi aquí (Pista: no cal drop() aquí!)
+             data-code="
+# Aquesta funció fa que en Karel pugi un graó
+def puja_grao():
 
 
-# ── Programa principal ──
-while front_is_clear():
-    drop()
-    puja_grao()
+# Programa principal
+
 "
              data-title="Prova el teu codi als tres mons. El mateix codi ha de funcionar als tres sense canviar res!"
              data-height="440">
