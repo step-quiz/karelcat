@@ -845,6 +845,10 @@
 </div>
 
 <script>
+  // Marca el tour com a vist des del primer moment que es carrega la pàgina,
+  // independentment de si l'usuari clica "tanca" o navega cap a una altra pàgina.
+  try { localStorage.setItem('karel_tour_done_v1', '1'); } catch(_) {}
+
   const slides = document.querySelectorAll('.slide');
   const total = slides.length;
   const counter = document.getElementById('counter');
