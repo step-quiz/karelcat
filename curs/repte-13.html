@@ -161,7 +161,7 @@
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          El món és un passadís buit de longitud desconeguda (sempre ≥ 1).
+          El món és un passadís buit de longitud desconeguda.<br>
           En Karel porta <strong>2 perles</strong> a la motxilla i ha de deixar
           exactament <strong>una perla al punt mig</strong> del passadís.<br><br>
           Si la longitud és <em>senar</em>, la perla ha de quedar al centre
@@ -185,10 +185,10 @@
 
         <details class="consell-box">
           <summary><strong>💡 Pista — la funció auxiliar</strong></summary>
-          <div class="consell-body">Et donem una funció que pot ser molt útil per moure't fins a un
-          marcador: <code>camina_fins_perla()</code> avança pas a pas fins que
-          en Karel sigui damunt d'una perla. Pensa com pots usar-la per tornar
-          al marcador esquerre o al marcador dret en cada iteració.</div>
+          <div class="consell-body">
+Pot ser útil escriure una funció per moure't fins a un marcador: <code>camina_fins_a_perla()</code>. Pensa com pots usar-la per tornar
+al marcador esquerre o al marcador dret en cada iteració.
+</div>
         </details>
 
         <!-- Simulador multi-món (DRY): un sol editor, tres passadissos de test -->
@@ -197,21 +197,8 @@
              data-goals='[".,K>,.",".,.,.,K>,.,.,.",".,.,.,K<,.,.,.,."]'
              data-labels='["Longitud 3 — senar","Longitud 7 — senar","Longitud 8 — parell"]'
              data-bag="2"
-             data-code="def camina_fins_perla():
-    while not pearl_here():
-        move()
+             data-code="
 
-# ── Pas 1: col·loca un marcador a cada extrem del passadís ──
-# (Usa drop() per deixar una perla com a marcador,
-#  i grab() per recollir-la quan vols traslladar-la.)
-
-
-
-# ── Pas 2: apropa els dos marcadors pas a pas fins que es trobin ──
-# Cada iteració:
-#   · Mou el marcador dret un pas cap a l'esquerra.
-#   · Mou el marcador esquerre un pas cap a la dreta.
-# Atura't quan els dos marcadors coincideixen en una mateixa casella.
 "
              data-title="El mateix codi ha de trobar el punt mig en els tres passadissos."
              data-height="380">

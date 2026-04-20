@@ -161,41 +161,38 @@
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          En Karel és a l'entrada d'un laberint. Alguna part del laberint conté
-          una <strong>perla</strong> que marca la sortida. El laberint té sempre
-          solució: sempre existeix un camí que porta en Karel fins a la perla.<br><br>
-          <strong>La teva feina:</strong> escriu un programa que funcioni per a
-          <em>qualsevol</em> laberint, sigui quina sigui la seva forma o mida.
-          El teu codi <em>no pot</em> assumir res sobre la geometria concreta del laberint.<br><br>
+          En Karel és l'extrem superior esquerre, que és l'entrada d'un laberint. En Karel ha d'arribar a la perla que es troba a l'extrem oposat, però ha de superar un laberint.<br><br>
+          Sempre existeix un camí que porta en Karel fins a la perla. Escriu un programa que funcioni per a <em>qualsevol</em> laberint, sigui quina sigui la seva forma o mida. El teu codi <em>no pot</em> assumir res sobre la geometria concreta del laberint.<br><br>
           <strong>Restricció important:</strong> no pots codificar el camí pas a
           pas. Has de descobrir un algorisme genèric que segueixi les parets fins
-          trobar la sortida.
+          trobar la sortida. Fixa't que els mons que et presentem són ben diferents.
         </div>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — la regla de la mà dreta</strong></summary>
-          <div class="consell-body">Imagina que poses la mà dreta a la paret del laberint i camines sempre
-          mantenint el contacte amb ella. Quan la paret acaba (la dreta és lliure),
-          gires a la dreta i avances. Si la paret continua però el davant és lliure,
-          avances recte. Si tens paret tant a la dreta com al davant, gires a
-          l'esquerra (però <em>no</em> avances: potser ara el davant és lliure i
-          caldrà tornar a comprovar). Aquesta regla garanteix que trobaràs la
-          sortida en qualsevol laberint simplement connexe.</div>
+          <div class="consell-body">
+Imagina que poses la mà dreta a la paret del laberint i camines sempre
+mantenint el contacte amb ella. Quan la paret acaba (la dreta és lliure),
+gires a la dreta i avances. Si la paret continua però el davant és lliure,
+avances recte. Si tens paret tant a la dreta com al davant, gires a
+l'esquerra (però <em>no</em> avances: potser ara el davant és lliure i
+caldrà tornar a comprovar). Aquesta regla garanteix que trobaràs la
+sortida en qualsevol laberint.
+</div>
         </details>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — un sol pas, repetit moltes vegades</strong></summary>
-          <div class="consell-body">La clau és definir una funció <code>pas()</code> que implementi
-          exactament un pas de la regla de la mà dreta, i repetir-la mentre
-          en Karel no sigui a la sortida:
-          <br><br>
-          <code>while not pearl_here():</code><br>
-          <code>&nbsp;&nbsp;&nbsp;&nbsp;pas()</code><br><br>
-          Dins de <code>pas()</code> tens tres casos: dreta lliure, dreta ocupada
-          però davant lliure, i dreta i davant ocupats. Cada cas fa una acció
-          diferent. Pots usar <code>right_is_clear()</code>,
-          <code>front_is_clear()</code> i <code>turn_right()</code> juntament
-          amb les funcions que ja coneixes.</div>
+          <div class="consell-body">
+La clau és definir una funció <code>un_sol_pas()</code>, que implementi
+exactament un pas amb la regla de la mà dreta.<br> <br>
+Hauràs de tenir en compte tres casos: dreta lliure, dreta ocupada
+però davant lliure, i dreta i davant ocupats. Cada cas fa una acció
+diferent.<br>
+Pots usar <code>right_is_clear()</code>,
+<code>front_is_clear()</code> i <code>turn_right()</code> juntament
+amb les funcions que ja coneixes.
+</div>
         </details>
 
         <!-- Simulador multi-món (DRY): un sol editor, tres laberints de test -->
@@ -203,18 +200,8 @@
              data-maps='["K>,.,.,.,P|P,P,P,.,P|.,.,.,.,A","K>,.,P,.,.,.|.,.,P,.,P,.|.,.,.,.,P,.|P,P,P,.,P,.|.,.,.,.,.,A","K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,A","K>,.,.,.,P,P,P|P,P,P,.,P,P,P|.,.,.,.,.,.,.|P,P,.,P,P,P,P|.,.,.,.,.,.,A","K>,.,P,P,P,P,P,P,P|P,.,P,P,P,P,P,P,P|P,.,.,.,.,.,.,.,P|P,P,P,P,P,P,P,.,P|P,.,.,.,.,.,.,.,P|P,P,.,P,P,P,P,P,P|.,.,.,.,P,P,P,P,P|P,P,P,.,P,P,P,P,P|P,P,P,.,.,.,.,.,A"]'
              data-goals='["K>,.,.,.,P|P,P,P,.,P|.,.,.,.,K>","K>,.,P,.,.,.|.,.,P,.,P,.|.,.,.,.,P,.|P,P,P,.,P,.|.,.,.,.,.,K>","K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,K>",".,.,.,.,P,P,P|P,P,P,.,P,P,P|.,.,.,.,.,.,.|P,P,.,P,P,P,P|.,.,.,.,.,.,K>",".,.,P,P,P,P,P,P,P|P,.,P,P,P,P,P,P,P|P,.,.,.,.,.,.,.,P|P,P,P,P,P,P,P,.,P|P,.,.,.,.,.,.,.,P|P,P,.,P,P,P,P,P,P|.,.,.,.,P,P,P,P,P|P,P,P,.,P,P,P,P,P|P,P,P,.,.,.,.,.,K>"]'
              data-labels='["3×5 — Simple", "5×6 — Clàssic", "5×7 — Complex", "5×7 — Cul-de-sac", "9×9 — El gran laberint"]'
-             data-code="def pas():
-    # Regla de la mà dreta — tres casos mútuament excloents:
-    # 1. Si la dreta és lliure → gira a la dreta i avança un pas
-    # 2. Si la dreta és bloquejada però el davant és lliure → avança un pas
-    # 3. Si dreta i davant estan bloquejats → gira a l'esquerra (no avancis)
+             data-code="
 
-
-# ── Programa principal ──
-while not pearl_here():
-    pas()
-
-grab()
 "
              data-title="El mateix codi ha de resoldre els tres laberints. No codifiquis el camí: descobreix l'algorisme de la mà dreta."
              data-height="550">
