@@ -161,41 +161,38 @@
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          Al fons del mar hi ha una muntanya submarina en forma d'escala doble:
-          N graons que pugen per l'esquerra i N graons que baixen per la dreta,
-          com una piràmide. A la cima hi ha una perla.<br><br>
+          Al fons del mar hi ha una muntanya: uns quants graons que pugen per l'esquerra i els mateixos que baixen per la dreta. Com si fos una piràmide, al capdamunt de la qual hi ha una perla.<br>
           En Karel comença al peu de l'escala esquerra, mirant cap a l'Est.
-          La seva missió: <strong>pujar fins a la cima, recollir la perla i
-          baixar l'escala de l'altra banda deixant la perla al peu</strong>.<br><br>
-          <strong>La teva feina:</strong> escriu un programa que funcioni
-          sigui quin sigui el nombre de graons. El teu codi no pot dependre
-          del nombre exacte de caselles.
+          La seva missió és <strong>pujar fins al cim, recollir la perla i
+          baixar l'escala per l'altra banda i deixar la perla al peu de la piràmide</strong>.<br>
+          <strong>Atenció:</strong> el teu programa ha de funcionar sigui quin sigui el nombre de graons.
         </div>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — la simetria entre <code>puja_grao()</code> i <code>baixa_grao()</code></strong></summary>
-          <div class="consell-body"><code>puja_grao()</code> fa: avança, gira a l'esquerra, puja, gira a la dreta.
-          <code>baixa_grao()</code> és exactament l'operació inversa: gira a la dreta,
-          baixa, gira a l'esquerra, avança. Imagina que executes <code>puja_grao()</code>
-          al revés, pas per pas. Si les dues funcions estan ben escrites, la
-          pre/postcondició de totes dues és la mateixa: <em>en Karel és al
-          peu d'un graó, mirant cap a l'Est</em>.</div>
+          <div class="consell-body">
+<code>puja_grao()</code> fa: avança, gira a l'esquerra, puja, gira a la dreta.<br>
+<code>baixa_grao()</code> és exactament l'operació inversa: gira a la dreta,
+avança, gira a l'esquerra, avança.<br>
+</div>
         </details>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — com saber quan has arribat a la cima?</strong></summary>
-          <div class="consell-body">La cima és l'única casella del món que té una perla. Pots usar
-          <code>while not pearl_here():</code> per pujar graó a graó fins
-          que trobis la perla. D'aquesta manera el programa funciona per a
-          qualsevol alçada de muntanya sense necessitat de comptar graons.</div>
+          <div class="consell-body">
+El cim de la muntanya és l'única casella del món que té una perla. Pots usar
+<code>while not pearl_here():</code> per pujar graó a graó fins
+que trobis la perla. D'aquesta manera el programa funciona per a
+qualsevol alçada de muntanya sense necessitat de comptar graons.
+</div>
         </details>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — com saber quan has arribat al peu de l'altra banda?</strong></summary>
-          <div class="consell-body">Quan en Karel és al peu del darrer graó de la dreta, la paret del
-          món li bloqueja el camí cap a l'Est: <code>front_is_clear()</code>
-          retorna <code>False</code>. Pots usar <code>while front_is_clear():</code>
-          per baixar graó a graó fins que arribes al peu. Llavors deixa la perla.</div>
+          <div class="consell-body">
+Quan en Karel és al peu del darrer graó de la dreta, la paret del
+món li bloqueja el camí cap a l'Est. En aquest cas, <code>front_is_clear()</code> retorna <code>False</code>.<br>Pots usar <code>while front_is_clear():</code> per baixar graó a graó fins que arribes al peu. I només llavors és quan en Karel ha de deixar la perla.
+</div>
         </details>
 
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
@@ -203,30 +200,33 @@
              data-maps='[".,.,A,.,.|.,.,.,.,.|K>,.,.,.,.",".,.,.,A,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,.|K>,.,.,.,.,.,.",".,.,.,.,A,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,.,."]'
              data-goals='[".,.,.,.,.|.,.,.,.,.|.,.,.,.,K>",".,.,.,.,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,.|.,.,.,.,.,.,K>",".,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,K>"]'
              data-labels='["5 × 3 · 2 graons","7 × 4 · 3 graons","9 × 5 · 4 graons"]'
-             data-code="def puja_grao():
-    # Avança un pas i puja un nivell (postcondició: mirant Est)
-    move()
-    turn_left()
-    move()
-    turn_right()
+             data-code="
+# ── funció puja_grao ──
+# Puja un nivell (post-condició: Karel mira cap a l'Est)
 
+def puja_grao():
+
+
+
+# ── funció baixa_grao ──
+# Baixa un nivell (post-condició: Karel mira cap a l'Est)
 
 def baixa_grao():
-    # Baixa un nivell i avança un pas (invers de puja_grao)
-    # El teu codi aquí — és l'operació simètrica de puja_grao()
+
 
 
 # ── Programa principal ──
-
 # Puja fins a la cima (on hi ha la perla)
-while not pearl_here():
-    puja_grao()
+
+
 
 # Recull la perla de la cima
-grab()
+
+
 
 # Baixa fins al peu de l'altra banda i deixa-hi la perla
-# El teu codi aquí
+
+
 "
              data-title="Les tres proves treballen el mateix repte: puja_grao() i baixa_grao() s'apliquen automàticament al món actiu."
              data-height="400">
