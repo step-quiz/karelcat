@@ -1,6 +1,37 @@
 // ════════════════════════════════════════════════════════
 // editor.js — Ressaltat sintàctic, numeració, autocompletat
 // ════════════════════════════════════════════════════════
+//
+// Arquitectura d'alineació caret ↔ ressaltat
+// ──────────────────────────────────────────
+// L'editor és un "stack" de 4 capes dins de `.editor-inner`:
+//   #line-numbers   (costat esquerre, només numeració)
+//   #line-bg        (fons per línia: activa/error)
+//   #code-highlight (text ressaltat — <pre>)
+//   #code-editor    (textarea transparent, conté el caret)
+//
+// Perquè el caret del textarea coincideixi píxel a píxel amb el
+// text ressaltat, les 4 capes han de compartir el mateix offset de
+// scroll en tot moment.
+//
+// HISTÒRIC: abans fèiem servir `elem.scrollTop / scrollLeft` a les
+// capes passives. Això és inherentment LOSSY: el navegador fa clamp
+// al rang [0, scrollWidth - clientWidth], i dues capes amb contingut
+// lleugerament diferent (p.ex. la línia ressaltada té <span>s extra)
+// poden tenir scrollWidths que difereixen per fraccions de píxel.
+// Després d'un delete que escurça el contingut, el clamp es recalcula
+// asíncronament i les capes divergeixen 1–Npx respecte del textarea.
+// El caret queda on era; el text ressaltat s'ha mogut.
+//
+// SOLUCIÓ: `transform: translate(-scrollLeft, -scrollTop)`. No està
+// subjecte a clamp. Si les capes passives i el textarea llegeixen la
+// mateixa font (`ta.scrollLeft` / `ta.scrollTop`), el desplaçament és
+// IDÈNTICAMENT el mateix. Qualsevol ajust posterior del navegador a
+// `ta.scrollLeft` dispara un event `scroll` al textarea, que torna
+// a cridar `syncLayers()`.
+//
+// Això fa el bug impossible per construcció, no "arreglat per a una
+// taxonomia concreta de casos".
 
 // ── Ressaltat sintàctic ──
 
@@ -55,6 +86,43 @@ function updateLineBg(numLines) {
 }
 
 
+// ── Sincronització de les capes passives ──
+//
+// Font única de veritat: ta.scrollTop / ta.scrollLeft.
+// Aplica `transform: translate(-scrollLeft, -scrollTop)` a:
+//   - #code-highlight      (2 eixos)
+//   - #line-bg             (només Y)
+//   - .ln-inner dins       (només Y)
+//     de #line-numbers
+//
+// El clipping el fan `.editor-inner` (overflow:hidden) i
+// `#line-numbers` (overflow:hidden) — les capes poden sobrepassar
+// els seus límits lògics sense cap efecte visible.
+//
+// Idempotent i barata: es pot cridar tantes vegades com calgui.
+
+function syncLayers() {
+  const ta = document.getElementById('code-editor');
+  if (!ta) return;
+  const st = ta.scrollTop;
+  const sl = ta.scrollLeft;
+
+  const hl = document.getElementById('code-highlight');
+  if (hl) hl.style.transform = `translate(${-sl}px, ${-st}px)`;
+
+  const bg = document.getElementById('line-bg');
+  if (bg) bg.style.transform = `translateY(${-st}px)`;
+
+  // Els números de línia viuen dins d'un wrapper intern (.ln-inner)
+  // perquè #line-numbers manté el seu padding i background fixos.
+  const ln = document.getElementById('line-numbers');
+  if (ln) {
+    const inner = ln.firstElementChild;
+    if (inner) inner.style.transform = `translateY(${-st}px)`;
+  }
+}
+
+
 // ── Marcatge de línies (activa / error) ──
 
 function highlightLine(n) {
@@ -75,12 +143,10 @@ function highlightLine(n) {
   if (lineTop < ta.scrollTop || lineTop + lineH > ta.scrollTop + edH) {
     const target = Math.max(0, lineTop - edH / 2 + lineH / 2);
     ta.scrollTop = target;
-    const hl = document.getElementById('code-highlight');
-    const bg = document.getElementById('line-bg');
-    const ln = document.getElementById('line-numbers');
-    if (hl) hl.scrollTop = target;
-    if (bg) bg.scrollTop = target;
-    if (ln) ln.scrollTop = target;
+    // L'assignació a ta.scrollTop dispararà un 'scroll' event,
+    // però cridem syncLayers() aquí mateix per evitar un frame de
+    // desalineació visible durant l'execució pas a pas.
+    syncLayers();
   }
 }
 
@@ -104,16 +170,15 @@ function updateEditor() {
   if (!ta || !hl || !ln) return;
   const code  = ta.value;
   const lines = code.split('\n');
-  hl.innerHTML  = highlightCode(code);
-  hl.scrollTop  = ta.scrollTop;
-  hl.scrollLeft = ta.scrollLeft;
-  ln.innerHTML  = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
-  ln.scrollTop  = ta.scrollTop;
-  if (bg) {
-    updateLineBg(lines.length);
-    bg.scrollTop  = ta.scrollTop;
-    bg.scrollLeft = ta.scrollLeft;
-  }
+  hl.innerHTML = highlightCode(code);
+  // Els <div> dels números de línia van dins d'un wrapper perquè
+  // puguem aplicar transform a aquest wrapper sense moure el padding
+  // ni el background del contenidor extern.
+  ln.innerHTML = '<div class="ln-inner">' +
+    lines.map((_, i) => `<div>${i + 1}</div>`).join('') +
+    '</div>';
+  if (bg) updateLineBg(lines.length);
+  syncLayers();
 }
 
 
@@ -123,54 +188,43 @@ function initEditor() {
   const ta = document.getElementById('code-editor');
   if (!ta) return;
 
+  // Canal principal: cada canvi de contingut re-ressalta i re-sincronitza.
   ta.addEventListener('input', () => {
     updateEditor();
     localStorage.setItem(K.LS_KEY_CODE, ta.value);
-    // FIX BUG 2: doble-RAF per sobreviure als reflows asíncrons
-    // del teclat virtual en mòbil (un sol RAF pot caure entre reflows)
+    // Safety net: el navegador pot ajustar ta.scrollLeft/scrollTop
+    // DESPRÉS de 'input' (clamp al nou max-scroll, scroll per mantenir
+    // el caret visible, reflow del teclat virtual en mòbil). Si no es
+    // dispara un 'scroll' event explícit, capturem l'estat final al
+    // proper (i al següent) frame.
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const st = ta.scrollTop;
-        const sl = ta.scrollLeft;
-        const hl = document.getElementById('code-highlight');
-        const bg = document.getElementById('line-bg');
-        const ln = document.getElementById('line-numbers');
-        if (hl) { hl.scrollTop = st; hl.scrollLeft = sl; }
-        if (ln) ln.scrollTop = st;
-        if (bg) { bg.scrollTop = st; bg.scrollLeft = sl; }
-      });
+      syncLayers();
+      requestAnimationFrame(syncLayers);
     });
   });
 
-  ta.addEventListener('scroll', () => {
-    const st = ta.scrollTop;
-    const sl = ta.scrollLeft;
-    const hl = document.getElementById('code-highlight');
-    if (hl) { hl.scrollTop = st; hl.scrollLeft = sl; }
-    document.getElementById('line-numbers').scrollTop = st;
-    const bg = document.getElementById('line-bg');
-    if (bg) { bg.scrollTop = st; bg.scrollLeft = sl; }
-  });
+  // Scroll nadiu del textarea (rodeta, fletxes, arrossegant) → sync.
+  // També captura el clamp automàtic del navegador quan el contingut
+  // es fa més curt que la posició de scroll actual després d'un delete.
+  ta.addEventListener('scroll', syncLayers);
 
-  // FIX BUG 2: quan el teclat virtual s'obre/tanca, el viewport canvia
-  // i el navegador pot fer scroll del caret. Re-sincronitzem les capes.
+  // Teclat virtual (mòbil): quan s'obre/tanca, el viewport canvia i
+  // el navegador pot reubicar el caret. Re-sincronitzem.
   if (window.visualViewport) {
-    const syncLayersOnResize = () => {
+    const onViewportChange = () => {
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const st = ta.scrollTop;
-          const sl = ta.scrollLeft;
-          const hl = document.getElementById('code-highlight');
-          const bg = document.getElementById('line-bg');
-          const ln = document.getElementById('line-numbers');
-          if (hl) { hl.scrollTop = st; hl.scrollLeft = sl; }
-          if (ln) ln.scrollTop = st;
-          if (bg) { bg.scrollTop = st; bg.scrollLeft = sl; }
-        });
+        syncLayers();
+        requestAnimationFrame(syncLayers);
       });
     };
-    window.visualViewport.addEventListener('resize', syncLayersOnResize);
-    window.visualViewport.addEventListener('scroll', syncLayersOnResize);
+    window.visualViewport.addEventListener('resize', onViewportChange);
+    window.visualViewport.addEventListener('scroll', onViewportChange);
+  }
+
+  // Si l'editor canvia de mida (redimensió de finestra, panell del
+  // costat, canvi de densitat en mòbil), re-sincronitzem.
+  if (window.ResizeObserver) {
+    new ResizeObserver(syncLayers).observe(ta);
   }
 
   ta.addEventListener('keydown', e => {
@@ -180,6 +234,9 @@ function initEditor() {
       ta.value = ta.value.slice(0, s) + '  ' + ta.value.slice(end);
       ta.selectionStart = ta.selectionEnd = s + 2;
       updateEditor();
+      // Assignació manual a value + selection → possible scroll
+      // asíncron per mantenir el caret visible; sincronitzem després.
+      requestAnimationFrame(syncLayers);
     }
     // Ctrl+Enter: equivalent a clicar el botó Executa/Atura
     // Només s'activa si el cursor és dins el textarea (focus actiu)
@@ -287,6 +344,8 @@ function initAutocomplete(ta) {
     updateEditor();
     localStorage.setItem(K.LS_KEY_CODE, ta.value);
     ta.focus();
+    // Assignació a value + selection → possible scroll asíncron
+    requestAnimationFrame(syncLayers);
   }
 
   ta.addEventListener('input', () => {
@@ -345,3 +404,4 @@ K.markErrorLine  = markErrorLine;
 K.clearLineMarks = clearLineMarks;
 K.updateEditor   = updateEditor;
 K.initEditor     = initEditor;
+K.syncLayers     = syncLayers;   // exposat per si algun altre mòdul en depèn
