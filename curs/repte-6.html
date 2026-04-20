@@ -175,31 +175,23 @@
 
         <details class="consell-box">
           <summary><strong>💡 Pista — pre/postcondicions de <code>omple_columna()</code></strong></summary>
-          <div class="consell-body">Perquè el programa principal funcioni amb un <code>while</code>,
-          la funció <code>omple_columna()</code> ha de tenir la mateixa
-          precondició i postcondició: <em>en Karel és a la base de la columna,
-          mirant cap a l'Est</em>. Si la postcondició no es compleix (per
-          exemple, si en Karel queda mirant al Nord), la iteració principal es
-          desorientarà a la primera iteració. Dissenya el gir final de
-          <code>omple_columna()</code> amb cura.</div>
+          <div class="consell-body">
+La funció <code>omple_columna()</code> ha de tenir aquesta estructura. Sempre assumeix que: <em>en Karel és a la base de la columna, mirant cap a l'Est</em> quan s'inicia, i al mateix temps, sempre l'ha de deixar en exactament la mateixa posició, un cop ha omplert la columna.
+</div>
         </details>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — el <code>while</code> imbricat i l'error de pal de paller</strong></summary>
-          <div class="consell-body">Dins de <code>omple_columna()</code> hi ha dues iteracions: una per
-          pujar fins al sostre i una per tornar al terra. La iteració de pujada
-          s'atura <em>abans</em> d'arribar a l'última casella, igual que al
-          repte del passadís. Afegeix un <code>if not pearl_here(): drop()</code>
-          fora del <code>while</code> per no perdre la casella del sostre.</div>
+          <div class="consell-body">
+En la funció <code>omple_columna()</code> hi ha dues iteracions: una per
+pujar fins al sostre i una per tornar al terra. La iteració de pujada
+s'atura <em>abans</em> d'arribar a l'última casella, igual que al
+repte del passadís. Afegeix un <code>if not pearl_here(): drop()</code>
+fora del <code>while</code> per no perdre la casella del sostre.
+</div>
         </details>
 
-        <details class="consell-box">
-          <summary><strong>💡 Pista — quin gir retorna al Sud→Est?</strong></summary>
-          <div class="consell-body">Quan en Karel torna al terra, mira cap al Sud. Per orientar-se
-          cap a l'Est des del Sud, necessita un sol gir de 90°. Recorda la
-          taula de girs: <code>turn_left()</code> des del Sud gira a l'Est;
-          <code>turn_right()</code> des del Sud gira a l'Oest.</div>
-        </details>
+        
 
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
@@ -207,17 +199,15 @@
              data-goals='["A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,K>", "A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,A|A,.,.,A,.,.,K>", "A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,A|A,.,.,A,.,.,A,.,.,K>"]'
              data-labels='["7 × 3 · 3 torres", "7 × 4 · 3 torres", "10 × 4 · 4 torres"]'
              data-bag="99"
-             data-code="def omple_columna():
-    # Pas 1 — Gira al nord i puja fins al sostre
-    #          Deixa una perla a cada casella buida
+             data-code="
+# ── omple_columna ──
+# Gira al Nord i puja fins al sostre, però deixa una perla a cada casella buida
+# Gira al Sud, avança fins al terra i, finalment, orienta en Karel cap a l'Est
 
-    # Pas 2 — Torna al terra i orienta't cap a l'Est
+def omple_columna():
 
 
 # ── Programa principal ──
-while front_is_clear():
-    avança_a_seguent()
-    omple_columna()
 "
              data-title="Les tres proves treballen el mateix repte: omple cada columna marcada, de base fins al sostre."
              data-height="400">
