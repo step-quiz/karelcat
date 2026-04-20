@@ -80,68 +80,52 @@
         </h2>
 
         <div class="exercise-enunciat">
-          En Karel patrulla un corredor horitzontal. Al llarg del corredor hi ha
-          <strong>alcoves</strong> (obertures d'una sola casella cap al Nord o cap al Sud).
-          Algunes alcoves contenen una perla; d'altres estan buides.<br><br>
-          La missió d'en Karel: <strong>recórrer el corredor d'un extrem a l'altre i recollir
-          les perles de dins de totes les alcoves</strong>, independentment de si l'alcova
-          s'obre cap al Nord o cap al Sud.<br><br>
-          <strong>La teva feina:</strong> escriu un programa que funcioni per a qualsevol longitud
-          de corredor i qualsevol distribució d'alcoves.
+          En Karel avança per un passadís horitzontal, al llarg del qual hi ha petits
+          <strong>forats</strong>, que són obertures d'una sola casella cap al Nord o cap al Sud. En alguns forats hi ha una perla, en d'altres no..<br><br>
+          <strong>La missió d'en Karel</strong>: recórrer el corredor d'un extrem a l'altre i recollir les perles de dins de totes les alcoves<br>
+          Escriu un programa que funcioni per a qualsevol longitud de corredor i qualsevol distribució de forats i de perles.
         </div>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — com detectar una alcova?</strong></summary>
-          <div class="consell-body">Una alcova és una obertura lateral: <code>left_is_clear()</code> (nord) o
-          <code>right_is_clear()</code> (sud) a la casella actual. Quan en detectes una,
-          entra-hi (gira + avança), comprova si hi ha perla, i torna al corredor.</div>
+          <div class="consell-body">
+Com que un forat és una obertura lateral, pots fer servir les instruccions: <code>left_is_clear()</code> o
+<code>right_is_clear()</code>.<br>
+Quan detectis un forat, entra-hi, comprova si hi ha perla (en aquest cas, l'agafes), i torna al corredor.
+</div>
         </details>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — explora_nord() i explora_sud()</strong></summary>
-          <div class="consell-body">Defineix dues funcions que entrin a l'alcova, recullin la perla si n'hi ha,
-          i retornin en Karel al corredor mirant Est. La postcondició ha de ser exactament
-          la mateixa que la precondició: en Karel al corredor, mirant Est, a punt per continuar.</div>
+          <div class="consell-body">
+Defineix dues funcions que entrin al forat, recullin la perla si n'hi ha,
+i retornin en Karel al corredor mirant Est.
+</div>
         </details>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — if separats, no elif</strong></summary>
-          <div class="consell-body">A cada casella, en Karel ha de comprovar si hi ha alcova al nord <strong>i també</strong>
-          si hi ha alcova al sud. Les dues comprovacions són independents: una casella podria
-          tenir obertura als dos costats. Per tant, necessites dos <code>if</code> separats,
-          no un <code>elif</code>.</div>
+          <div class="consell-body">
+A cada casella, en Karel ha de comprovar si hi ha forat al nord <strong>i també</strong> si hi ha forat al sud. Les dues comprovacions són independents: una casella podria tenir obertura als dos costats. Per tant, necessites dos <code>if</code> separats, i no seria bona idea fer servir un <code>elif</code>, en aquest cas.
+</div>
         </details>
 
         <div class="simulador"
              data-maps='[".,.,A,.,.,.|K>,.,.,.,.,.|.,A,.,.,.,.", "A,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,.|.,.,.,A,.,.,A,.", ".,.,A,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,.,.,.|.,A,.,.,.,A,.,.,A,."]'
              data-goals='[".,.,.,.,.,.|.,.,.,.,.,K>|.,.,.,.,.,.", ".,.,.,.,.,.,.,.|.,.,.,.,.,.,.,K>|.,.,.,.,.,.,.,.", ".,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,K>|.,.,.,.,.,.,.,.,.,." ]'
              data-labels='["6 caselles", "8 caselles", "10 caselles"]'
-             data-code="def explora_nord():
-    turn_left()
-    move()
-    if pearl_here():
-        grab()
-    turn_around()
-    move()
-    turn_left()
+             data-code="
+def explora_nord():
+
+
 
 def explora_sud():
-    # El teu codi aquí — és la versió simètrica d'explora_nord()
 
 
 # ── Programa principal ──
-while front_is_clear():
-    if left_is_clear():
-        explora_nord()
-    if right_is_clear():
-        explora_sud()
-    move()
 
-# Error de límit: comprova l'última casella
-if left_is_clear():
-    explora_nord()
-if right_is_clear():
-    explora_sud()
+
+# Atenció, no oblidem comprovar l'última casella de totes
 "
              data-title="El mateix codi ha de funcionar per als tres corredors. Atenció a l'error de límit!"
              data-height="420">

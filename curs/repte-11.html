@@ -161,54 +161,43 @@
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          El món és un rectangle buit. En Karel ha d'omplir-lo amb un
-          <strong>patró d'escaquer</strong>: perles a les caselles «negres»
-          i res a les «blanques». La cantonada inferior esquerra és sempre
-          negra (porta perla).<br><br>
+          El món és un rectangle buit. En Karel ha d'omplir-lo com si fos un
+          <strong>tauler d'escacs</strong>: ha de situar perles a les caselles «negres»
+          i deixar-ho buit a les «blanques». La cantonada inferior esquerra serà sempre
+          negra (és a dir, amb una perla).<br><br>
           <strong>La teva feina:</strong> escriu un programa que funcioni
           per a qualsevol rectangle, sigui quina sigui l'amplada i l'alçada.
           El teu codi <em>no pot</em> dependre del nombre exacte de caselles.<br><br>
-          <strong>Restricció important:</strong> no pots usar variables
-          numèriques per comptar files ni columnes. La paritat de cada
-          casella s'ha d'inferir de l'<em>estat físic del món</em> —
-          concretament, de si en Karel ha deixat o no una perla a la
-          casella on és ara.
+          <strong>Restricció important:</strong> no pots comptar files ni columnes. Has de deduir si tens un nombre parell o senar de files (el mateix amb columnes), sabent on en Karel ha deixat l'última perla abans de trobar una paret.
         </div>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — el truc de la paritat física</strong></summary>
-          <div class="consell-body">Quan en Karel acaba una fila i ha de pujar a la fila de sobre,
-          <em>la darrera casella que ha visitat</em> és la clau: si hi ha
-          perla (<code>pearl_here()</code> = <code>True</code>), la primera
-          casella de la nova fila serà «blanca» (sense perla). Si
-          <em>no</em> hi ha perla, la primera casella de la nova fila
-          serà «negra» (amb perla). Comprova la condició <strong>abans</strong>
-          de moure't a la nova fila; un cop t'has mogut ja no pots saber-ho.</div>
+          <div class="consell-body">
+Quan en Karel acaba una fila i ha de pujar a la fila de sobre,
+<em>la darrera casella que ha visitat</em> és la clau: si hi ha
+perla (<code>pearl_here()</code> = <code>True</code>), la primera
+casella de la nova fila serà «blanca» (sense perla). Si
+<em>no</em> hi ha perla, la primera casella de la nova fila
+serà «negra» (amb perla). Comprova la condició <strong>abans</strong>
+de moure't a la nova fila; un cop t'has mogut ja no pots saber-ho.
+</div>
         </details>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — el recorregut en serpentí i els dos girs</strong></summary>
-          <div class="consell-body">En Karel recorre el món en ziga-zaga: fila de baix cap a l'Est,
-          puja, fila de sobre cap a l'Oest, puja, fila cap a l'Est, …
-          El gir de transició <em>depèn de la direcció actual</em>:
-          des de l'Est cal <code>turn_left(); move(); turn_left()</code>
-          (girar al Nord, pujar, girar a l'Oest). Des de l'Oest cal
-          <code>turn_right(); move(); turn_right()</code> (girar al Nord,
-          pujar, girar a l'Est). Escriu dues funcions de transició,
-          una per a cada direcció.</div>
+          <div class="consell-body">
+En Karel recorre el món resseguint les files: fila inferior cap a l'Est, llavors avança cap al Nord, després fila superior cap a l'Oest, torna a avançar cap al Nord, fila superior cap a l'Est, etc.<br> <br>
+El gir de transició <em>depèn de la direcció actual</em>:
+des de l'Est cal <code>turn_left(); move(); turn_left()</code>
+(girar al Nord, pujar, girar a l'Oest). Des de l'Oest cal
+<code>turn_right(); move(); turn_right()</code> (girar al Nord,
+pujar, girar a l'Est). Escriu dues funcions per pujar de fila,
+una per a cada direcció.
+</div>
         </details>
 
-        <details class="consell-box">
-          <summary><strong>💡 Pista — <code>omple_fila_des_de_off()</code></strong></summary>
-          <div class="consell-body">L'esquelet et dona <code>omple_fila_des_de_on()</code> ja
-          implementada: parteix d'una casella «negra», deixa perla, avança
-          dues caselles, deixa perla, … fins al final de la fila.
-          <code>omple_fila_des_de_off()</code> és la versió simètrica:
-          parteix d'una casella «blanca», avança una casella (saltant la
-          blanca), deixa perla, avança dues, deixa perla, … Observa que
-          l'estructura és gairebé idèntica, però l'ordre de les accions
-          dins del <code>while</code> s'intercanvia.</div>
-        </details>
+        
 
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
@@ -216,58 +205,8 @@
              data-goals='["A,.,K>|.,A,.|A,.,A","K<,A,.,A|A,.,A,.|.,A,.,A|A,.,A,.","A,.,A,.,K>|.,A,.,A,.|A,.,A,.,A"]'
              data-labels='["3×3", "4×4", "5×3"]'
              data-bag="99"
-             data-code="def omple_fila_des_de_on():
-    # Parteix d'una casella ON: deixa perla aquí i cada dues caselles
-    if not pearl_here():
-        drop()
-    while front_is_clear():
-        move()
-        if front_is_clear():
-            move()
-            if not pearl_here():
-                drop()
-
-
-def omple_fila_des_de_off():
-    # Parteix d'una casella OFF: salta-la i deixa perla a la següent ON
-    # El teu codi aquí — és la versió simètrica d'omple_fila_des_de_on()
-
-
-def canvia_fila_des_d_est():
-    # Des de l'Est: gira al Nord, puja una fila, gira a l'Oest
-    turn_left()
-    move()
-    turn_left()
-
-
-def canvia_fila_des_d_oest():
-    # Des de l'Oest: gira al Nord, puja una fila, gira a l'Est
-    turn_right()
-    move()
-    turn_right()
-
-
+             data-code="
 # ── Programa principal ──
-# La cantonada inferior esquerra sempre és ON
-omple_fila_des_de_on()
-
-# Recorregut en serpentí: comprova pearl_here() ABANS de canviar de fila
-while left_is_clear():  # quan mires l'Est, l'esquerra = Nord = files per sobre
-    if pearl_here():
-        canvia_fila_des_d_est()
-        omple_fila_des_de_off()
-    else:
-        canvia_fila_des_d_est()
-        omple_fila_des_de_on()
-
-    if not right_is_clear():  # quan mires l'Oest, la dreta = Nord; bloquejat = cim
-        break
-    if pearl_here():
-        canvia_fila_des_d_oest()
-        omple_fila_des_de_off()
-    else:
-        canvia_fila_des_d_oest()
-        omple_fila_des_de_on()
 "
              data-title="El mateix codi ha de funcionar per als tres mons. Adapta la lògica al patró d'escaquer sense comptar caselles."
              data-height="500">

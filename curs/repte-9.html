@@ -80,33 +80,29 @@
         </h2>
 
         <div class="exercise-enunciat">
-          El fons marí d'en Karel és un rectangle buit. La seva missió: <strong>omplir de
-          perles totes les files parelles</strong> (la primera fila per baix, la tercera
-          per baix, etc.) i <strong>deixar buides les files senars</strong>.<br><br>
-          En Karel comença a la cantonada inferior esquerra mirant cap a l'Est.<br><br>
-          El resultat
+          El fons marí d'en Karel és un rectangle buit. La seva missió consisteix en <strong>omplir de
+          perles totes les files senars </strong> (la primera fila, la tercera, etc.) i <strong>deixar buides les altres</strong>.<br>
+          En Karel comença a la cantonada inferior esquerra mirant cap a l'Est. El resultat
           final ha de ser un patró de franges horitzontals: files amb perles alternant amb
           files buides.<br><br>
-          <strong>La teva feina:</strong> escriu un programa que funcioni per a qualsevol rectangle,
-          sigui quina sigui l'amplada i l'alçada. El teu codi no pot dependre del nombre de caselles.
+          Escriu un programa que funcioni per a qualsevol rectangle, sigui quina sigui l'amplada i l'alçada. El teu codi no pot dependre del nombre de caselles.
         </div>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — el recorregut en serpentí</strong></summary>
-          <div class="consell-body"><code>omple_fila()</code> deixa una perla a cada casella fins al final de la fila.
-          Funciona igual cap a l'Est que cap a l'Oest perquè <code>front_is_clear()</code> és
-          agnòstic de la direcció. Quan la fila s'acaba, en Karel és a un extrem del món.</div>
+          <div class="consell-body">
+Escriu la funció <code>omple_fila()</code>, on en Karel deixa una perla a cada casella, fins al final de la fila.
+</div>
         </details>
 
         <details class="consell-box">
           <summary><strong>💡 Pista — saltar una fila</strong></summary>
-          <div class="consell-body">Després d'omplir una fila, en Karel ha de pujar <strong>dues</strong> files: una per
-          saltar la fila buida i una altra per arribar a la que toca omplir.<br><br>
-          El gir de transició
-          depèn de la direcció: des de l'Est, fes <code>turn_left(); move(); turn_left()</code>
-          per pujar i girar a l'Oest.<br><br>
-          Des de l'Oest, fes <code>turn_right(); move(); turn_right()</code>
-          per pujar i girar a l'Est.</div>
+          <div class="consell-body">
+Després d'omplir una fila, en Karel ha de pujar <strong>dues</strong> files: una per saltar la fila buida i una altra per arribar a la que toca omplir.<br><br>
+El gir de transició depèn de la direcció: des de l'Est, fes <code>turn_left(); move(); turn_left()</code> per pujar i girar a l'Oest.<br><br>
+Des de l'Oest, fes <code>turn_right(); move(); turn_right()</code>
+per pujar i girar a l'Est.
+</div>
         </details>
 
         <div class="simulador"
@@ -114,26 +110,20 @@
              data-goals='[".,.,.,.|.,.,.,.|A,A,A,K>", ".,.,.,.,.|.,.,.,.,.|A,A,A,A,A|A,A,A,A,K>", "A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,K>"]'
              data-labels='["4×3 (2 files)", "5×4 (2 files)", "6×5 (3 files)"]'
              data-bag="99"
-             data-code="def omple_fila():
-    drop()
-    while front_is_clear():
-        move()
-        drop()
+             data-code="
+def omple_fila():
+
+
 
 def puja_des_d_est():
-    turn_left()
-    move()
-    turn_left()
+
+
 
 def puja_des_d_oest():
-    turn_right()
-    move()
-    turn_right()
+
+
 
 # ── Programa principal ──
-# Omple la primera fila i puja saltant files
-# El teu codi aquí
-
 "
              data-title="El mateix codi ha de funcionar per als tres mons. Adapta la lògica al serpentí amb salts de fila."
              data-height="420">
