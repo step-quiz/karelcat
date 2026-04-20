@@ -38,18 +38,38 @@
       background: #f0f9ff;
       border-left: 4px solid #0284c7;
       border-radius: 0 8px 8px 0;
-      padding: 0.9rem 1.1rem;
       margin: 1.2rem 0;
       font-size: 0.93rem;
       color: #0c4a6e;
     }
-    .consell-box strong {
-      display: block;
-      margin-bottom: 0.3rem;
+    .consell-box > summary {
+      padding: 0.9rem 1.1rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+    .consell-box > summary::-webkit-details-marker { display: none; }
+    .consell-box > summary::before {
+      content: "▶";
+      font-size: 0.65rem;
+      color: #0284c7;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .consell-box[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .consell-box > summary strong {
       font-size: 0.82rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #0284c7;
+    }
+    .consell-box > .consell-body {
+      padding: 0 1.1rem 0.9rem 1.1rem;
     }
 
     /* ── Capçalera del repte amb número i badge ── */
@@ -156,9 +176,9 @@
           caselles.
         </div>
 
-        <div class="consell-box">
-          <strong>💡 Pista — el gir entre files</strong>
-          Quan en Karel arriba a l'extrem dret de la fila inferior, ha de pujar
+        <details class="consell-box">
+          <summary><strong>💡 Pista — el gir entre files</strong></summary>
+          <div class="consell-body">Quan en Karel arriba a l'extrem dret de la fila inferior, ha de pujar
           a la fila de dalt i orientar-se cap a l'Oest.<br><br>
           Quants <code>turn_left()</code>
           necessita per passar de mirar l'Est a mirar l'Oest passant pel Nord?
@@ -166,18 +186,18 @@
           <code>turn_around()</code> gira 180°.<br><br>
           Dissenya el gir amb cura:
           si en Karel no queda orientat exactament cap a l'Oest quan comença la
-          fila superior, el segon <code>while</code> no avançarà ni un pas.
-        </div>
+          fila superior, el segon <code>while</code> no avançarà ni un pas.</div>
+        </details>
 
-        <div class="consell-box">
-          <strong>💡 Pista — l'error de límit</strong>
-          La iteració <code>while front_is_clear()</code> s'atura <em>abans</em>
+        <details class="consell-box">
+          <summary><strong>💡 Pista — l'error de límit</strong></summary>
+          <div class="consell-body">La iteració <code>while front_is_clear()</code> s'atura <em>abans</em>
           de moure's a l'última casella.<br><br>
           Quan el <code>while</code> acabi, en
           Karel és a l'última posició però encara no l'ha comprovat.<br><br>
           Afegeix un <code>if pearl_here(): grab()</code> fora del <code>while</code>
-          per no perdre cap perla de l'extrem.
-        </div>
+          per no perdre cap perla de l'extrem.</div>
+        </details>
 
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"

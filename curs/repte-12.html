@@ -38,18 +38,38 @@
       background: #f0f9ff;
       border-left: 4px solid #0284c7;
       border-radius: 0 8px 8px 0;
-      padding: 0.9rem 1.1rem;
       margin: 1.2rem 0;
       font-size: 0.93rem;
       color: #0c4a6e;
     }
-    .consell-box strong {
-      display: block;
-      margin-bottom: 0.3rem;
+    .consell-box > summary {
+      padding: 0.9rem 1.1rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+    .consell-box > summary::-webkit-details-marker { display: none; }
+    .consell-box > summary::before {
+      content: "▶";
+      font-size: 0.65rem;
+      color: #0284c7;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .consell-box[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .consell-box > summary strong {
       font-size: 0.82rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #0284c7;
+    }
+    .consell-box > .consell-body {
+      padding: 0 1.1rem 0.9rem 1.1rem;
     }
 
     /* ── Capçalera del repte amb número i badge ── */
@@ -152,20 +172,20 @@
           trobar la sortida.
         </div>
 
-        <div class="consell-box">
-          <strong>💡 Pista — la regla de la mà dreta</strong>
-          Imagina que poses la mà dreta a la paret del laberint i camines sempre
+        <details class="consell-box">
+          <summary><strong>💡 Pista — la regla de la mà dreta</strong></summary>
+          <div class="consell-body">Imagina que poses la mà dreta a la paret del laberint i camines sempre
           mantenint el contacte amb ella. Quan la paret acaba (la dreta és lliure),
           gires a la dreta i avances. Si la paret continua però el davant és lliure,
           avances recte. Si tens paret tant a la dreta com al davant, gires a
           l'esquerra (però <em>no</em> avances: potser ara el davant és lliure i
           caldrà tornar a comprovar). Aquesta regla garanteix que trobaràs la
-          sortida en qualsevol laberint simplement connexe.
-        </div>
+          sortida en qualsevol laberint simplement connexe.</div>
+        </details>
 
-        <div class="consell-box">
-          <strong>💡 Pista — un sol pas, repetit moltes vegades</strong>
-          La clau és definir una funció <code>pas()</code> que implementi
+        <details class="consell-box">
+          <summary><strong>💡 Pista — un sol pas, repetit moltes vegades</strong></summary>
+          <div class="consell-body">La clau és definir una funció <code>pas()</code> que implementi
           exactament un pas de la regla de la mà dreta, i repetir-la mentre
           en Karel no sigui a la sortida:
           <br><br>
@@ -175,8 +195,8 @@
           però davant lliure, i dreta i davant ocupats. Cada cas fa una acció
           diferent. Pots usar <code>right_is_clear()</code>,
           <code>front_is_clear()</code> i <code>turn_right()</code> juntament
-          amb les funcions que ja coneixes.
-        </div>
+          amb les funcions que ja coneixes.</div>
+        </details>
 
         <!-- Simulador multi-món (DRY): un sol editor, tres laberints de test -->
         <div class="simulador"

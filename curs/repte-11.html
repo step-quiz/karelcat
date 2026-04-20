@@ -38,18 +38,38 @@
       background: #f0f9ff;
       border-left: 4px solid #0284c7;
       border-radius: 0 8px 8px 0;
-      padding: 0.9rem 1.1rem;
       margin: 1.2rem 0;
       font-size: 0.93rem;
       color: #0c4a6e;
     }
-    .consell-box strong {
-      display: block;
-      margin-bottom: 0.3rem;
+    .consell-box > summary {
+      padding: 0.9rem 1.1rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+    .consell-box > summary::-webkit-details-marker { display: none; }
+    .consell-box > summary::before {
+      content: "▶";
+      font-size: 0.65rem;
+      color: #0284c7;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .consell-box[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .consell-box > summary strong {
       font-size: 0.82rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #0284c7;
+    }
+    .consell-box > .consell-body {
+      padding: 0 1.1rem 0.9rem 1.1rem;
     }
 
     /* ── Capçalera del repte amb número i badge ── */
@@ -155,40 +175,40 @@
           casella on és ara.
         </div>
 
-        <div class="consell-box">
-          <strong>💡 Pista — el truc de la paritat física</strong>
-          Quan en Karel acaba una fila i ha de pujar a la fila de sobre,
+        <details class="consell-box">
+          <summary><strong>💡 Pista — el truc de la paritat física</strong></summary>
+          <div class="consell-body">Quan en Karel acaba una fila i ha de pujar a la fila de sobre,
           <em>la darrera casella que ha visitat</em> és la clau: si hi ha
           perla (<code>pearl_here()</code> = <code>True</code>), la primera
           casella de la nova fila serà «blanca» (sense perla). Si
           <em>no</em> hi ha perla, la primera casella de la nova fila
           serà «negra» (amb perla). Comprova la condició <strong>abans</strong>
-          de moure't a la nova fila; un cop t'has mogut ja no pots saber-ho.
-        </div>
+          de moure't a la nova fila; un cop t'has mogut ja no pots saber-ho.</div>
+        </details>
 
-        <div class="consell-box">
-          <strong>💡 Pista — el recorregut en serpentí i els dos girs</strong>
-          En Karel recorre el món en ziga-zaga: fila de baix cap a l'Est,
+        <details class="consell-box">
+          <summary><strong>💡 Pista — el recorregut en serpentí i els dos girs</strong></summary>
+          <div class="consell-body">En Karel recorre el món en ziga-zaga: fila de baix cap a l'Est,
           puja, fila de sobre cap a l'Oest, puja, fila cap a l'Est, …
           El gir de transició <em>depèn de la direcció actual</em>:
           des de l'Est cal <code>turn_left(); move(); turn_left()</code>
           (girar al Nord, pujar, girar a l'Oest). Des de l'Oest cal
           <code>turn_right(); move(); turn_right()</code> (girar al Nord,
           pujar, girar a l'Est). Escriu dues funcions de transició,
-          una per a cada direcció.
-        </div>
+          una per a cada direcció.</div>
+        </details>
 
-        <div class="consell-box">
-          <strong>💡 Pista — <code>omple_fila_des_de_off()</code></strong>
-          L'esquelet et dona <code>omple_fila_des_de_on()</code> ja
+        <details class="consell-box">
+          <summary><strong>💡 Pista — <code>omple_fila_des_de_off()</code></strong></summary>
+          <div class="consell-body">L'esquelet et dona <code>omple_fila_des_de_on()</code> ja
           implementada: parteix d'una casella «negra», deixa perla, avança
           dues caselles, deixa perla, … fins al final de la fila.
           <code>omple_fila_des_de_off()</code> és la versió simètrica:
           parteix d'una casella «blanca», avança una casella (saltant la
           blanca), deixa perla, avança dues, deixa perla, … Observa que
           l'estructura és gairebé idèntica, però l'ordre de les accions
-          dins del <code>while</code> s'intercanvia.
-        </div>
+          dins del <code>while</code> s'intercanvia.</div>
+        </details>
 
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"

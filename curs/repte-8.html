@@ -93,20 +93,20 @@
           La ronda acaba quan torna a trepitjar la marca.
         </div>
 
-        <div class="consell-box">
-          <strong>💡 Pista — la regla del vigilant</strong>
-          Defineix una funció <code>pas_vigilant()</code> que faci exactament un pas de la ronda:
+        <details class="consell-box">
+          <summary><strong>💡 Pista — la regla del vigilant</strong></summary>
+          <div class="consell-body">Defineix una funció <code>pas_vigilant()</code> que faci exactament un pas de la ronda:
           primer, si hi ha perla, recull-la; després, si pots avançar, avança; si no pots
-          avançar (cantonada), gira a la dreta. Repeteix-ho fins que tornis al punt de partida.
-        </div>
+          avançar (cantonada), gira a la dreta. Repeteix-ho fins que tornis al punt de partida.</div>
+        </details>
 
-        <div class="consell-box">
-          <strong>💡 Pista — detectar el punt de partida</strong>
-          Abans de començar la ronda, deixa una perla com a «marca» amb <code>drop()</code>.
+        <details class="consell-box">
+          <summary><strong>💡 Pista — detectar el punt de partida</strong></summary>
+          <div class="consell-body">Abans de començar la ronda, deixa una perla com a «marca» amb <code>drop()</code>.
           Llavors avança un pas per sortir de la marca, i la iteració principal és:
           <code>while not pearl_here(): pas_vigilant()</code>. Quan el <code>while</code>
-          s'aturi, en Karel haurà tornat a casa. Recull la marca al final.
-        </div>
+          s'aturi, en Karel haurà tornat a casa. Recull la marca al final.</div>
+        </details>
 
         <div class="simulador"
              data-maps='[".,.,.,.|K>,A,.,A|.,A,.,.", ".,.,A,.,.|K>,.,.,.,A|.,A,.,.,.", ".,A,.,.,.,.|.,.,.,.,.,.|K>,.,.,A,.,A|.,.,A,.,.,."]'

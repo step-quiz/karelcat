@@ -90,27 +90,27 @@
           de corredor i qualsevol distribució d'alcoves.
         </div>
 
-        <div class="consell-box">
-          <strong>💡 Pista — com detectar una alcova?</strong>
-          Una alcova és una obertura lateral: <code>left_is_clear()</code> (nord) o
+        <details class="consell-box">
+          <summary><strong>💡 Pista — com detectar una alcova?</strong></summary>
+          <div class="consell-body">Una alcova és una obertura lateral: <code>left_is_clear()</code> (nord) o
           <code>right_is_clear()</code> (sud) a la casella actual. Quan en detectes una,
-          entra-hi (gira + avança), comprova si hi ha perla, i torna al corredor.
-        </div>
+          entra-hi (gira + avança), comprova si hi ha perla, i torna al corredor.</div>
+        </details>
 
-        <div class="consell-box">
-          <strong>💡 Pista — explora_nord() i explora_sud()</strong>
-          Defineix dues funcions que entrin a l'alcova, recullin la perla si n'hi ha,
+        <details class="consell-box">
+          <summary><strong>💡 Pista — explora_nord() i explora_sud()</strong></summary>
+          <div class="consell-body">Defineix dues funcions que entrin a l'alcova, recullin la perla si n'hi ha,
           i retornin en Karel al corredor mirant Est. La postcondició ha de ser exactament
-          la mateixa que la precondició: en Karel al corredor, mirant Est, a punt per continuar.
-        </div>
+          la mateixa que la precondició: en Karel al corredor, mirant Est, a punt per continuar.</div>
+        </details>
 
-        <div class="consell-box">
-          <strong>💡 Pista — if separats, no elif</strong>
-          A cada casella, en Karel ha de comprovar si hi ha alcova al nord <strong>i també</strong>
+        <details class="consell-box">
+          <summary><strong>💡 Pista — if separats, no elif</strong></summary>
+          <div class="consell-body">A cada casella, en Karel ha de comprovar si hi ha alcova al nord <strong>i també</strong>
           si hi ha alcova al sud. Les dues comprovacions són independents: una casella podria
           tenir obertura als dos costats. Per tant, necessites dos <code>if</code> separats,
-          no un <code>elif</code>.
-        </div>
+          no un <code>elif</code>.</div>
+        </details>
 
         <div class="simulador"
              data-maps='[".,.,A,.,.,.|K>,.,.,.,.,.|.,A,.,.,.,.", "A,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,.|.,.,.,A,.,.,A,.", ".,.,A,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,.,.,.|.,A,.,.,.,A,.,.,A,."]'

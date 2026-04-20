@@ -29,18 +29,38 @@
       background: #f0f9ff;
       border-left: 4px solid #0284c7;
       border-radius: 0 8px 8px 0;
-      padding: 0.9rem 1.1rem;
       margin: 1.2rem 0;
       font-size: 0.93rem;
       color: #0c4a6e;
     }
-    .consell-box strong {
-      display: block;
-      margin-bottom: 0.3rem;
+    .consell-box > summary {
+      padding: 0.9rem 1.1rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+    .consell-box > summary::-webkit-details-marker { display: none; }
+    .consell-box > summary::before {
+      content: "▶";
+      font-size: 0.65rem;
+      color: #0284c7;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .consell-box[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .consell-box > summary strong {
       font-size: 0.82rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #0284c7;
+    }
+    .consell-box > .consell-body {
+      padding: 0 1.1rem 0.9rem 1.1rem;
     }
   </style>
   <link rel="stylesheet" href="../nav.css">

@@ -38,18 +38,38 @@
       background: #f0f9ff;
       border-left: 4px solid #0284c7;
       border-radius: 0 8px 8px 0;
-      padding: 0.9rem 1.1rem;
       margin: 1.2rem 0;
       font-size: 0.93rem;
       color: #0c4a6e;
     }
-    .consell-box strong {
-      display: block;
-      margin-bottom: 0.3rem;
+    .consell-box > summary {
+      padding: 0.9rem 1.1rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+    .consell-box > summary::-webkit-details-marker { display: none; }
+    .consell-box > summary::before {
+      content: "▶";
+      font-size: 0.65rem;
+      color: #0284c7;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .consell-box[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .consell-box > summary strong {
       font-size: 0.82rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #0284c7;
+    }
+    .consell-box > .consell-body {
+      padding: 0 1.1rem 0.9rem 1.1rem;
     }
 
     /* ── Capçalera del repte amb número i badge ── */
@@ -152,31 +172,31 @@
           del nombre exacte de caselles.
         </div>
 
-        <div class="consell-box">
-          <strong>💡 Pista — la simetria entre <code>puja_grao()</code> i <code>baixa_grao()</code></strong>
-          <code>puja_grao()</code> fa: avança, gira a l'esquerra, puja, gira a la dreta.
+        <details class="consell-box">
+          <summary><strong>💡 Pista — la simetria entre <code>puja_grao()</code> i <code>baixa_grao()</code></strong></summary>
+          <div class="consell-body"><code>puja_grao()</code> fa: avança, gira a l'esquerra, puja, gira a la dreta.
           <code>baixa_grao()</code> és exactament l'operació inversa: gira a la dreta,
           baixa, gira a l'esquerra, avança. Imagina que executes <code>puja_grao()</code>
           al revés, pas per pas. Si les dues funcions estan ben escrites, la
           pre/postcondició de totes dues és la mateixa: <em>en Karel és al
-          peu d'un graó, mirant cap a l'Est</em>.
-        </div>
+          peu d'un graó, mirant cap a l'Est</em>.</div>
+        </details>
 
-        <div class="consell-box">
-          <strong>💡 Pista — com saber quan has arribat a la cima?</strong>
-          La cima és l'única casella del món que té una perla. Pots usar
+        <details class="consell-box">
+          <summary><strong>💡 Pista — com saber quan has arribat a la cima?</strong></summary>
+          <div class="consell-body">La cima és l'única casella del món que té una perla. Pots usar
           <code>while not pearl_here():</code> per pujar graó a graó fins
           que trobis la perla. D'aquesta manera el programa funciona per a
-          qualsevol alçada de muntanya sense necessitat de comptar graons.
-        </div>
+          qualsevol alçada de muntanya sense necessitat de comptar graons.</div>
+        </details>
 
-        <div class="consell-box">
-          <strong>💡 Pista — com saber quan has arribat al peu de l'altra banda?</strong>
-          Quan en Karel és al peu del darrer graó de la dreta, la paret del
+        <details class="consell-box">
+          <summary><strong>💡 Pista — com saber quan has arribat al peu de l'altra banda?</strong></summary>
+          <div class="consell-body">Quan en Karel és al peu del darrer graó de la dreta, la paret del
           món li bloqueja el camí cap a l'Est: <code>front_is_clear()</code>
           retorna <code>False</code>. Pots usar <code>while front_is_clear():</code>
-          per baixar graó a graó fins que arribes al peu. Llavors deixa la perla.
-        </div>
+          per baixar graó a graó fins que arribes al peu. Llavors deixa la perla.</div>
+        </details>
 
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
