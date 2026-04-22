@@ -187,9 +187,6 @@ if pearl_here():
           <div class="code-compare-block">
             <div class="code-compare-label label-net">✓ Codi net</div>
             <pre><code>def avançar_i_recollir():
-    # Pre:  camí lliure davant
-    # Post: en Karel ha avançat una casella
-    #       i ha recollit la perla si n'hi havia
     move()
     if pearl_here():
         grab()
@@ -231,58 +228,52 @@ while front_is_clear():
       <section class="chapter-section">
         <h2>Els noms importen</h2>
 
-        <p>El nom que li poses a una funció és la primera cosa que llegirà qualsevol persona que vegi el teu codi, inclòs tu mateix l'endemà. Aquí tens dues versions d'un programa que fan el mateix: en Karel avança fins al final d'un corredor, gira a la dreta i avança una casella:</p>
+        <p>El nom que li poses a una funció és la primera cosa que llegirà qualsevol persona que vegi el teu codi, inclòs tu mateix l'endemà. Aquí tens dues versions d'un programa que fan el mateix: en Karel recorre un corredor i recull cada perla que troba:</p>
 
         <div class="code-compare">
           <div class="code-compare-block">
             <div class="code-compare-label label-brut">✗ Noms que no expliquen res</div>
-            <pre><code>def f():
-    turn_left()
-    turn_left()
-    turn_left()
+            <pre><code>def p():
+    if pearl_here():
+        grab()
 
 while front_is_clear():
     move()
-f()
-move()</code></pre>
+    p()</code></pre>
           </div>
           <div class="code-compare-block">
             <div class="code-compare-label label-net">✓ Noms descriptius</div>
-            <pre><code>def girar_a_la_dreta():
-    turn_left()
-    turn_left()
-    turn_left()
+            <pre><code>def recollir_si_hi_ha_perla():
+    if pearl_here():
+        grab()
 
 while front_is_clear():
     move()
-girar_a_la_dreta()
-move()</code></pre>
+    recollir_si_hi_ha_perla()</code></pre>
           </div>
         </div>
 
-        <p>Amb <code>f()</code> no pots saber què fa la funció sense llegir el seu interior. Amb <code>girar_a_la_dreta()</code>, el codi principal es llegeix com una frase: «avança fins a la paret, gira a la dreta, avança una casella». No cal ni anar a mirar la definició.</p>
+        <p>Amb <code>p()</code> no pots saber què fa la funció sense llegir el seu interior. Amb <code>recollir_si_hi_ha_perla()</code>, el codi principal es llegeix com una frase: «mentre puguis avançar, avança i recull si hi ha perla». No cal ni anar a mirar la definició.</p>
 
-        <p>Observa-ho en acció. En Karel avança per un corredor de 4 caselles i gira cap a la perla de la cantonada de sota:</p>
+        <p>Observa-ho en acció. El codi de la dreta —la versió neta— és el que s'executa:</p>
 
         <div class="simulador"
-             data-map="K>,.,.,.|P,P,P,A"
-             data-code="def girar_a_la_dreta():
-    turn_left()
-    turn_left()
-    turn_left()
+             data-map="K>,A,.,A,.,.,A,."
+             data-code="def recollir_si_hi_ha_perla():
+    if pearl_here():
+        grab()
 
 while front_is_clear():
     move()
-girar_a_la_dreta()
-move()
+    recollir_si_hi_ha_perla()
 "
              data-readonly="true"
              data-label="Exemple"
-             data-title="Gràcies al nom girar_a_la_dreta(), el codi principal és llegible d'un sol cop d'ull, sense haver d'entrar a la definició de la funció."
-             data-height="320">
+             data-title="recollir_si_hi_ha_perla() explica exactament el que fa: comprova si hi ha una perla i, si n'hi ha, la recull."
+             data-height="290">
         </div>
 
-        <p>La segona regla: <strong>posa noms que expliquen el que fa la funció</strong>. <code>avançar_fins_a_paret()</code> és molt millor que <code>proc1()</code>. <code>recollir_si_hi_ha_perla()</code> és molt millor que <code>bb()</code>. El nom és la documentació més bàsica que pots donar al teu codi.</p>
+        <p>La segona regla: <strong>posa noms que expliquen el que fa la funció</strong>. <code>recollir_si_hi_ha_perla()</code> és molt millor que <code>p()</code>. <code>avançar_fins_a_paret()</code> és molt millor que <code>f()</code>. El nom és la documentació més bàsica que pots donar al teu codi.</p>
       </section>
 
 
@@ -295,22 +286,17 @@ move()
 
         <p>Cada funció hauria de fer <em>una sola cosa</em> i tenir un nom que la descrigui exactament. Si quan expliques el que fa una funció necessites dir «fa X <strong>i també</strong> fa Y», és senyal que potser hauries de partir-la en dues.</p>
 
-        <p>Aquí en Karel ha d'avançar fins al final d'un corredor i tornar al punt de partida:</p>
+        <p>Aquí en Karel ha d'avançar fins al final d'un corredor i deixar-hi una perla:</p>
 
         <div class="code-compare">
           <div class="code-compare-block">
             <div class="code-compare-label label-brut">✗ Una funció fa dues coses</div>
-            <pre><code>def anar_i_tornar():
-    # Fa dues coses ben diferents:
-    # 1) avançar fins a la paret
-    # 2) girar i tornar
+            <pre><code>def anar_i_deixar_perla():
     while front_is_clear():
         move()
-    turn_around()
-    while front_is_clear():
-        move()
+    drop()
 
-anar_i_tornar()</code></pre>
+anar_i_deixar_perla()</code></pre>
           </div>
           <div class="code-compare-block">
             <div class="code-compare-label label-net">✓ Una funció, una responsabilitat</div>
@@ -318,29 +304,27 @@ anar_i_tornar()</code></pre>
     while front_is_clear():
         move()
 
-# Ara avançar_fins_a_paret() es pot
-# reutilitzar dues vegades sense repetir codi.
+# Cada acció és independent i reutilitzable.
 avançar_fins_a_paret()
-turn_around()
-avançar_fins_a_paret()</code></pre>
+drop()</code></pre>
           </div>
         </div>
 
-        <p>La versió neta té un avantatge que potser no és obvi d'entrada: la funció <code>avançar_fins_a_paret()</code> és tan genèrica que la pots reutilitzar en qualsevol repte futur. Funciona per a qualsevol mida de corredor i en qualsevol direcció. La versió bruta amaga tota la lògica dins d'una funció que barreja dues responsabilitats.</p>
+        <p>La versió neta té un avantatge clar: <code>avançar_fins_a_paret()</code> és tan genèrica que la pots reutilitzar en qualsevol repte futur, en qualsevol direcció, sense importar el que vulguis fer en arribar. La versió bruta lliga el moviment amb l'acció de deixar una perla, de manera que la funció només serveix per a aquest cas concret i no pot aprofitar-se en cap altre context.</p>
 
         <div class="simulador"
-             data-map="K>,.,.,.,.,.,.,"
+             data-map="K>,.,.,.,.,.,.,."
+             data-bag="1"
              data-code="def avançar_fins_a_paret():
     while front_is_clear():
         move()
 
 avançar_fins_a_paret()
-turn_around()
-avançar_fins_a_paret()
+drop()
 "
              data-readonly="true"
              data-label="Exemple"
-             data-title="La mateixa funció avançar_fins_a_paret() s'usa dues vegades: un cop per anar i un cop per tornar."
+             data-title="avançar_fins_a_paret() no sap —ni li importa— el que es farà en arribar. Això la fa reutilitzable en qualsevol situació."
              data-height="290">
         </div>
 
@@ -371,8 +355,8 @@ avançar_fins_a_paret()
           <div class="benefici-card benefici-accent-2">
             <h3>📅 A mig termini</h3>
             <ul>
-              <li><strong>Reutilitzes el que ja has escrit.</strong> Tens <code>girar_a_la_dreta()</code> d'un repte anterior? La copies directament al repte nou. Funciona sense errors, sense reescriure res.</li>
-              <li><strong>Construeixes comportaments complexos.</strong> <code>avançar_fins_a_paret()</code> + <code>girar_a_la_dreta()</code> + <code>recollir_si_hi_ha_perla()</code> combinades donen un programa sofisticat llegible en tres línies.</li>
+              <li><strong>Reutilitzes el que ja has escrit.</strong> Tens <code>recollir_si_hi_ha_perla()</code> d'un repte anterior? La copies directament al repte nou. Funciona sense errors, sense reescriure res.</li>
+              <li><strong>Construeixes comportaments complexos.</strong> <code>avançar_fins_a_paret()</code> + <code>recollir_si_hi_ha_perla()</code> + <code>turn_around()</code> combinades donen un programa sofisticat llegible en tres línies.</li>
               <li><strong>El codi s'adapta sol.</strong> Si el món canvia —corredor més llarg, més perles— el teu codi net sovint no cal tocar-lo. El brut, sí.</li>
             </ul>
           </div>
