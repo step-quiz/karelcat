@@ -40,8 +40,8 @@ const CAPITOLS_DATA = [
   { num: 7,  titol: 'Condicionals',              arxiu: 'capitol-7.html'  },
   { num: 8,  titol: 'Mentre',                    arxiu: 'capitol-8.html'  },
   { num: 9,  titol: 'Combinant condicions',      arxiu: 'capitol-9.html'  },
-  { num: 10, titol: 'Resum',                     arxiu: 'capitol-10.html' },
-  { num: 'futur', titol: 'Del Karel al Python',  arxiu: 'capitol-futur.html' },
+  { num: 10, titol: 'Escriure codi net',         arxiu: 'capitol-10.html' },
+  { num: 'futur', titol: 'Resum',  arxiu: 'capitol-futur.html' },
 ];
 
 
