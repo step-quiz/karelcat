@@ -68,7 +68,91 @@
 
 
       <!-- ─────────────────────────────────────────────
-           SECCIÓ 1 — Tot és Python
+           SECCIÓ 1 — Glossari complet
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Glossari</h2>
+
+        <p>Aquest és el vocabulari complet d'en Karel.</p>
+
+        <h3>Accions: el que en Karel <em>fa</em></h3>
+        <pre><code>move()           # avança una casella en la direcció que mira
+turn_left()      # gira 90° a l'esquerra (no es mou)
+turn_right()     # gira 90° a la dreta (no es mou)
+turn_around()    # fa mitja volta (180°), no es mou
+grab()           # recull la perla de la casella actual
+drop()           # deixa una perla a la casella actual</code></pre>
+
+        <h3>Condicions: el que en Karel <em>pot preguntar</em></h3>
+        <pre><code>front_is_clear()      # el davant és lliure?
+front_is_blocked()    # el davant té obstacle?
+left_is_clear()       # l'esquerra és lliure?
+right_is_clear()      # la dreta és lliure?
+pearl_here()          # hi ha una perla en aquesta casella?
+bag_is_empty()        # la motxilla és buida?</code></pre>
+
+        <h3>Estructures: la <em>forma</em> del programa</h3>
+        <pre><code>for i in range(5):       # repetir un nombre exacte de vegades
+    move()
+
+while front_is_clear():  # repetir mentre es compleixi una condició
+    move()
+
+if pearl_here():         # decidir entre dues opcions
+    grab()
+else:
+    move()
+
+if right_is_clear():     # decidir entre tres o més opcions
+    turn_right()
+elif front_is_clear():
+    move()
+else:
+    turn_left()
+
+def anar_al_final():     # crear una instrucció pròpia
+    while front_is_clear():
+        move()</code></pre>
+
+        <h3>Operadors lògics: combinar condicions</h3>
+        <pre><code>if front_is_clear() and not pearl_here():
+    move()
+
+if pearl_here() or bag_is_empty():
+    grab()</code></pre>
+
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 2 — Precondició i postcondició
+           ───────────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Pensar abans d'escriure: precondició i postcondició</h2>
+
+        <p>Quan decideixes crear una funció pròpia fent servir <code>def</code>, li estàs ensenyant a en Karel una paraula nova. Aquí entren dues idees que les persones que programen <strong>en l'àmbit professional</strong> sempre tenen al cap:</p>
+
+        <ul>
+          <li>Precondició. Quina és la situació just <em>abans</em> que comenci la meva funció. On és en Karel? Cap a on mira? Què hi ha al voltant?</li>
+          <li>Postcondició. Quina situació deixo <em>després</em> que la funció s'hagi executat. On haurà acabat, en Karel? Cap a on estarà mirant? Ha canviat alguna condició del món, com per exemple el nombre de perles que hi ha?</li>
+        </ul>
+
+        <p>Mira aquest exemple. Volem una funció <code>girar_cantonada_dreta()</code> perquè en Karel giri a la dreta i avanci una casella:</p>
+
+        <pre><code>def girar_cantonada_dreta():
+    # Precondició:  en Karel té la dreta lliure
+    # Postcondició: en Karel ha girat 90° a la dreta i ha avançat 1 casella
+    turn_right()
+    move()</code></pre>
+
+        <p>Si crides aquesta funció amb una paret a la dreta, en Karel s'estavellarà. La culpa no és de la funció: és de qui l'ha cridat sense respectar la precondició. Per això abans d'usar-la sempre comprovaràs <code>if right_is_clear():</code>.</p>
+
+        <p>Aquest hàbit — escriure mentalment (o en un comentari) <em>què espero</em> i <em>què deixo</em> — és una de les diferències més grans que trobem quan es programa en l'àmbit professional. T'estalviarà hores de cercar errors i és, de debò, una de les bones pràctiques que més et farà créixer com a programadora o programador.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────────
+           SECCIÓ 3 — Tot és Python
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
         <h2>Tot el que has escrit és Python</h2>
@@ -82,7 +166,7 @@
 
 
       <!-- ─────────────────────────────────────────────
-           SECCIÓ 2 — Comparativa
+           SECCIÓ 4 — Comparativa
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
         <h2>Compara: en Karel vs. Python</h2>
@@ -109,7 +193,7 @@ def puja_grao():                  def saluda(nom):
 
 
       <!-- ─────────────────────────────────────────────
-           SECCIÓ 3 — Què hi ha de nou
+           SECCIÓ 5 — Què hi ha de nou
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
         <h2>Què hi ha de nou a Python?</h2>
@@ -133,7 +217,7 @@ print("Hola, " + nom + "!")</code></pre>
 
 
       <!-- ─────────────────────────────────────────────
-           SECCIÓ 4 — Les 5 idees
+           SECCIÓ 6 — Les 5 idees
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
         <h2>Les idees que no canvien mai</h2>
@@ -153,7 +237,7 @@ print("Hola, " + nom + "!")</code></pre>
 
 
       <!-- ─────────────────────────────────────────────
-           SECCIÓ 5 — Per on continuo
+           SECCIÓ 7 — Per on continuo
            ───────────────────────────────────────────── -->
       <section class="chapter-section">
         <h2>Per on continuo?</h2>
