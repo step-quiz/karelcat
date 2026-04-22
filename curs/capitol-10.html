@@ -67,25 +67,6 @@
       </header>
 
 
-      <!-- ─────────────────────────────────────
-           SECCIÓ 1 — La iteració infinita
-           ───────────────────────────────────── -->
-      <section class="chapter-section">
-        <h2>Compte amb la iteració infinita</h2>
-
-        <p>Si la condició d'un <code>while</code> mai no es torna falsa, la iteració no s'atura mai. Això s'anomena una <strong>iteració infinita</strong> i és un error habitual perquè no sempre és evident detectar-lo.</p>
-
-        <p>Per exemple:</p>
-
-        <pre><code># ❌ Iteració infinita: la condició sempre és certa
-while front_is_clear():
-    turn_left()   # gira però no avança → el camí segueix lliure per sempre</code></pre>
-
-        <p>En Karel girarà a l'esquerra indefinidament perquè mai no avança cap al mur. La condició <code>front_is_clear()</code> seguirà sent certa eternament.</p>
-
-        <p>La regla per evitar-ho: <strong>el cos del <code>while</code> ha de fer alguna cosa que pugui canviar la condició</strong>. Si el <code>while</code> comprova <code>front_is_clear()</code>, el cos ha d'incloure algun <code>move()</code> o una acció que pugui apropar en Karel a un obstacle.</p>
-      </section>
-
 
       <!-- ─────────────────────────────────────────────
            SECCIÓ 2 — Codi net vs codi no net
@@ -93,7 +74,7 @@ while front_is_clear():
       <section class="chapter-section">
         <h2>Codi net comparat amb codi que «simplement, funciona»</h2>
 
-        <p>Que un programa funcioni no vol dir que estigui ben escrit. Els dos codis que veuràs a continuació fan exactament el mateix: en Karel travessa un corredor recollint totes les perles que troba pel camí. Llegeix-los.</p>
+        <p>Els dos codis que veuràs a continuació fan exactament el mateix: en Karel travessa un corredor recollint totes les perles que troba pel camí. Llegeix-los.</p>
 
         <h3>Versió no neta</h3>
         <pre><code>move()
