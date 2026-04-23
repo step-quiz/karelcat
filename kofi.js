@@ -105,9 +105,9 @@
   spotlight.addEventListener('click', hideKofi);
 
   // ── Comptador de visites ───────────────────────────────────────────────────
-  // Incrementem el comptador a cada càrrega. Quan arriba a 10 es dispara
+  // Incrementem el comptador a cada càrrega. Quan arriba al total, es dispara
   // l'efecte i el comptador es torna a 0.
-  var KOFI_THRESHOLD = 10;
+  var KOFI_THRESHOLD = 1000;
   var visits = parseInt(localStorage.getItem('kofiVisits') || '0', 10) + 1;
   if (visits >= KOFI_THRESHOLD) {
     localStorage.setItem('kofiVisits', '0');
