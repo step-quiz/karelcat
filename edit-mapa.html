@@ -856,17 +856,6 @@ document.addEventListener('keydown', e => {
   });
 })();
 </script>
-<script>
-(function() {
-  var KEY = 'karel_progress';
-  window.karelClearProgress = function() {
-    if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-      try { localStorage.removeItem(KEY); } catch(e) {}
-      location.reload();
-    }
-  };
-})();
-</script>
 <script src="./footer.js"></script>
 </body>
 </html>

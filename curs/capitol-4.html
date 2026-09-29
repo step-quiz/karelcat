@@ -47,7 +47,7 @@
     </nav>
 
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -144,7 +144,7 @@ move()          # ← s'executa UNA SOLA VEGADA, després de la iteració</code>
         <p>Observa aquest exemple.</p>
 
         <div class="simulador"
-             data-map=".,.,.,.|.,.,.,.|.,.,.,.|K>,.,.,"
+             data-map=".,.,.,.|.,.,.,.|.,.,.,.|K>,.,.,."
              data-code="for i in range(3):
     move()
 turn_left()
@@ -185,7 +185,8 @@ for i in range(3):
 
         <div class="simulador"
              data-map=".,.,.,.,A|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,."
-             data-goal=".,.,.,.,K^|.,.,.,.,.|.,.,.,.,.|.,.,.,.,."
+             data-goal=".,.,.,.,K^A|.,.,.,.,.|.,.,.,.,.|.,.,.,.,.
+.,.,.,.,K^|.,.,.,.,.|.,.,.,.,.|.,.,.,.,."
              data-code="# Escriu el teu codi aquí:
 
 "
@@ -210,6 +211,21 @@ for i in range(3):
 </div>
 
 
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+for i in range(4):
+    move()
+turn_left()
+for i in range(3):
+    move()
+</solucio>
+-->
+
 <script>const CURRENT_CAPITOL = 4;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -220,14 +236,6 @@ for i in range(3):
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

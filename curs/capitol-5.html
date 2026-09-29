@@ -46,7 +46,7 @@
     </nav>
 
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -209,6 +209,40 @@ puja_grao()
 </div>
 
 
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+def puja_grao():
+    turn_left()
+    move()
+    turn_right()
+    move()
+
+puja_grao()
+puja_grao()
+puja_grao()
+puja_grao()
+grab()
+</solucio>
+
+<solucio-incorrecta motiu="arriba a dalt però no recull la perla">
+def puja_grao():
+    turn_left()
+    move()
+    turn_right()
+    move()
+
+puja_grao()
+puja_grao()
+puja_grao()
+puja_grao()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_CAPITOL = 5;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -219,14 +253,6 @@ puja_grao()
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

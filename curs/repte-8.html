@@ -46,7 +46,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -93,16 +93,19 @@
         <details class="consell-box">
           <summary><strong>💡 Pista — la regla del vigilant</strong></summary>
           <div class="consell-body">
-Defineix una funció <code>pas_vigilant()</code> que faci exactament un pas de la ronda:
-primer, si hi ha perla, recull-la; després, si pots avançar, avança; si no pots
-avançar, vol dir que has arribat a una cantonada: llavors, gira a l'esquerra.
+Defineix una funció <code>recorre_costat()</code> que faci avançar en Karel fins a la
+cantonada següent: mentre pugui avançar, si hi ha perla la recull i després avança.
+Quan ja no pot avançar, vol dir que ha arribat a una cantonada.
 </div>
         </details>
 
         <details class="consell-box">
-          <summary><strong>💡 Pista — detectar el punt de partida</strong></summary>
+          <summary><strong>💡 Pista — quantes vegades?</strong></summary>
           <div class="consell-body">
-Per fer tota la volta sencera, pots repetir 4 vegades el <code>pas_vigilant()</code>, i sempre funcionarà, perquè un rectangles té 4 costats.
+Un rectangle té 4 costats. Si repeteixes 4 vegades <code>recorre_costat()</code> seguit
+d'un <code>turn_left()</code>, en Karel dona la volta completa i torna al punt de partida.
+No et preocupis per les perles de les cantonades: cada cantonada és també la primera
+casella del costat següent.
 </div>
         </details>
 
@@ -110,9 +113,8 @@ Per fer tota la volta sencera, pots repetir 4 vegades el <code>pas_vigilant()</c
              data-maps='[".,A,.,.|.,.,.,A|K>,A,.,.", ".,.,A,.,.|.,.,.,.,A|K>,.,A,.,.", ".,A,.,.,.,.|.,.,.,.,.,.|.,.,.,.,.,A|K>,.,A,.,.,A"]'
              data-goals='[".,.,.,.|.,.,.,.|K>,.,.,.", ".,.,.,.,.|.,.,.,.,.|K>,.,.,.,.", ".,.,.,.,.,.|.,.,.,.,.,.|.,.,.,.,.,.|K>,.,.,.,.,." ]'
              data-labels='["4×3", "5×3", "6×4"]'
-             data-bag="1"
-             data-code="# ── Funció pas_vigilant() ──
-def pas_vigilant():
+             data-code="# ── Funció recorre_costat() ──
+def recorre_costat():
 
 
 
@@ -141,26 +143,57 @@ def pas_vigilant():
 <!--
   ════════════════════════════════════════════════════════
   SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
 
-def pas_vigilant():
-    if pearl_here():
-        grab()
-    if front_is_clear():
+<solucio>
+def recorre_costat():
+    while front_is_clear():
+        if pearl_here():
+            grab()
         move()
-    else:
-        turn_right()
 
-drop()
-move()
+for i in range(4):
+    recorre_costat()
+    turn_left()
+</solucio>
 
-while not pearl_here():
-    pas_vigilant()
+<solucio-incorrecta motiu="gira a la dreta a les cantonades">
+def recorre_costat():
+    while front_is_clear():
+        if pearl_here():
+            grab()
+        move()
 
-grab()
+for i in range(4):
+    recorre_costat()
+    turn_right()
+</solucio-incorrecta>
 
-  Clau pedagògica: front_is_clear() + turn_right() és suficient per
-  seguir un perímetre rectangular. Les quatre cantonades es gestionen
-  amb el mateix else. L'ús de drop() com a marcador anticipa el repte 13.
+<solucio-incorrecta motiu="només recorre dos costats">
+def recorre_costat():
+    while front_is_clear():
+        if pearl_here():
+            grab()
+        move()
+
+for i in range(2):
+    recorre_costat()
+    turn_left()
+</solucio-incorrecta>
+
+  Per què no fem servir una perla com a marcador del punt de partida?
+  Perquè hi ha perles al perímetre: en Karel no podria distingir el
+  marcador de les perles que ha de recollir. Un rectangle sempre té
+  4 costats, així que un for de 4 voltes és suficient.
+
+  Les cantonades: l'última casella de cada costat és la primera del
+  costat següent, i allà el while ja la comprova abans d'avançar.
+  L'última casella de l'últim costat és el punt de partida, on no hi
+  pot haver cap perla (hi comença en Karel).
+
+  Clau pedagògica: una funció amb una postcondició clara («en Karel és a
+  la cantonada, mirant al llarg del costat que acaba de recórrer») es
+  pot encadenar amb un for sense saber la mida del rectangle.
   ════════════════════════════════════════════════════════
 -->
 
@@ -174,14 +207,6 @@ grab()
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

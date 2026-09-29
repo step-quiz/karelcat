@@ -123,7 +123,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -217,6 +217,7 @@ def puja_grao():
   No apareix en cap data-code visible a l'alumne.
   ════════════════════════════════════════════════════════
 
+<solucio>
 def puja_grao():
     move()
     turn_left()
@@ -226,6 +227,19 @@ def puja_grao():
 while front_is_clear():
     drop()
     puja_grao()
+</solucio>
+
+<solucio-incorrecta motiu="deixa la perla després de pujar el graó">
+def puja_grao():
+    move()
+    turn_left()
+    move()
+    turn_right()
+
+while front_is_clear():
+    puja_grao()
+    drop()
+</solucio-incorrecta>
 
   Traça d'execució (coordenades fila, columna des de 0):
     Inici:  (4,0) → Est
@@ -263,14 +277,6 @@ while front_is_clear():
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

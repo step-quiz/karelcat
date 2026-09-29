@@ -123,7 +123,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -164,7 +164,7 @@
           El món és un rectangle buit. En Karel ha d'omplir-lo com si fos un
           <strong>tauler d'escacs</strong>: ha de situar perles a les caselles «negres»
           i deixar-ho buit a les «blanques». La cantonada inferior esquerra serà sempre
-          negra (és a dir, amb una perla).<br><br>
+          negra (és a dir, amb una perla). No importa on acabi en Karel.<br><br>
           <strong>La teva feina:</strong> escriu un programa que funcioni
           per a qualsevol rectangle, sigui quina sigui l'amplada i l'alçada.
           El teu codi <em>no pot</em> dependre del nombre exacte de caselles.<br><br>
@@ -202,7 +202,7 @@ una per a cada direcció.
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
              data-maps='[".,.,.|.,.,.|K>,.,.",".,.,.,.|.,.,.,.|.,.,.,.|K>,.,.,.",".,.,.,.,.|.,.,.,.,.|K>,.,.,.,."]'
-             data-goals='["A,.,K>|.,A,.|A,.,A","K<,A,.,A|A,.,A,.|.,A,.,A|A,.,A,.","A,.,A,.,K>|.,A,.,A,.|A,.,A,.,A"]'
+             data-goals='["A,.,A|.,A,.|A,.,A", ".,A,.,A|A,.,A,.|.,A,.,A|A,.,A,.", "A,.,A,.,A|.,A,.,A,.|A,.,A,.,A"]'
              data-labels='["3×3", "4×4", "5×3"]'
              data-bag="99"
              data-code="# ── Programa principal ──
@@ -234,6 +234,7 @@ una per a cada direcció.
   No apareix en cap data-code visible a l'alumne.
   ════════════════════════════════════════════════════════
 
+<solucio>
 def omple_fila_des_de_on():
     if not pearl_here():
         drop()
@@ -280,6 +281,38 @@ while left_is_clear():
     else:
         canvia_fila_des_d_oest()
         omple_fila_des_de_on()
+</solucio>
+
+<solucio-incorrecta motiu="omple sempre la fila nova des d'una casella ON (no mira la paritat)">
+def omple_fila_des_de_on():
+    if not pearl_here():
+        drop()
+    while front_is_clear():
+        move()
+        if front_is_clear():
+            move()
+            if not pearl_here():
+                drop()
+
+def canvia_fila_des_d_est():
+    turn_left()
+    move()
+    turn_left()
+
+def canvia_fila_des_d_oest():
+    turn_right()
+    move()
+    turn_right()
+
+omple_fila_des_de_on()
+while left_is_clear():
+    canvia_fila_des_d_est()
+    omple_fila_des_de_on()
+    if not right_is_clear():
+        break
+    canvia_fila_des_d_oest()
+    omple_fila_des_de_on()
+</solucio-incorrecta>
 
 
   Traça d'execució (Test A — 3×3, inici (2,0) Est):
@@ -375,14 +408,6 @@ while left_is_clear():
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

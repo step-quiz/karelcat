@@ -123,7 +123,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -165,8 +165,8 @@
           nombre de perles escampades per les dues files. En Karel comença a la
           cantonada inferior esquerra i mirant cap a l'Est.<br>
           La seva missió és <strong>recollir totes les perles fent un recorregut
-          específic</strong> — primer la fila inferior d'Est a Oest (d'esquerra
-          a dreta), i després la fila superior, d'Oest a Est (de dreta a esquerra).<br>
+          específic</strong> — primer la fila inferior cap a l'Est (d'esquerra
+          a dreta), i després la fila superior cap a l'Oest (de dreta a esquerra).<br>
           L'amplada és <em>desconeguda</em>: el teu codi no pot dependre del nombre de caselles.
         </div>
 
@@ -192,7 +192,7 @@ per no perdre cap possible perla situada a l'extrem.
         <div class="simulador"
              data-maps='[".,.,A,.|K>,A,.,A", "A,.,.,A,.,.|K>,.,A,.,A,.", ".,.,A,.,A,.,.,A|K>,A,.,A,.,.,A,."]'
              data-goals='["K<,.,.,.|.,.,.,.", "K<,.,.,.,.,.|.,.,.,.,.,.", "K<,.,.,.,.,.,.,.|.,.,.,.,.,.,.,."]'
-             data-labels='["4 caselles d'\''amplada", "6 caselles d'\''amplada", "8 caselles d'\''amplada"]'
+             data-labels='["4 caselles d&#39;amplada", "6 caselles d&#39;amplada", "8 caselles d&#39;amplada"]'
              data-code="# Fase 1: recull les perles de la fila inferior cap a l'Est
 # Gir: puja a la fila superior i orienta't cap a l'Oest
 # Fase 2: recull les perles de la fila superior cap a l'Oest
@@ -224,6 +224,7 @@ per no perdre cap possible perla situada a l'extrem.
   No apareix en cap data-code visible a l'alumne.
   ════════════════════════════════════════════════════════
 
+<solucio>
 def recull_fila():
     while front_is_clear():
         if pearl_here():
@@ -240,6 +241,24 @@ def puja_i_gira():
 recull_fila()
 puja_i_gira()
 recull_fila()
+</solucio>
+
+<solucio-incorrecta motiu="oblida l'error de límit (l'última casella de cada fila)">
+def recull_fila():
+    while front_is_clear():
+        if pearl_here():
+            grab()
+        move()
+
+def puja_i_gira():
+    turn_left()
+    move()
+    turn_left()
+
+recull_fila()
+puja_i_gira()
+recull_fila()
+</solucio-incorrecta>
 
   Traça d'execució (amplada 4):
     Inici: (0,0) Est
@@ -281,14 +300,6 @@ recull_fila()
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

@@ -123,7 +123,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -174,16 +174,17 @@
 
         <details class="consell-box">
           <summary><strong>💡 Pista de l'error de límit</strong></summary>
-          <div class="consell-body">Si escrius <code>while front_is_clear(): move()</code>, en Karel
-          s'atura just <em>abans</em> de l'última casella. Pot quedar-hi una perla
-          que mai no recull. Pensa: quan acaba el <code>while</code>, on és en
+          <div class="consell-body">Si dins del <code>while front_is_clear():</code> primer comproves si hi ha
+          perla i després avances, quan el <code>while</code> s'acaba en Karel ja és a
+          l'última casella… però aquesta casella encara no l'ha comprovada! Pot quedar-hi
+          una perla que mai no recull. Pensa: quan acaba el <code>while</code>, on és en
           Karel exactament? Queda alguna casella sense comprovar?</div>
         </details>
 
         <!-- Simulador — món inicial (test A: 8 caselles) -->
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
-             data-maps='["K>,A,.,A,A,.,A,.", "K>,.,A,.,A,.,.,A,.", "K>,A,A,.,.,A,.,A,.,.,A,."]'
+             data-maps='["K>,A,.,A,A,.,A,A", "K>A,.,A,.,A,.,.,A,.", "K>,A,A,.,.,A,.,A,.,.,A,A"]'
              data-goals='[".,.,.,.,.,.,.,K>", ".,.,.,.,.,.,.,.,K>", ".,.,.,.,.,.,.,.,.,.,.,K>"]'
              data-labels='["8 caselles", "9 caselles", "12 caselles"]'
              data-code="# En Karel ha de recollir totes les perles del passadís
@@ -217,12 +218,28 @@
   No apareix en cap data-code visible a l'alumne.
   ════════════════════════════════════════════════════════
 
+<solucio>
 while front_is_clear():
     if pearl_here():
         grab()
     move()
 if pearl_here():
     grab()
+</solucio>
+
+<solucio-incorrecta motiu="oblida comprovar l'última casella">
+while front_is_clear():
+    if pearl_here():
+        grab()
+    move()
+</solucio-incorrecta>
+
+<solucio-incorrecta motiu="avança abans de comprovar i es deixa la primera casella">
+while front_is_clear():
+    move()
+    if pearl_here():
+        grab()
+</solucio-incorrecta>
 
   Nota: la iteració while comprova front_is_clear() ABANS de moure's.
   Quan la condició és falsa, en Karel és a l'última casella però
@@ -245,14 +262,6 @@ if pearl_here():
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

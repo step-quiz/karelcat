@@ -46,7 +46,7 @@
     </nav>
 
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -162,7 +162,7 @@ else:
         <p><strong>Atenció:</strong> en aquest exemple no pots modificar el codi. Prem ▶ <strong>Executa</strong> i observa com funciona:</p>
 
         <div class="simulador"
-             data-map=".,.,.,.,.,.|.,.,.,.,.,.|K>,.,.,P,.|.,.,.,.,.,."
+             data-map=".,.,.,.,.,.|.,.,.,.,.,.|K>,.,.,P,.,.|.,.,.,.,.,."
              data-code="for i in range(5):
     if front_is_clear():
         move()
@@ -182,9 +182,9 @@ else:
         <ul>
           <li><code>pearl_here()</code> — hi ha una perla a la casella actual?</li>
           <li><code>front_is_clear()</code> — la casella del davant és lliure?</li>
-          <li><code>front_is_blocked()</code> — la casella del davant té un obstacle?</li>
+          <li><code>front_is_blocked()</code> — al davant hi ha una roca o la vora del món?</li>
           <li><code>bag_is_empty()</code> — la motxilla no conté cap perla?</li>
-          <li><code>bag_is_full()</code> — la motxilla conté, com a mínim, una perla?</li>
+          <li><code>bag_has_pearls()</code> — la motxilla conté, com a mínim, una perla?</li>
         </ul>
 
       </section>
@@ -233,6 +233,27 @@ else:
 <!-- ══════════════════════════════════════════════════════
      Scripts
      ══════════════════════════════════════════════════════ -->
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+for i in range(5):
+    move()
+    if pearl_here():
+        grab()
+</solucio>
+
+<solucio-incorrecta motiu="comprova abans d'avançar i es deixa l'última perla">
+for i in range(5):
+    if pearl_here():
+        grab()
+    move()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_CAPITOL = 7;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -243,14 +264,6 @@ else:
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

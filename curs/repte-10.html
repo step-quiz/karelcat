@@ -46,7 +46,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -81,8 +81,8 @@
 
         <div class="exercise-enunciat">
           En Karel avança per un passadís horitzontal, al llarg del qual hi ha petits
-          <strong>forats</strong>, que són obertures d'una sola casella cap al Nord o cap al Sud. En alguns forats hi ha una perla, en d'altres no..<br><br>
-          <strong>La missió d'en Karel</strong>: recórrer el corredor d'un extrem a l'altre i recollir les perles de dins de totes les alcoves<br>
+          <strong>forats</strong>, que són obertures d'una sola casella cap al Nord o cap al Sud. En alguns forats hi ha una perla, en d'altres no. La resta de caselles del voltant del passadís són roques.<br><br>
+          <strong>La missió d'en Karel</strong>: recórrer el corredor d'un extrem a l'altre i recollir les perles de dins de tots els forats.<br>
           Escriu un programa que funcioni per a qualsevol longitud de corredor i qualsevol distribució de forats i de perles.
         </div>
 
@@ -111,8 +111,8 @@ A cada casella, en Karel ha de comprovar si hi ha forat al nord <strong>i també
         </details>
 
         <div class="simulador"
-             data-maps='[".,.,A,.,.,.|K>,.,.,.,.,.|.,A,.,.,.,.", "A,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,.|.,.,.,A,.,.,A,.", ".,.,A,.,.,.,.,.,.,.|K>,.,.,.,.,.,.,.,.,.|.,A,.,.,.,A,.,.,A,."]'
-             data-goals='[".,.,.,.,.,.|.,.,.,.,.,K>|.,.,.,.,.,.", ".,.,.,.,.,.,.,.|.,.,.,.,.,.,.,K>|.,.,.,.,.,.,.,.", ".,.,.,.,.,.,.,.,.,.|.,.,.,.,.,.,.,.,.,K>|.,.,.,.,.,.,.,.,.,." ]'
+             data-maps='["P,P,A,P,.,P|K>,.,.,.,.,.|P,A,P,P,P,P", "A,P,P,.,P,P,P,A|K>,.,.,.,.,.,.,.|P,P,P,A,P,.,P,A", "P,P,A,P,P,P,.,P,P,P|K>,.,.,.,.,.,.,.,.,.|P,A,P,P,P,A,P,P,A,A"]'
+             data-goals='["P,P,.,P,.,P|.,.,.,.,.,K>|P,.,P,P,P,P", ".,P,P,.,P,P,P,.|.,.,.,.,.,.,.,K>|P,P,P,.,P,.,P,.", "P,P,.,P,P,P,.,P,P,P|.,.,.,.,.,.,.,.,.,K>|P,.,P,P,P,.,P,P,.,."]'
              data-labels='["6 caselles", "8 caselles", "10 caselles"]'
              data-code="def explora_nord():
 
@@ -147,7 +147,9 @@ def explora_sud():
 <!--
   ════════════════════════════════════════════════════════
   SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
 
+<solucio>
 def explora_nord():
     turn_left()
     move()
@@ -177,12 +179,90 @@ if left_is_clear():
     explora_nord()
 if right_is_clear():
     explora_sud()
+</solucio>
+
+<solucio-incorrecta motiu="no comprova els forats de l'última casella">
+def explora_nord():
+    turn_left()
+    move()
+    if pearl_here():
+        grab()
+    turn_around()
+    move()
+    turn_left()
+
+def explora_sud():
+    turn_right()
+    move()
+    if pearl_here():
+        grab()
+    turn_around()
+    move()
+    turn_right()
+
+while front_is_clear():
+    if left_is_clear():
+        explora_nord()
+    if right_is_clear():
+        explora_sud()
+    move()
+</solucio-incorrecta>
+
+<solucio-incorrecta motiu="fa servir elif i, si hi ha forat als dos costats, se'n deixa un">
+def explora_nord():
+    turn_left()
+    move()
+    if pearl_here():
+        grab()
+    turn_around()
+    move()
+    turn_left()
+
+def explora_sud():
+    turn_right()
+    move()
+    if pearl_here():
+        grab()
+    turn_around()
+    move()
+    turn_right()
+
+while front_is_clear():
+    if left_is_clear():
+        explora_nord()
+    elif right_is_clear():
+        explora_sud()
+    move()
+if left_is_clear():
+    explora_nord()
+elif right_is_clear():
+    explora_sud()
+</solucio-incorrecta>
+
+<solucio-incorrecta motiu="entra a totes les caselles sense mirar si hi ha forat">
+def explora_nord():
+    turn_left()
+    move()
+    if pearl_here():
+        grab()
+    turn_around()
+    move()
+    turn_left()
+
+while front_is_clear():
+    explora_nord()
+    move()
+</solucio-incorrecta>
+
+  Mons de test: el passadís és la fila del mig; a dalt i a baix tot són
+  roques excepte els forats. N'hi ha a la primera casella (món 2), a
+  l'última (mons 2 i 3) i als dos costats d'una mateixa casella (mons 2 i 3).
 
   Clau pedagògica:
   1. Pre/postcondicions estrictes: les funcions explora_* deixen
-     En Karel on el van trobar.
+     en Karel on el van trobar, mirant a l'Est.
   2. Error de límit: l'última casella no es comprova dins el while.
-  3. if separats vs elif: les alcoves nord i sud són independents.
+  3. if separats vs elif: els forats nord i sud són independents.
   ════════════════════════════════════════════════════════
 -->
 
@@ -196,14 +276,6 @@ if right_is_clear():
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

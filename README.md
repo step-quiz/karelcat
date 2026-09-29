@@ -35,7 +35,7 @@ move()  turn_left()  turn_right()  turn_around()  grab()  drop()
 front_is_clear()  front_is_blocked()
 left_is_clear()   left_is_blocked()
 right_is_clear()  right_is_blocked()
-pearl_here()      bag_is_empty()      bag_is_full()
+pearl_here()      bag_is_empty()      bag_has_pearls()
 
 # Estructures de control
 for _ in range(N):
@@ -61,7 +61,8 @@ Qualsevol programa Karel vàlid és Python vàlid (amb un shim que defineixi les
 ## Estructura de fitxers
 
 ```
-index.html          — Simulador lliure
+index.html          — Pàgina d'inici
+simulador.html      — Simulador lliure (i simulador incrustat als capítols)
 style.css           — Estils del simulador
 edit-mapa.html      — Editor visual de mapes (eina auxiliar)
 js/                 — Motor: constants, i18n, state, tokenizer, parser,
@@ -72,8 +73,11 @@ curs/
   capitol-1..10     — Els 10 capítols del curs
   repte-1..13       — Els 13 reptes del capítol 10
   capitols.js       — Dades + renderSidebar() + renderSimuladors()
+  progress.js       — Progrés de l'alumne (localStorage)
   curs.css          — Estils del curs
-  BRIEFING-REPTES.md — Detall de cada repte (mapes, solucions, notes)
+  BRIEFING-REPTES.md — Detall de cada repte (mapes, notes)
+tests/
+  comprova-curs.js  — Test automàtic: motor, mapes i solucions de tots els exercicis
 docs/
   CURRENT-STATE.md  — Estat actual complet del projecte (llegir aquí primer)
   i18n-spanish-guide.md — Guia per afegir castellà com a idioma d'interfície
@@ -83,6 +87,16 @@ docs/
 
 Llegeix `docs/CURRENT-STATE.md` abans de fer cap canvi. Conté l'estat complet
 del projecte, els contractes entre mòduls, els principis de disseny i les tasques pendents.
+
+Després de qualsevol canvi, executa el test automàtic (només cal Node.js):
+
+```
+node tests/comprova-curs.js
+```
+
+Comprova el motor i executa la solució de referència de cada exercici (el bloc
+`<solucio>` que hi ha en un comentari de cada pàgina) contra tots els seus mons.
+A GitHub s'executa sol a cada push (pestanya «Actions»).
 
 Les tasques pendents actuals són millores visuals (D.1–D.4) i funcionalitat futura
 opcional (E.1–E.8): idiomes addicionals, selector d'idioma, editor de mapes integrat.

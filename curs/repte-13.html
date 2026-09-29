@@ -123,7 +123,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -166,7 +166,7 @@
           exactament <strong>una perla al punt mig</strong> del passadís.<br><br>
           Si la longitud és <em>senar</em>, la perla ha de quedar al centre
           exacte. Si és <em>parell</em>, s'accepta qualsevol de les dues caselles
-          centrals.<br><br>
+          centrals. No importa on acabi en Karel ni cap a on miri.<br><br>
           <strong>La restricció clau:</strong> el teu codi no pot saber d'entrada
           quantes caselles té el passadís. Ha de funcionar per a
           <em>qualsevol</em> longitud.
@@ -194,7 +194,7 @@ al marcador esquerre o al marcador dret en cada iteració.
         <!-- Simulador multi-món (DRY): un sol editor, tres passadissos de test -->
         <div class="simulador"
              data-maps='["K>,.,.","K>,.,.,.,.,.,.","K>,.,.,.,.,.,.,."]'
-             data-goals='[".,K>,.",".,.,.,K>,.,.,.",".,.,.,K<,.,.,.,."]'
+             data-goals='[".,A,.", ".,.,.,A,.,.,.", [".,.,.,A,.,.,.,.", ".,.,.,.,A,.,.,."]]'
              data-labels='["Longitud 3 — senar","Longitud 7 — senar","Longitud 8 — parell"]'
              data-bag="2"
              data-code="
@@ -224,129 +224,115 @@ al marcador esquerre o al marcador dret en cada iteració.
   ════════════════════════════════════════════════════════
   SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
   No apareix en cap data-code visible a l'alumne.
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
   ════════════════════════════════════════════════════════
 
+<solucio>
 def camina_fins_perla():
     while not pearl_here():
         move()
 
-# Cas especial: passadís d'1 casella (front bloquejat des de l'inici)
 if not front_is_clear():
-    drop()  # en Karel ja és al punt mig
-
-# Cas general: passadís de 2 o més caselles
+    drop()                  # cas especial: passadís d'1 casella
 else:
     drop()                  # marcador esquerre (L) a la posició inicial
     while front_is_clear():
         move()
     drop()                  # marcador dret (R) a l'extrem dret
-    turn_around()           # gira per tornar cap al centre
+    turn_around()           # gira cap al centre
 
     while True:
-        # ── Mou el marcador dret un pas cap a l'esquerra ──
+        # ── Mou el marcador dret un pas cap al centre ──
         grab()              # recull R
-        move()              # avança un pas cap al centre
-        if pearl_here():    # L és aquí → els marcadors es troben → punt mig trobat!
+        move()
+        if pearl_here():    # L és aquí: els marcadors es troben → punt mig!
             break
         drop()              # R en la nova posició
 
-        # ── Mou el marcador esquerre un pas cap a la dreta ──
-        while not pearl_here():
-            move()          # torna fins a L
+        # ── Ves fins al marcador esquerre i mou-lo un pas cap al centre ──
+        move()              # surt de la casella on acabes de deixar R
+        camina_fins_perla() # arriba a L
         grab()              # recull L
-        turn_around()       # gira cap al centre
-        move()              # avança un pas cap al centre
-        if pearl_here():    # R és aquí → els marcadors es troben → punt mig trobat!
+        turn_around()
+        move()
+        if pearl_here():    # R és aquí: els marcadors es troben → punt mig!
             break
         drop()              # L en la nova posició
 
-        # ── Torna al marcador dret per a la propera iteració ──
-        while not pearl_here():
-            move()
-        turn_around()       # queda orientat cap al centre (Oest) per al proper grab()
+        # ── Torna al marcador dret per a la volta següent ──
+        move()
+        camina_fins_perla()
+        turn_around()
+</solucio>
 
+<solucio-incorrecta motiu="després de deixar un marcador no se n'aparta i es queda donant voltes">
+def camina_fins_perla():
+    while not pearl_here():
+        move()
+
+drop()
+while front_is_clear():
+    move()
+drop()
+turn_around()
+while True:
+    grab()
+    move()
+    if pearl_here():
+        break
+    drop()
+    camina_fins_perla()
+    grab()
+    turn_around()
+    move()
+    if pearl_here():
+        break
+    drop()
+    camina_fins_perla()
+    turn_around()
+</solucio-incorrecta>
+
+<solucio-incorrecta motiu="deixa les dues perles a l'extrem dret">
+while front_is_clear():
+    move()
+drop()
+drop()
+</solucio-incorrecta>
+
+  Objectius: NO porten K, només es comprova que hi hagi exactament una perla
+  al punt mig (i cap més al passadís). Per a la longitud parella (món 3)
+  l'objectiu té dues alternatives: la perla a la casella 3 o a la 4.
 
   ── Traça d'execució (Test A — longitud 3, inici cel·la 0, Est) ──
 
-  Món: K>,.,. → cel·les 0,1,2
+    drop() a 0 → L=0. Camina fins a 2. drop() a 2 → R=2. Gira → Oest.
+    Volta 1: grab R(2) · move → 1 · no hi ha perla · drop R a 1
+             move → 0 · camina_fins_perla(): ja hi ha L · grab L(0)
+             turn_around → Est · move → 1 · hi ha R → break!
+    Resultat: perla a 1 (el centre), en Karel a 1 mirant a l'Est. ✓
 
-  Setup:
-    drop() a 0 → L=0. bag=1. En Karel a 0 E.
-    move() → 1; move() → 2. front_is_clear? No.
-    drop() a 2 → R=2. bag=0. En Karel a 2 E.
-    turn_around() → en Karel a 2, W.
+  ── Traça (Test C — longitud 8) ──
 
-  Iteració 1:
-    grab() R(2). bag=1. En Karel a 2 W.
-    move() → en Karel a 1 W.
-    pearl_here()? grid[0][1]='.' → No.
-    drop() R a 1. bag=0. En Karel a 1 W.
-
-    while not pearl_here(): move() → en Karel a 0 W. pearl_here()? Sí (L=0).
-    grab() L(0). bag=1. En Karel a 0 W.
-    turn_around() → E.
-    move() → en Karel a 1 E.
-    pearl_here()? grid[0][1]='A' (R=1) → Sí. Break!
-
-  Resultat: en Karel a 1, orientació Est. Perla al terra a 1 (R marker).
-  currentStateToCSV() → ".,K>,." ✓ (perla al punt mig, solapada per en Karel)
-
-
-  ── Traça d'execució (Test B — longitud 7, inici cel·la 0, Est) ──
-
-  Món: K>,.,.,.,.,.,. → cel·les 0..6
-
-  Setup: drop L(0), walk to 6, drop R(6), turn_around → W.
-
-  Iter 1: grab R(6), move→5, drop R(5). Walk W→0 (L). Grab L(0), turn E, move→1, drop L(1). Walk E→5 (R). Turn W.
-  Iter 2: grab R(5), move→4, drop R(4). Walk W→1 (L). Grab L(1), turn E, move→2, drop L(2). Walk E→4 (R). Turn W.
-  Iter 3: grab R(4), move→3. drop R(3). Walk W→2 (L). Grab L(2), turn E, move→3. pearl_here? Sí (R=3). Break!
-
-  Resultat: en Karel a 3, Est. Perla a 3. currentStateToCSV() → ".,.,.,K>,.,.,.". ✓
-
-
-  ── Traça d'execució (Test C — longitud 8, inici cel·la 0, Est) ──
-
-  Món: K>,.,.,.,.,.,.,. → cel·les 0..7
-
-  Setup: drop L(0), walk to 7, drop R(7), turn_around → W.
-
-  Iter 1: grab R(7), move→6, drop R(6). Walk W→0 (L). Grab L(0), turn E, move→1, drop L(1). Walk E→6 (R). Turn W.
-  Iter 2: grab R(6), move→5, drop R(5). Walk W→1 (L). Grab L(1), turn E, move→2, drop L(2). Walk E→5 (R). Turn W.
-  Iter 3: grab R(5), move→4, drop R(4). Walk W→2 (L). Grab L(2), turn E, move→3. pearl_here? No (R=4). drop L(3). Walk E→4 (R). Turn W.
-  Iter 4: grab R(4), move→3. pearl_here? Sí (L=3). Break!
-
-  Resultat: en Karel a 3, Oest. Perla a 3. currentStateToCSV() → ".,.,.,K<,.,.,.,.". ✓
-  (Per a longitud parell, casella 3 és una de les dues centrals vàlides.)
-
+    Volta 1: R 7→6, L 0→1.   Volta 2: R 6→5, L 1→2.
+    Volta 3: R 5→4, L 2→3.   Volta 4: R 4→3 → hi ha L → break.
+    Resultat: perla a 3 (una de les dues caselles centrals). ✓
 
   ── Per què funciona l'algorisme dels dos punters ──
 
-  · Cada iteració, el marcador dret avança 1 cap al centre i el marcador
-    esquerre avança 1 cap al centre: distància total entre ells es redueix 2.
-  · Per N senar (N=2k+1): al final els dos marcadors es troben exactament
-    a la casella k (el centre geomètric).
-  · Per N parell (N=2k): quan el marcador dret es desplaça fins a la casella
-    on és el marcador esquerre, els dos marcadors queden a caselles adjacents
-    (k-1 i k); el punt mig cau entre ells. La casella k-1 queda com a resultat
-    (acceptable, ja que l'enunciat permet qualsevol de les dues caselles centrals).
-  · L'algorisme no usa cap variable numèrica ni comptador: l'estat físic del món
-    (presència de perla) substitueix qualsevol aritmètica. Aquí es completa la
-    progressió del curs: primer variables implícites (repte 4: motxilla com a
-    comptador), depois paritat física (repte 8: pearl_here() com a bit de paritat),
-    i ara geometria física (repte 10: posició de les perles com a punters).
+  · A cada volta, el marcador dret i l'esquerre s'acosten una casella cada un:
+    la distància entre ells es redueix 2.
+  · Si N és senar, es troben exactament al centre. Si N és parell, es troben
+    a una de les dues caselles centrals.
+  · No cal cap variable numèrica: la posició de les perles fa de comptador.
+    Es tanca la progressió del curs: motxilla com a comptador (repte 4),
+    pearl_here() com a bit de paritat (repte 11) i perles com a punters (repte 13).
 
   ── Errors habituals de l'alumne ──
 
-  · Oblidar turn_around() per tornar cap al centre després de grab() L.
-    → en Karel avança cap a la paret en comptes d'anar cap a R: error d'execució.
-  · No usar camina_fins_perla() per trobar L des de la posició actual.
-    → L'alumne usa un move() fix, que trenca per a passadissos de longituds
-    variades.
-  · No tractar el cas de longitud 1 (front_is_clear() false des de l'inici).
-    → drop() i walk no és possible; el programa intenta move() i xoca.
-  · Usar data-bag insuficient o intentar drop() sense perles a la motxilla.
-    → Error d'execució; l'alumne aprèn que les perles a la motxilla es gasten.
+  · Oblidar el move() després de deixar un marcador: camina_fins_perla()
+    no fa res (ja és damunt d'una perla) i el programa no acaba mai.
+  · Oblidar turn_around() després de recollir L: en Karel va cap a la paret.
+  · No tractar el cas de longitud 1 (front_is_clear() fals des de l'inici).
   ════════════════════════════════════════════════════════
 -->
 
@@ -360,14 +346,6 @@ else:
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

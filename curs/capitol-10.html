@@ -121,7 +121,7 @@
     <a href="../simulador.html" class="karel-nav-link">Simulador</a>
     <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
   </nav>
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -532,11 +532,10 @@ ff()
 ff()
 ff()</code></pre>
 
-        <p><strong>Set problemes a corregir:</strong></p>
+        <p><strong>Sis problemes a corregir:</strong></p>
         <ul>
           <li>Les funcions <code>aa</code>, <code>bb</code>, <code>cc</code>, <code>dd</code>, <code>ee</code>, <code>ff</code> no expliquen res amb els seus noms.</li>
-          <li><code>cc()</code> fa dues coses alhora: avançar <strong>i</strong> recollir. Viola la regla «una funció, una idea».</li>
-          <li><code>ff()</code> fa dues coses alhora: avançar <strong>i</strong> deixar una perla. Mateixa violació.</li>
+          <li><code>cc()</code> i <code>ff()</code> fan un sol pas del recorregut (avançar i recollir, avançar i deixar): això és una sola idea i està bé, com <code>avançar_i_recollir()</code> a la primera secció. El problema és que el nom no ho diu.</li>
           <li><code>dd()</code> usa dos <code>turn_left()</code> per fer mitja volta, quan existeix la instrucció <code>turn_around()</code>.</li>
           <li>Els set <code>cc()</code> consecutius s'han de substituir per un <code>while front_is_clear():</code>.</li>
           <li>Els set <code>ff()</code> consecutius s'han de substituir per un <code>while front_is_clear():</code>.</li>
@@ -573,6 +572,66 @@ ff()</code></pre>
 </div>
 
 
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio exercici="1">
+def avançar_i_recollir():
+    move()
+    if pearl_here():
+        grab()
+
+while front_is_clear():
+    avançar_i_recollir()
+</solucio>
+
+<solucio exercici="2">
+def avançar_fins_a_paret():
+    while front_is_clear():
+        move()
+
+def recollir_si_hi_ha_perla():
+    if pearl_here():
+        grab()
+
+avançar_fins_a_paret()
+turn_right()
+move()
+recollir_si_hi_ha_perla()
+</solucio>
+
+<solucio-incorrecta exercici="2" motiu="arriba a la cantonada però no recull la perla">
+def avançar_fins_a_paret():
+    while front_is_clear():
+        move()
+
+avançar_fins_a_paret()
+turn_right()
+move()
+</solucio-incorrecta>
+
+<solucio exercici="3">
+def recollir_si_hi_ha_perla():
+    if pearl_here():
+        grab()
+
+def deixar_si_en_queden():
+    if not bag_is_empty():
+        drop()
+
+while front_is_clear():
+    move()
+    recollir_si_hi_ha_perla()
+turn_around()
+while front_is_clear():
+    move()
+    deixar_si_en_queden()
+</solucio>
+-->
+
 <script>const CURRENT_CAPITOL = 10;</script>
 <script src="progress.js"></script>
 <script src="capitols.js"></script>
@@ -583,14 +642,6 @@ ff()</code></pre>
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

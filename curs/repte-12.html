@@ -123,7 +123,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -161,11 +161,11 @@
 
         <!-- Enunciat -->
         <div class="exercise-enunciat">
-          En Karel és l'extrem superior esquerre, que és l'entrada d'un laberint. En Karel ha d'arribar a la perla que es troba a l'extrem oposat, però ha de superar un laberint.<br><br>
+          En Karel és a l'extrem superior esquerre, que és l'entrada d'un laberint. En Karel ha d'arribar a la perla que es troba a l'extrem oposat, però ha de superar un laberint.<br><br>
           Sempre existeix un camí que porta en Karel fins a la perla. Escriu un programa que funcioni per a <em>qualsevol</em> laberint, sigui quina sigui la seva forma o mida. El teu codi <em>no pot</em> assumir res sobre la geometria concreta del laberint.<br><br>
           <strong>Restricció important:</strong> no pots codificar el camí pas a
           pas. Has de descobrir un algorisme genèric que segueixi les parets fins
-          trobar la sortida. Fixa't que els mons que et presentem són ben diferents.
+          trobar la perla i recollir-la. Fixa't que els mons que et presentem són ben diferents.
         </div>
 
         <details class="consell-box">
@@ -177,7 +177,8 @@ gires a la dreta i avances. Si la paret continua però el davant és lliure,
 avances recte. Si tens paret tant a la dreta com al davant, gires a
 l'esquerra (però <em>no</em> avances: potser ara el davant és lliure i
 caldrà tornar a comprovar). Aquesta regla garanteix que trobaràs la
-sortida en qualsevol laberint.
+perla en qualsevol laberint com aquests, en què totes les roques estan unides
+a la vora del món (sense illes de roca al mig).
 </div>
         </details>
 
@@ -198,11 +199,11 @@ amb les funcions que ja coneixes.
         <!-- Simulador multi-món (DRY): un sol editor, tres laberints de test -->
         <div class="simulador"
              data-maps='["K>,.,.,.,P|P,P,P,.,P|.,.,.,.,A","K>,.,P,.,.,.|.,.,P,.,P,.|.,.,.,.,P,.|P,P,P,.,P,.|.,.,.,.,.,A","K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,A","K>,.,.,.,P,P,P|P,P,P,.,P,P,P|.,.,.,.,.,.,.|P,P,.,P,P,P,P|.,.,.,.,.,.,A","K>,.,P,P,P,P,P,P,P|P,.,P,P,P,P,P,P,P|P,.,.,.,.,.,.,.,P|P,P,P,P,P,P,P,.,P|P,.,.,.,.,.,.,.,P|P,P,.,P,P,P,P,P,P|.,.,.,.,P,P,P,P,P|P,P,P,.,P,P,P,P,P|P,P,P,.,.,.,.,.,A"]'
-             data-goals='["K>,.,.,.,P|P,P,P,.,P|.,.,.,.,K>","K>,.,P,.,.,.|.,.,P,.,P,.|.,.,.,.,P,.|P,P,P,.,P,.|.,.,.,.,.,K>","K>,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,K>",".,.,.,.,P,P,P|P,P,P,.,P,P,P|.,.,.,.,.,.,.|P,P,.,P,P,P,P|.,.,.,.,.,.,K>",".,.,P,P,P,P,P,P,P|P,.,P,P,P,P,P,P,P|P,.,.,.,.,.,.,.,P|P,P,P,P,P,P,P,.,P|P,.,.,.,.,.,.,.,P|P,P,.,P,P,P,P,P,P|.,.,.,.,P,P,P,P,P|P,P,P,.,P,P,P,P,P|P,P,P,.,.,.,.,.,K>"]'
+             data-goals='[".,.,.,.,P|P,P,P,.,P|.,.,.,.,K>",".,.,P,.,.,.|.,.,P,.,P,.|.,.,.,.,P,.|P,P,P,.,P,.|.,.,.,.,.,K>",".,.,P,.,.,.,P|.,.,P,.,P,.,P|.,.,.,.,P,.,P|P,P,P,P,P,.,P|.,.,.,.,.,.,K>",".,.,.,.,P,P,P|P,P,P,.,P,P,P|.,.,.,.,.,.,.|P,P,.,P,P,P,P|.,.,.,.,.,.,K>",".,.,P,P,P,P,P,P,P|P,.,P,P,P,P,P,P,P|P,.,.,.,.,.,.,.,P|P,P,P,P,P,P,P,.,P|P,.,.,.,.,.,.,.,P|P,P,.,P,P,P,P,P,P|.,.,.,.,P,P,P,P,P|P,P,P,.,P,P,P,P,P|P,P,P,.,.,.,.,.,K>"]'
              data-labels='["3×5 — Simple", "5×6 — Clàssic", "5×7 — Complex", "5×7 — Cul-de-sac", "9×9 — El gran laberint"]'
              data-code="
 "
-             data-title="El mateix codi ha de resoldre els tres laberints. No codifiquis el camí: descobreix l'algorisme de la mà dreta."
+             data-title="El mateix codi ha de resoldre els cinc laberints. No codifiquis el camí: descobreix l'algorisme de la mà dreta."
              data-height="550">
         </div>
 
@@ -229,6 +230,7 @@ amb les funcions que ja coneixes.
   No apareix en cap data-code visible a l'alumne.
   ════════════════════════════════════════════════════════
 
+<solucio>
 def pas():
     if right_is_clear():
         turn_right()
@@ -242,6 +244,37 @@ while not pearl_here():
     pas()
 
 grab()
+</solucio>
+
+<solucio-incorrecta motiu="arriba a la perla però no la recull">
+def pas():
+    if right_is_clear():
+        turn_right()
+        move()
+    elif front_is_clear():
+        move()
+    else:
+        turn_left()
+
+while not pearl_here():
+    pas()
+</solucio-incorrecta>
+
+<solucio-incorrecta motiu="no torna a mirar el davant després de girar a l'esquerra (avança sempre)">
+def pas():
+    if right_is_clear():
+        turn_right()
+        move()
+    elif front_is_clear():
+        move()
+    else:
+        turn_left()
+        move()
+
+while not pearl_here():
+    pas()
+grab()
+</solucio-incorrecta>
 
 
   Traça d'execució (Test A — 3×5, inici (0,0) Est):
@@ -349,14 +382,6 @@ grab()
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

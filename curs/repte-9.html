@@ -46,7 +46,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -81,10 +81,10 @@
 
         <div class="exercise-enunciat">
           El fons marí d'en Karel és un rectangle buit. La seva missió consisteix en <strong>omplir de
-          perles totes les files senars </strong> (la primera fila, la tercera, etc.) i <strong>deixar buides les altres</strong>.<br>
+          perles totes les files senars </strong> comptant des de baix (la primera fila, la tercera, etc.) i <strong>deixar buides les altres</strong>.<br>
           En Karel comença a la cantonada inferior esquerra mirant cap a l'Est. El resultat
           final ha de ser un patró de franges horitzontals: files amb perles alternant amb
-          files buides.<br><br>
+          files buides. No importa on acabi en Karel.<br><br>
           Escriu un programa que funcioni per a qualsevol rectangle, sigui quina sigui l'amplada i l'alçada. El teu codi no pot dependre del nombre de caselles.
         </div>
 
@@ -99,26 +99,27 @@ Escriu la funció <code>omple_fila()</code>, on en Karel deixa una perla a cada 
           <summary><strong>💡 Pista — saltar una fila</strong></summary>
           <div class="consell-body">
 Després d'omplir una fila, en Karel ha de pujar <strong>dues</strong> files: una per saltar la fila buida i una altra per arribar a la que toca omplir.<br><br>
-El gir de transició depèn de la direcció: des de l'Est, fes <code>turn_left(); move(); turn_left()</code> per pujar i girar a l'Oest.<br><br>
-Des de l'Oest, fes <code>turn_right(); move(); turn_right()</code>
-per pujar i girar a l'Est.
+Però compte: potser ja és al sostre. Abans de cada pas cap amunt, comprova amb
+<code>front_is_blocked()</code> si pot pujar. Si no pot, ja ha acabat: surt amb <code>break</code>.
+</div>
+        </details>
+
+        <details class="consell-box">
+          <summary><strong>💡 Pista — el gir entre files</strong></summary>
+          <div class="consell-body">
+Si acaba d'omplir una fila cap a l'Est, <code>turn_left()</code> el fa mirar al Nord; després de pujar,
+un altre <code>turn_left()</code> el deixa mirant a l'Oest.<br>
+Si l'ha omplerta cap a l'Oest, és el mateix amb <code>turn_right()</code>.
 </div>
         </details>
 
         <div class="simulador"
              data-maps='[".,.,.,.|.,.,.,.|K>,.,.,.", ".,.,.,.,.|.,.,.,.,.|.,.,.,.,.|K>,.,.,.,.", ".,.,.,.,.,.|.,.,.,.,.,.|.,.,.,.,.,.|.,.,.,.,.,.|K>,.,.,.,.,." ]'
-             data-goals='[".,.,.,.|.,.,.,.|A,A,A,K>", ".,.,.,.,.|.,.,.,.,.|A,A,A,A,A|A,A,A,A,K>", "A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,K>"]'
+             data-goals='["A,A,A,A|.,.,.,.|A,A,A,A", ".,.,.,.,.|A,A,A,A,A|.,.,.,.,.|A,A,A,A,A", "A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,A|.,.,.,.,.,.|A,A,A,A,A,A"]'
              data-labels='["4×3 (2 files)", "5×4 (2 files)", "6×5 (3 files)"]'
              data-bag="99"
              data-code="def omple_fila():
-
-
-
-def puja_des_d_est():
-
-
-
-def puja_des_d_oest():
+    # deixa una perla a cada casella, fins al final de la fila
 
 
 
@@ -145,44 +146,69 @@ def puja_des_d_oest():
 <!--
   ════════════════════════════════════════════════════════
   SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
 
+<solucio>
 def omple_fila():
     drop()
     while front_is_clear():
         move()
         drop()
 
-def puja_des_d_est():
+omple_fila()
+while True:
+    # Des de l'Est: puja dues files i gira cap a l'Oest
     turn_left()
+    if front_is_blocked():
+        break
+    move()
+    if front_is_blocked():
+        break
     move()
     turn_left()
+    omple_fila()
+    # Des de l'Oest: puja dues files i gira cap a l'Est
+    turn_right()
+    if front_is_blocked():
+        break
+    move()
+    if front_is_blocked():
+        break
+    move()
+    turn_right()
+    omple_fila()
+</solucio>
 
-def puja_des_d_oest():
-    turn_right()
-    move()
-    turn_right()
+<solucio-incorrecta motiu="puja una sola fila i les omple totes">
+def omple_fila():
+    drop()
+    while front_is_clear():
+        move()
+        drop()
 
 omple_fila()
-
 while left_is_clear():
-    puja_des_d_est()
-    if not front_is_clear():
-        break
-    puja_des_d_est()
+    turn_left()
+    move()
+    turn_left()
     omple_fila()
+    if right_is_blocked():
+        break
+    turn_right()
+    move()
+    turn_right()
+    omple_fila()
+</solucio-incorrecta>
 
-    if not right_is_clear():
-        break
-    puja_des_d_oest()
-    if not front_is_clear():
-        break
-    puja_des_d_oest()
-    omple_fila()
+  Els objectius NO porten cap K: només es comprova el patró de perles,
+  no on acaba en Karel (depèn de si el nombre de files és parell o senar).
 
   Clau pedagògica: l'alumne practica el serpentí bidireccional
   (que apareixerà al repte del tauler d'escacs) sense la lògica
   de paritat. Separar les dues dificultats fa que cadascuna sigui
-  assequible.
+  assequible. La comprovació front_is_blocked() abans de cada pas
+  cap amunt és un altre error de límit: el sostre pot arribar
+  després de la fila buida o just després de la fila plena.
   ════════════════════════════════════════════════════════
 -->
 
@@ -196,14 +222,6 @@ while left_is_clear():
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

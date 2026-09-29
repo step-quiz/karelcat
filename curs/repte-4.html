@@ -123,7 +123,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -163,7 +163,8 @@
         <div class="exercise-enunciat">
           En Karel té un grapat de perles a la motxilla i és al principi
           d'un passadís. La seva missió és que deixi exactament una perla
-          a cada casella mentre avança, fins que la motxilla quedi buida de perles.<br>
+          a cada casella mentre avança, fins que la motxilla quedi buida de perles.
+          No importa on acabi en Karel.<br>
           <strong>Restricció important:</strong> la longitud del passadís és
           desconeguda. El teu codi <em>no pot</em> dependre del nombre de
           caselles; ha de funcionar per a qualsevol longitud i mentre
@@ -184,7 +185,7 @@ quan no queden perles a la motxilla.
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
              data-maps='["K>,.,.,.", "K>,.,.,.,.,.", "K>,.,.,.,.,.,.,." ]'
-             data-goals='["A,A,A,K>", "A,A,A,A,A,K>", "A,A,A,A,A,A,A,K>"]'
+             data-goals='["A,A,A,.", "A,A,A,A,A,.", "A,A,A,A,A,A,A,."]'
              data-labels='["3 perles (4 caselles)", "5 perles (6 caselles)", "7 perles (8 caselles)"]'
              data-bags='[3, 5, 7]'
              data-code="# En Karel té perles a la motxilla.
@@ -217,9 +218,17 @@ quan no queden perles a la motxilla.
   No apareix en cap data-code visible a l'alumne.
   ════════════════════════════════════════════════════════
 
+<solucio>
 while not bag_is_empty():
     drop()
     move()
+</solucio>
+
+<solucio-incorrecta motiu="avança abans de deixar la perla">
+while not bag_is_empty():
+    move()
+    drop()
+</solucio-incorrecta>
 
   Traça d'execució (passadís de 6 caselles, bag=5):
     Inici:  casella 0 → Est, motxilla=5
@@ -240,9 +249,9 @@ while not bag_is_empty():
       massa tard, depenent de la longitud del passadís.
     · Invertir l'ordre: move() ABANS de drop() → la primera casella
       queda sense perla i l'última move() surt de bounds.
-    · Oblidar el move() dins el while: en Karel col·loca totes les perles
-      a la mateixa casella (drop() repetit al mateix lloc, però el motor
-      no permet dos drops al mateix lloc → error 'pearl_here').
+    · Oblidar el move() dins el while: el segon drop() no pot deixar la
+      perla (la casella ja en té una), la motxilla no es buida mai i el
+      programa acaba amb l'error d'iteració infinita.
 
   Clau pedagògica: la motxilla és el "comptador" que el programa no té.
   Usar bag_is_empty() desacobla la condició de parada de la geometria
@@ -261,14 +270,6 @@ while not bag_is_empty():
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

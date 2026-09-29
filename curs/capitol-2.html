@@ -47,7 +47,7 @@
     </nav>
 
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -190,7 +190,7 @@ grab()
 
         <div class="simulador"
              data-map=".,.,.,.,.|K>,A,.,A,.|.,.,.,.,."
-             data-goal=".,.,.,.,.|.,.,.,.,K>|.,.,.,.,."
+             data-goal=".,.,.,.,.|.,.,.,.,K>|.,.,.,.,.;motxilla=2"
              data-code="
 
 
@@ -221,6 +221,30 @@ grab()
 </div>
 
 
+<!--
+  ════════════════════════════════════════════════════════
+  SOLUCIONS DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
+  ════════════════════════════════════════════════════════
+
+<solucio>
+move()
+grab()
+move()
+move()
+grab()
+move()
+</solucio>
+
+<solucio-incorrecta motiu="recull només una perla">
+move()
+grab()
+move()
+move()
+move()
+</solucio-incorrecta>
+-->
+
 <script>const CURRENT_CAPITOL = 2;</script>
 <script src="progress.js"></script>
   <script src="capitols.js"></script>
@@ -231,14 +255,6 @@ grab()
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>

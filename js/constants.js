@@ -81,6 +81,32 @@ const COND_ACTIONS = ['path-clear','rock-ahead','left-clear','left-blocked','rig
 const LS_KEY_CODE  = 'karel-code-v3';
 const LS_KEY_THEME = 'karel-theme';
 
+// localStorage pot estar bloquejat (mode privat, política del centre,
+// iframes de tercers). Aquestes funcions mai no llancen excepcions.
+function lsGet(key) {
+  try { return localStorage.getItem(key); } catch (e) { return null; }
+}
+function lsSet(key, value) {
+  try { localStorage.setItem(key, value); return true; } catch (e) { return false; }
+}
+
+// Empremta del codi (FNV-1a de 32 bits). Ignora comentaris, espais finals
+// i línies buides: canviar un comentari no invalida els mons ja superats.
+function codeHash(code) {
+  const norm = String(code || '')
+    .replace(/\r\n?/g, '\n')
+    .split('\n')
+    .map(l => { const i = l.indexOf('#'); return (i === -1 ? l : l.slice(0, i)).replace(/\s+$/, ''); })
+    .filter(l => l.trim() !== '')
+    .join('\n');
+  let h = 0x811c9dc5;
+  for (let i = 0; i < norm.length; i++) {
+    h ^= norm.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(16).padStart(8, '0');
+}
+
 
 // ── Mapa i codi per defecte ──
 
@@ -103,6 +129,9 @@ K.CMD_ACTIONS   = CMD_ACTIONS;
 K.COND_ACTIONS  = COND_ACTIONS;
 K.LS_KEY_CODE   = LS_KEY_CODE;
 K.LS_KEY_THEME  = LS_KEY_THEME;
+K.lsGet         = lsGet;
+K.lsSet         = lsSet;
+K.codeHash      = codeHash;
 K.DEFAULT_CSV   = DEFAULT_CSV;
 K.DEFAULT_CODE  = DEFAULT_CODE;
 K.sanitizeHtml  = sanitizeHtml;

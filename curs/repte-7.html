@@ -123,7 +123,7 @@
       <a href="../edit-mapa.html" class="karel-nav-link">Editor</a>
     </nav>
 
-  <div class="curs-header-actions"><button class="karel-clear-btn" onclick="karelClearProgress()" title="Netejar tot el progrés">Netejar històric</button></div>
+  <div class="curs-header-actions"></div>
 </header>
 
 
@@ -171,9 +171,11 @@
         <details class="consell-box">
           <summary><strong>💡 Pista — la simetria entre <code>puja_grao()</code> i <code>baixa_grao()</code></strong></summary>
           <div class="consell-body">
-<code>puja_grao()</code> fa: avança, gira a l'esquerra, puja, gira a la dreta.<br>
-<code>baixa_grao()</code> és exactament l'operació inversa: gira a la dreta,
-avança, gira a l'esquerra, avança.<br>
+Cada graó és una roca: en Karel no la pot travessar, l'ha d'enfilar.<br>
+<code>puja_grao()</code> fa: gira a l'esquerra, puja, gira a la dreta, avança
+(en Karel queda damunt del graó, mirant a l'Est).<br>
+<code>baixa_grao()</code> és el mateix moviment vist en un mirall: avança, gira a la dreta,
+baixa, gira a l'esquerra.<br>
 </div>
         </details>
 
@@ -198,7 +200,7 @@ món li bloqueja el camí cap a l'Est. En aquest cas, <code>front_is_clear()</co
         <!-- Simulador multi-món (DRY): un sol editor, tres mons de test -->
         <div class="simulador"
              data-maps='[".,.,A,.,.|.,.,P,.,.|K>,P,P,P,.",".,.,.,A,.,.,.|.,.,.,P,.,.,.|.,.,P,P,P,.,.|K>,P,P,P,P,P,.",".,.,.,.,A,.,.,.,.|.,.,.,.,P,.,.,.,.|.,.,.,P,P,P,.,.,.|.,.,P,P,P,P,P,.,.|K>,P,P,P,P,P,P,P,."]'
-             data-goals='[".,.,.,.,.|.,.,P,.,.|.,P,P,P,K>",".,.,.,.,.,.,.|.,.,.,P,.,.,.|.,.,P,P,P,.,.|.,P,P,P,P,P,K>",".,.,.,.,.,.,.,.,.|.,.,.,.,P,.,.,.,.|.,.,.,P,P,P,.,.,.|.,.,P,P,P,P,P,.,.|.,P,P,P,P,P,P,P,K>"]'
+             data-goals='[".,.,.,.,.|.,.,P,.,.|.,P,P,P,K>A",".,.,.,.,.,.,.|.,.,.,P,.,.,.|.,.,P,P,P,.,.|.,P,P,P,P,P,K>A",".,.,.,.,.,.,.,.,.|.,.,.,.,P,.,.,.,.|.,.,.,P,P,P,.,.,.|.,.,P,P,P,P,P,.,.|.,P,P,P,P,P,P,P,K>A"]'
              data-labels='["5 × 3 · 2 graons","7 × 4 · 3 graons","9 × 5 · 4 graons"]'
              data-code="# ── funció puja_grao ──
 # Puja un nivell (post-condició: Karel mira cap a l'Est)
@@ -252,19 +254,21 @@ def baixa_grao():
   ════════════════════════════════════════════════════════
   SOLUCIÓ DE REFERÈNCIA — NOMÉS PER AL PROFESSOR
   No apareix en cap data-code visible a l'alumne.
+  (El test tests/comprova-curs.js executa el codi entre les marques.)
   ════════════════════════════════════════════════════════
 
+<solucio>
 def puja_grao():
-    move()
     turn_left()
     move()
     turn_right()
+    move()
 
 def baixa_grao():
+    move()
     turn_right()
     move()
     turn_left()
-    move()
 
 while not pearl_here():
     puja_grao()
@@ -275,60 +279,66 @@ while front_is_clear():
     baixa_grao()
 
 drop()
+</solucio>
+
+<solucio-incorrecta motiu="no deixa la perla al peu de la piràmide">
+def puja_grao():
+    turn_left()
+    move()
+    turn_right()
+    move()
+
+def baixa_grao():
+    move()
+    turn_right()
+    move()
+    turn_left()
+
+while not pearl_here():
+    puja_grao()
+grab()
+while front_is_clear():
+    baixa_grao()
+</solucio-incorrecta>
+
+<solucio-incorrecta motiu="avança abans de pujar i xoca amb el primer graó">
+def puja_grao():
+    move()
+    turn_left()
+    move()
+    turn_right()
+
+while not pearl_here():
+    puja_grao()
+</solucio-incorrecta>
 
   Traça d'execució (Test A — 5×3, N=2 graons)
-    Inici: en Karel a (col=0, fil=2) mirant Est.  Pearl a (col=2, fil=0).
-    [fil=0 = cim; fil=2 = peu]
+    Mapa:  fila 0   .  .  A  .  .      (A = cim)
+           fila 1   .  .  P  .  .
+           fila 2   K> P  P  P  .      (P = graons de roca)
 
     Pujada:
-      pearl_here() a (0,2) = False → puja_grao:
-        move→(1,2), turn_left→N, move→(1,1), turn_right→E.  en Karel a (1,1).
-      pearl_here() a (1,1) = False → puja_grao:
-        move→(2,1), turn_left→N, move→(2,0), turn_right→E.  en Karel a (2,0).
-      pearl_here() a (2,0) = True → surt del while.
+      (0,2) Est, pearl_here()=False → puja_grao:
+        turn_left→N · move→(0,1) · turn_right→E · move→(1,1)
+      (1,1) Est, pearl_here()=False → puja_grao:
+        turn_left→N · move→(1,0) · turn_right→E · move→(2,0)
+      (2,0) Est, pearl_here()=True → surt del while.
 
     grab()  →  la casella (2,0) queda buida; en Karel porta 1 perla.
 
     Baixada:
-      front_is_clear() a (2,0) Est = True (col 3, fil 0 és .)
-        → baixa_grao: turn_right→S, move→(2,1), turn_left→E, move→(3,1).
-          En Karel a (3,1) Est.
-      front_is_clear() a (3,1) Est = True (col 4, fil 1 és .)
-        → baixa_grao: turn_right→S, move→(3,2), turn_left→E, move→(4,2).
-          En Karel a (4,2) Est.
-      front_is_clear() a (4,2) Est = False (paret del món, amplada=5) → surt.
+      (2,0) Est, front_is_clear()=True → baixa_grao:
+        move→(3,0) · turn_right→S · move→(3,1) · turn_left→E
+      (3,1) Est, front_is_clear()=True → baixa_grao:
+        move→(4,1) · turn_right→S · move→(4,2) · turn_left→E
+      (4,2) Est, front_is_clear()=False (paret del món) → surt.
 
-    drop()  →  perla a (4,2).  en Karel queda a (4,2) Est.  ✓
+    drop()  →  perla a (4,2). En Karel acaba damunt de la perla (K>A a l'objectiu). ✓
 
-  Perquè funciona per a N=3 (Test B, 7×4) i N=4 (Test C, 9×5):
-    · while not pearl_here() s'atura exactament quan en Karel arriba al cim,
-      independentment de quants graons hi hagi.
-    · while front_is_clear() s'atura quan en Karel ha acabat de baixar
-      (la paret dreta del món tanca el recorregut).
-    · puja_grao() i baixa_grao() comparteixen la mateixa
-      pre/postcondició (peu d'un graó, mirant Est), de manera que
-      encadenar-les amb while és trivial i no cal cap comptador.
-
-  Errors habituals de l'alumne:
-    · Implementar baixa_grao() com una còpia de puja_grao() (sense invertir).
-      → en Karel torna a pujar en comptes de baixar.
-    · Oblidar turn_right() al principi de baixa_grao().
-      → en Karel intenta moure's Est quan hauria d'anar al Sud i xoca.
-    · Usar while front_is_clear(): puja_grao() en comptes de
-      while not pearl_here().
-      → En un món obert (sense parets internes), front_is_clear() és
-         sempre True fins a la paret del món; en Karel surt del món.
-    · Oblidar drop() al final.
-      → El simulador accepta el recorregut però la perla no apareix al peu.
-
-  Clau pedagògica:
-    La simetria puja_grao ↔ baixa_grao és la idea central del repte.
-    Un alumne que entén que baixa_grao() és l'invers pas a pas de
-    puja_grao() pot escriure'l immediatament. Un alumne que el copia
-    i modifica aleatòriament sol necessitar múltiples intents.
-    La condició while not pearl_here() és un exemple de "condició
-    de parada basada en l'estat del món" (no en un comptador), igual
-    que al repte del laberint (repte 9).
+  Clau pedagògica: puja_grao() i baixa_grao() són simètriques (mirall
+  vertical): la mateixa seqüència d'ordres en ordre invers i amb els girs
+  intercanviats. while not pearl_here() s'atura al cim sense comptar graons;
+  while front_is_clear() s'atura al peu gràcies a la paret del món.
   ════════════════════════════════════════════════════════
 -->
 
@@ -342,14 +352,6 @@ drop()
   initSidebarToggle();
 </script>
 
-<script>
-function karelClearProgress() {
-  if (confirm('Vols netejar totes les anotacions dels capítols llegits i dels reptes superats?')) {
-    KProgress.clear();
-    location.reload();
-  }
-}
-</script>
 <script src="../footer.js"></script>
 </body>
 </html>
