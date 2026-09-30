@@ -98,7 +98,7 @@ Comprova el motor i executa la solució de referència de cada exercici (el bloc
 `<solucio>` que hi ha en un comentari de cada pàgina) contra tots els seus mons.
 A GitHub s'executa sol a cada push (pestanya «Actions»).
 
-Les tasques pendents actuals són millores visuals (D.1–D.4) i funcionalitat futura
+Les tasques pendents actuals són funcionalitat futura
 opcional (E.1–E.8): idiomes addicionals, selector d'idioma, editor de mapes integrat.
 El contingut pedagògic del curs és complet.
 

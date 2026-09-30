@@ -246,6 +246,11 @@ index.html          — Pàgina d'inici (4 targetes: curs, reptes, simulador, ed
 simulador.html      — Simulador lliure i simulador incrustat als iframes del curs.
 style.css           — ~698 línies. Sense zombies des de la neteja (Categoria C).
 edit-mapa.html      — Editor visual de mapes (eina auxiliar, no és part del curs).
+favicon.svg         — Icona de la pestanya: la medusa pixel art (rosa, vora granat).
+favicon.ico         — La mateixa icona en 16, 32 i 48 px (navegadors sense SVG).
+apple-touch-icon.png — Icona de 180 px per a la pantalla d'inici d'iPhone/iPad.
+                      Totes les pàgines (també curs/*.html, amb ../) enllacen les tres
+                      icones just després del <title>. Una pàgina nova ha de fer el mateix.
 
 js/constants.js     — Namespace K, SVG assets, DIRS, CMD_ACTIONS, COND_ACTIONS,
                       SPEED_DELAYS, DEFAULT_CSV, DEFAULT_CODE, escHtml/sanitizeHtml.
@@ -513,9 +518,11 @@ El codi només es desa a localStorage al simulador lliure (clau `karel-code-v3`)
 
 | # | Tasca | Detall |
 |---|-------|--------|
-| D.1 | Perla en mode clar | El SVG de la perla té píxels blancs purs que desapareixen sobre fons blanc. Revisar el sprite. |
 | D.3 | Responsive mòbil | El mòbil no és prioritari (massa informació). Portàtil i tauleta sí: fet (vegeu secció 9). |
-| D.4 | Favicon | Afegir la medusa rosa com a favicon de la pàgina. |
+
+Fetes: **D.1** (perla en mode clar: cada color del sprite té una classe `pl-*` a
+`K.KAREL_ASSETS.PEARL` i `style.css` n'enfosqueix la vora, el cos i l'ombra quan
+`body.light`; el mode fosc no canvia) i **D.4** (icona de la pestanya, vegeu la secció 5).
 
 ### Categoria E — Funcionalitat futura (prioritat baixa)
 
@@ -614,4 +621,6 @@ l'acció `.github/workflows/comprova-curs.yml` l'executa a cada push.
 
 ---
 
-*Última actualització: botó «🎯 Objectiu» (objectiu transparent sobre el món) i diferències marcades en vermell després d'un intent fallit; lletra més gran a tota la interfície; una sola presentació inicial; «Esborra el meu progrés» a la barra lateral. Abans: millores per a portàtil i tauleta, detecció exacta de bucles infinits, nou parser, verificador, reptes corregits i test automàtic.*
+*Última actualització: perla més visible en mode clar (D.1) i icona de la pestanya
+del navegador a totes les pàgines (D.4). Abans: botó «🎯 Objectiu», diferències en vermell,
+lletra més gran, una sola presentació inicial, «Esborra el meu progrés» a la barra lateral.*

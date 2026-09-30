@@ -536,6 +536,14 @@ body.light .c-ka { background: var(--cell-empty) !important; }
 /* Medusa: MATEIX color rosat que en mode fosc */
 body.light .karel-entity { color: #E684CC; filter: drop-shadow(0 0 4px rgba(230,132,204,.5)); }
 body.light .karel-outline { display: inline; }
+/* Perla: sobre una casella blanca, els tons de mode fosc queden massa pàl·lids
+   i la brillantor blanca es confon amb el fons. En mode clar s'enfosqueixen
+   la vora, el cos i l'ombra (la brillantor #FFFFFF es manté). Les classes
+   pl-* són a K.KAREL_ASSETS.PEARL (js/constants.js). */
+body.light .pl-o { fill: #5E6B7A; }   /* vora   (fosc: #7E8A96) */
+body.light .pl-b { fill: #D2DBE7; }   /* cos    (fosc: #E8ECF2) */
+body.light .pl-s { fill: #AFBDCF; }   /* ombra  (fosc: #C8D4E4) */
+body.light .pl-d { fill: #9AA9BC; }   /* base   (fosc: #B8C4D0) */
 
 /* ── Stanford-like World Grid (light mode) ─────────────── */
 body.light .world-area { background: #ffffff; }
