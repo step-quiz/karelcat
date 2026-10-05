@@ -306,9 +306,29 @@
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ── Capçalera mínima: només allotja el selector de la família Cat (family.js) ── */
+    .topbar {
+      height: 46px;
+      min-height: 46px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-bottom: 1px solid transparent;   /* invisible; posa var(--border) si vols una línia */
+    }
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+    }
   </style>
 </head>
 <body>
+
+  <header class="topbar">
+    <div class="topbar-actions"></div>
+  </header>
 
   <main>
 
@@ -476,5 +496,6 @@
   </script>
 
 <script src="./footer.js"></script>
+<script src="family.js"></script>
 </body>
 </html>
