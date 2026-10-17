@@ -4,7 +4,7 @@ Entorn interactiu per aprendre a programar en Python, adreçat a alumnes de secu
 
 ## Què és
 
-Un curs de 10 capítols i 13 reptes, accessible des del navegador sense instal·lació, inspirat en el [Stanford Karel Reader](https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html). Cada capítol combina explicació breu, exemples executables incrustats i navegació cap als reptes finals. La interfície és intencionadament minimalista: editor de codi a l'esquerra, món de Karel a la dreta, dos botons.
+Un curs de 10 capítols, un epíleg i 13 reptes, accessible des del navegador sense instal·lació, inspirat en el [Stanford Karel Reader](https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html). Cada capítol combina explicació breu, exemples executables incrustats i navegació cap als reptes finals. La interfície és intencionadament minimalista: editor de codi a l'esquerra, món de Karel a la dreta, dos botons.
 
 ## Estat actual
 
@@ -14,15 +14,16 @@ Un curs de 10 capítols i 13 reptes, accessible des del navegador sense instal·
 | Sintaxi Python-compatible | ✅ Implementada |
 | Infraestructura del curs (sidebar, iframes, deep links) | ✅ Completa |
 | Capítol 1 — Coneix en Karel | ✅ Escrit |
-| Capítol 2 — Agafa i deixa | ✅ Escrit |
-| Capítol 3 — Repeteix | ✅ Escrit |
-| Capítol 4 — Procediments | ✅ Escrit |
-| Capítol 5 — Descomposició | ✅ Escrit |
-| Capítol 6 — Condicionals | ✅ Escrit |
-| Capítol 7 — Mentre | ✅ Escrit |
-| Capítol 8 — Combinant condicions | ✅ Escrit |
-| Capítol 9 — Resum | ✅ Escrit |
-| Capítol 10 — Del Karel al Python | ✅ Escrit |
+| Capítol 2 — Recollir i deixar | ✅ Escrit |
+| Capítol 3 — Gestió d'errors en un codi | ✅ Escrit |
+| Capítol 4 — Repeteix | ✅ Escrit |
+| Capítol 5 — Funcions | ✅ Escrit |
+| Capítol 6 — Descomposició | ✅ Escrit |
+| Capítol 7 — Condicionals | ✅ Escrit |
+| Capítol 8 — Mentre | ✅ Escrit |
+| Capítol 9 — Combinant condicions | ✅ Escrit |
+| Capítol 10 — Codi net | ✅ Escrit |
+| Epíleg — D'en Karel al Python | ✅ Escrit |
 | Reptes 1–13 (capítol 10) | ✅ Tots implementats |
 
 ## Sintaxi del llenguatge

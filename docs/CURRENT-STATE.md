@@ -52,7 +52,7 @@ Els reptes formen part del capítol 10. Cada repte és un fitxer HTML independen
 
 | # | Fitxer | Títol | Grup | Dificultat |
 |---|--------|-------|------|------------|
-| 1 | `curs/repte-1.html` | El diari | A | ★ Fàcil |
+| 1 | `curs/repte-1.html` | Recollir el tresor | A | ★ Fàcil |
 | 2 | `curs/repte-2.html` | El passadís | A | ★ Fàcil |
 | 3 | `curs/repte-3.html` | L'escala diagonal | A | ★ Fàcil |
 | 4 | `curs/repte-4.html` | Distribuir les perles | A | ★ Fàcil |

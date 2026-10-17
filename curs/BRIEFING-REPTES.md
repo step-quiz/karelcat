@@ -20,7 +20,7 @@
 
 | # | Fitxer | Títol | Grup | Dificultat | Estat |
 |---|--------|-------|------|------------|-------|
-| 1 | `repte-1.html` | El diari | A | ★ Fàcil | ✅ Implementat |
+| 1 | `repte-1.html` | Recollir el tresor | A | ★ Fàcil | ✅ Implementat |
 | 2 | `repte-2.html` | El passadís | A | ★ Fàcil | ✅ Implementat |
 | 3 | `repte-3.html` | L'escala diagonal | A | ★ Fàcil | ✅ Implementat |
 | 4 | `repte-4.html` | Distribuir les perles | A | ★ Fàcil | ✅ Implementat |
