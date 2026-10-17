@@ -74,8 +74,7 @@ editor-reptes.jsx   — Component React per editar els textos dels reptes (eina 
 favicon.*, apple-touch-icon.png, img/ — Icones
 js/                 — Motor: constants, i18n, state, tokenizer, parser,
                       interpreter, execution, world, renderer, editor, ui, main, reptes,
-                      kbd-accessory (barra de tecles tàctil). `vkbd.js` (teclat virtual
-                      amb simple-keyboard) no el carrega cap pàgina.
+                      kbd-accessory (barra de tecles tàctil).
 curs/
   index.html        — Índex del curs (10 capítols)
   capitol.html      — Plantilla reutilitzable per a capítols

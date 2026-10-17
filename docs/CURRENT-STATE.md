@@ -307,8 +307,6 @@ footer.js, nav.css  — Peu de pàgina i navegació comuns de les pàgines del c
 curs/capitol-futur.html — Epíleg «D'en Karel al Python» (entrada 'futur' de CAPITOLS_DATA).
 editor-reptes.jsx   — Component React auxiliar per editar textos dels reptes; no el
                       carrega cap pàgina.
-js/vkbd.js          — Teclat virtual amb simple-keyboard. Codi mort: no el carrega cap pàgina
-                      (el substitueix js/kbd-accessory.js).
 ```
 
 **Ordre de càrrega a `simulador.html`** (crític — les dependències globals K.* s'han de
