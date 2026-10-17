@@ -8,7 +8,7 @@
 
 - **Projecte:** karelcat — curs interactiu de en Karel en català, temàtica marina.
 - **Capítol 10:** no introdueix sintaxi nova. L'alumne combina tot el que sap. Inspirat en els exercicis de Stanford CS106A / Code in Place.
-- **Document de disseny de referència:** `docs/reptes.docx` (conté enunciats, mapes, principis pedagògics i ordre recomanat d'implementació).
+- **Document de disseny de referència:** `docs/reptes.docx` (enunciats, mapes, principis pedagògics i ordre recomanat d'implementació). **No és al repositori.**
 - **Plantilla HTML:** `curs/capitol.html` (cada repte segueix la mateixa estructura que els capítols anteriors).
 - **Regla de mapes HTML:** el separador de files és `|` (literal, no és `\n` ni tampoc és `\\n`).
 - **Solució de referència:** s'inclou en un comentari HTML al final del fitxer, entre les marques `<solucio>` i `</solucio>`, mai en `data-code`. **Aquesta és la font única de veritat de les solucions:** el test `node tests/comprova-curs.js` les executa contra tots els mons del repte. Els blocs `<solucio-incorrecta motiu="…">` recullen errors típics que el verificador ha de detectar.
@@ -83,7 +83,7 @@ no mirava la casella de sota en Karel: l'error de límit no es detectava mai.
 ### ✅ Repte 3 — L'escala diagonal (A3, ★ Fàcil)
 
 **Fitxer:** `curs/repte-3.html`
-**Conceptes:** `for`, seqüències compostes dins la iteració, pre/postcondicions de funció.
+**Conceptes:** `while front_is_clear()`, seqüències compostes dins la iteració, pre/postcondicions de funció.
 **Adaptació de:** Ramp Climbing en Karel (Stanford CS106A).
 
 **Mons de test (3 simuladors):**
@@ -93,12 +93,12 @@ no mirava la casella de sota en Karel: l'error de límit no es detectava mai.
 
 **Motxilla inicial:** `data-bag="99"` (pràcticament infinita) als tres simuladors.
 
-**Funció principal:** `construeix_grao()` = `drop()` + `move()` + `turn_left()` + `move()` + `turn_right()`
+**Funció principal:** `puja_grao()` = `move()` + `turn_left()` + `move()` + `turn_right()`; el programa és `while front_is_clear(): drop(); puja_grao()`. L'alumne no ha de saber quants graons té el món.
 
-**Clau pedagògica:** La funció `construeix_grao()` té una precondició i postcondició idèntiques (en Karel mira a l'Est). Gràcies a aquesta simetria, encadenar N crides amb `for` és trivial. Si la postcondició no es compleix (p. ex. s'oblida el `turn_right()` final), el segon graó surt en la direcció equivocada.
+**Clau pedagògica:** La funció `puja_grao()` té una precondició i postcondició idèntiques (en Karel mira a l'Est). Gràcies a aquesta simetria, encadenar les crides dins d'un bucle és trivial. Si la postcondició no es compleix (p. ex. s'oblida el `turn_right()` final), el segon graó surt en la direcció equivocada.
 
 **Notes d'implementació:**
-- Nom de funció: `construeix_grao` (en lloc de `puja_grao`) — emfatitza l'acció de construir, no només de pujar.
+- La solució incorrecta del test deixa la perla després de pujar el graó (en lloc d'abans).
 - La navegació: anterior → `repte-2.html`, següent → `repte-4.html`.
 
 ---

@@ -62,15 +62,24 @@ Qualsevol programa Karel vàlid és Python vàlid (amb un shim que defineixi les
 
 ```
 index.html          — Pàgina d'inici
+presentacio-karel.html — Presentació inicial («Primer cop aquí?»)
 simulador.html      — Simulador lliure (i simulador incrustat als capítols)
-style.css           — Estils del simulador
+style.css, nav.css  — Estils del simulador i de la navegació del curs
+family.js           — Selector «EXPLORA» dels projectes germans (només a la portada)
+footer.js           — Peu de pàgina comú del curs
 edit-mapa.html      — Editor visual de mapes (eina auxiliar)
+editor-reptes.jsx   — Component React per editar els textos dels reptes (eina auxiliar;
+                      no el carrega cap pàgina)
+favicon.*, apple-touch-icon.png, img/ — Icones
 js/                 — Motor: constants, i18n, state, tokenizer, parser,
-                      interpreter, execution, world, renderer, editor, ui, main, reptes
+                      interpreter, execution, world, renderer, editor, ui, main, reptes,
+                      kbd-accessory (barra de tecles tàctil). `vkbd.js` (teclat virtual
+                      amb simple-keyboard) no el carrega cap pàgina.
 curs/
   index.html        — Índex del curs (10 capítols)
   capitol.html      — Plantilla reutilitzable per a capítols
   capitol-1..10     — Els 10 capítols del curs
+  capitol-futur     — Epíleg: «D'en Karel al Python»
   repte-1..13       — Els 13 reptes del capítol 10
   capitols.js       — Dades + renderSidebar() + renderSimuladors()
   progress.js       — Progrés de l'alumne (localStorage)
@@ -96,7 +105,7 @@ node tests/comprova-curs.js
 
 Comprova el motor i executa la solució de referència de cada exercici (el bloc
 `<solucio>` que hi ha en un comentari de cada pàgina) contra tots els seus mons.
-A GitHub s'executa sol a cada push (pestanya «Actions»).
+(No hi ha cap GitHub Action que l'executi sol: cal llançar-lo a mà.)
 
 Les tasques pendents actuals són funcionalitat futura
 opcional (E.1–E.8): idiomes addicionals, selector d'idioma, editor de mapes integrat.

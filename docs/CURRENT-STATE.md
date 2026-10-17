@@ -299,7 +299,16 @@ curs/curs.css       — Estils per a totes les pàgines del curs.
 curs/BRIEFING-REPTES.md — Estat detallat de cada repte (mapes, notes pedagògiques).
 
 tests/comprova-curs.js — Test automàtic de tot el curs (vegeu secció 16).
-.github/workflows/comprova-curs.yml — Executa el test a GitHub a cada push.
+                      (No hi ha cap `.github/workflows/`: el test s'executa a mà.)
+
+presentacio-karel.html — Presentació inicial; en tancar-la desa 'karel_tour_done_v1'.
+family.js           — Selector «EXPLORA» dels projectes germans (només a index.html).
+footer.js, nav.css  — Peu de pàgina i navegació comuns de les pàgines del curs.
+curs/capitol-futur.html — Epíleg «D'en Karel al Python» (entrada 'futur' de CAPITOLS_DATA).
+editor-reptes.jsx   — Component React auxiliar per editar textos dels reptes; no el
+                      carrega cap pàgina.
+js/vkbd.js          — Teclat virtual amb simple-keyboard. Codi mort: no el carrega cap pàgina
+                      (el substitueix js/kbd-accessory.js).
 ```
 
 **Ordre de càrrega a `simulador.html`** (crític — les dependències globals K.* s'han de
@@ -616,8 +625,8 @@ navegador i comprova:
 3. **`curs/capitols.js`:** que `REPTES_DATA` apunti a fitxers que existeixen i que el
    nombre de mons (`mons`) coincideixi amb la pàgina.
 
-Acaba amb «✓ Tot correcte» o amb la llista d'errors (i codi de sortida 1). A GitHub,
-l'acció `.github/workflows/comprova-curs.yml` l'executa a cada push.
+Acaba amb «✓ Tot correcte» (ara, 195 comprovacions) o amb la llista d'errors (i codi de
+sortida 1). No hi ha cap acció de GitHub que l'executi: s'ha de llançar a mà.
 
 ---
 
