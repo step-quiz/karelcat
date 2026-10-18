@@ -28,3 +28,6 @@ jobs:
 
       - name: Test del curs
         run: node tests/comprova-curs.js
+
+      - name: Documentació ↔ codi
+        run: python3 tests/docs_vs_codi.py

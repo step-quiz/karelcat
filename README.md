@@ -87,6 +87,7 @@ curs/
   BRIEFING-REPTES.md — Detall de cada repte (mapes, notes)
 tests/
   comprova-curs.js  — Test automàtic: motor, mapes i solucions de tots els exercicis
+  docs_vs_codi.py   — La documentació quadra amb el codi (rutes citades, capítols i reptes)
 docs/
   CURRENT-STATE.md  — Estat actual complet del projecte (llegir aquí primer)
   i18n-spanish-guide.md — Guia per afegir castellà com a idioma d'interfície
@@ -106,6 +107,8 @@ node tests/comprova-curs.js
 Comprova el motor i executa la solució de referència de cada exercici (el bloc
 `<solucio>` que hi ha en un comentari de cada pàgina) contra tots els seus mons.
 A GitHub s'executa sol a cada canvi a `main` i a cada pull request (`.github/workflows/tests.yml`, pestanya «Actions»), i també després de cada ZIP pujat a `_uploads/`.
+
+El mateix workflow passa `python3 tests/docs_vs_codi.py`, que comprova que la documentació diu el mateix que el codi: les rutes que citen els documents principals existeixen i la taula d'estat d'aquest README té els capítols i els reptes de `curs/capitols.js`. Si falla perquè has canviat el curs, posa al dia el document que diu el missatge.
 
 Les tasques pendents actuals són funcionalitat futura
 opcional (E.1–E.8): idiomes addicionals, selector d'idioma, editor de mapes integrat.
