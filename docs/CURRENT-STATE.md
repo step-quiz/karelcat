@@ -299,7 +299,7 @@ curs/curs.css       — Estils per a totes les pàgines del curs.
 curs/BRIEFING-REPTES.md — Estat detallat de cada repte (mapes, notes pedagògiques).
 
 tests/comprova-curs.js — Test automàtic de tot el curs (vegeu secció 16).
-                      (No hi ha cap `.github/workflows/`: el test s'executa a mà.)
+                      (L'únic workflow és `unzip-upload.yml`, el dels ZIP: el test s'executa a mà.)
 
 presentacio-karel.html — Presentació inicial; en tancar-la desa 'karel_tour_done_v1'.
 family.js           — Selector «EXPLORA» dels projectes germans (només a index.html).
