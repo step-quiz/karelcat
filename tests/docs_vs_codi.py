@@ -105,7 +105,7 @@ def acaba(nom):
     print(f'✓ {nom}: la documentació quadra amb el codi.')
 
 DOCUMENTS = ['README.md', 'docs/CURRENT-STATE.md', 'curs/BRIEFING-REPTES.md']
-EXCEPCIONS = ['S.karel.x/y', 'docs/reptes.docx', 'if/elif/else', 'repte-N.html', 'try/catch']
+EXCEPCIONS = ['S.karel.x/y', 'comuns.json', 'docs/reptes.docx', 'if/elif/else', 'repte-N.html', 'try/catch']
 
 comprova_rutes(DOCUMENTS, EXCEPCIONS)
 

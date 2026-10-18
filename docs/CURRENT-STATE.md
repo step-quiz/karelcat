@@ -278,7 +278,8 @@ js/editor.js        — Ressaltat sintàctic, numeració de línies, marca d'err
                       automàtica en prémer Enter (+4 espais després de ':'), Tab i
                       Maj+Tab per indentar/desindentar, retrocés que esborra un nivell.
                       K.editText manté l'historial de desfer (Ctrl+Z).
-js/kbd-accessory.js — Barra de tecles tàctil a sota de l'editor (només pantalles tàctils):
+js/kbd-accessory.js — Barra de tecles tàctil a sota de l'editor (només pantalles tàctils; fitxer comú,
+                      ve de step-quiz-commons, i les tecles són a comuns.json d'allà):
                       ⇥ ⇤ ( ) : _ # i les instruccions i paraules clau més habituals.
 js/ui.js            — K.log, K.logError, K.setStateUI, K.updateUI,
                       K.initSpeedSlider, K.handleRunClick, K.toggleTheme, K.initTheme.

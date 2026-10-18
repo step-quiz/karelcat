@@ -93,6 +93,14 @@ docs/
   i18n-spanish-guide.md — Guia per afegir castellà com a idioma d'interfície
 ```
 
+## Fitxers comuns
+
+`LICENSE`, `LLICENCIA.md`, `family.js`, `footer.js`, `js/kbd-accessory.js` i les icones de la família (`img/htmlcat.svg`, `img/pycat.svg`, `img/karelcat.svg`, `img/jscat.svg`) són **fitxers comuns** dels cursos de la família: l'original és al repositori
+[step-quiz-commons](https://github.com/step-quiz/step-quiz-commons), on també hi ha què té de
+diferent aquest web (`comuns.json`). El workflow `.github/workflows/comuns.yml` els posa al dia
+cada dia (o a mà: Actions → «Fitxers comuns» → Run workflow). **No els editis aquí**: el canvi es
+perdria l'endemà. Canvia'ls a step-quiz-commons.
+
 ## Com continuar el desenvolupament
 
 Llegeix `docs/CURRENT-STATE.md` abans de fer cap canvi. Conté l'estat complet
