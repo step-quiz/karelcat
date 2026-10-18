@@ -95,11 +95,13 @@ docs/
 
 ## Fitxers comuns
 
-`LICENSE`, `LLICENCIA.md`, `family.js`, `footer.js`, `js/kbd-accessory.js` i les icones de la família (`img/htmlcat.svg`, `img/pycat.svg`, `img/karelcat.svg`, `img/jscat.svg`) són **fitxers comuns** dels cursos de la família: l'original és al repositori
+`LICENSE`, `LLICENCIA.md`, `family.js`, `footer.js`, `js/kbd-accessory.js`, `curs/certificat.js` i les icones de la família (`img/htmlcat.svg`, `img/pycat.svg`, `img/karelcat.svg`, `img/jscat.svg`) són **fitxers comuns** dels cursos de la família: l'original és al repositori
 [step-quiz-commons](https://github.com/step-quiz/step-quiz-commons), on també hi ha què té de
 diferent aquest web (`comuns.json`). El workflow `.github/workflows/comuns.yml` els posa al dia
 cada dia (o a mà: Actions → «Fitxers comuns» → Run workflow). **No els editis aquí**: el canvi es
 perdria l'endemà. Canvia'ls a step-quiz-commons.
+
+**Certificat.** A l'índex del curs (`curs/index.html`), `curs/certificat.js` mostra quants capítols porta l'alumne i, quan els té tots amb la ✓, el certificat (amb el seu nom i la data) per imprimir o desar en PDF i l'enllaç a PyCat, el curs següent de la sèrie KarelCat → PyCat → JSCat.
 
 ## Com continuar el desenvolupament
 

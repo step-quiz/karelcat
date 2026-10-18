@@ -296,6 +296,7 @@ curs/capitols.js    — CAPITOLS_DATA + REPTES_DATA (amb el nombre de mons de ca
                       renderSidebar() + renderSimuladors() + toggle mòbil + listener
                       de missatges dels iframes.
 curs/progress.js    — KProgress: progrés de l'alumne a localStorage (vegeu 7.3).
+curs/certificat.js  — Certificat a l'índex del curs quan els 10 capítols tenen la ✓, i enllaç a PyCat. Fitxer comú (step-quiz-commons).
 curs/curs.css       — Estils per a totes les pàgines del curs.
 curs/BRIEFING-REPTES.md — Estat detallat de cada repte (mapes, notes pedagògiques).
 
