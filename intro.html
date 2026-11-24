@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
 <style>
 /* Disseny: columna única de lectura; l'itinerari com a esquema; quatre fitxes amb els mateixos camps, en graella 2×2 */
 :root {
@@ -25,7 +25,7 @@
   --c-html: #d4421f;
   --c-js: #9a8300;
   --chip: #e8ecf4;
-  --f-display: "Syne", "Inter", system-ui, sans-serif;
+  --f-display: "Space Grotesk", "Inter", system-ui, sans-serif;
   --f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono: "Space Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
@@ -58,12 +58,13 @@ h2 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem); font-weight: 800; }
 p { margin: 0; }
 a { color: var(--accent); }
 a:focus-visible, .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-.eyebrow { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.eyebrow { font-family: var(--f-mono); font-size: .78rem; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h2.eyebrow { font-size: .9rem; font-weight: 700; line-height: 1.4; }
 section { display: grid; gap: 1.25rem; padding-block: 3rem 0; }
 
 /* Capçalera */
 header { display: grid; gap: 1.25rem; padding-block: 3.5rem 0.5rem; }
-header h1 { font-size: clamp(2.1rem, 1.4rem + 3vw, 3.6rem); font-weight: 800; letter-spacing: -.01em; }
+header h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem); font-weight: 700; letter-spacing: -.02em; }
 header .lead { font-size: 1.15rem; color: var(--muted); max-width: 60ch; }
 .icons { display: flex; gap: .6rem; }
 .icons svg { width: 40px; height: 40px; display: block; }
@@ -78,7 +79,7 @@ header .lead { font-size: 1.15rem; color: var(--muted); max-width: 60ch; }
 .diagram { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.2rem; }
 .diagram svg { display: block; width: 100%; min-width: 640px; height: auto; }
 .d-box { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
-.d-name { font-family: var(--f-display); font-weight: 800; font-size: 19px; fill: var(--fg); }
+.d-name { font-family: var(--f-display); font-weight: 700; font-size: 19px; fill: var(--fg); }
 .d-sub { font-family: var(--f-mono); font-size: 11.5px; fill: var(--muted); }
 .d-lane { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; fill: var(--muted); text-transform: uppercase; }
 .d-arrow { stroke: var(--muted); stroke-width: 1.8; fill: none; }
@@ -95,7 +96,7 @@ header .lead { font-size: 1.15rem; color: var(--muted); max-width: 60ch; }
 .card .band { height: 6px; background: var(--brand); }
 .card .head { display: flex; gap: .9rem; align-items: center; padding: 1.2rem 1.3rem .4rem; }
 .card .head svg { width: 44px; height: 44px; flex: none; }
-.card h3 { font-size: 1.55rem; font-weight: 800; }
+.card h3 { font-size: 1.5rem; font-weight: 700; }
 .card .lang { font-family: var(--f-mono); font-size: .8rem; color: var(--brand); font-weight: 700; }
 .card .body { padding: .4rem 1.3rem 1rem; display: grid; gap: .9rem; align-content: start; }
 .card .pitch { font-size: 1.02rem; }
@@ -122,7 +123,7 @@ dd { margin: 0; min-width: 0; }
 .diff-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
 table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: .93rem; }
 th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-thead th { font-family: var(--f-display); font-size: 1.05rem; font-weight: 800; }
+thead th { font-family: var(--f-display); font-size: 1.05rem; font-weight: 700; }
 tbody th { font-family: var(--f-mono); font-size: .76rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 400; white-space: nowrap; }
 tbody tr:last-child > * { border-bottom: 0; }
 .num { font-variant-numeric: tabular-nums; }
@@ -148,8 +149,7 @@ footer { padding-block: 3rem 0; color: var(--muted); font-size: .9rem; }
 </header>
 
 <section aria-labelledby="comu">
-  <p class="eyebrow">Què tenen en comú</p>
-  <h2 id="comu">El mateix plantejament als quatre cursos</h2>
+  <h2 class="eyebrow" id="comu">Què tenen en comú</h2>
   <div class="common">
     <div><b>Sense instal·lar res</b><span>Funcionen en qualsevol navegador modern, també en ordinadors del centre amb permisos limitats.</span></div>
     <div><b>Sense comptes ni galetes</b><span>No es demana cap dada a l'alumnat. La feina i el progrés es desen al navegador de l'alumne i enlloc més.</span></div>
@@ -161,8 +161,7 @@ footer { padding-block: 3rem 0; color: var(--muted); font-size: .9rem; }
 </section>
 
 <section aria-labelledby="itinerari">
-  <p class="eyebrow">Itinerari recomanat</p>
-  <h2 id="itinerari">Per on començar</h2>
+  <h2 class="eyebrow" id="itinerari">Itinerari recomanat</h2>
   <div class="diagram" role="img" aria-label="Esquema: KarelCat porta a PyCat i PyCat a JSCat. HTMLCat és un camí paral·lel que porta a la part B de JSCat, la del navegador.">
     <svg viewBox="0 0 760 270" aria-hidden="true">
       <defs>
@@ -206,8 +205,7 @@ footer { padding-block: 3rem 0; color: var(--muted); font-size: .9rem; }
 </section>
 
 <section aria-labelledby="cursos">
-  <p class="eyebrow">Els quatre cursos</p>
-  <h2 id="cursos">Què fa cadascun</h2>
+  <h2 class="eyebrow" id="cursos">Els quatre cursos</h2>
   <div class="cards">
 
     <article class="card k-karel">
@@ -290,8 +288,7 @@ footer { padding-block: 3rem 0; color: var(--muted); font-size: .9rem; }
 </section>
 
 <section aria-labelledby="dif">
-  <p class="eyebrow">En què es diferencien</p>
-  <h2 id="dif">D'un cop d'ull</h2>
+  <h2 class="eyebrow" id="dif">En què es diferencien</h2>
   <div class="diff-wrap">
     <table>
       <thead><tr><th scope="col"></th><th scope="col">KarelCat</th><th scope="col">PyCat</th><th scope="col">HTMLCat</th><th scope="col">JSCat</th></tr></thead>
