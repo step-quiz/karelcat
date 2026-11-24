@@ -64,6 +64,8 @@ Qualsevol programa Karel vàlid és Python vàlid (amb un shim que defineixi les
 ```
 index.html          — Pàgina d'inici
 presentacio-karel.html — Presentació inicial («Primer cop aquí?»)
+intro.html          — Introducció per al professorat als quatre cursos germans
+                      (KarelCat, PyCat, HTMLCat, JSCat): comú, diferències, itinerari, enllaços
 simulador.html      — Simulador lliure (i simulador incrustat als capítols)
 style.css, nav.css  — Estils del simulador i de la navegació del curs
 family.js           — Selector «EXPLORA» dels projectes germans (només a la portada)

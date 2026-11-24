@@ -244,6 +244,7 @@ Vegeu la secció 16.
 ```
 index.html          — Pàgina d'inici (4 targetes: curs, reptes, simulador, editor).
 simulador.html      — Simulador lliure i simulador incrustat als iframes del curs.
+intro.html          — Introducció per al professorat als quatre cursos germans (no hi enllaça cap pàgina).
 style.css           — ~698 línies. Sense zombies des de la neteja (Categoria C).
 edit-mapa.html      — Editor visual de mapes (eina auxiliar, no és part del curs).
 favicon.svg         — Icona de la pestanya: la medusa pixel art (rosa, vora granat).

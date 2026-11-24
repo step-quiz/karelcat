@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Cursos Step Quiz — introducció per al professorat</title>
+<meta name="description" content="KarelCat, PyCat, HTMLCat i JSCat: què tenen en comú, en què es diferencien, itinerari recomanat i enllaços.">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* Disseny: columna única de lectura; l'itinerari com a esquema; quatre fitxes amb els mateixos camps, en graella 2×2 */
+:root {
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --fg: #172033;
+  --muted: #56607a;
+  --line: #d9dee8;
+  --accent: #2b5fd9;
+  --c-karel: #b8479c;
+  --c-py: #3776ab;
+  --c-html: #d4421f;
+  --c-js: #9a8300;
+  --chip: #e8ecf4;
+  --f-display: "Syne", "Inter", system-ui, sans-serif;
+  --f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "Space Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141c; --surface: #171d28; --fg: #e6eaf2; --muted: #9aa3b8; --line: #2a3242;
+    --accent: #7ea2ff; --c-karel: #e684cc; --c-py: #6fa8dc; --c-html: #ff7a52; --c-js: #f7df1e;
+    --chip: #222a38; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141c; --surface: #171d28; --fg: #e6eaf2; --muted: #9aa3b8; --line: #2a3242;
+  --accent: #7ea2ff; --c-karel: #e684cc; --c-py: #6fa8dc; --c-html: #ff7a52; --c-js: #f7df1e;
+  --chip: #222a38; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg); color: var(--fg);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 4rem;
+}
+.wrap { max-width: 1040px; margin: 0 auto; }
+.prose { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.15; margin: 0; }
+h2 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem); font-weight: 800; }
+p { margin: 0; }
+a { color: var(--accent); }
+a:focus-visible, .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.eyebrow { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+section { display: grid; gap: 1.25rem; padding-block: 3rem 0; }
+
+/* Capçalera */
+header { display: grid; gap: 1.25rem; padding-block: 3.5rem 0.5rem; }
+header h1 { font-size: clamp(2.1rem, 1.4rem + 3vw, 3.6rem); font-weight: 800; letter-spacing: -.01em; }
+header .lead { font-size: 1.15rem; color: var(--muted); max-width: 60ch; }
+.icons { display: flex; gap: .6rem; }
+.icons svg { width: 40px; height: 40px; display: block; }
+
+/* Què tenen en comú */
+.common { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.common div { background: var(--surface); padding: 1.1rem 1.2rem; display: grid; gap: .3rem; align-content: start; }
+.common b { font-weight: 600; }
+.common span { color: var(--muted); font-size: .95rem; }
+
+/* Itinerari */
+.diagram { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.2rem; }
+.diagram svg { display: block; width: 100%; min-width: 640px; height: auto; }
+.d-box { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
+.d-name { font-family: var(--f-display); font-weight: 800; font-size: 19px; fill: var(--fg); }
+.d-sub { font-family: var(--f-mono); font-size: 11.5px; fill: var(--muted); }
+.d-lane { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; fill: var(--muted); text-transform: uppercase; }
+.d-arrow { stroke: var(--muted); stroke-width: 1.8; fill: none; }
+.d-dash { stroke-dasharray: 5 5; }
+.d-head { fill: var(--muted); }
+.d-why { font-family: var(--f-body); font-size: 11.5px; fill: var(--muted); font-style: italic; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem 2rem; }
+.steps p { color: var(--fg); }
+.steps b { font-family: var(--f-mono); font-size: .85rem; font-weight: 700; display: block; color: var(--muted); }
+
+/* Fitxes */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 1.25rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; display: grid; grid-template-rows: auto auto 1fr auto; overflow: hidden; min-width: 0; }
+.card .band { height: 6px; background: var(--brand); }
+.card .head { display: flex; gap: .9rem; align-items: center; padding: 1.2rem 1.3rem .4rem; }
+.card .head svg { width: 44px; height: 44px; flex: none; }
+.card h3 { font-size: 1.55rem; font-weight: 800; }
+.card .lang { font-family: var(--f-mono); font-size: .8rem; color: var(--brand); font-weight: 700; }
+.card .body { padding: .4rem 1.3rem 1rem; display: grid; gap: .9rem; align-content: start; }
+.card .pitch { font-size: 1.02rem; }
+dl { margin: 0; display: grid; grid-template-columns: 8.5rem 1fr; gap: .45rem 1rem; font-size: .94rem; }
+dt { font-family: var(--f-mono); font-size: .76rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); padding-top: .18rem; }
+dd { margin: 0; min-width: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: .35rem; }
+.chip { background: var(--chip); border-radius: 999px; padding: .05rem .6rem; font-size: .85rem; white-space: nowrap; }
+.state { display: inline-flex; align-items: center; gap: .4rem; }
+.state::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: var(--dot); }
+.state.ok { --dot: #2f9e5b; }
+.state.wip { --dot: #d9962b; }
+.card .foot { padding: 1rem 1.3rem 1.3rem; display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; border-top: 1px solid var(--line); }
+.btn { display: inline-flex; align-items: center; gap: .5rem; background: var(--brand); color: #fff; text-decoration: none; font-weight: 600; padding: .55rem 1rem; border-radius: 8px; }
+.btn:hover { filter: brightness(1.08); }
+.url { font-family: var(--f-mono); font-size: .82rem; color: var(--muted); overflow-wrap: anywhere; }
+.k-karel { --brand: var(--c-karel); } .k-py { --brand: var(--c-py); }
+.k-html { --brand: var(--c-html); } .k-js { --brand: var(--c-js); }
+.k-js .btn { color: #1b1700; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { color: #10141c; } }
+:root[data-theme="dark"] .btn { color: #10141c; }
+
+/* Diferències */
+.diff-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: .93rem; }
+th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+thead th { font-family: var(--f-display); font-size: 1.05rem; font-weight: 800; }
+tbody th { font-family: var(--f-mono); font-size: .76rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 400; white-space: nowrap; }
+tbody tr:last-child > * { border-bottom: 0; }
+.num { font-variant-numeric: tabular-nums; }
+
+@media (max-width: 760px) { .common { grid-template-columns: 1fr; } }
+footer { padding-block: 3rem 0; color: var(--muted); font-size: .9rem; }
+@media (max-width: 520px) { dl { grid-template-columns: 1fr; gap: .1rem; } dd { margin-bottom: .5rem; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="icons" aria-hidden="true">
+    <svg aria-hidden="true" viewBox="0 0 16 16" fill="#E684CC" shape-rendering="crispEdges"><g fill="#6B0D4F"><rect x="5" y="1" width="1" height="1"/><rect x="6" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="10" y="1" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="13" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="3" y="10" width="1" height="1"/><rect x="5" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="3" y="11" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="6" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="12" y="11" width="1" height="1"/><rect x="2" y="12" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="9" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="13" y="12" width="1" height="1"/><rect x="2" y="13" width="1" height="1"/><rect x="4" y="13" width="1" height="1"/><rect x="6" y="13" width="1" height="1"/><rect x="9" y="13" width="1" height="1"/><rect x="11" y="13" width="1" height="1"/><rect x="13" y="13" width="1" height="1"/><rect x="3" y="14" width="1" height="1"/><rect x="7" y="14" width="1" height="1"/><rect x="8" y="14" width="1" height="1"/><rect x="12" y="14" width="1" height="1"/></g><rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/><rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/><rect x="6" y="3" width="1" height="1" fill="#FFFFFF"/><rect x="7" y="3" width="1" height="1" fill="#FFFFFF"/><rect x="8" y="3" width="1" height="1" fill="#FFFFFF"/><rect x="9" y="3" width="1" height="1" fill="#FFFFFF"/></svg>
+    <svg viewBox="0 0 110 110"><path fill="#3776AB" d="M53.75,5.42c-27.65,0-31.75,12.5-31.75,12.5v12.75h32.5v4.5H21.25C8.65,35.17,5,44.75,5,56.3c0,12.25,3.75,20.75,17.25,20.75h8.75v-12c0-13.62,11.25-24.870,24.87-24.87h16.13v-16c0-13.5-11-24.3-24.37-24.3C55.03,5.44,54.4,5.42,53.75,5.42z M45.75,15.62c2.62,0,4.75,2.12,4.75,4.75c0,2.62-2.130,4.75-4.75,4.75c-2.63,0-4.75-2.13-4.75-4.75C41,17.75,43.12,15.62,45.75,15.62z"/><path fill="#FFD43B" d="M56.25,104.58c27.65,0,31.75-12.5,31.75-12.5V79.33H55.5v-4.5h33.25c12.6,0,16.25-9.58,16.25-21.13c0-12.25-3.75-20.75-17.25-20.75h-8.75v12c0,13.62-11.25,24.87-24.87,24.87H38v16c0,13.5,11,24.3,24.37,24.3C63.97,104.56,64.6,104.58,56.25,104.58z M64.25,94.38c-2.62,0-4.75-2.12-4.75-4.75c0-2.62,2.13-4.75,4.75-4.75c2.63,0,4.75,2.13,4.75,4.75C69,92.25,66.88,94.38,64.25,94.38z"/></svg>
+    <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#e34c26"/><path d="M11 10 5 16l6 6M21 10l6 6-6 6M18 8l-4 16" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="3" fill="#F7DF1E"/><path d="M21.4 24.2c.6 1 1.4 1.7 2.8 1.7 1.2 0 2-.6 2-1.4 0-1-.8-1.4-2.1-1.9l-.7-.3c-2.1-.9-3.5-2-3.5-4.4 0-2.2 1.7-3.9 4.3-3.9 1.900 0 3.3.7 4.2 2.4l-2.3 1.5c-.5-.9-1-1.3-1.9-1.3-.9 0-1.5.6-1.5 1.3 0 .9.6 1.3 1.9 1.9l.7.3c2.5 1.1 3.9 2.1 3.9 4.5 0 2.7-2.1 4.1-4.9 4.1-2.8 0-4.6-1.3-5.4-3l2.5-1.5zM12.1 24.4c.5.8 1 1.5 2 1.5.9 0 1.5-.4 1.5-1.8v-9.4h2.9v9.5c0 2.9-1.7 4.3-4.3 4.3-2.3 0-3.6-1.2-4.300-2.6l2.2-1.5z" fill="#000"/></svg>
+  </div>
+  <p class="eyebrow">Guia per al professorat · Step Quiz</p>
+  <h1>Quatre cursos de programació per a l'ESO</h1>
+  <p class="lead">KarelCat, PyCat, HTMLCat i JSCat són quatre cursos germans, en català, que l'alumnat fa sencers al navegador. Comparteixen el mateix plantejament i encaixen en un itinerari: aquesta pàgina explica què tenen en comú, en què es diferencien i per on començar.</p>
+</header>
+
+<section aria-labelledby="comu">
+  <p class="eyebrow">Què tenen en comú</p>
+  <h2 id="comu">El mateix plantejament als quatre cursos</h2>
+  <div class="common">
+    <div><b>Sense instal·lar res</b><span>Funcionen en qualsevol navegador modern, també en ordinadors del centre amb permisos limitats.</span></div>
+    <div><b>Sense comptes ni galetes</b><span>No es demana cap dada a l'alumnat. La feina i el progrés es desen al navegador de l'alumne i enlloc més.</span></div>
+    <div><b>Per començar de zero</b><span>Pensats per a alumnes de 15 o 16 anys sense experiència prèvia, amb explicacions curtes i en català.</span></div>
+    <div><b>Capítols amb exemples vius</b><span>Cada capítol combina una explicació breu amb exemples que es poden executar i modificar dins de la mateixa pàgina.</span></div>
+    <div><b>Correcció automàtica</b><span>Els exercicis i els reptes es comproven sols i diuen a l'alumne què falla, sense que el docent hagi de revisar cada lliurament.</span></div>
+    <div><b>Codi net</b><span>A més que el programa funcioni, insisteixen en noms clars, bona indentació i una estructura que s'entengui.</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="itinerari">
+  <p class="eyebrow">Itinerari recomanat</p>
+  <h2 id="itinerari">Per on començar</h2>
+  <div class="diagram" role="img" aria-label="Esquema: KarelCat porta a PyCat i PyCat a JSCat. HTMLCat és un camí paral·lel que porta a la part B de JSCat, la del navegador.">
+    <svg viewBox="0 0 760 270" aria-hidden="true">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="d-head" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <text class="d-lane" x="0" y="20">Camí de la programació</text>
+      <text class="d-lane" x="0" y="190">Camí del web</text>
+
+      <rect class="d-box" x="0" y="34" width="180" height="78" rx="10" style="stroke: var(--c-karel)"/>
+      <text class="d-name" x="18" y="66">KarelCat</text>
+      <text class="d-sub" x="18" y="90">pensar algorismes</text>
+
+      <rect class="d-box" x="290" y="34" width="180" height="78" rx="10" style="stroke: var(--c-py)"/>
+      <text class="d-name" x="308" y="66">PyCat</text>
+      <text class="d-sub" x="308" y="90">Python de debò</text>
+
+      <rect class="d-box" x="580" y="34" width="180" height="140" rx="10" style="stroke: var(--c-js)"/>
+      <text class="d-name" x="596" y="66">JSCat</text>
+      <text class="d-sub" x="596" y="90">A · consola (1–8)</text>
+      <line x1="596" y1="108" x2="744" y2="108" stroke="var(--line)"/>
+      <text class="d-sub" x="596" y="132">B · navegador (9–12)</text>
+      <text class="d-sub" x="596" y="152">DOM, canvas, joc</text>
+
+      <rect class="d-box" x="0" y="200" width="180" height="66" rx="10" style="stroke: var(--c-html)"/>
+      <text class="d-name" x="18" y="230">HTMLCat</text>
+      <text class="d-sub" x="18" y="252">pàgines amb HTML i CSS</text>
+
+      <path class="d-arrow" d="M184 73 H284" marker-end="url(#ah)"/>
+      <text class="d-why" x="235" y="62" text-anchor="middle">mateixa sintaxi</text>
+      <path class="d-arrow" d="M474 73 H574" marker-end="url(#ah)"/>
+      <text class="d-why" x="525" y="62" text-anchor="middle">mateixos conceptes</text>
+      <path class="d-arrow d-dash" d="M184 233 H530 Q550 233 550 213 V160 Q550 142 574 142" marker-end="url(#ah)"/>
+      <text class="d-why" x="230" y="224">el JS del navegador modifica pàgines HTML</text>
+    </svg>
+  </div>
+  <div class="steps">
+    <p><b>KarelCat → PyCat</b>Tot programa de KarelCat és Python vàlid. L'alumne arriba a PyCat sabent què són un bucle, un condicional i una funció, i només hi afegeix variables, dades i entrada i sortida.</p>
+    <p><b>PyCat → JSCat</b>La part A de JSCat cobreix el mateix terreny que PyCat amb una altra sintaxi. Qui ve de PyCat la fa de pressa i arriba abans a la part B.</p>
+    <p><b>HTMLCat, en paral·lel</b>No demana cap curs previ i es pot fer abans, després o al mateix temps que els altres. És la millor preparació per a la part B de JSCat, on el programa canvia una pàgina web.</p>
+  </div>
+</section>
+
+<section aria-labelledby="cursos">
+  <p class="eyebrow">Els quatre cursos</p>
+  <h2 id="cursos">Què fa cadascun</h2>
+  <div class="cards">
+
+    <article class="card k-karel">
+      <div class="band"></div>
+      <div class="head">
+        <svg aria-hidden="true" viewBox="0 0 16 16" fill="#E684CC" shape-rendering="crispEdges"><g fill="#6B0D4F"><rect x="5" y="1" width="1" height="1"/><rect x="6" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="10" y="1" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="13" y="4" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="13" y="5" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="13" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="12" y="8" width="1" height="1"/><rect x="3" y="9" width="1" height="1"/><rect x="5" y="9" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="10" y="9" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/><rect x="3" y="10" width="1" height="1"/><rect x="5" y="10" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="3" y="11" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="6" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/><rect x="10" y="11" width="1" height="1"/><rect x="12" y="11" width="1" height="1"/><rect x="2" y="12" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="9" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="13" y="12" width="1" height="1"/><rect x="2" y="13" width="1" height="1"/><rect x="4" y="13" width="1" height="1"/><rect x="6" y="13" width="1" height="1"/><rect x="9" y="13" width="1" height="1"/><rect x="11" y="13" width="1" height="1"/><rect x="13" y="13" width="1" height="1"/><rect x="3" y="14" width="1" height="1"/><rect x="7" y="14" width="1" height="1"/><rect x="8" y="14" width="1" height="1"/><rect x="12" y="14" width="1" height="1"/></g><rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="11" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="11" y="6" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="5" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="10" y="7" width="1" height="1"/><rect x="11" y="7" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="11" y="8" width="1" height="1"/><rect x="4" y="9" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="4" y="10" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="3" y="12" width="1" height="1"/><rect x="7" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/><rect x="3" y="13" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/><rect x="6" y="3" width="1" height="1" fill="#FFFFFF"/><rect x="7" y="3" width="1" height="1" fill="#FFFFFF"/><rect x="8" y="3" width="1" height="1" fill="#FFFFFF"/><rect x="9" y="3" width="1" height="1" fill="#FFFFFF"/></svg>
+        <div><h3>KarelCat</h3><div class="lang">Python reduït · el primer curs</div></div>
+      </div>
+      <div class="body">
+        <p class="pitch">L'alumne programa en Karel, una medusa que es mou per una graella submarina, recull perles i esquiva parets. Amb poques ordres aprèn a descompondre un problema i a pensar l'algorisme abans d'escriure'l.</p>
+        <dl>
+          <dt>Prerequisits</dt><dd>Cap</dd>
+          <dt>Contingut</dt><dd class="num">10 capítols, un epíleg (d'en Karel al Python) i 13 reptes</dd>
+          <dt>Aprèn</dt><dd>Ordres, repetició, funcions, descomposició, condicionals, <code>while</code>, condicions combinades, codi net</dd>
+          <dt>Eines pròpies</dt><dd><div class="chips"><span class="chip">Món visual de Karel</span><span class="chip">Simulador lliure</span><span class="chip">Presentació inicial</span></div></dd>
+          <dt>Estat</dt><dd><span class="state ok">Complet</span></dd>
+        </dl>
+      </div>
+      <div class="foot"><a class="btn" href="https://karelcat.step-quiz.net" target="_blank" rel="noopener">Obre KarelCat →</a><span class="url">karelcat.step-quiz.net</span></div>
+    </article>
+
+    <article class="card k-py">
+      <div class="band"></div>
+      <div class="head">
+        <svg viewBox="0 0 110 110" aria-hidden="true"><path fill="#3776AB" d="M53.75,5.42c-27.65,0-31.75,12.5-31.75,12.5v12.75h32.5v4.5H21.25C8.65,35.17,5,44.75,5,56.3c0,12.25,3.75,20.75,17.25,20.75h8.75v-12c0-13.620,11.25-24.87,24.87-24.87h16.13v-16c0-13.5-11-24.3-24.37-24.3C55.03,5.44,54.4,5.42,53.75,5.42z M45.75,15.62c2.62,0,4.75,2.12,4.75,4.75c0,2.62-2.13,4.75-4.75,4.75c-2.63,0-4.75-2.13-4.75-4.75C41,17.75,43.12,15.62,45.75,15.62z"/><path fill="#FFD43B" d="M56.25,104.58c27.65,0,31.75-12.5,31.75-12.5V79.33H55.5v-4.5h33.25c12.6,0,16.25-9.58,16.25-21.13c0-12.25-3.75-20.75-17.25-20.75h-8.75v12c0,13.62-11.25,24.87-24.87,24.87H38v16c0,13.5,11,24.3,24.37,24.3C63.97,104.56,64.6,104.58,56.25,104.58z M64.25,94.38c-2.62,0-4.75-2.12-4.75-4.75c0-2.62,2.13-4.75,4.75-4.75c2.63,0,4.75,2.13,4.75,4.75C69,92.25,66.88,94.38,64.25,94.38z"/></svg>
+        <div><h3>PyCat</h3><div class="lang">Python · la continuació de KarelCat</div></div>
+      </div>
+      <div class="body">
+        <p class="pitch">Python de debò (CPython executat al navegador), amb variables, dades i entrada de l'usuari. Acaba amb dos capítols extres: el joc del 4 en ratlla i la tortuga gràfica.</p>
+        <dl>
+          <dt>Prerequisits</dt><dd>KarelCat o una base equivalent</dd>
+          <dt>Contingut</dt><dd class="num">13 capítols i 15 reptes</dd>
+          <dt>Aprèn</dt><dd>Variables, operacions, <code>input</code>, <code>if</code>, <code>while</code>, <code>for</code>, text, llistes, funcions, diccionaris</dd>
+          <dt>Eines pròpies</dt><dd><div class="chips"><span class="chip">Pas a pas amb variables</span><span class="chip">Tortuga</span><span class="chip">Errors explicats en català</span><span class="chip">Problemes de Parsons</span></div></dd>
+          <dt>Estat</dt><dd><span class="state ok">Complet</span></dd>
+        </dl>
+      </div>
+      <div class="foot"><a class="btn" href="https://pycat.step-quiz.net" target="_blank" rel="noopener">Obre PyCat →</a><span class="url">pycat.step-quiz.net</span></div>
+    </article>
+
+    <article class="card k-html">
+      <div class="band"></div>
+      <div class="head">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#e34c26"/><path d="M11 10 5 16l6 6M21 10l6 6-6 6M18 8l-4 16" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h3>HTMLCat</h3><div class="lang">HTML i CSS · camí paral·lel</div></div>
+      </div>
+      <div class="body">
+        <p class="pitch">L'alumne fa pàgines web amb HTML i CSS, i aprèn a escriure-les netes i ben estructurades. El navegador arregla els errors en silenci; HTMLCat els fa visibles i els explica.</p>
+        <dl>
+          <dt>Prerequisits</dt><dd>Cap</dd>
+          <dt>Contingut</dt><dd class="num">15 capítols: HTML (1–8), CSS (9–14) i un projecte final</dd>
+          <dt>Aprèn</dt><dd>Estructura, text, llistes, enllaços, imatges, taules, formularis, selectors, model de caixa, flexbox, disseny adaptable</dd>
+          <dt>Eines pròpies</dt><dd><div class="chips"><span class="chip">⚠ Problemes</span><span class="chip">🌳 Arbre</span><span class="chip">✓ Comprovacions</span><span class="chip">Glossari</span><span class="chip">Exporta el progrés</span></div></dd>
+          <dt>Estat</dt><dd><span class="state wip">Capítols fets · reptes en preparació</span></dd>
+        </dl>
+      </div>
+      <div class="foot"><a class="btn" href="https://htmlcat.step-quiz.net" target="_blank" rel="noopener">Obre HTMLCat →</a><a href="https://htmlcat.step-quiz.net/site/professorat.html" target="_blank" rel="noopener">Guia per al professorat</a></div>
+    </article>
+
+    <article class="card k-js">
+      <div class="band"></div>
+      <div class="head">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="3" fill="#F7DF1E"/><path d="M21.4 24.2c.6 1 1.4 1.7 2.8 1.7 1.2 0 2-.6 2-1.4 0-1-.8-1.4-2.1-1.9l-.7-.3c-2.1-.9-3.5-2-3.5-4.4 0-2.2 1.7-3.9 4.3-3.9 1.9 0 3.3.7 4.2 2.4l-2.3 1.5c-.5-.9-1-1.3-1.9-1.3-.9 0-1.5.6-1.5 1.3 0 .9.6 1.3 1.9 1.9l.7.3c2.5 1.1 3.9 2.1 3.9 4.5 0 2.7-2.1 4.1-4.9 4.1-2.8 0-4.6-1.3-5.4-3l2.5-1.5zM12.1 24.4c.5.8 1 1.5 2 1.5.9 0 1.5-.4 1.5-1.8v-9.4h2.9v9.5c0 2.9-1.7 4.3-4.3 4.3-2.3 0-3.6-1.2-4.3-2.6l2.2-1.5z" fill="#000"/></svg>
+        <div><h3>JSCat</h3><div class="lang">JavaScript · el llenguatge del web</div></div>
+      </div>
+      <div class="body">
+        <p class="pitch">Primer, JavaScript de consola, amb els mateixos conceptes que PyCat. Després, JavaScript al navegador: canviar una pàgina, respondre a clics, dibuixar en un canvas i acabar amb un mini-joc animat.</p>
+        <dl>
+          <dt>Prerequisits</dt><dd>Cap; és més fàcil després de PyCat i HTMLCat</dd>
+          <dt>Contingut</dt><dd class="num">12 capítols: consola (1–8) i navegador (9–12)</dd>
+          <dt>Aprèn</dt><dd>Variables, decisions, bucles, arrays, funcions, objectes, DOM, esdeveniments, canvas, animació</dd>
+          <dt>Eines pròpies</dt><dd><div class="chips"><span class="chip">Mode consola</span><span class="chip">Mode pàgina viva (DOM)</span><span class="chip">Editor amb autocompletat</span></div></dd>
+          <dt>Estat</dt><dd><span class="state wip">Capítols fets · reptes en preparació</span></dd>
+        </dl>
+      </div>
+      <div class="foot"><a class="btn" href="https://jscat.step-quiz.net" target="_blank" rel="noopener">Obre JSCat →</a><span class="url">jscat.step-quiz.net</span></div>
+    </article>
+
+  </div>
+</section>
+
+<section aria-labelledby="dif">
+  <p class="eyebrow">En què es diferencien</p>
+  <h2 id="dif">D'un cop d'ull</h2>
+  <div class="diff-wrap">
+    <table>
+      <thead><tr><th scope="col"></th><th scope="col">KarelCat</th><th scope="col">PyCat</th><th scope="col">HTMLCat</th><th scope="col">JSCat</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Llenguatge</th><td>Python reduït (només les ordres d'en Karel)</td><td>Python complet</td><td>HTML i CSS (no és programació)</td><td>JavaScript</td></tr>
+        <tr><th scope="row">Què es veu</th><td>Un món en graella que es mou</td><td>Una consola i la tortuga</td><td>La pàgina, que canvia mentre s'escriu</td><td>Una consola i, a la part B, una pàgina viva</td></tr>
+        <tr><th scope="row">Idea central</th><td>Pensar l'algorisme</td><td>Dades i estructures</td><td>Estructura i presentació del contingut</td><td>Programar el web</td></tr>
+        <tr><th scope="row">Capítols</th><td class="num">10 + epíleg</td><td class="num">13</td><td class="num">15</td><td class="num">12</td></tr>
+        <tr><th scope="row">Reptes</th><td class="num">13</td><td class="num">15</td><td>en preparació</td><td>en preparació</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>Els quatre cursos formen part de Step Quiz. Són gratuïts, s'usen sense registre i no recullen cap dada de l'alumnat.</footer>
+</div>
+
+</body>
+</html>
